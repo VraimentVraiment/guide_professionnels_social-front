@@ -1,0 +1,30 @@
+fieldSet:
+  legend: Connexion
+  hint: Veuillez saisir vos identifiants
+emailField:
+  label: Email
+  placeholder: Email
+  hint: Veuillez saisir une adresse email valide
+  autocomplete: email
+  messages:
+    error: Email invalide
+    valid: Email valide
+passwordField:
+  label: Mot de passe
+  placeholder: Mot de passe
+  hint: Veuillez saisir un mot de passe valide
+  messages:
+    error: Mot de passe invalide
+    valid: Mot de passe valide
+loginButton:
+  label: Se connecter
+infoMessage:
+  error:
+    title: Erreur
+    description: Le nom d'utilisateur et/ou le mot de passe sont incorrect
+  success:
+    title: Succès
+    description: Connexion réussie
+  info:
+    title: Information
+    description: Connexion en cours

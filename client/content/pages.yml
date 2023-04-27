@@ -1,0 +1,33 @@
+login:
+  title: 'Connexion'
+  metaTitle: 'Connexion - Gabarit de démarrage VueDsfr'
+index:
+  title: 'Accueil'
+  metaTitle: 'Home - VueDsfr Starter Template'
+apropos:
+  title: 'À propos'
+  metaTitle: 'À propos - Gabarit de démarrage VueDsfr'
+dispositifs:
+  title: 'Dispositifs'
+  metaTitle: 'Dispositifs - Gabarit de démarrage VueDsfr'
+fichestechniques:
+  title: 'Fiches techniques'
+  metaTitle: 'Fiches techniques - Gabarit de démarrage VueDsfr'
+dispositif[id]:
+  title: dispositif.name
+  metaTitle: dispositif.name + ' - Gabarit de démarrage VueDsfr'
+mentions-legales:
+  title: 'Mentions légales'
+  metaTitle: 'Mentions légales - Gabarit de démarrage VueDsfr'
+donnees-personnelles:
+  title: 'Données personnelles'
+  metaTitle: 'Données personnelles - Gabarit de démarrage VueDsfr'
+cookies:
+  title: 'Cookies'
+  metaTitle: 'Cookies - Gabarit de démarrage VueDsfr'
+accessibilite:
+  title: 'Accessibilité'
+  metaTitle: 'Accessibilité - Gabarit de démarrage VueDsfr'
+monespace:
+  title: 'Mon espace'
+  metaTitle: 'Mon espace - Gabarit de démarrage VueDsfr'

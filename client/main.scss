@@ -1,0 +1,68 @@
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  color: #c9c1b5;
+  background-color: #191919;
+  font-family: serif;
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+@font-face {
+  font-family: Sligoil-Micro;
+  src: url('Sligoil-Micro.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  color: #00a041;
+
+
+}
+
+p {
+  font-family: Sligoil-Micro, serif;
+  font-size: 0.8em;
+}
+
+h1 {
+  font-family: Sligoil-Micro, serif;
+  font-size: 2em;
+  color: #00a041;
+}
+
+#head {
+  margin: 5em;
+}
+
+#contenu {
+  padding: 3em;
+  font-size: 2em;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  #head {
+    margin: 0;
+  }
+
+  #contenu {
+    padding: 0;
+  }
+
+  p {
+    font-size: 0.6em;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  h1 {
+    font-size: 1em;
+    line-height: 1em;
+  }
+}

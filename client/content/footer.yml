@@ -1,0 +1,17 @@
+footerProps:
+  licenceText: 'Sauf mention contraire, tous les contenus de ce site sont sous'
+  licenceTo: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md'
+  licenceName: 'etalab-2.0'
+  a11yCompliance: 'Partiellement conforme'
+  logoText: 
+    - 'Prefet'
+    - 'du Calvados'
+  personalDataLink: /donnees-personnelles
+  cookiesLink: /cookies
+  a11yComplianceLink: /accessibilite
+  descText: '
+  La boussole du travailleur social dans le département du Calvados
+  est une plateforme portée par la préfecture du Calvados.
+  Le code source de ce site web est disponible en licence libre.
+  Le design de ce site est conçu avec le système de design de l’État.'
+  homeLink: /

@@ -1,0 +1,5 @@
+filterCollections:
+  - label: 'Critères'
+    name: 'criteres_dispositif'
+  - label: 'Types de dispositifs'
+    name: 'types_dispositif'

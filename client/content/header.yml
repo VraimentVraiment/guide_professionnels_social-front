@@ -1,0 +1,18 @@
+headerProps:
+  serviceTitle: 'GPS14'
+  serviceDescription: 'Dans le département du Calvados'
+  logoText: 
+    - 'Prefet'
+    - 'du Calvados'
+  quickLinks:
+    - label: 'Mon espace'
+      path: '/monespace'
+      icon: 'ri-user-line'
+mainNavProps:
+  navItems:
+    - to: '/dispositifs'
+      text: 'Dispositifs'
+    - to: '/fichestechniques'
+      text: 'Fiches techniques'
+    - to: '/apropos'
+      text: 'À propos'
