@@ -1,8 +1,10 @@
 tabListName: Liste
 tabTitles:
   - title: Liste
-    # icon: ri-list-check
     icon: ri-checkbox-circle-line
+    tabId: tab-0
+    panelId: tab-content-0
   - title: Carte
-    # icon: ri-road-map-line
     icon: ri-checkbox-circle-line
+    tabId: tab-1
+    panelId: tab-content-1

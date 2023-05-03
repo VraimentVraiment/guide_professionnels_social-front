@@ -217,10 +217,3 @@ declare global {
   export type RecursiveYmlContent = Record<string, string | string[] | RecursiveYmlContent>
 
   export type Accessor<T> = (item: T) => string | undefined | null
-
-  export type TabIndexModel = {
-    selected: Ref<number>
-    select: (index: number) => void
-    isSelected: (index: number) => boolean
-  }
-}

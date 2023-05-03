@@ -2,14 +2,18 @@
 
 const props = defineProps<{
   tabListName: StringConstructor
-  tabTitles: object[]
+  tabTitles: {
+    title: string,
+    icon: string,
+  }[]
   tabIndex: TabIndexModel
 }>()
 
 const tabTitles = props.tabTitles
-  .map((item, i) => {
+  .map(({ title, icon }, i) => {
     return {
-      ...item,
+      title,
+      icon,
       tabId: `tab-${i}`,
       panelId: `tab-content-${i}`,
     }
@@ -20,6 +24,7 @@ const tabTitles = props.tabTitles
   <DsfrTabs
     :tab-list-name="tabListName"
     :tab-titles="tabTitles"
+    :selected-tab-index="tabIndex.selected.value"
     :initial-selected-index="tabIndex.selected.value"
     @select-tab="(index: number) => tabIndex.select(index)"
   >
@@ -29,6 +34,7 @@ const tabTitles = props.tabTitles
       :panel-id="`tab-content-${i - 1}`"
       :tab-id="`tab-${i - 1}`"
       :selected="tabIndex.isSelected(i - 1)"
+      :asc="false"
     >
       <slot :name="`tab-${i - 1}`" />
     </DsfrTabContent>

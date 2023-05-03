@@ -4,7 +4,7 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 module.exports = {
   root: true,
   extends: [
-    'eslint-recommended',
+    'standard',
     'plugin:vue/vue3-recommended',
     '@nuxtjs/eslint-config-typescript',
   ],

@@ -20,47 +20,79 @@ onMounted(() => {
   filterStore.fetchAll()
 })
 
-const { tabListName, tabTitles } = (await useGetContent('dispositifs')) as {
-  tabListName: StringConstructor
-  tabTitles: { key: string; label: string }[]
-}
+const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
 
-const tabIndex = useTabIndex()
+const {
+    number: index,
+    select,
+    isSelected,
+  } = useNumberObserver()
 
 </script>
 
 <template>
-  <div class="gps-sidebar">
+  <div
+  class="gps-sidebar"
+  >
     <FilterSideBar
+      :class="[{ 'open': isSelected(0) }]"
       v-if="filterStore.collections?.length"
       :collections="filterStore.collections"
     />
+    <div id="dispositifs-sidebar"></div>
   </div>
   <GpsSearchModule />
-  <GpsTabs
+  <DsfrTabs
     :class="['gps-dispositifs-tabs']"
     :tab-list-name="tabListName"
     :tab-titles="tabTitles"
-    :tab-index="tabIndex"
+    :selected-tab-index="index"
+    :initial-selected-index="index"
+    @select-tab="select"
   >
-    <template #tab-0>
+    <DsfrTabContent
+      :panel-id="`tab-content-${0}`"
+      :tab-id="`tab-${0}`"
+      :selected="isSelected(0)"
+      :asc="isSelected(1)"
+    >
       <Teleport
-        :disabled="tabIndex.isSelected(0)"
-        to="footer"
+        to="#dispositifs-sidebar"
+        :disabled="isSelected(0)"
       >
         <DispositifCardGrid
           :collection="dispositifs.collection.value"
-        />
+          />
       </Teleport>
-    </template>
-    <template #tab-1>
+    </DsfrTabContent>
+    <DsfrTabContent
+      :panel-id="`tab-content-${1}`"
+      :tab-id="`tab-${1}`"
+      :selected="isSelected(1)"
+      :asc="isSelected(1)"
+    >
       <GpsMap />
-    </template>
-  </GpsTabs>
+    </DsfrTabContent>
+  </DsfrTabs>
 </template>
 
 <style scoped lang="scss">
-.fr-card__link {
-  max-width: 200px !important;
+.gps-sidebar {
+  display: inline-block;
+  float: left;
+  position: relative;
+  max-width: 300px;
+  max-width: 30%;
+  margin-right: 2rem;
+}
+
+#dispositifs-sidebar {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.gps-dispositifs-tabs .fr-tabs__panel {
+  max-height: 70vh;
+  overflow-y: auto;
 }
 </style>
