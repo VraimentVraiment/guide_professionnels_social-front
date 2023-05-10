@@ -30,25 +30,45 @@ const isListSelected = ref(true);
 </script>
 
 <template>
-  <GpsGrid>
-    <template #top-right>
-      <GpsSearchModule />
-    </template>
-    <template #bottom-left>
-      <div
-        :class="[
-          'gps-sidebar',
-        ]"
-      >
-        <FilterSideBar
-          v-if="filterStore.collections?.length"
-          :is-list-selected="isListSelected"
-          :collections="filterStore.collections"
-        />
-        <div id="dispositifs-sidebar" />
-      </div>
-    </template>
-    <template #bottom-right>
+  <div
+    :class="[
+      'fr-grid-row',
+      'fr-grid-row--gutters',
+    ]"
+  >
+    <GpsSearchModule 
+      :class="[
+        'fr-col-12',
+        'fr-col-md-8',
+        'fr-col-lg-8', 
+        'fr-col-xl-8',
+        'fr-col-offset-md-4',
+      ]"
+    />
+    <div
+      :class="[
+        'gps-sidebar',
+        'fr-col-12',
+        'fr-col-md-4',
+        'fr-col-lg-4', 
+        'fr-col-xl-4',
+      ]"
+    >
+      <FilterSideBar
+        v-if="filterStore.collections?.length"
+        :is-list-selected="isListSelected"
+        :collections="filterStore.collections"
+      />
+      <div id="dispositifs-sidebar" />
+    </div>
+    <div
+      :class="[
+        'fr-col-12',
+        'fr-col-md-8',
+        'fr-col-lg-8', 
+        'fr-col-xl-8',
+      ]"
+    >
       <GpsTabs
         :class="[
           'gps-dispositifs-tabs'
@@ -70,8 +90,8 @@ const isListSelected = ref(true);
           <GpsMap />
         </template>
       </GpsTabs>
-    </template>
-  </GpsGrid>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">

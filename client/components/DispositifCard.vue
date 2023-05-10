@@ -19,4 +19,8 @@ const props = defineProps<{
 .fr-card__img {
   display: none !important;
 }
+
+.fr-card__detail {
+  display: none !important;
+}
 </style>

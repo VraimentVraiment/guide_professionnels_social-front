@@ -6,7 +6,10 @@ definePageMeta({
 
 const id = parseInt(useRoute().params.id as string, 10)
 
-const dispositif = await useFetchDirectusItem<DispositifPost>('fiches_dispositif', id)
+const dispositif = await useFetchDirectusItem<DispositifPost>({
+  collectionName: 'dispositifs',
+  id,
+})
 
 if (!dispositif) {
   navigateTo('/404')

@@ -19,9 +19,13 @@ export async function useFetchDirectusItems<T>({
   }
 }
 
-export async function useFetchDirectusItem<T>(
-  collectionName: string,
-  id: number,
+export async function useFetchDirectusItem<T>({
+  collectionName,
+  id,
+}: {
+  collectionName: string
+  id: number
+},
 ): Promise<T | null> {
   const { getItemById } = useDirectusItems()
 

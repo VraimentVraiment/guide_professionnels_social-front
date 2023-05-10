@@ -12,7 +12,6 @@ export function stratifyFilters (
     return item.id?.toString() || null
   }
 
-
   const parentAccessor: Accessor<FilterItemNode> = (item) => {
     return item.parent_id?.toString() || null
   }
