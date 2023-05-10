@@ -1,29 +1,11 @@
 <script lang="ts" setup>
 
 import { HierarchyNode } from 'd3-hierarchy'
+import DetailsAccordion from '@/components/DetailsAccordion.vue'
 
 defineProps<{
   node: HierarchyNode<FilterItemNode>;
-  collectionName: string;
 }>()
-
-const getTag = (depth: number) => {
-  switch (depth) {
-    case 1:
-      return 'h5'
-    case 2:
-      return 'h6'
-    default:
-      return 'h6'
-  }
-}
-
-const getLabel = (node: HierarchyNode<FilterItem>) => {
-  if (node.depth === 0) {
-    return node.data.collectionName
-  }
-  return node.data.name
-}
 
 </script>
 
@@ -34,19 +16,33 @@ const getLabel = (node: HierarchyNode<FilterItem>) => {
     v-model="node.data.checked"
     :name="node.data.name"
     :label="node.data.name"
+    small
   />
-  <component
-    :is="getTag(node.depth)"
-    v-else-if="node.depth > 0"
+  <DetailsAccordion
+    v-else-if="node.depth === 2 && node.height === 1"
+    :label="node.data.name"
+    :summary-tag="'h6'"
   >
-    {{ getLabel(node) }}
-  </component>
-  <template v-if="node.children?.length">
-    <FilterNode
-      v-for="childNode in node.children"
-      :key="childNode.data.id"
-      :node="childNode"
-      :collection-name="collectionName"
-    />
+    <template v-if="node.children?.length">
+      <FilterNode
+        v-for="childNode in node.children"
+        :key="childNode.data.id"
+        :node="childNode"
+      />
+    </template>
+  </DetailsAccordion>
+  <template v-else>
+    <h5
+      v-if="node.depth === 1"
+    >
+      {{ node.data.name }}
+    </h5>
+    <template v-if="node.children?.length">
+      <FilterNode
+        v-for="childNode in node.children"
+        :key="childNode.data.id"
+        :node="childNode"
+      />
+    </template>
   </template>
 </template>

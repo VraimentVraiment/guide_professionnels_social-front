@@ -22,12 +22,11 @@ export default defineNuxtConfig({
     '**/*.spec.*',
     '**/*.cy.*',
   ],
-  directus: {
-    url: 'http://0.0.0.0:8055',
-  },
   runtimeConfig: {
     public: {
-      apiUrl: 'http://0.0.0.0:8055',
+      directus: {
+        url: 'http://0.0.0.0:8055',
+      },
     },
   },
 })

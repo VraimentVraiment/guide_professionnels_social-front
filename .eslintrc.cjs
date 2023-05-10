@@ -4,13 +4,12 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 module.exports = {
   root: true,
   extends: [
-    'standard',
-    'plugin:vue/vue3-recommended',
     '@nuxtjs/eslint-config-typescript',
   ],
   rules: {
     'jsx-quotes': [2, 'prefer-double'],
     'comma-dangle': [2, 'always-multiline'],
+    'vue/no-multiple-template-root': 'off',
     'vue/max-attributes-per-line': ['error', {
       singleline: 1,
       multiline: 1,
@@ -33,15 +32,6 @@ module.exports = {
       ],
       env: {
         jest: true,
-      },
-    },
-    {
-      files: [
-        'client/pages/**/*.vue',
-        'client/layouts/**/*.vue',
-      ],
-      rules: {
-        'vue/multi-word-component-names': 'off',
       },
     },
   ],

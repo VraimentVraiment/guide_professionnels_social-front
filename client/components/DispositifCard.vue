@@ -5,15 +5,12 @@ const props = defineProps<{
   name: string;
 }>()
 
-// const description = 'Description par défaut'
-const link = `/dispositifs/${props.id}`
-
 </script>
 
 <template>
   <DsfrCard
     :title="props.name"
-    :link="link"
+    :link="`/dispositifs/${id}`"
     :class="['gps-card--dispositif']"
   />
 </template>

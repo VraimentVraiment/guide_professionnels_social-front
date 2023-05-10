@@ -1,4 +1,4 @@
-export function useFilterStore (
+export function useFilterStore(
   filterCollections: FiltersCollection[],
 ): FilterStore {
   const collections = reactive<FiltersCollection[]>([])

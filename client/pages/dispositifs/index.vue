@@ -12,87 +12,100 @@ const dispositifs = usePostStore<DispositifPost>({
   collectionName: 'fiches_dispositif',
 })
 
-watchEffect(() => {
+watch(filterStore.collections, () => {
   dispositifs.update(filterStore.collections)
 })
 
+const mounted = ref(false)
+
 onMounted(() => {
   filterStore.fetchAll()
+  mounted.value = true
 })
 
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
 
-const {
-    number: index,
-    select,
-    isSelected,
-  } = useNumberObserver()
+const isListSelected = ref(true);
 
 </script>
 
 <template>
   <div
-  class="gps-sidebar"
+    :class="[
+      'fr-grid-row',
+      'fr-grid-row--gutters',
+    ]"
   >
-    <FilterSideBar
-      :class="[{ 'open': isSelected(0) }]"
-      v-if="filterStore.collections?.length"
-      :collections="filterStore.collections"
+    <GpsSearchModule 
+      :class="[
+        'fr-col-12',
+        'fr-col-md-8',
+        'fr-col-lg-8', 
+        'fr-col-xl-8',
+        'fr-col-offset-md-4',
+      ]"
     />
-    <div id="dispositifs-sidebar"></div>
-  </div>
-  <GpsSearchModule />
-  <DsfrTabs
-    :class="['gps-dispositifs-tabs']"
-    :tab-list-name="tabListName"
-    :tab-titles="tabTitles"
-    :selected-tab-index="index"
-    :initial-selected-index="index"
-    @select-tab="select"
-  >
-    <DsfrTabContent
-      :panel-id="`tab-content-${0}`"
-      :tab-id="`tab-${0}`"
-      :selected="isSelected(0)"
-      :asc="isSelected(1)"
+    <div
+      :class="[
+        'gps-sidebar',
+        'fr-col-12',
+        'fr-col-md-4',
+        'fr-col-lg-4', 
+        'fr-col-xl-4',
+      ]"
     >
-      <Teleport
-        to="#dispositifs-sidebar"
-        :disabled="isSelected(0)"
+      <FilterSideBar
+        v-if="filterStore.collections?.length"
+        :is-list-selected="isListSelected"
+        :collections="filterStore.collections"
+      />
+      <div id="dispositifs-sidebar" />
+    </div>
+    <div
+      :class="[
+        'fr-col-12',
+        'fr-col-md-8',
+        'fr-col-lg-8', 
+        'fr-col-xl-8',
+      ]"
+    >
+      <GpsTabs
+        :class="[
+          'gps-dispositifs-tabs'
+        ]"
+        :tab-list-name="tabListName"
+        :tab-titles="tabTitles"
+        @select-tab="index => isListSelected = index === 0"
       >
-        <DispositifCardGrid
-          :collection="dispositifs.collection.value"
-          />
-      </Teleport>
-    </DsfrTabContent>
-    <DsfrTabContent
-      :panel-id="`tab-content-${1}`"
-      :tab-id="`tab-${1}`"
-      :selected="isSelected(1)"
-      :asc="isSelected(1)"
-    >
-      <GpsMap />
-    </DsfrTabContent>
-  </DsfrTabs>
+        <template #tab-0>
+          <Teleport
+            v-if="mounted"
+            to="#dispositifs-sidebar"
+            :disabled="isListSelected"
+          >
+            <DispositifCardGrid :collection="dispositifs.collection.value" />
+          </Teleport>
+        </template>
+        <template #tab-1>
+          <GpsMap />
+        </template>
+      </GpsTabs>
+    </div>
+  </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .gps-sidebar {
-  display: inline-block;
-  float: left;
   position: relative;
-  max-width: 300px;
-  max-width: 30%;
-  margin-right: 2rem;
 }
 
-#dispositifs-sidebar {
-  max-height: 70vh;
+.gps-sidebar {
+  max-height: 50vh;
   overflow-y: auto;
 }
 
 .gps-dispositifs-tabs .fr-tabs__panel {
-  max-height: 70vh;
+  max-height: 50vh;
   overflow-y: auto;
 }
 </style>

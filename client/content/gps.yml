@@ -1,5 +1,9 @@
 filterCollections:
-  - label: 'Critères'
-    name: 'criteres_dispositif'
-  - label: 'Types de dispositifs'
+  - label: 'Thématiques'
+    name: 'thematiques'
+  - label: 'Types de dispositif'
     name: 'types_dispositif'
+  - label: 'Caractéristiques'
+    name: 'caracteristiques_dispositif'
+    relationType: 'many-to-many'
+    foreignKey: 'caracteristique_dispositif_id'

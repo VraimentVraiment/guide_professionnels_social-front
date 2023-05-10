@@ -12,6 +12,7 @@ export function stratifyFilters (
     return item.id?.toString() || null
   }
 
+
   const parentAccessor: Accessor<FilterItemNode> = (item) => {
     return item.parent_id?.toString() || null
   }
@@ -23,6 +24,16 @@ export function stratifyFilters (
       name: collection.name,
     }
   }
+
+  /**
+   * TODO: Make sure items parent_id being null doesn't break the tree.
+   * either by specifying a default value in directus or ficing 'stratify' function.
+   */
+  collection.items.forEach((item) => {
+    if (!item?.parent_id) {
+      item.parent_id = 0
+    }
+  })
 
   return stratify<FilterItemNode>(
     collection.items,

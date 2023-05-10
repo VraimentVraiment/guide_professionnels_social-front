@@ -2,17 +2,20 @@ export function useNumberObserver ({
   defaultValue = 0,
 } = {}) {
   const number = ref(defaultValue)
+  const prevNumber = ref(defaultValue)
 
-  const select = (n: number): void => {
-    number.value = n
+  const select = (value: number): void => {
+    prevNumber.value = number.value
+    number.value = value
   }
 
-  const isSelected = (n: number): boolean => {
-    return number.value === n
+  const isSelected = (value: number): boolean => {
+    return number.value === value
   }
 
   return {
     number,
+    prevNumber,
     select,
     isSelected,
   }

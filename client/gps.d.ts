@@ -63,7 +63,7 @@ declare global {
     [key in richTextKeys]?: RichText
     type_dispositif: ManyToOneId
     images: OneToManyId[]
-    criteres_dispositif: OneToManyId[]
+    caracteristiques_dispositif: OneToManyId[]
     addresses: address[]
   }
 
@@ -105,6 +105,8 @@ declare global {
     name: string
     label: string
     items: FilterItem[]
+    relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
+    foreignKey?: string
   }
 
   export interface FilterStore {

@@ -1,4 +1,4 @@
-export async function useFetchDirectusItems<T> ({
+export async function useFetchDirectusItems<T>({
   collectionName,
   filter,
 }: {
@@ -19,7 +19,7 @@ export async function useFetchDirectusItems<T> ({
   }
 }
 
-export async function useFetchDirectusItem<T> (
+export async function useFetchDirectusItem<T>(
   collectionName: string,
   id: number,
 ): Promise<T | null> {

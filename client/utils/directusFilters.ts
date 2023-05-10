@@ -10,10 +10,10 @@ const DEFAULT_DIRECTUS_FILTER: DirectusFilter = {
  * Transforms a filters array containing FilterItemNodes to a DirectusFilter object,
  * which can be used to query the Directus API
  */
-export function getDirectusFilter (
+export function getDirectusFilter(
   filters?: FiltersCollection[],
-): DirectusFilter {
-  
+): Promise<DirectusFilter> {
+
   if (!filters) { return DEFAULT_DIRECTUS_FILTER }
 
   const directusFilter: DirectusFilter = {}
@@ -23,18 +23,16 @@ export function getDirectusFilter (
       ?.filter(item => item.checked)
       .map(item => item.id)
 
-      console.log("-----------------------------------------");
-      console.log("filters", checkedItems);
-
     if (checkedItems?.length) {
+
       directusFilter[collection.name] = {
-        _in: checkedItems,
+        'caracteristique_dispositif_id': {
+          "_in": checkedItems,
+        },
       }
     }
   }
 
-  console.log('directusFilter', directusFilter);
-  
   return directusFilter
 }
 
@@ -47,5 +45,3 @@ export function getDirectusFilter (
 // 			"_and": ['item2', 'item3']
 // 		}
 // 	]
-// }
-
