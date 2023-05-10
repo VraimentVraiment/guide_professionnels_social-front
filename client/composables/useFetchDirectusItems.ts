@@ -8,10 +8,11 @@ export async function useFetchDirectusItems<T>({
   const { getItems } = useDirectusItems()
 
   try {
-    return await getItems<T[]>({
+    return (await getItems<T>({
       collection: collectionName,
       params: { filter },
-    })
+    })) as T[]
+
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)

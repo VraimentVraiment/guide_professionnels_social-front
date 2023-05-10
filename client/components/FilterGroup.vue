@@ -40,14 +40,15 @@ const rootNode = stratifyFilters(props.collection)
     font-weight: 700;
   }
   h5 {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 700;
-    margin-top: 12px !important;
-    margin-bottom: 8px !important;
+    line-height: 1;
+    margin-bottom: .5rem !important;
   }
   h6 {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
+    line-height: 1;
   }
 }
 </style>

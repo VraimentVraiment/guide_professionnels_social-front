@@ -26,7 +26,11 @@ defineProps({
         aria-hidden="true"
       />
     </summary>
-    <slot />
+    <div
+      class="gps-details__content"
+    >
+      <slot />
+    </div>
   </details>
 </template>
 
@@ -45,8 +49,6 @@ details {
 }
 
 summary {
-  // padding: .5rem 2rem .5rem .75rem;
-  padding: 8px, 16px, 8px, 8px;
   border-bottom: 1px solid #fff;
   position: relative;
   box-sizing: border-box;
@@ -58,13 +60,27 @@ summary {
   align-items: center;
   justify-content: space-between;
 
+  > h2 {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+  }
   > h5, > h6 {
     float: left;
+  }
+
+  &:hover {
+    background-color: var(--background-default-grey-hover);
+  }
+
+  &:active {
+    background-color: var(--background-default-grey-active);
   }
 
   summary::-webkit-details-marker {
     display: none;
   }
+
   > * {
     margin: 0;
   }
@@ -80,9 +96,15 @@ details[open]>summary>.gps-filter-details__icon  {
 }
 
 details details {
-  margin-left: 8px;
-  padding: 8px 0 8px 8px;
   border: none !important;
+  
+  > summary {
+    padding: .5rem 1rem .5rem .5rem;
+  }
+
+  > .gps-details__content {
+    padding: .5rem;
+  }
 }
 </style>
 
@@ -90,5 +112,13 @@ details details {
 details > *:not(summary) {
   // margin: 0.5rem 0 1rem .75rem;
   // padding: 0 0 0 .5rem;
+}
+
+details .gps-details__content {
+  > h5, > h6 {
+    &:not(:first-child) {
+      margin-top: .75rem;
+    }
+  }
 }
 </style>

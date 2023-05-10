@@ -59,16 +59,14 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
 <style lang="scss">
 .gps-filters-sidebar {
   background-color: white;
-
   margin-bottom: 1rem;
 
   h5,
   h6 {
     margin: 0;
   }
-
-  .fr-checkbox-group {
-    margin-top: 8px;
+  .fr-checkbox-group + .fr-checkbox-group {
+    margin-top: .5rem;
   }
 }
 
@@ -78,7 +76,7 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
   align-items: center;
   font-size: 1rem;
   font-weight: 700;
-  padding: 0.5rem 1rem;
+  padding: .5rem 1rem;
   color: var(--text-active-blue-france);
 
   >span svg {
@@ -98,10 +96,18 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
 .gps-filters-sidebar-content {
   display: none;
 
-  padding: 0px 16px 8px;
+  padding: 0 1rem .5rem;
 
-  >details {
-    padding: 8px 0px;
+  > details {
+    padding: .5rem 0;
+
+    > summary {
+      padding: .5rem 1rem .5rem .5rem;
+    }
+
+    > .gps-details__content {
+      padding: .5rem 0 .5rem .5rem;
+    }
   }
 }
 

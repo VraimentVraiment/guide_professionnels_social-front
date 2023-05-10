@@ -59,16 +59,16 @@ const {
 </template>
 
 <style lang="scss">
-.gps-tab-content {
-  padding-left: 1px !important;
-  padding-right: 1px !important;
-  padding-bottom: 1px !important;
-}
 .fr-tabs.gps-dispositifs-tabs {
   box-shadow: none;
 
   & .fr-tabs__tab {
     --background-default-grey: var(--background-alt-grey);
+    --background-default-grey-active: var(--background-alt-grey);
+
+    &[aria-selected="true"] {
+      cursor: default;
+    }
   }
 
   & .fr-tabs__panel {
