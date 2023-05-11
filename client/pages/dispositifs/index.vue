@@ -10,7 +10,7 @@ const mounted = ref(false)
 
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
 
-const filterStore = inject('filterStore')
+const filterStore = inject('filterStore') as FilterStore
 
 const dispositifs = usePostStore<DispositifPost>({
   collectionName: 'fiches_dispositif',
@@ -74,9 +74,13 @@ onMounted(() => {
 <style lang="scss">
 .gps-sidebar {
   position: relative;
+
+  >*:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }
 
-.gps-filters-sidebar-content {
+.gps-filters-sidebar__content {
   max-height: 50vh;
   overflow-y: auto;
 }

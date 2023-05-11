@@ -15,7 +15,9 @@ const dispositif = await useFetchDirectusItem<DispositifPost>({
   id,
 })
 
-const images = (await useFetchDirectusItems<DispositifImage>({
+const images = (await useFetchDirectusItems<{
+  directus_files_id: string,
+}>({
   collectionName: 'fiches_dispositif_files',
   filter: {
     id: {
@@ -77,7 +79,7 @@ const richTextFields = inject('richTextFields')
           v-for="{ key, label } in richTextFields"
           :key="key"
         >
-          <RichTextContainer
+          <RichText
             v-if="dispositif?.[key]"
             :field-key="key"
             :field-label="label"
@@ -103,7 +105,7 @@ const richTextFields = inject('richTextFields')
     </section>
     <section
       :class="[
-        'gps-post-actions',
+        'gps-post__actions',
         'fr-col-3',
         'fr-col-offset-1',
       ]"
@@ -159,9 +161,6 @@ section.gps-post__content {
     margin-top: 3rem;
 
     .gps-post__images {
-      // display: grid;
-      // grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      // grid-gap: 1rem;
       img {
         width: 100%;
       }
@@ -181,7 +180,7 @@ section.gps-post__content {
 </style>
 
 <style lang="scss">
-section.gps-post-actions {
+section.gps-post__actions {
   > div {
     position: sticky;
     top: 4rem;

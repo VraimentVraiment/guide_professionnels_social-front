@@ -12,7 +12,10 @@ const {
 }: {
   first_name: string
   mail: string
-} = credentials.value
+} = credentials?.value || {
+  first_name: 'NON CONNECTÉ',
+  email: 'NON CONNECTÉ',
+}
 
 </script>
 

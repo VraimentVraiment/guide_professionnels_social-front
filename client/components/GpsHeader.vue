@@ -11,7 +11,9 @@ const showNavigation = useIsAuthenticated()
 
 <template>
   <DsfrHeader
-    :class="['gps-header']"
+    :class="[
+      'gps-header'
+    ]"
     v-bind="headerProps"
   >
     <DsfrNavigation

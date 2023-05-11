@@ -6,13 +6,14 @@ const props = defineProps<{
 }>()
 
 const isOpen = ref(false)
-// const { width } = useWindowSize()
 
 const { breakpoints } = useDsfrBreakpoints()
-
 const isSmallScreen = breakpoints.smaller('MD')
 
-const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected)
+const isSelectable = computed(() => {
+  return isSmallScreen.value
+    || !props.isListSelected
+})
 
 </script>
 
@@ -27,97 +28,72 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
     ]"
   >
     <div
-      class="gps-filters-sidebar-header"
-      @click="event => {
+      class="gps-filters-sidebar__header"
+      @click="() => {
         if (isSelectable) {
           isOpen = !isOpen
         }
       }"
     >
       <span>
-        <v-icon name="ri-equalizer-fill" />
+        <v-icon
+          name="ri-equalizer-fill"
+          aria-hidden="true"
+        />
         Filtrer
       </span>
       <span
         v-show="isSelectable"
+        aria-hidden="true"
         :class="[
           'fr-icon-arrow-left-s-line',
-          'gps-filters-sidebar-header__icon'
+          'gps-filters-sidebar__header__icon'
         ]"
       />
     </div>
-    <div class="gps-filters-sidebar-content">
-      <FilterGroup
-        v-for="c in collections"
-        :key="c.name"
-        :collection="c"
-      />
+    <div class="gps-filters-sidebar__content">
+      <template v-for="{ name, label, rootNode } in collections">
+        <DetailsAccordion
+          v-if="rootNode"
+          :key="name"
+          class="filter-group"
+          :label="label"
+          :summary-tag="'h2'"
+        >
+          <FilterNode :node="rootNode" />
+        </DetailsAccordion>
+      </template>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .gps-filters-sidebar {
   background-color: white;
-  margin-bottom: 1rem;
-
-  h5,
-  h6 {
-    margin: 0;
-  }
-  .fr-checkbox-group + .fr-checkbox-group {
-    margin-top: .5rem;
-  }
-}
-
-.gps-filters-sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: .5rem 1rem;
-  color: var(--text-active-blue-france);
-
-  >span svg {
-    margin-right: 0.5rem;
-  }
-}
-
-.gps-filters-sidebar-header__icon {
-  transform: rotate(0deg);
-  transition: transform .2s ease-in-out;
-}
-
-.gps-filters-sidebar.open .gps-filters-sidebar-header__icon {
-  transform: rotate(-90deg);
-}
-
-.gps-filters-sidebar-content {
-  display: none;
-
-  padding: 0 1rem .5rem;
-
-  > details {
-    padding: .5rem 0;
-
-    > summary {
-      padding: .5rem 1rem .5rem .5rem;
-    }
-
-    > .gps-details__content {
-      padding: .5rem 0 .5rem .5rem;
-    }
-  }
-}
-
-.gps-filters-sidebar {
-
   border: solid 1px var(--border-default-grey);
   border-top: solid 2px var(--text-active-blue-france);
 
-  .gps-filters-sidebar-content {
-    display: block;
+  .gps-filters-sidebar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: .5rem 1rem;
+    color: var(--text-active-blue-france);
+
+    .gps-filters-sidebar__header__icon {
+      transform: rotate(0deg);
+      transition: transform .2s ease-in-out;
+    }
+
+    >span svg {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .gps-filters-sidebar__content {
+    padding: 0 1rem .5rem;
   }
 
   &.is-selectable {
@@ -135,7 +111,7 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
       border-top-color: var(--background-action-low-blue-france-active);
     }
 
-    .gps-filters-sidebar-header {
+    .gps-filters-sidebar__header {
       cursor: pointer;
       background-color: var(--background-action-low-blue-france);
       color: var(--text-action-high-grey);
@@ -149,7 +125,7 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
       }
     }
 
-    .gps-filters-sidebar-content {
+    .gps-filters-sidebar__content {
       display: none;
     }
 
@@ -158,7 +134,7 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
       border-color: var(--border-default-grey);
       border-top-color: var(--text-active-blue-france);
 
-      .gps-filters-sidebar-header {
+      .gps-filters-sidebar__header {
         background-color: var(--background-default-grey);
         color: var(--text-active-blue-france);
 
@@ -169,13 +145,64 @@ const isSelectable = computed(() => isSmallScreen.value || !props.isListSelected
         &:active {
           background-color: var(--background-default-grey-active);
         }
+
+        .gps-filters-sidebar__header__icon {
+          transform: rotate(-90deg);
+        }
       }
 
-      .gps-filters-sidebar-content {
+      .gps-filters-sidebar__content {
         display: block;
       }
     }
   }
+}
+</style>
 
+<style lang="scss">
+.gps-filters-sidebar {
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  h5 {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: .5rem;
+
+    &:first-child {
+      margin-top: .25rem;
+    }
+
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+  }
+
+  h6 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .fr-checkbox-group,
+  .fr-radio-group {
+    label {
+      font-size: 1rem;
+    }
+
+    &--sm label {
+      font-size: .9rem;
+    }
+  }
+
+  .fr-radio-group+.fr-radio-group,
+  .fr-checkbox-group+.fr-checkbox-group {
+    margin-top: .5rem;
+  }
 }
 </style>

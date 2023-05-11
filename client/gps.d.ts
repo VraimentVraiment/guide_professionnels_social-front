@@ -91,12 +91,15 @@ declare global {
     children: OneToManyId;
     collectionName: string;
     parent_id: ManyToOneId;
+    checked?: boolean;
   }
 
   export interface RootFilterItem {
     id: 0
     name: string;
     parent_id: null;
+    collectionName?: string;
+    checked?: boolean;
   }
 
   export type FilterItemNode = FilterItem | RootFilterItem
@@ -107,6 +110,7 @@ declare global {
     items: FilterItem[]
     relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
     foreignKey?: string
+    rootNode?: RootFilterItemNode
   }
 
   export interface FilterStore {
@@ -219,3 +223,4 @@ declare global {
   export type RecursiveYmlContent = Record<string, string | string[] | RecursiveYmlContent>
 
   export type Accessor<T> = (item: T) => string | undefined | null
+}

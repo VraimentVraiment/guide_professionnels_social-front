@@ -25,7 +25,7 @@ defineProps<{
 
 <style scoped lang="scss">
 .gps-card-grid {
-  padding: 0 1px;
+  padding: 1px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 1rem;

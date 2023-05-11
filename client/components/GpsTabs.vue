@@ -47,7 +47,9 @@ const {
     <DsfrTabContent
       v-for="i in tabTitles.length"
       :key="i"
-      :class="['gps-tab-content']"
+      :class="[
+        'gps-tab-content'
+      ]"
       :panel-id="`tab-content-${i - 1}`"
       :tab-id="`tab-${i - 1}`"
       :selected="isSelected(i - 1)"
@@ -62,7 +64,11 @@ const {
 .fr-tabs.gps-dispositifs-tabs {
   box-shadow: none;
 
-  & .fr-tabs__tab {
+  &:before {
+    box-shadow: inset 0 1px 0 0 var(--border-default-grey);
+  }
+
+  .fr-tabs__tab {
     --background-default-grey: var(--background-alt-grey);
     --background-default-grey-active: var(--background-alt-grey);
 
@@ -71,12 +77,8 @@ const {
     }
   }
 
-  & .fr-tabs__panel {
+  .fr-tabs__panel {
     padding: 1.5rem 0 0;
-  }
-
-  &:before {
-    box-shadow: inset 0 1px 0 0 var(--border-default-grey);
   }
 }
 </style>

@@ -14,16 +14,7 @@ const filterStore = inject('filterStore')
 <template>
   <DsfrCheckbox
     v-if="(
-      node.data.collectionName !== 'caracteristiques_dispositif'
-      && node.height === 0
-      && node.depth !== 0
-    ) || (
       node.data.collectionName === 'types_dispositif'
-      // && (
-      //   node.height === 0
-      //   || node.height === 1
-      // )
-      // && node.depth !== 0
     )"
     :id="node.data.id.toString()"
     :name="node.data.name"
@@ -33,6 +24,25 @@ const filterStore = inject('filterStore')
       && node.depth === 1
     )"
     :model-value="node.data.checked"
+    @update:model-value="checked => filterStore.setItem(
+      node.data.collectionName,
+      node.data.id,
+      'checked',
+      checked
+    )"
+  />
+  <DsfrRadioButton
+    v-else-if="(
+      node.data.collectionName === 'thematiques'
+    )"
+    :name="node.data.collectionName"
+    :label="node.data.name"
+    :value="node.data.id"
+    :model-value="node.data.checked"
+    :small="!(
+      node.data.collectionName === 'types_dispositif'
+      && node.depth === 1
+    )"
     @update:model-value="checked => filterStore.setItem(
       node.data.collectionName,
       node.data.id,

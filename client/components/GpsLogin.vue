@@ -16,7 +16,9 @@ const {
   <div class="gps-auth">
     <DsfrFieldset
       v-bind="fieldSet"
-      :class="{ 'gps-auth--error': isError }"
+      :class="[{
+        'gps-auth--error': isError
+      }]"
     >
       <DsfrAlert
         v-show="infoMessage.display.value"
