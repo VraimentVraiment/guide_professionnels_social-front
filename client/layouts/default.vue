@@ -10,11 +10,3 @@
   </GpsMain>
   <GpsFooter />
 </template>
-
-<style>
-
-body {
-  background-color: var(--background-alt-grey)
-}
-
-</style>

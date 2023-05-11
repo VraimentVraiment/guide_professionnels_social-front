@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <h1 class="fr-mt-4w">
+  <h1>
     {{ title }}
   </h1>
 </template>

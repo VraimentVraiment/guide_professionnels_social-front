@@ -6,10 +6,18 @@
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 main.fr-container {
-  margin-top: 6rem;
-  margin-bottom: 6rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   min-height: 50vh
+}
+</style>
+<style lang="scss">
+body {
+  background-color: var(--background-alt-grey);
+}
+h1 {
+  margin-top: 0;
 }
 </style>

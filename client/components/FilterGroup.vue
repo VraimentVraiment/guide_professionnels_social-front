@@ -2,23 +2,21 @@
 
 import DetailsAccordion from '@/components/DetailsAccordion.vue'
 
-const props = defineProps<{
+defineProps<{
   collection: FiltersCollection
 }>()
-
-const rootNode = stratifyFilters(props.collection)
 
 </script>
 
 <template>
   <DetailsAccordion
-    v-if="rootNode"
+    v-if="collection.rootNode"
     class="filter-group"
     :label="collection.label"
     :summary-tag="'h2'"
   >
     <FilterNode
-      :node="rootNode"
+      :node="collection.rootNode"
     />
   </DetailsAccordion>
 </template>

@@ -1,5 +1,5 @@
 import {
-  HierarchyNode,
+  type HierarchyNode,
 } from 'd3-hierarchy'
 
 /**
@@ -45,7 +45,7 @@ export function stratifyFilters (
 /**
  * Converts a DirectusFilterItem into a FilterItem.
  */
-export function DirectusItemToFilterItem (
+export function directusItemToFilterItem (
   item: DirectusFilterItem,
   collectionName: string,
 ): FilterItem {
@@ -56,5 +56,6 @@ export function DirectusItemToFilterItem (
     children: item.children,
     collectionName,
     checked: false,
+    combination: item.combination,
   }
 }

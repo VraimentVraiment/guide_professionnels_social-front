@@ -1,31 +1,28 @@
 <script setup lang="ts">
 
 definePageMeta({
-  layout: 'default',
+  layout: 'filter',
 })
 
-const { filterCollections } = (await useGetContent('/gps')) as { filterCollections: unknown } as { filterCollections: FiltersCollection[] }
+const isListSelected = ref(true)
 
-const filterStore = useFilterStore(filterCollections)
+const mounted = ref(false)
+
+const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
+
+const filterStore = inject('filterStore')
 
 const dispositifs = usePostStore<DispositifPost>({
   collectionName: 'fiches_dispositif',
 })
-
-watch(filterStore.collections, () => {
-  dispositifs.update(filterStore.collections)
-})
-
-const mounted = ref(false)
+dispositifs.update(filterStore.collections)
 
 onMounted(() => {
-  filterStore.fetchAll()
+  watch(filterStore.collections, () => {
+    dispositifs.update(filterStore.collections)
+  })
   mounted.value = true
 })
-
-const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
-
-const isListSelected = ref(true);
 
 </script>
 
@@ -79,7 +76,12 @@ const isListSelected = ref(true);
   position: relative;
 }
 
-.gps-sidebar {
+.gps-filters-sidebar-content {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+#dispositifs-sidebar {
   max-height: 50vh;
   overflow-y: auto;
 }

@@ -110,8 +110,6 @@ details details {
 
 <style lang="scss">
 details > *:not(summary) {
-  // margin: 0.5rem 0 1rem .75rem;
-  // padding: 0 0 0 .5rem;
 }
 
 details .gps-details__content {

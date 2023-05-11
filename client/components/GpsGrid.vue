@@ -13,8 +13,6 @@
       :class="[
         'fr-col-12',
         'fr-col-md-4',
-        'fr-col-lg-4', 
-        'fr-col-xl-4',
       ]"
     >
       <slot name="top-left" />
@@ -23,8 +21,6 @@
       :class="[
         'fr-col-12',
         'fr-col-md-8',
-        'fr-col-lg-8', 
-        'fr-col-xl-8',
       ]"
     >
       <slot name="top-right" />
@@ -33,8 +29,6 @@
       :class="[
         'fr-col-12',
         'fr-col-md-4',
-        'fr-col-lg-4', 
-        'fr-col-xl-4',
       ]"
     >
       <slot name="bottom-left" />
@@ -43,8 +37,6 @@
       :class="[
         'fr-col-12',
         'fr-col-md-8',
-        'fr-col-lg-8', 
-        'fr-col-xl-8',
       ]"
     >
       <slot name="bottom-right" />

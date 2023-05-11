@@ -11,9 +11,9 @@ export function usePostStore <PostType extends Post> ({
   const update = async (
     filters?: FiltersCollection[],
   ): Promise<void> => {
-    console.log("--------------- UPDATE POSTS ---------------");
+    // console.log("--------------- UPDATE POSTS ---------------");
     const directusFilter = getDirectusFilter(filters)
-    console.log('directusFilter', directusFilter);
+    // console.log('directusFilter', directusFilter);
 
     const newDispositifs = await useFetchDirectusItems<PostType>({
       collectionName,
@@ -22,7 +22,7 @@ export function usePostStore <PostType extends Post> ({
 
     if (!newDispositifs) { return }
 
-    console.log("newDispositifs :", newDispositifs);
+    // console.log("newDispositifs :", newDispositifs);
     collection.value = newDispositifs
   }
 

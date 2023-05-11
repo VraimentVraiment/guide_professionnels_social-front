@@ -1,11 +1,7 @@
 <script setup lang="ts">
 
-import {
-  type RouteLocationRaw,
-} from 'vue-router'
-
 definePageMeta({
-  layout: 'default',
+  layout: 'filter',
 })
 
 function useAlertStore() {
@@ -35,14 +31,31 @@ const {
 alertTitle.value = 'Étape 1 : Thématiques'
 alertDescription.value = 'Sélectionnez une ou plusieurs thématiques au sein de laquelle vous souhaitez explorer les dispositifs.'
 
-const items = await useFetchDirectusItems<{ id: number, name: string }>({
-  collectionName: 'thematiques',
-})
+const filterStore = inject('filterStore')
 
-const types = ref([])
-const rootNode = ref([])
+const items = filterStore.collections.find(
+  collection => collection.name === 'thematiques',
+)?.items
 
-const setThematique = async (id: number) => {
+const themeId = ref<Number | null>(null)
+const rootNode = ref<FilterItemNode | null>(null)
+
+const setThematique = async (
+  id: number,
+) => {
+
+  if (id === themeId.value) {
+    return
+  }
+
+  filterStore.setItem(
+    'thematiques',
+    id,
+    'checked',
+    true,
+  )
+
+  themeId.value = id
   const newTypes = await useFetchDirectusItems<DirectusFilter>({
     collectionName: 'types_dispositif',
     filter: {
@@ -52,17 +65,17 @@ const setThematique = async (id: number) => {
     },
   })
 
-  types.value = newTypes
   rootNode.value = stratifyFilters({
-    name: 'test',
-    label: 'test',
     items: newTypes,
+    name: 'types_dispositif',
   })
-  console.log("rootNode.value :", rootNode);
+  // rootNode.value = filterStore.collections.find(
+  //   collection => collection.name === 'thematiques',
+  // ).rootNode
 }
 
-watch(() => types.value, (newTypes) => {
-  if (newTypes.length) {
+watch(rootNode, (node) => {
+  if (node) {
     alertTitle.value = 'Étape 2 : Types de dispositifs'
     alertDescription.value = 'Sélectionnez un type de dispositif que vous souhaitez explorer. Appuyer sur “+” pour accéder à des types de dispositifs plus précis.'
   }
@@ -76,82 +89,155 @@ watch(() => types.value, (newTypes) => {
       <GpsSearchModule />
     </template>
     <template #bottom-left>
-      <DsfrAlert
-        :title="alertTitle"
-        :description="alertDescription"
-        :type="'info'"
-      />
+      <div class="fr-container--fluid">
+        <div class="fr-grid-row">
+          <DsfrAlert
+            class="fr-col-8"
+            :title="alertTitle"
+            :description="alertDescription"
+            :type="'info'"
+          />
+        </div>
+      </div>
     </template>
     <template #bottom-right>
       <div
-        v-if="!types.length"
-        class="gps-tiles fr-container"
+        v-if="themeId === null"
+        class="gps-tiles fr-container--fluid"
       >
         <div
           :class="[
             'fr-grid-row',
-          // 'fr-grid-row--gutters',
+            'fr-grid-row--gutters',
           ]"
         >
-          <DsfrTile
+          <div
             v-for="item in items"
             :key="item.id"
-            class="fr-col-6"
-            :title="item.name"
-            :description="item.name"
-            @click.prevent="() => setThematique(item.id)"
-          />
-          <DsfrTile
-            class="fr-col-6"
-            :title="'Tous les dispositifs'"
-            :description="'Tous les dispositifs'"
-            @click.prevent="() => setThematique(0)"
-          />
+            class="fr-col-12 fr-col-sm-6"
+          >
+            <DsfrTile
+              :title="item.name"
+              :description="item.name"
+              horizontal
+              @click.prevent="() => setThematique(item.id)"
+            />
+          </div>
+          <div class="fr-col-12 fr-col-sm-6">
+            <DsfrTile
+              :title="'Tous les dispositifs'"
+              :description="'Tous les dispositifs'"
+              horizontal
+              @click.prevent="() => setThematique(0)"
+            />
+          </div>
         </div>
       </div>
-      <template v-if="types.length">
-        <template
-          v-for="item in rootNode.children"
-          :key="item.id"
-        >
-          <details>
-            <summary>
-              <NuxtLink
+      <template v-else-if="rootNode !== null">
+        <div class="fr-container--fluid">
+          <div class="fr-grid-row">
+            <div class="gps-links fr-col-10">
+              <details
+                v-for="item in rootNode.children"
                 :key="item.id"
-                :to="`/dispositifs?thematique=${item.data.id}&type=${item.data.id}`"
+                :open="item?.data?.open"
+                class="gps-links-group "
+                @click.prevent
               >
-                {{ item.data.name }}
-              </NuxtLink>
-              <DsfrButton
-                primary
-                icon-only
-                size="small"
-                icon="ri-add-line"
-              />
-            </summary>
-            <template v-if="item.children.length">
-              <NuxtLink
-                v-for="child in item.children"
-                :key="child.id"
-                :to="`/dispositifs?thematique=${item.data.id}&type=${child.data.id}`"
-              >
-                {{ child.data.name }}
-              </NuxtLink>
-            </template>
-          </details>
-        </template>
+                <summary>
+                  <NuxtLink
+                    :key="item.id"
+                    class="gps-link gps-link__parent fr-link fr-fi-arrow-right-line fr-link--icon-right"
+                    :to="`/dispositifs`"
+                    @click="() => filterStore.setItem('types_dispositif', item.data.id, 'checked', true)"
+                  >
+                    {{ item.data.name }}
+                  </NuxtLink>
+                  <DsfrButton
+                    primary
+                    icon-only
+                    size="small"
+                    :icon="!item.data.open ? 'ri-add-line' : 'ri-subtract-line'"
+                    @click="() => item.data.open = !item.data.open"
+                  />
+                </summary>
+                <div
+                  v-if="item?.children?.length"
+                  class="gps-link-group__children"
+                >
+                  <NuxtLink
+                    v-for="child in item.children"
+                    :key="child.id"
+                    class="gps-link gps-link__child fr-link fr-fi-arrow-right-line fr-link--icon-right"
+                    :to="`/dispositifs`"
+                    @click="() => filterStore.setItem('types_dispositif', child.data.id, 'checked', true)"
+                  >
+                    {{ child.data.name }}
+                  </NuxtLink>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
       </template>
     </template>
   </GpsGrid>
 </template>
 
-<style lang="scss">
-.gps-tiles {
-  display: flex;
-  flex-wrap: wrap;
+<style scoped lang="scss">
+.gps-links {
+  padding: 1rem;
+  background: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+}
 
-  .fr-grid-row .fr-tile {
-    height: auto;
+details.gps-links-group {
+
+  +details.gps-links-group {
+    margin-top: 1.5rem;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
+
+    button {
+      padding: .065rem .5rem;
+    }
+  }
+
+  .gps-link-group__children {
+    padding-left: 1rem;
+    padding-right: 5rem;
+    display: flex;
+    flex-direction: column;
   }
 }
+
+.gps-link {
+  display: block;
+
+  &.gps-link__parent {
+    font-size: 18px;
+    margin-right: 2rem;
+  }
+
+  &.gps-link__child {
+    margin-top: 0.75rem;
+    display: inline-block;
+    margin-right: auto;
+  }
+}
+</style>
+<style lang="scss">
+// .gps-tiles {
+//   display: flex;
+//   flex-wrap: wrap;
+
+//   .fr-grid-row .fr-tile {
+//     height: auto;
+//   }
+// }
 </style>
