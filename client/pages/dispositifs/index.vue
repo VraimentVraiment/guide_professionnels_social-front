@@ -10,7 +10,7 @@ const mounted = ref(false)
 
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
 
-const filterStore = inject('filterStore') as FilterStore
+const filterStore = useFilterStore()
 
 const dispositifs = usePostStore<DispositifPost>({
   collectionName: 'fiches_dispositif',

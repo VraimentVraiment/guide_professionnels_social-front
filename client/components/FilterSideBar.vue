@@ -5,6 +5,8 @@ const props = defineProps<{
   isListSelected: boolean
 }>()
 
+const filterStore = useFilterStore()
+
 const isOpen = ref(false)
 
 const { breakpoints } = useDsfrBreakpoints()
@@ -52,15 +54,16 @@ const isSelectable = computed(() => {
       />
     </div>
     <div class="gps-filters-sidebar__content">
-      <template v-for="{ name, label, rootNode } in collections">
+      <template
+        v-for="{ name, label } in collections"
+        :key="name"
+      >
         <DetailsAccordion
-          v-if="rootNode"
-          :key="name"
           class="filter-group"
           :label="label"
           :summary-tag="'h2'"
         >
-          <FilterNode :node="rootNode" />
+          <FilterNode :node="filterStore.getRootNode(name)" />
         </DetailsAccordion>
       </template>
     </div>

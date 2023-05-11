@@ -1,48 +1,38 @@
-const fetchFilterCollection = async (
-  collection: FiltersCollection,
-) => {
-  const items = (
-    await useFetchDirectusItems<DirectusFilterItem>({
-      collectionName: collection.name,
-    })
-  )
-    .map((item) => {      return directusItemToFilterItem(item, collection.name)
-    })
+export const useFilterStore = defineStore('filters', () => {
 
-  const outCollection = {
-    name: collection.name,
-    label: collection.label,
-    items,
-  }
-  const rootNode = stratifyFilters(outCollection)
-
-  if (rootNode) {
-    outCollection.rootNode = rootNode
-  } else {
-    console.error(
-      `fetchCollection: rootNode is null for collection ${collection.name}`,
-    )
-  }
-
-  return outCollection
-}
-
-export function useFilterStore(
-  filterCollections: FiltersCollection[],
-): FilterStore {
   const collections = reactive<FiltersCollection[]>([])
 
-  const fetchAll = async () => {
-    collections.push(...(
-      await Promise.all(
-        filterCollections.map(fetchFilterCollection),
-      )
+  const rootNodes = computed(() => {
+    return collections.map(stratifyFilters)
+  })
+
+  const fetchCollections = async (
+    filterCollections: FilterCollection[],
+    ) => {
+    if (collections.length) {
+      return;
+    }
+    collections.push(...(await Promise.all(
+      filterCollections.map(fetchFilterCollection),
+    )
     ))
   }
 
-  const isFetched = computed(() => {
-    return collections.length > 0
-  })
+  const getItems = (
+    collectionName: string,
+    ) => {
+    return collections?.find(
+      collection => collection.name === collectionName,
+    )?.items
+  }
+
+  const getRootNode = (
+    collectionName: string,
+    ) => {
+    return rootNodes.value.find(
+      node => node.data.name === collectionName,
+    )
+  }
 
   const setItem = (collectionName, itemId, key, value) => {
     console.log('setItem', collectionName, itemId, key, value)
@@ -68,9 +58,11 @@ export function useFilterStore(
   }
 
   return {
+    rootNodes,
     collections,
-    fetchAll,
-    isFetched,
+    fetchCollections,
     setItem,
+    getItems,
+    getRootNode,
   }
-}
+})

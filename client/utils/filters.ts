@@ -2,6 +2,44 @@ import {
   type HierarchyNode,
 } from 'd3-hierarchy'
 
+
+export const fetchFilterCollection = async (
+  collection: FiltersCollection,
+) => {
+  const items = (
+    await useFetchDirectusItems<DirectusFilterItem>({
+      collectionName: collection.name,
+    })
+  )
+    .map((item) => {
+      return directusItemToFilterItem(item, collection.name)
+    })
+
+  return {
+    name: collection.name,
+    label: collection.label,
+    items,
+  }
+}
+
+/**
+ * Converts a DirectusFilterItem into a FilterItem.
+ */
+export function directusItemToFilterItem (
+  item: DirectusFilterItem,
+  collectionName: string,
+): FilterItem {
+  return {
+    id: item.id,
+    name: item.name,
+    parent_id: item.parent_id,
+    children: item.children,
+    collectionName,
+    checked: false,
+    combination: item.combination,
+  }
+}
+
 /**
  * Creates a hierarchical representation of a FiltersCollection using d3-hierarchy's `stratify` function.
  */
@@ -40,22 +78,4 @@ export function stratifyFilters (
     parentAccessor,
     getRootFilterItem,
   )
-}
-
-/**
- * Converts a DirectusFilterItem into a FilterItem.
- */
-export function directusItemToFilterItem (
-  item: DirectusFilterItem,
-  collectionName: string,
-): FilterItem {
-  return {
-    id: item.id,
-    name: item.name,
-    parent_id: item.parent_id,
-    children: item.children,
-    collectionName,
-    checked: false,
-    combination: item.combination,
-  }
 }

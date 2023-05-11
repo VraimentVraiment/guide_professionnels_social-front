@@ -2,11 +2,8 @@
 
 const { filterCollections } = (await useGetContent('/gps')) as { filterCollections: unknown } as { filterCollections: FiltersCollection[] }
 
-const filterStore = useFilterStore(filterCollections)
-
-await filterStore.fetchAll()
-
-provide('filterStore', filterStore)
+const filterStore = useFilterStore()
+await filterStore.fetchCollections(filterCollections)
 
 </script>
 

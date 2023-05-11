@@ -31,11 +31,9 @@ const {
 alertTitle.value = 'Étape 1 : Thématiques'
 alertDescription.value = 'Sélectionnez une ou plusieurs thématiques au sein de laquelle vous souhaitez explorer les dispositifs.'
 
-const filterStore = inject('filterStore')
+const filterStore = useFilterStore()
 
-const items = filterStore.collections.find(
-  collection => collection.name === 'thematiques',
-)?.items
+const items = filterStore.getItems('thematiques')
 
 const themeId = ref<Number | null>(null)
 const rootNode = ref<FilterItemNode | null>(null)
@@ -69,9 +67,6 @@ const setThematique = async (
     items: newTypes,
     name: 'types_dispositif',
   })
-  // rootNode.value = filterStore.collections.find(
-  //   collection => collection.name === 'thematiques',
-  // ).rootNode
 }
 
 watch(rootNode, (node) => {
@@ -133,7 +128,7 @@ watch(rootNode, (node) => {
           </div>
         </div>
       </div>
-      <template v-else-if="rootNode !== null">
+      <template v-else-if="rootNode?.children">
         <div class="fr-container--fluid">
           <div class="fr-grid-row">
             <div class="gps-links fr-col-10">

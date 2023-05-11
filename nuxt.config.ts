@@ -5,9 +5,18 @@
 export default defineNuxtConfig({
   srcDir: 'client/',
   modules: [
+    '@pinia/nuxt',
     '@nuxt/content',
     'nuxt-directus',
   ],
+  directus: {
+    url: 'http://0.0.0.0:8055',
+  },
+  pinia: {
+    autoImports: [
+      'defineStore',
+    ],
+  },
   css: [
     '@gouvfr/dsfr/dist/core/core.main.min.css', // Le CSS du DSFR
     '@gouvfr/dsfr/dist/component/component.main.min.css', // Styles de tous les composants du DSFR
@@ -22,11 +31,11 @@ export default defineNuxtConfig({
     '**/*.spec.*',
     '**/*.cy.*',
   ],
-  runtimeConfig: {
-    public: {
-      directus: {
-        url: 'http://0.0.0.0:8055',
-      },
-    },
-  },
+  // runtimeConfig: {
+  //   public: {
+  //     directus: {
+  //       url: 'http://0.0.0.0:8055',
+  //     },
+  //   },
+  // },
 })
