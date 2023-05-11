@@ -8,7 +8,7 @@ export const useFilterStore = defineStore('filters', () => {
 
   const fetchCollections = async (
     filterCollections: FilterCollection[],
-    ) => {
+  ) => {
     if (collections.length) {
       return;
     }
@@ -20,7 +20,7 @@ export const useFilterStore = defineStore('filters', () => {
 
   const getItems = (
     collectionName: string,
-    ) => {
+  ) => {
     return collections?.find(
       collection => collection.name === collectionName,
     )?.items
@@ -28,7 +28,7 @@ export const useFilterStore = defineStore('filters', () => {
 
   const getRootNode = (
     collectionName: string,
-    ) => {
+  ) => {
     return rootNodes.value.find(
       node => node.data.name === collectionName,
     )

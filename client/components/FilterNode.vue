@@ -16,6 +16,10 @@ const filterStore = useFilterStore()
     <DsfrCheckbox
       v-if="(
         node.data.collectionName === 'types_dispositif'
+        || (
+          node.data.collectionName === 'caracteristiques_dispositif'
+          && node.height === 0
+        )
       )"
       :id="node.data.id.toString()"
       :name="node.data.name"
@@ -39,7 +43,7 @@ const filterStore = useFilterStore()
       :name="node.data.collectionName"
       :label="node.data.name"
       :value="node.data.id"
-      :model-value="node.data.checked"
+      :model-value="node.data.id"
       :small="!(
         node.data.collectionName === 'types_dispositif'
         && node.depth === 1

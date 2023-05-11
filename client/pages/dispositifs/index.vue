@@ -24,6 +24,9 @@ onMounted(() => {
   mounted.value = true
 })
 
+const { breakpoints } = useDsfrBreakpoints()
+const isSmallScreen = breakpoints.smaller('MD')
+
 </script>
 
 <template>
@@ -58,9 +61,12 @@ onMounted(() => {
           <Teleport
             v-if="mounted"
             to="#dispositifs-sidebar"
-            :disabled="isListSelected"
+            :disabled="isListSelected || isSmallScreen"
           >
-            <DispositifCardGrid :collection="dispositifs.collection.value" />
+            <DispositifCardGrid
+              :collection="dispositifs.collection.value"
+              :is-list-selected="isListSelected"
+            />
           </Teleport>
         </template>
         <template #tab-1>
@@ -75,17 +81,19 @@ onMounted(() => {
 .gps-sidebar {
   position: relative;
 
+  #dispositifs-sidebar {
+    overflow-y: auto;
+    width: 100%;
+    padding-top: 4rem;
+    max-height: calc(50vh + 8rem);
+  }
+
   >*:not(:last-child) {
     margin-bottom: 1rem;
   }
 }
 
 .gps-filters-sidebar__content {
-  max-height: 50vh;
-  overflow-y: auto;
-}
-
-#dispositifs-sidebar {
   max-height: 50vh;
   overflow-y: auto;
 }

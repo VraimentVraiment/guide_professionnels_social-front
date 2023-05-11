@@ -87,7 +87,10 @@ watch(rootNode, (node) => {
       <div class="fr-container--fluid">
         <div class="fr-grid-row">
           <DsfrAlert
-            class="fr-col-8"
+            :class="[
+              'fr-col-12',
+              'fr-col-lg-8',
+            ]"
             :title="alertTitle"
             :description="alertDescription"
             :type="'info'"

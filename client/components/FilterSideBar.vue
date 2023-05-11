@@ -159,6 +159,21 @@ const isSelectable = computed(() => {
       }
     }
   }
+
+  &.is-selectable {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+  }
+
+  &.is-selectable {
+    &.open {
+      box-shadow: 0 0 10px 10px var(--grey-950-125);
+    }
+    .gps-filters-sidebar__content {
+      background: var(--background-default-grey);
+    }
+  }
 }
 </style>
 

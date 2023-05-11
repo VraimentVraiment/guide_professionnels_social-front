@@ -43,7 +43,8 @@ const richTextFields = inject('richTextFields')
   >
     <section
       :class="[
-        'fr-col-8',
+        'fr-col-12',
+        'fr-col-sm-8',
         'gps-post__content'
       ]"
     >
@@ -106,8 +107,9 @@ const richTextFields = inject('richTextFields')
     <section
       :class="[
         'gps-post__actions',
-        'fr-col-3',
-        'fr-col-offset-1',
+        'fr-col-12',
+        'fr-col-sm-3',
+        'fr-col-offset-sm-1',
       ]"
     >
       <div>
@@ -149,7 +151,7 @@ const richTextFields = inject('richTextFields')
 
 <style scoped lang="scss">
 section.gps-post__content {
-
+c
   header,
   article {
     background: var(--background-default-grey);

@@ -2,22 +2,42 @@
 
 defineProps<{
   collection: DispositifPost[]
+  isListSelected: boolean
 }>()
-
+const { breakpoints } = useDsfrBreakpoints()
 </script>
 
 <template>
   <div
     v-if="collection.length"
-    class="gps-card-grid"
+    :class="[
+      'gps-card-grid',
+      'fr-container-fluid',
+    ]"
   >
-    <DispositifCard
-      v-for="d in collection"
-      :id="d.id"
-      :key="d.id"
-      :name="d.name"
-    />
+    <div
+      :class="[
+        'fr-grid-row',
+        'fr-grid-row--gutters',
+      ]"
+    >
+      <div
+        v-for="d in collection"
+        :key="d.id"
+        :class="[
+          'fr-col-12',
+          {'fr-col-sm-6': isListSelected && breakpoints.greater('SM')},
+          {'fr-col-lg-4': isListSelected && breakpoints.greater('MD')},
+        ]"
+      >
+        <DispositifCard
+          :id="d.id"
+          :name="d.name"
+        />
+      </div>
+    </div>
   </div>
+
   <p v-else>
     Aucun dispositif
   </p>
@@ -26,8 +46,6 @@ defineProps<{
 <style scoped lang="scss">
 .gps-card-grid {
   padding: 1px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 1rem;
+  overflow: hidden;
 }
 </style>
