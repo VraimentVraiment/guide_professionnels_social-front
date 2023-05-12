@@ -4,22 +4,37 @@ definePageMeta({
   layout: 'filter',
 })
 
+const isListSelected = ref(true)
+
+const mounted = ref(false)
+
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
+
+const filterStore = useFilterStore()
+
+const dispositifsStore = usePostStore()
+dispositifsStore.update({
+  collectionName: 'fiches_dispositif',
+  params: {
+    filter: filterStore.directusFilter,
+    fields: ['id', 'name', 'addresses'],
+  },
+})
+
+onMounted(() => {
+  watch(filterStore.collections, () => {
+    dispositifsStore.update({
+      collectionName: 'fiches_dispositif',
+      params: {
+        filter: filterStore.directusFilter,
+      },
+    })
+  })
+  mounted.value = true
+})
 
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
-const isListSelected = ref(true)
-
-const filterStore = useFilterStore()
-const dispositifs = usePostStore<DispositifPost>({
-  collectionName: 'fiches_dispositif',
-})
-dispositifs.update(filterStore.directusFilter)
-// onMounted(() => {
-  watch(filterStore.collections, () => {
-    dispositifs.update(filterStore.directusFilter)
-  })
-// })
 
 </script>
 
@@ -53,11 +68,12 @@ dispositifs.update(filterStore.directusFilter)
       >
         <template #tab-0>
           <Teleport
+            v-if="mounted"
             to="#dispositifs-sidebar"
             :disabled="isListSelected || isSmallScreen"
           >
             <DispositifCardGrid
-              :collection="dispositifs.collection.value"
+              :collection="dispositifsStore.collection"
               :is-list-selected="isListSelected"
             />
           </Teleport>

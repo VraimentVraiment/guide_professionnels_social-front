@@ -1,29 +1,28 @@
+import {
+  type DirectusQueryParams,
+} from 'nuxt-directus/dist/runtime/types'
+
 /**
  * @description Composable function to manage posts.
  */
-export function usePostStore <PostType extends Post> ({
-  collectionName,
-}: {
-  collectionName: string
-}): PostStore<PostType> {
-  const collection = ref([]) as Ref<PostType[]>
+export const usePostStore = defineStore('posts', () => {
 
-  const update = async (
-    filter: any,
-  ): Promise<void> => {
+  const collection = ref<Post[]>([])
 
-    console.log("filter :", filter);
+  const update = async ({
+    collectionName,
+    params,
+  }: {
+    collectionName: string
+    params?: DirectusQueryParams
+  }): Promise<void> => {
 
-    const newDispositifs = await useFetchDirectusItems<PostType>({
+    const newDispositifs = await useFetchDirectusItems<Post>({
       collectionName,
-      params: {
-        filter,
-      },
+      params,
     })
 
     if (newDispositifs) {
-      console.log("-----------------------------------------");
-      console.log("UPDATE POSTS :", newDispositifs);
       collection.value = newDispositifs
     }
   }
@@ -32,4 +31,4 @@ export function usePostStore <PostType extends Post> ({
     collection,
     update,
   }
-}
+})

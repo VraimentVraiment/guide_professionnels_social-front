@@ -1,4 +1,3 @@
-import { log } from 'console'
 import {
   type HierarchyNode,
 } from 'd3-hierarchy'
@@ -8,6 +7,7 @@ import * as d3 from 'd3-array'
 export const useFilterStore = defineStore('filters', () => {
 
   const collections = reactive<FiltersCollection[]>([])
+  const relationCollections = reactive<any[]>([])
 
   const rootNodes = computed(() => {
     return collections.map((collection) => {
@@ -21,8 +21,6 @@ export const useFilterStore = defineStore('filters', () => {
     })
   })
 
-  const junctionTable = reactive<any[]>([])
-
   const fetchCollections = async (
     filterCollections: FiltersCollection[],
   ) => {
@@ -30,28 +28,50 @@ export const useFilterStore = defineStore('filters', () => {
       return;
     }
     collections.push(...(await Promise.all(
-      filterCollections.map(fetchFilterCollection),
+      filterCollections.map(async (
+        collection: FiltersCollection,
+      ) => {
+        const items = (
+          await useFetchDirectusItems<DirectusFilterItem>({
+            collectionName: collection.name,
+          })
+        )
+          .map((item) => {
+            return directusItemToFilterItem(item, collection.name)
+          })
+
+        return {
+          ...collection,
+          items,
+        }
+      }),
     )))
   }
 
-  const setJunctionTable = ({
-    collectionName,
-    sourceCollectionName,
-    targetCollectionName,
-    items,
-    primaryKey,
-    sourceKey,
-    targetKey,
-  }) => {
-    junctionTable.push({
-      collectionName,
-      sourceCollectionName,
-      targetCollectionName,
-      items,
-      primaryKey,
-      sourceKey,
-      targetKey,
-    })
+  const fetchRelationsCollections = async (
+    filterCollections: FiltersCollection[],
+  ) => {
+
+    if (relationCollections.length) {
+      return;
+    }
+
+    relationCollections.push(...(await Promise.all(
+      filterCollections
+        .filter(collection => collection.relationType === 'many-to-many')
+        .map(async (collection) => {
+          return {
+            targetCollectionName: collection.targetCollectionName,
+            items: await useFetchDirectusItems<DirectusFilterItem>({
+              collectionName: collection.joinCollectionName,
+              params: { limit: -1 },
+            }),
+            primaryKey: collection.primaryKey,
+            sourceKey: collection.sourceKey,
+            targetKey: collection.targetKey,
+          }
+        }),
+    )))
   }
 
   const getCollectionItems = (
@@ -104,7 +124,14 @@ export const useFilterStore = defineStore('filters', () => {
 
     const filter: DirectusFilter = {}
 
+    const addFilterCondition = (condition) => {
+      filter._and ??= []
+      filter._and.push(condition)
+    }
+
     for (const collection of collections) {
+
+      console.log('collection', collection)
 
       const checkedItems = collection.items
         ?.filter(item => item.checked)
@@ -116,32 +143,38 @@ export const useFilterStore = defineStore('filters', () => {
         continue;
       }
 
-      const combination = 'and';
-
-      const junction = junctionTable
-        .find(j => j.targetCollectionName === collection.name);
-
-      if (!junction) {
-        continue;
+      if (collection.relationType === 'many-to-one') {
+        addFilterCondition({
+          [collection.fieldName]: {
+            "_in": checkedItems,
+          },
+        })
       }
+      if (collection.relationType === 'many-to-many') {
 
-      const dispositifsIds = getIdsMatchingFilters({
-        checkedItems,
-        combination,
-        junction,
-      })
+        const combination = 'and';
+        const junction = relationCollections
+          .find(j => j.targetCollectionName === collection.name);
+        if (!junction) {
+          continue;
+        }
 
-      if (!dispositifsIds?.length) {
-        continue;
+        const dispositifsIds = getIdsMatchingFilters({
+          checkedItems,
+          combination,
+          junction,
+        })
+
+        if (!dispositifsIds?.length) {
+          continue;
+        }
+
+        addFilterCondition({
+          'id': {
+            "_in": dispositifsIds,
+          },
+        })
       }
-
-      filter._and ??= []
-      
-      filter._and.push({
-        'id': {
-          "_in": dispositifsIds,
-        },
-      })
     }
 
     console.log('directusFilter', filter)
@@ -181,12 +214,12 @@ export const useFilterStore = defineStore('filters', () => {
             [junction.targetKey]: value.map(d => d[junction.targetKey]),
           }),
         )
-      .filter((d) => {
-        return checkedItems.every((id) => {
-          return d[junction.targetKey].includes(id)
+        .filter((d) => {
+          return checkedItems.every((id) => {
+            return d[junction.targetKey].includes(id)
+          })
         })
-      })
-      .map(d => d[junction.sourceKey])
+        .map(d => d[junction.sourceKey])
     }
   }
 
@@ -194,10 +227,10 @@ export const useFilterStore = defineStore('filters', () => {
     collections,
     rootNodes,
     checkedItems,
-    junctionTable,
+    relationCollections,
     directusFilter,
-    setJunctionTable,
     fetchCollections,
+    fetchRelationsCollections,
     setItem,
     getCollectionItems,
     getCollectionRootNode,

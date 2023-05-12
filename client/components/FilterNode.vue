@@ -85,7 +85,7 @@ const filterStore = useFilterStore()
     <template
       v-if="(
         node.data.collectionName === 'types_dispositif'
-        && node.depth === 1
+        // && node.depth === 1
       )"
     >
       <template v-if="node.children?.length">

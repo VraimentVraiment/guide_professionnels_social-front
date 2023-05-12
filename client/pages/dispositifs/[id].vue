@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-// import { type DirectusFile } from "nuxt-directus/dist/runtime/types";
-
 definePageMeta({
   layout: 'dispositif',
 })

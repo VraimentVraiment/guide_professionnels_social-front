@@ -16,8 +16,7 @@ export const fetchFilterCollection = async (
     })
 
   return {
-    name: collection.name,
-    label: collection.label,
+    ...collection,
     items,
   }
 }
