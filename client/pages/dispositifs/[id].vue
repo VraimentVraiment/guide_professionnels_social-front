@@ -19,9 +19,11 @@ const images = (await useFetchDirectusItems<{
   directus_files_id: string,
 }>({
   collectionName: 'fiches_dispositif_files',
-  filter: {
-    id: {
-      _in: dispositif?.images,
+  params: {
+    filter: {
+      id: {
+        _in: dispositif?.images,
+      },
     },
   },
 }))
@@ -151,8 +153,8 @@ const richTextFields = inject('richTextFields')
 
 <style scoped lang="scss">
 section.gps-post__content {
-c
-  header,
+
+  c header,
   article {
     background: var(--background-default-grey);
     padding: 3rem;
@@ -183,10 +185,11 @@ c
 
 <style lang="scss">
 section.gps-post__actions {
-  > div {
+  >div {
     position: sticky;
     top: 4rem;
   }
+
   button {
     width: 100%;
     justify-content: center;

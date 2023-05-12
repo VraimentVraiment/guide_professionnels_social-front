@@ -45,7 +45,7 @@ export function directusItemToFilterItem (
  */
 export function stratifyFilters (
   collection: FiltersCollection,
-): HierarchyNode<FilterItemNode> | null {
+): HierarchyNode<RootFilterItem> | null {
   const idAccessor: Accessor<FilterItemNode> = (item) => {
     return item.id?.toString() || null
   }

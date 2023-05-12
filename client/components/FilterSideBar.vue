@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+import {
+  type HierarchyNode,
+} from 'd3-hierarchy'
+
 const props = defineProps<{
   collections: FiltersCollection[]
   isListSelected: boolean
@@ -13,8 +17,10 @@ const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
 const isSelectable = computed(() => {
-  return isSmallScreen.value
+  return (
+    isSmallScreen.value
     || !props.isListSelected
+  )
 })
 
 </script>
@@ -63,7 +69,7 @@ const isSelectable = computed(() => {
           :label="label"
           :summary-tag="'h2'"
         >
-          <FilterNode :node="filterStore.getRootNode(name)" />
+          <FilterNode :node="(filterStore.getCollectionRootNode(name) as HierarchyNode<FilterItemNode>)" />
         </DetailsAccordion>
       </template>
     </div>
@@ -170,6 +176,7 @@ const isSelectable = computed(() => {
     &.open {
       box-shadow: 0 0 10px 10px var(--grey-950-125);
     }
+
     .gps-filters-sidebar__content {
       background: var(--background-default-grey);
     }

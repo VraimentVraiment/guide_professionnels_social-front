@@ -1,7 +1,88 @@
-export { }
+import {
+  type HierarchyNode,
+} from 'd3-hierarchy'
+
+import {
+  /* auth */
+  DirectusUser,
+  DirectusAuthCredentials,
+  DirectusAuthResponse,
+  DirectusPasswordForgotCredentials,
+  DirectusPasswordResetCredentials,
+  DirectusUserRequest,
+  DirectusUserCreation,
+  DirectusUserUpdate,
+  DirectusUserDeletion,
+  DirectusRegisterCredentials,
+  /* query params */
+  DirectusQueryParams,
+  /* collections */
+  DirectusCollectionRequest,
+  DirectusCollectionMeta,
+  DirectusCollectionCreation,
+  DirectusCollectionUpdate,
+  /* items */
+  DirectusItemMetadata,
+  DirectusItems,
+  DirectusItem,
+  DirectusItemRequest,
+  DirectusItemCreation,
+  DirectusItemUpdate,
+  DirectusItemDeletion,
+  /* files */
+  DirectusFile,
+  DirectusFolders,
+  DirectusFileRequest,
+  DirectusThumbnailFormat,
+  DirectusThumbnailFit,
+  DirectusThumbnailOptions,
+  /* notification */
+  DirectusNotificationObject,
+  /* revisions */
+  DirectusRevision,
+} from "nuxt-directus/dist/runtime/types";
+
+export {
+    /* auth */
+    DirectusUser,
+    DirectusAuthCredentials,
+    DirectusAuthResponse,
+    DirectusPasswordForgotCredentials,
+    DirectusPasswordResetCredentials,
+    DirectusUserRequest,
+    DirectusUserCreation,
+    DirectusUserUpdate,
+    DirectusUserDeletion,
+    DirectusRegisterCredentials,
+    /* query params */
+    DirectusQueryParams,
+    /* collections */
+    DirectusCollectionRequest,
+    DirectusCollectionMeta,
+    DirectusCollectionCreation,
+    DirectusCollectionUpdate,
+    /* items */
+    DirectusItemMetadata,
+    DirectusItems,
+    DirectusItem,
+    DirectusItemRequest,
+    DirectusItemCreation,
+    DirectusItemUpdate,
+    DirectusItemDeletion,
+    /* files */
+    DirectusFile,
+    DirectusFolders,
+    DirectusFileRequest,
+    DirectusThumbnailFormat,
+    DirectusThumbnailFit,
+    DirectusThumbnailOptions,
+    /* notification */
+    DirectusNotificationObject,
+    /* revisions */
+    DirectusRevision,
+}
 
 declare global {
-
   /*
    *
    * Fields
@@ -41,7 +122,7 @@ declare global {
     status: PostStatus
   }
 
-  export interface PostStore <PostType extends Post> {
+  export interface PostStore<PostType extends Post> {
     collection: Ref<PostType[]>
     update: (filters?: FiltersCollection[]) => Promise<void>
   }
@@ -59,7 +140,7 @@ declare global {
     type_dispositif: ManyToOneId
   }
 
-  export interface DispositifPost  extends Post {
+  export interface DispositifPost extends Post {
     [key in richTextKeys]?: RichText
     type_dispositif: ManyToOneId
     images: OneToManyId[]
@@ -82,6 +163,7 @@ declare global {
     parent_id: ManyToOneId;
     slug: string;
     sort: number;
+    combination?: 'and' | 'or' | 'unique'
   }
 
   export interface FilterItem {
@@ -92,6 +174,8 @@ declare global {
     collectionName: string;
     parent_id: ManyToOneId;
     checked?: boolean;
+    open?: boolean;
+    combination?: 'and' | 'or' | 'unique'
   }
 
   export interface RootFilterItem {
@@ -100,13 +184,14 @@ declare global {
     parent_id: null;
     collectionName?: string;
     checked?: boolean;
+    open?: boolean;
   }
 
   export type FilterItemNode = FilterItem | RootFilterItem
 
   export type FiltersCollection = {
     name: string
-    label: string
+    label?: string
     items: FilterItem[]
     relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
     foreignKey?: string

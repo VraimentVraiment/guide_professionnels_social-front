@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+import {
+  type HierarchyNode,
+} from 'd3-hierarchy'
+
+
 definePageMeta({
   layout: 'filter',
 })
@@ -33,10 +38,10 @@ alertDescription.value = 'Sélectionnez une ou plusieurs thématiques au sein de
 
 const filterStore = useFilterStore()
 
-const items = filterStore.getItems('thematiques')
+const items = filterStore.getCollectionItems('thematiques')
 
 const themeId = ref<Number | null>(null)
-const rootNode = ref<FilterItemNode | null>(null)
+const rootNode = ref<HierarchyNode<RootFilterItem> | null>(null)
 
 const setThematique = async (
   id: number,
@@ -46,19 +51,21 @@ const setThematique = async (
     return
   }
 
-  filterStore.setItem(
-    'thematiques',
-    id,
-    'checked',
-    true,
-  )
+  filterStore.setItem({
+    collectionName: 'thematiques',
+    itemId: id,
+    key: 'checked',
+    value: true,
+  })
 
   themeId.value = id
   const newTypes = await useFetchDirectusItems<DirectusFilter>({
     collectionName: 'types_dispositif',
-    filter: {
-      'thematique': {
-        "_eq": id,
+    params: {
+      filter: {
+        'thematique': {
+          "_eq": id,
+        },
       },
     },
   })
@@ -147,7 +154,12 @@ watch(rootNode, (node) => {
                     :key="item.id"
                     class="gps-link gps-link__parent fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
-                    @click="() => filterStore.setItem('types_dispositif', item.data.id, 'checked', true)"
+                    @click="() => filterStore.setItem({
+                      collectionName: 'types_dispositif',
+                      itemId: item.data.id,
+                      key: 'checked',
+                      value: true,
+                    })"
                   >
                     {{ item.data.name }}
                   </NuxtLink>
@@ -168,7 +180,12 @@ watch(rootNode, (node) => {
                     :key="child.id"
                     class="gps-link gps-link__child fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
-                    @click="() => filterStore.setItem('types_dispositif', child.data.id, 'checked', true)"
+                    @click="() => filterStore.setItem({
+                      collectionName: 'types_dispositif',
+                      itemId: child.data.id,
+                      key: 'checked',
+                      value: true,
+                    })"
                   >
                     {{ child.data.name }}
                   </NuxtLink>

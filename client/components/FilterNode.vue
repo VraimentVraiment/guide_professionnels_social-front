@@ -4,7 +4,7 @@ import { HierarchyNode } from 'd3-hierarchy'
 import DetailsAccordion from '@/components/DetailsAccordion.vue'
 
 defineProps<{
-  node: HierarchyNode<FilterItemNode>;
+  node: HierarchyNode<FilterItemNode> | null
 }>()
 
 const filterStore = useFilterStore()
@@ -14,7 +14,7 @@ const filterStore = useFilterStore()
 <template>
   <template v-if="node?.data">
     <DsfrCheckbox
-      v-if="(
+      v-if="( 
         node.data.collectionName === 'types_dispositif'
         || (
           node.data.collectionName === 'caracteristiques_dispositif'
@@ -29,12 +29,12 @@ const filterStore = useFilterStore()
         && node.depth === 1
       )"
       :model-value="node.data.checked"
-      @update:model-value="checked => filterStore.setItem(
-        node.data.collectionName,
-        node.data.id,
-        'checked',
-        checked
-      )"
+      @update:model-value="checked => filterStore.setItem({
+        collectionName: node?.data.collectionName as string,
+        itemId: node?.data.id,
+        key: 'checked',
+        value: checked,
+      })"
     />
     <DsfrRadioButton
       v-else-if="(
@@ -45,15 +45,14 @@ const filterStore = useFilterStore()
       :value="node.data.id"
       :model-value="node.data.id"
       :small="!(
-        node.data.collectionName === 'types_dispositif'
-        && node.depth === 1
+        node.depth === 1
       )"
-      @update:model-value="checked => filterStore.setItem(
-        node.data.collectionName,
-        node.data.id,
-        'checked',
-        checked
-      )"
+      @update:model-value="checked => filterStore.setItem({
+        collectionName: node?.data.collectionName as string,
+        itemId: node?.data.id,
+        key: 'checked',
+        value: checked,
+      })"
     />
     <DetailsAccordion
       v-else-if="node.data.collectionName === 'caracteristiques_dispositif'

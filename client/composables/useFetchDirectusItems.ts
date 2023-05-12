@@ -1,16 +1,20 @@
+import {
+  type DirectusQueryParams,
+} from 'nuxt-directus/dist/runtime/types'
+
 export async function useFetchDirectusItems<T>({
   collectionName,
-  filter,
+  params,
 }: {
   collectionName: string
-  filter?: DirectusFilter
+  params?: DirectusQueryParams
 }): Promise<T[]> {
   const { getItems } = useDirectusItems()
 
   try {
     return (await getItems<T>({
       collection: collectionName,
-      params: { filter },
+      params,
     })) as T[]
 
   } catch (e) {

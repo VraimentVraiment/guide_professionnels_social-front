@@ -4,7 +4,11 @@ defineProps<{
   collection: DispositifPost[]
   isListSelected: boolean
 }>()
+
 const { breakpoints } = useDsfrBreakpoints()
+const isCol6 = breakpoints?.greater('SM')
+const isCol4 = breakpoints?.greater('MD')
+
 </script>
 
 <template>
@@ -26,8 +30,8 @@ const { breakpoints } = useDsfrBreakpoints()
         :key="d.id"
         :class="[
           'fr-col-12',
-          {'fr-col-sm-6': isListSelected && breakpoints.greater('SM')},
-          {'fr-col-lg-4': isListSelected && breakpoints.greater('MD')},
+          {'fr-col-sm-6': isListSelected && isCol6 },
+          {'fr-col-lg-4': isListSelected && isCol4},
         ]"
       >
         <DispositifCard

@@ -4,28 +4,22 @@ definePageMeta({
   layout: 'filter',
 })
 
-const isListSelected = ref(true)
-
-const mounted = ref(false)
-
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
-
-const filterStore = useFilterStore()
-
-const dispositifs = usePostStore<DispositifPost>({
-  collectionName: 'fiches_dispositif',
-})
-dispositifs.update(filterStore.collections)
-
-onMounted(() => {
-  watch(filterStore.collections, () => {
-    dispositifs.update(filterStore.collections)
-  })
-  mounted.value = true
-})
 
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
+const isListSelected = ref(true)
+
+const filterStore = useFilterStore()
+const dispositifs = usePostStore<DispositifPost>({
+  collectionName: 'fiches_dispositif',
+})
+dispositifs.update(filterStore.directusFilter)
+// onMounted(() => {
+  watch(filterStore.collections, () => {
+    dispositifs.update(filterStore.directusFilter)
+  })
+// })
 
 </script>
 
@@ -43,7 +37,7 @@ const isSmallScreen = breakpoints.smaller('MD')
         <FilterSideBar
           v-if="filterStore.collections?.length"
           :is-list-selected="isListSelected"
-          :collections="filterStore.collections"
+          :collections="filterStore.collections as FiltersCollection[]"
         />
         <div id="dispositifs-sidebar" />
       </div>
@@ -59,7 +53,6 @@ const isSmallScreen = breakpoints.smaller('MD')
       >
         <template #tab-0>
           <Teleport
-            v-if="mounted"
             to="#dispositifs-sidebar"
             :disabled="isListSelected || isSmallScreen"
           >
@@ -100,6 +93,7 @@ const isSmallScreen = breakpoints.smaller('MD')
 
 .gps-dispositifs-tabs .fr-tabs__panel {
   max-height: 50vh;
+  margin-top: 2px;
   overflow-y: auto;
 }
 </style>
