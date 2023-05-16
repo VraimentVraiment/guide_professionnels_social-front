@@ -166,36 +166,43 @@ declare global {
     combination?: 'and' | 'or' | 'unique'
   }
 
-  export interface FilterItem {
-    id: number
+  export interface FilterItemNode {
+    id: number;
     name: string;
-    checked: boolean;
-    children: OneToManyId;
-    collectionName: string;
-    parent_id: ManyToOneId;
+    collection: FiltersCollection;
+    checked?: boolean;
+    children?: OneToManyId;
+    parent_id: number | null;
+    hidden?: boolean;
     checked?: boolean;
     open?: boolean;
     combination?: 'and' | 'or' | 'unique'
   }
 
-  export interface RootFilterItem {
-    id: 0
-    name: string;
-    parent_id: null;
-    collectionName?: string;
-    checked?: boolean;
-    open?: boolean;
+  type Junction = {
+    items: Record<string, number>[],
+    primaryKey: string,
+    sourceKey: string,
+    targetKey: string,
+    targetCollectionName: string,
+    // joinCollectionName?: string,
   }
-
-  export type FilterItemNode = FilterItem | RootFilterItem
 
   export type FiltersCollection = {
     name: string
+    items: FilterItemNode[]
     label?: string
-    items: FilterItem[]
     relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
+    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
     foreignKey?: string
+    fieldName?: string
     rootNode?: RootFilterItemNode
+    foreignKey?: string
+    joinCollectionName?: string
+    primaryKey?: string
+    sourceKey?: string
+    targetKey?: string
+    targetCollectionName?: string
   }
 
   export interface FilterStore {

@@ -11,6 +11,7 @@ filterCollections:
     userSelection: 'all-nodes'
   - label: 'Caractéristiques'
     name: 'caracteristiques_dispositif'
+    fieldName: 'caracteristiques_dispositif'
     userSelection: 'leaves-only'
     relationType: 'many-to-many'
     foreignKey: 'caracteristique_dispositif_id'

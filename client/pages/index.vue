@@ -19,10 +19,10 @@ alertDescription.value = alertContent[0].description
 
 const filterStore = useFilterStore()
 
-const items = filterStore.getCollectionItems('thematiques')
+const items = filterStore.getCollection('thematiques')?.items
 
 const themeId = ref<Number | null>(null)
-const rootNode = ref<HierarchyNode<RootFilterItem> | null>(null)
+const rootNode = ref<HierarchyNode<FilterItemNode> | null>(null)
 
 const setThematique = async (
   id: number,
@@ -34,8 +34,7 @@ const setThematique = async (
 
   filterStore.setItem({
     collectionName: 'thematiques',
-    itemId: id,
-    key: 'checked',
+    id,
     value: true,
   })
 
@@ -129,8 +128,7 @@ watch(rootNode, (node) => {
                     :to="`/dispositifs`"
                     @click="() => filterStore.setItem({
                       collectionName: 'types_dispositif',
-                      itemId: item.data.id,
-                      key: 'checked',
+                      id: item.data.id,
                       value: true,
                     })"
                   >
@@ -155,8 +153,7 @@ watch(rootNode, (node) => {
                     :to="`/dispositifs`"
                     @click="() => filterStore.setItem({
                       collectionName: 'types_dispositif',
-                      itemId: child.data.id,
-                      key: 'checked',
+                      id: child.data.id,
                       value: true,
                     })"
                   >
