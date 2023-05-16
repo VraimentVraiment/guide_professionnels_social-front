@@ -4,37 +4,18 @@ import {
   type HierarchyNode,
 } from 'd3-hierarchy'
 
-
 definePageMeta({
   layout: 'filter',
 })
-
-function useAlertStore() {
-  const alertTitle = ref('')
-  const alertDescription = ref('')
-  const alertType = ref('')
-  const openAlert = ref(false)
-
-  function closeAlert() {
-    openAlert.value = false
-  }
-
-  return {
-    alertTitle,
-    alertDescription,
-    alertType,
-    openAlert,
-    closeAlert,
-  }
-}
 
 const {
   alertTitle,
   alertDescription,
 } = useAlertStore()
 
-alertTitle.value = 'Étape 1 : Thématiques'
-alertDescription.value = 'Sélectionnez une ou plusieurs thématiques au sein de laquelle vous souhaitez explorer les dispositifs.'
+const { alertContent } = await useGetContent('/home')
+alertTitle.value = alertContent[0].title
+alertDescription.value = alertContent[0].description
 
 const filterStore = useFilterStore()
 
@@ -78,8 +59,8 @@ const setThematique = async (
 
 watch(rootNode, (node) => {
   if (node) {
-    alertTitle.value = 'Étape 2 : Types de dispositifs'
-    alertDescription.value = 'Sélectionnez un type de dispositif que vous souhaitez explorer. Appuyer sur “+” pour accéder à des types de dispositifs plus précis.'
+    alertTitle.value = alertContent[1].title
+    alertDescription.value = alertContent[1].description
   }
 })
 
@@ -108,7 +89,7 @@ watch(rootNode, (node) => {
     <template #bottom-right>
       <div
         v-if="themeId === null"
-        class="gps-tiles fr-container--fluid"
+        class="fr-container--fluid"
       >
         <div
           :class="[
@@ -126,14 +107,6 @@ watch(rootNode, (node) => {
               :description="item.name"
               horizontal
               @click.prevent="() => setThematique(item.id)"
-            />
-          </div>
-          <div class="fr-col-12 fr-col-sm-6">
-            <DsfrTile
-              :title="'Tous les dispositifs'"
-              :description="'Tous les dispositifs'"
-              horizontal
-              @click.prevent="() => setThematique(0)"
             />
           </div>
         </div>
@@ -245,14 +218,4 @@ details.gps-links-group {
     margin-right: auto;
   }
 }
-</style>
-<style lang="scss">
-// .gps-tiles {
-//   display: flex;
-//   flex-wrap: wrap;
-
-//   .fr-grid-row .fr-tile {
-//     height: auto;
-//   }
-// }
 </style>

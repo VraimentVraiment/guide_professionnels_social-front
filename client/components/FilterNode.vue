@@ -13,52 +13,57 @@ const filterStore = useFilterStore()
 
 <template>
   <template v-if="node?.data">
+    <DsfrRadioButton
+      v-if="(
+        node.data.collection?.userSelection === 'single-node'
+      )"
+      :name="node.data.collection.name"
+      :label="node.data.name"
+      :value="node.data.id"
+      :model-value="node.data.id"
+      small
+      @update:model-value="checked => filterStore.setItem({
+        collectionName: node?.data.collection.name as string,
+        itemId: node?.data.id,
+        key: 'checked',
+        value: checked,
+      })"
+    />
     <DsfrCheckbox
-      v-if="( 
-        node.data.collectionName === 'types_dispositif'
+      v-else-if="(
+        node.data.collection?.userSelection === 'all-nodes'
         || (
-          node.data.collectionName === 'caracteristiques_dispositif'
+          node.data.collection?.userSelection === 'leaves-only'
           && node.height === 0
         )
       )"
       :id="node.data.id.toString()"
       :name="node.data.name"
       :label="node.data.name"
-      :small="!(
-        node.data.collectionName === 'types_dispositif'
-        && node.depth === 1
-      )"
+      small
+      class="gps-filters-sidebar__checkbox"
+      :data-node-depth="node.depth"
       :model-value="node.data.checked"
       @update:model-value="checked => filterStore.setItem({
-        collectionName: node?.data.collectionName as string,
+        collectionName: node?.data.collection.name as string,
         itemId: node?.data.id,
         key: 'checked',
         value: checked,
       })"
     />
-    <DsfrRadioButton
+    <h5
       v-else-if="(
-        node.data.collectionName === 'thematiques'
+        node.data.collection?.userSelection === 'leaves-only'
+        && node.height === 2
       )"
-      :name="node.data.collectionName"
-      :label="node.data.name"
-      :value="node.data.id"
-      :model-value="node.data.id"
-      :small="!(
-        node.depth === 1
-      )"
-      @update:model-value="checked => filterStore.setItem({
-        collectionName: node?.data.collectionName as string,
-        itemId: node?.data.id,
-        key: 'checked',
-        value: checked,
-      })"
-    />
+    >
+      {{ node.data.name }}
+    </h5>
     <DetailsAccordion
-      v-else-if="node.data.collectionName === 'caracteristiques_dispositif'
-        && node.depth === 2
+      v-else-if="(
+        node.data.collection?.userSelection === 'leaves-only'
         && node.height === 1
-      "
+      )"
       :label="node.data.name"
       :summary-tag="'h6'"
     >
@@ -70,31 +75,78 @@ const filterStore = useFilterStore()
         />
       </template>
     </DetailsAccordion>
-    <template v-else>
-      <h5 v-if="node.depth === 1">
-        {{ node.data.name }}
-      </h5>
-      <template v-if="node.children?.length">
-        <FilterNode
-          v-for="childNode in node.children"
-          :key="childNode.data.id"
-          :node="childNode"
-        />
-      </template>
-    </template>
-    <template
+    <div
       v-if="(
-        node.data.collectionName === 'types_dispositif'
-        // && node.depth === 1
+        node.data.collection?.userSelection === 'all-nodes'
+        && node.children?.length
       )"
+      v-show="node.data.checked"
+      :data-node-height="node.height"
+      :class="[
+        'filter-node__children',
+      ]"
     >
-      <template v-if="node.children?.length">
-        <FilterNode
-          v-for="childNode in node.children"
-          :key="childNode.data.id"
-          :node="childNode"
-        />
-      </template>
-    </template>
+      <FilterNode
+        v-for="childNode in node.children"
+        :key="childNode.data.id"
+        :node="childNode"
+      />
+    </div>
+    <div
+      v-else-if="!(
+        node.data.collection?.userSelection === 'leaves-only'
+        && node.height === 1
+      )
+        && node.children?.length
+      "
+    >
+      <FilterNode
+        v-for="childNode in node.children"
+        :key="childNode.data.id"
+        :node="childNode"
+      />
+    </div>
   </template>
 </template>
+
+<style scoped lang="scss">
+.filter-node__children {
+  margin-left: .5rem;
+  margin-top: .75rem;
+  margin-bottom: 1.5rem;
+  padding-left: .5rem;
+  border-left: 1px solid var(--border-default-grey);
+}
+</style>
+
+<style lang="scss">
+.gps-filters-sidebar__checkbox {
+
+  &>label {
+    margin-left: 1.8em !important;
+
+    &:before {
+      left: -1.8em !important;
+      margin-top: 0.1em !important;
+      width: 1.4em !important;
+      height: 1.4em !important;
+    }
+
+    &[data-node-depth="1"] {
+      font-size: 1.05rem;
+    }
+  }
+
+  &[data-node-depth="1"] {
+    font-size: 1.1rem;
+  }
+
+  &[data-node-depth="2"] {
+    font-size: 1rem;
+  }
+
+  &[data-node-depth="3"] {
+    font-size: .9rem;
+  }
+}
+</style>

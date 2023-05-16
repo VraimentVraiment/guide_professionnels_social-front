@@ -26,54 +26,56 @@ const isSelectable = computed(() => {
 </script>
 
 <template>
-  <div
-    :class="[
-      'gps-filters-sidebar',
-      { 'open': isOpen },
-      { 'is-small-screen': isSmallScreen },
-      { 'is-list-selected': isListSelected },
-      { 'is-selectable': isSelectable },
-    ]"
-  >
+  <ClientOnly>
     <div
-      class="gps-filters-sidebar__header"
-      @click="() => {
-        if (isSelectable) {
-          isOpen = !isOpen
-        }
-      }"
+      :class="[
+        'gps-filters-sidebar',
+        { 'open': isOpen },
+        { 'is-small-screen': isSmallScreen },
+        { 'is-list-selected': isListSelected },
+        { 'is-selectable': isSelectable },
+      ]"
     >
-      <span>
-        <v-icon
-          name="ri-equalizer-fill"
-          aria-hidden="true"
-        />
-        Filtrer
-      </span>
-      <span
-        v-show="isSelectable"
-        aria-hidden="true"
-        :class="[
-          'fr-icon-arrow-left-s-line',
-          'gps-filters-sidebar__header__icon'
-        ]"
-      />
-    </div>
-    <div class="gps-filters-sidebar__content">
-      <template
-        v-for="{ name, label } in collections"
-        :key="name"
+      <div
+        class="gps-filters-sidebar__header"
+        @click="() => {
+          if (isSelectable) {
+            isOpen = !isOpen
+          }
+        }"
       >
-        <DetailsAccordion
-          class="filter-group"
-          :label="label"
-          :summary-tag="'h2'"
+        <span>
+          <v-icon
+            name="ri-equalizer-fill"
+            aria-hidden="true"
+          />
+          Filtrer
+        </span>
+        <span
+          v-show="isSelectable"
+          aria-hidden="true"
+          :class="[
+            'fr-icon-arrow-left-s-line',
+            'gps-filters-sidebar__header__icon'
+          ]"
+        />
+      </div>
+      <div class="gps-filters-sidebar__content">
+        <template
+          v-for="{ name, label } in collections"
+          :key="name"
         >
-          <FilterNode :node="(filterStore.getCollectionRootNode(name) as HierarchyNode<FilterItemNode>)" />
-        </DetailsAccordion>
-      </template>
+          <DetailsAccordion
+            class="filter-group"
+            :label="label"
+            :summary-tag="'h2'"
+          >
+            <FilterNode :node="(filterStore.getCollectionRootNode(name) as HierarchyNode<FilterItemNode>)" />
+          </DetailsAccordion>
+        </template>
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <style scoped lang="scss">
@@ -170,9 +172,7 @@ const isSelectable = computed(() => {
     position: absolute;
     z-index: 10;
     width: 100%;
-  }
 
-  &.is-selectable {
     &.open {
       box-shadow: 0 0 10px 10px var(--grey-950-125);
     }
@@ -216,18 +216,11 @@ const isSelectable = computed(() => {
 
   .fr-checkbox-group,
   .fr-radio-group {
+    margin-bottom: .75rem;
+
     label {
-      font-size: 1rem;
+      font-size: 1em;
     }
-
-    &--sm label {
-      font-size: .9rem;
-    }
-  }
-
-  .fr-radio-group+.fr-radio-group,
-  .fr-checkbox-group+.fr-checkbox-group {
-    margin-top: .5rem;
   }
 }
 </style>

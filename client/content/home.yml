@@ -1,0 +1,8 @@
+
+alertContent:
+  -
+    title: 'Étape 1 : Thématiques'
+    description:  'Sélectionnez une ou plusieurs thématiques au sein de laquelle vous souhaitez explorer les dispositifs.'
+  -
+    title: 'Étape 2 : Types de dispositifs'
+    description: 'Sélectionnez un type de dispositif que vous souhaitez explorer. Appuyer sur “+” pour accéder à des types de dispositifs plus précis.'

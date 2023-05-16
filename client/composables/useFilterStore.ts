@@ -17,7 +17,10 @@ export const useFilterStore = defineStore('filters', () => {
 
   const checkedItems = computed(() => {
     return collections.map((collection) => {
-      return collection.items.filter(item => item.checked)
+      return {
+        name: collection.name,
+        items: collection.items.filter(item => item.checked),
+      }
     })
   })
 
@@ -37,7 +40,7 @@ export const useFilterStore = defineStore('filters', () => {
           })
         )
           .map((item) => {
-            return directusItemToFilterItem(item, collection.name)
+            return directusItemToFilterItem(item, collection.name, collection)
           })
 
         return {
@@ -74,6 +77,14 @@ export const useFilterStore = defineStore('filters', () => {
     )))
   }
 
+  const getCollectionCheckedItems = (
+    collectionName: string,
+  ) => {
+    return checkedItems?.value?.find((collection) => {
+      return collection.name === collectionName
+    })?.items
+  }
+
   const getCollectionItems = (
     collectionName: string,
   ) => {
@@ -105,18 +116,20 @@ export const useFilterStore = defineStore('filters', () => {
     const collection = collections.find(
       collection => collection.name === collectionName,
     )
-    if (!collection) {
-      console.error(`setItem: collection ${collectionName} not found in collections`)
-      return
-    }
-
-    const item = collection.items.find(item => item.id === itemId)
-
-    if (!item) {
-      console.error(`setItem: item ${itemId} not found in collection ${collectionName}`)
-      return
-    } else if (key === 'checked') {
-      item.checked = value as boolean
+    console.log("collection :", collection);
+    if (collection) {
+      const item = collection.items.find(item => item.id === itemId)
+      if (collection.userSelection === 'single-node') {
+        collection.items.forEach(item => item.checked = false)
+      } else if (collection.userSelection === 'all-nodes') {
+        nextTick(() => {
+          setItemChildren(collection, item, value as boolean)
+          setItemParent(collection, item, value as boolean)
+        })
+      }
+      if (item) {
+        item.checked = value as boolean
+      }
     }
   }
 
@@ -131,22 +144,17 @@ export const useFilterStore = defineStore('filters', () => {
 
     for (const collection of collections) {
 
-      console.log('collection', collection)
-
-      const checkedItems = collection.items
-        ?.filter(item => item.checked)
+      const collectionCheckedItems = getCollectionCheckedItems(collection.name)
         .map(item => item.id)
 
-      console.log('checkedItems', checkedItems)
-
-      if (checkedItems?.length === 0) {
+      if (collectionCheckedItems?.length === 0) {
         continue;
       }
 
       if (collection.relationType === 'many-to-one') {
         addFilterCondition({
           [collection.fieldName]: {
-            "_in": checkedItems,
+            "_in": collectionCheckedItems,
           },
         })
       }
@@ -160,7 +168,7 @@ export const useFilterStore = defineStore('filters', () => {
         }
 
         const dispositifsIds = getIdsMatchingFilters({
-          checkedItems,
+          collectionCheckedItems,
           combination,
           junction,
         })
@@ -183,43 +191,18 @@ export const useFilterStore = defineStore('filters', () => {
   })
 
   const getIdsMatchingFilters = ({
-    checkedItems,
-    combination,
+    collectionCheckedItems,
     junction,
+    combination,
   }) => {
 
     if (combination === 'or') {
 
-      return junction
-        ?.items
-        ?.reduce((ids, item) => {
-          if (
-            checkedItems.includes(item[junction.targetKey])
-            && !ids.includes(item[junction.sourceKey])
-          ) {
-            ids.push(item[junction.sourceKey])
-          }
-          return ids
-        }, [])
+      return getOrItems(junction, collectionCheckedItems)
 
     } else if (combination === 'and') {
 
-      return Array
-        .from(
-          d3.group(
-            junction.items,
-            d => d[junction.sourceKey]),
-          ([key, value]) => ({
-            [junction.sourceKey]: key,
-            [junction.targetKey]: value.map(d => d[junction.targetKey]),
-          }),
-        )
-        .filter((d) => {
-          return checkedItems.every((id) => {
-            return d[junction.targetKey].includes(id)
-          })
-        })
-        .map(d => d[junction.sourceKey])
+      return getAndItems(junction, collectionCheckedItems)
     }
   }
 
@@ -236,3 +219,89 @@ export const useFilterStore = defineStore('filters', () => {
     getCollectionRootNode,
   }
 })
+
+function getOrItems(
+  junction: any,
+  collectionCheckedItems: FilterItem[],
+) {
+  return junction?.items
+    ?.reduce((ids, item) => {
+      if (
+        collectionCheckedItems.includes(item[junction.targetKey])
+        && !ids.includes(item[junction.sourceKey])
+      ) {
+        ids.push(item[junction.sourceKey])
+      }
+      return ids
+    }, [])
+}
+
+function getAndItems(
+  junction: any,
+  collectionCheckedItems: FilterItem[],
+) {
+
+  const groups = d3.group(
+    junction.items,
+    d => d[junction.sourceKey],
+  )
+
+  return Array
+    .from(groups, ([key, value]) => ({
+      [junction.sourceKey]: key,
+      [junction.targetKey]: value.map(d => d[junction.targetKey]),
+    }),
+    )
+    .filter((d) => {
+      return collectionCheckedItems.every((id) => {
+        return d[junction.targetKey].includes(id)
+      })
+    })
+    .map(d => d[junction.sourceKey])
+}
+
+const setItemParent = (
+  collection: FiltersCollection,
+  item: FilterItem,
+  value: boolean,
+) => {
+  const parent = collection.items
+    .find(i => i.id === item.parent_id)
+
+  const siblings = collection.items
+    .filter(i => i.parent_id === item.parent_id)
+    
+  if (
+    value === true
+    && parent?.checked === false
+  ) {
+    parent.checked = true
+    setItemParent(collection, parent, value)
+  }
+
+  if (parent && siblings?.length) {
+
+    const allSiblingsUnchecked = siblings
+      .every(sibling => !sibling.checked)
+
+    if (
+      allSiblingsUnchecked
+      && parent?.checked === true
+    ) {
+      parent.checked = false
+      setItemParent(collection, parent, value)
+    }
+  }
+}
+
+const setItemChildren = (
+  collection: FiltersCollection,
+  item: FilterItem,
+  value: boolean,
+) => {
+  const children = collection.items.filter(i => i.parent_id === item.id)
+  children.forEach((child) => {
+    child.checked = value
+    setItemChildren(collection, child, value)
+  })
+}

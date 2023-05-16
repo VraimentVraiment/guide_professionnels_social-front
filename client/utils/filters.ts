@@ -27,6 +27,7 @@ export const fetchFilterCollection = async (
 export function directusItemToFilterItem (
   item: DirectusFilterItem,
   collectionName: string,
+  collection: any,
 ): FilterItem {
   return {
     id: item.id,
@@ -36,6 +37,7 @@ export function directusItemToFilterItem (
     collectionName,
     checked: false,
     combination: item.combination,
+    collection,
   }
 }
 
