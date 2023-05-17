@@ -9,12 +9,19 @@ defineProps({
     type: String,
     default: 'span',
   },
+  open: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 </script>
 
 <template>
-  <details class="gps-details">
+  <details
+    class="gps-details"
+    :open="open"
+  >
     <summary class="gps-details__summary">
       <component
         :is="summaryTag"

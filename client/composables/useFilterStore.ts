@@ -76,12 +76,12 @@ export const useFilterStore = defineStore('filters', () => {
     )))
   }
 
-  const getCollectionCheckedItems = (
-    collectionName: string,
-  ): FilterItemNode[] => {
-    return checkedItems?.value?.find((collection) => {
-      return collection.name === collectionName
-    })?.items as FilterItemNode[]
+  function $reset () {
+    collections.forEach((collection) => {
+      collection.items.forEach((item) => {
+        item.checked = false
+      })
+    })
   }
 
   const getCollection = (
@@ -98,6 +98,14 @@ export const useFilterStore = defineStore('filters', () => {
     return rootNodes.value.find(
       node => node?.data.name === collectionName,
     ) ?? null
+  }
+
+  const getCollectionCheckedItems = (
+    collectionName: string,
+  ): FilterItemNode[] => {
+    return checkedItems?.value?.find((collection) => {
+      return collection.name === collectionName
+    })?.items as FilterItemNode[]
   }
 
   const setItem = ({
@@ -117,13 +125,13 @@ export const useFilterStore = defineStore('filters', () => {
     const item = collection.items.find(item => item.id === id)
     if (!item) { return }
 
-    item.checked = value
     setItemCheckSideEffects({
       item,
       collection,
       value,
       isAltKeyPressed,
     })
+    item.checked = value
   }
 
   const directusFilter = computed(() => {
@@ -193,5 +201,6 @@ export const useFilterStore = defineStore('filters', () => {
     getCollection,
     setItem,
     getCollectionRootNode,
+    $reset,
   }
 })

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { type HierarchyNode } from 'd3-hierarchy'
 
 const props = defineProps<{
   collections: FiltersCollection[]
@@ -63,8 +64,9 @@ const isSelectable = computed(() => {
           class="filter-group"
           :label="label"
           :summary-tag="'h2'"
+          :open="name === 'caracteristiques_dispositif'"
         >
-          <FilterNode :node="(filterStore.getCollectionRootNode(name))" />
+          <FilterNode :node="(filterStore.getCollectionRootNode(name)) as HierarchyNode<FilterItemNode>" />
         </DetailsAccordion>
       </div>
     </div>

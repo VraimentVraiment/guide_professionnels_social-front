@@ -59,7 +59,9 @@ const setItem = (
       small
       :class="[
         'gps-filters-sidebar__checkbox',
-        {'all-nodes__checkbox': node.data.collection.userSelection === 'all-nodes'}
+        { 'all-nodes__checkbox': node.data.collection.userSelection === 'all-nodes' },
+        { 'leaves-only__checkbox': node.data.collection.userSelection === 'leaves-only' },
+        { 'is-checked': node.data.checked }
       ]"
       :data-node-depth="node.depth"
       :model-value="node.data.checked"
@@ -79,6 +81,7 @@ const setItem = (
         && node.height === 1
       )"
       :label="node.data.name"
+      :data-combination="node.data.combination"
       :summary-tag="'h6'"
     >
       <template v-if="node.children?.length">
@@ -137,32 +140,70 @@ const setItem = (
 </style>
 
 <style lang="scss">
-.gps-filters-sidebar__checkbox.all-nodes__checkbox {
+.gps-filters-sidebar__checkbox {
 
-  &>label {
-    margin-left: 1.8em !important;
-
-    &:before {
-      left: -1.8em !important;
-      margin-top: 0.1em !important;
-      width: 1.4em !important;
-      height: 1.4em !important;
+  &:active {
+    >label:before {
+      background-color: var(--blue-france-sun-113-625-active) !important;
     }
   }
 
-  &[data-node-depth="1"] {
-    font-size: 1.05rem;
-    font-weight: 400;
+  &.all-nodes__checkbox {
+
+    &>label {
+      margin-left: 1.8em !important;
+
+      &:before {
+        left: -1.8em !important;
+        margin-top: 0.1em !important;
+        width: 1.4em !important;
+        height: 1.4em !important;
+      }
+    }
+
+    &[data-node-depth="1"] {
+      font-size: 1.05rem;
+      font-weight: 400;
+    }
+
+    &[data-node-depth="2"] {
+      font-size: .975rem;
+      font-weight: 400;
+    }
+
+    &[data-node-depth="3"] {
+      font-size: .925rem;
+      font-weight: 600;
+    }
   }
 
-  &[data-node-depth="2"] {
-    font-size: .975rem;
-    font-weight: 400;
-  }
+  &.leaves-only__checkbox {
+    &.is-checked {
+      &:before {
+        position: absolute;
+        left: -1.25rem;
+        text-align: right;
+        font-size: .85rem;
+        font-weight: 600;
+        color: var(--blue-france-sun-113-625);
+      }
+    }
 
-  &[data-node-depth="3"] {
-    font-size: .925rem;
-    font-weight: 600;
+    [data-combination="and"] & {
+      &.is-checked {
+        &:before {
+          content: "et";
+        }
+      }
+    }
+
+    [data-combination="or"] & {
+      &.is-checked {
+        &:before {
+          content: "ou";
+        }
+      }
+    }
   }
 }
 </style>

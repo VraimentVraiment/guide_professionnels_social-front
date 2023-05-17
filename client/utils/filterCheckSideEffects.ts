@@ -17,22 +17,26 @@ export function setItemCheckSideEffects({
 }) {
   if (collection.userSelection === 'single-node') {
     collection.items.forEach(i => i.checked = false)
+  } else if (
+    isAltKeyPressed
+    && (
+      collection.userSelection === 'leaves-only'
+      || collection.userSelection === 'all-nodes'
+    )
+  ) {
+    nextTick(() => {
+      setItemSiblings({ collection, item, value: false })
+      nextTick(() => {
+        if (!item?.checked) {
+          item.checked = true
+        }
+      })
+    })
   } else if (collection.userSelection === 'all-nodes') {
-    if (!isAltKeyPressed) {
-      nextTick(() => {
-        setItemChildren({ collection, item, value })
-        setItemParent({ collection, item, value })
-      })
-    } else {
-      nextTick(() => {
-        setItemSiblings({ collection, item, value: false })
-        nextTick(() => {
-          if (!item?.checked) {
-            item.checked = true
-          }
-        })
-      })
-    }
+    nextTick(() => {
+      setItemChildren({ collection, item, value })
+      setItemParent({ collection, item, value })
+    })
   }
 }
 

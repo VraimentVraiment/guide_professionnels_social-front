@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
-const { filterCollections } = (await useGetContent('/gps')) as { filterCollections: unknown } as { filterCollections: FiltersCollection[] }
-
+const { filterCollections } = (await useGetContent('/gps'))
 const filterStore = useFilterStore()
 await filterStore.fetchCollections(filterCollections)
 await filterStore.fetchRelationsCollections(filterCollections)

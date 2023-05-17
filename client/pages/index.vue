@@ -18,11 +18,19 @@ alertTitle.value = alertContent[0].title
 alertDescription.value = alertContent[0].description
 
 const filterStore = useFilterStore()
+filterStore.$reset()
 
 const items = filterStore.getCollection('thematiques')?.items
 
 const themeId = ref<Number | null>(null)
 const rootNode = ref<HierarchyNode<FilterItemNode> | null>(null)
+const selectedThematique = computed(() => {
+  if (themeId.value === null) {
+    return null
+  }
+
+  return items?.find(item => item.id === themeId.value)?.name
+})
 
 const setThematique = async (
   id: number,
@@ -113,6 +121,7 @@ watch(rootNode, (node) => {
       <template v-else-if="rootNode?.children">
         <div class="fr-container--fluid">
           <div class="fr-grid-row">
+            <h2>{{ selectedThematique }}</h2>
             <div class="gps-links fr-col-10">
               <details
                 v-for="item in rootNode.children"
