@@ -4,7 +4,7 @@ import { useMagicKeys } from '@vueuse/core'
 import { type HierarchyNode } from 'd3-hierarchy'
 
 defineProps<{
-  node: HierarchyNode<FilterItemNode> | null
+  node: HierarchyNode<FilterItemNode>
 }>()
 
 const filterStore = useFilterStore()
@@ -28,26 +28,28 @@ const setItem = (
 <template>
   <template
     v-if="(
-      node?.data
+      node.data
       && !node.data.hidden
     )"
   >
     <DsfrRadioButton
       v-if="(
-        node.data.collection?.userSelection === 'single-node'
+        node.data.collection.userSelection === 'single-node'
+        && node.depth > 0
       )"
       :name="node.data.collection.name"
       :label="node.data.name"
       :value="node.data.id"
       :model-value="node.data.id"
       small
-      @update:model-value="() => setItem(node?.data as FilterItemNode, true)"
+      @update:model-value="() => setItem(node.data as FilterItemNode, true)"
     />
     <DsfrCheckbox
       v-else-if="(
-        node.data.collection?.userSelection === 'all-nodes'
+        node.data.collection.userSelection === 'all-nodes'
+        && node.depth > 0
         || (
-          node.data.collection?.userSelection === 'leaves-only'
+          node.data.collection.userSelection === 'leaves-only'
           && node.height === 0
         )
       )"
@@ -57,15 +59,15 @@ const setItem = (
       small
       :class="[
         'gps-filters-sidebar__checkbox',
-        {'all-nodes__checkbox': node.data.collection?.userSelection === 'all-nodes'}
+        {'all-nodes__checkbox': node.data.collection.userSelection === 'all-nodes'}
       ]"
       :data-node-depth="node.depth"
       :model-value="node.data.checked"
-      @update:model-value="(checked) => setItem(node?.data as FilterItemNode, checked as boolean)"
+      @update:model-value="(checked: boolean) => setItem(node.data, checked)"
     />
     <h5
       v-else-if="(
-        node.data.collection?.userSelection === 'leaves-only'
+        node.data.collection.userSelection === 'leaves-only'
         && node.height === 2
       )"
     >
@@ -73,7 +75,7 @@ const setItem = (
     </h5>
     <DetailsAccordion
       v-else-if="(
-        node.data.collection?.userSelection === 'leaves-only'
+        node.data.collection.userSelection === 'leaves-only'
         && node.height === 1
       )"
       :label="node.data.name"
@@ -89,10 +91,13 @@ const setItem = (
     </DetailsAccordion>
     <div
       v-if="(
-        node.data.collection?.userSelection === 'all-nodes'
+        node.data.collection.userSelection === 'all-nodes'
         && node.children?.length
       )"
-      v-show="node.data.checked"
+      v-show="(
+        node.depth === 0
+        || node.data.checked
+      )"
       :data-node-height="node.height"
       :class="[
         'filter-node__children',
@@ -106,7 +111,7 @@ const setItem = (
     </div>
     <div
       v-else-if="!(
-        node.data.collection?.userSelection === 'leaves-only'
+        node.data.collection.userSelection === 'leaves-only'
         && node.height === 1
       )
         && node.children?.length

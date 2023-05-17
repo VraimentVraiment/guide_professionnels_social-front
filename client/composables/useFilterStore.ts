@@ -5,6 +5,7 @@ import {
 export const useFilterStore = defineStore('filters', () => {
 
   const collections = reactive<FiltersCollection[]>([])
+
   const relationCollections = reactive<DirectusFilter[]>([])
 
   const rootNodes = computed(() => {
@@ -106,24 +107,23 @@ export const useFilterStore = defineStore('filters', () => {
     isAltKeyPressed,
   }: {
     collectionName: string,
-    id?: number
+    id: number
     value: boolean,
     isAltKeyPressed?: boolean,
   }) => {
     const collection = getCollection(collectionName)
+    if (!collection) { return }
 
-    if (collection) {
-      const item = collection.items.find(item => item.id === id)
-      if (!item) { return }
-      setItemCheckSideEffects({
-        item,
+    const item = collection.items.find(item => item.id === id)
+    if (!item) { return }
 
-        collection,
-        value,
-        isAltKeyPressed,
-      })
-      item.checked = value as boolean
-    }
+    item.checked = value
+    setItemCheckSideEffects({
+      item,
+      collection,
+      value,
+      isAltKeyPressed,
+    })
   }
 
   const directusFilter = computed(() => {
@@ -139,33 +139,33 @@ export const useFilterStore = defineStore('filters', () => {
 
     for (const collection of collections) {
 
-      const collectionCheckedItemsIds = getCollectionCheckedItems(collection.name)
-        .map(item => item.id)
-
-      if (collectionCheckedItemsIds?.length === 0) {
+      const collectionCheckedItems = getCollectionCheckedItems(collection.name)
+      if (collectionCheckedItems?.length === 0) {
         continue;
       }
 
       if (collection.relationType === 'many-to-one') {
         addFilterCondition({
           [collection.fieldName as string]: {
-            "_in": collectionCheckedItemsIds,
+            "_in": collectionCheckedItems
+              .map(item => item.id),
           },
         })
       }
+
       if (collection.relationType === 'many-to-many') {
 
-        const combination = 'and';
         const junction = relationCollections
           .find(j => j.targetCollectionName === collection.name);
+
         if (!junction) {
           continue;
         }
 
-        const dispositifsIds = getIdsMatchingFilters({
-          collectionCheckedItemsIds,
-          combination,
+        const dispositifsIds = getMatchingIds({
           junction,
+          checkedItems: collectionCheckedItems,
+          collection,
         })
 
         if (!dispositifsIds?.length) {
@@ -179,10 +179,9 @@ export const useFilterStore = defineStore('filters', () => {
         })
       }
     }
-
     return filter
   })
-  
+
   return {
     collections,
     rootNodes,

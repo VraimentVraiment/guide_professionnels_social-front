@@ -1,9 +1,5 @@
 <script setup lang="ts">
 
-import {
-  type HierarchyNode,
-} from 'd3-hierarchy'
-
 const props = defineProps<{
   collections: FiltersCollection[]
   isListSelected: boolean
@@ -61,18 +57,15 @@ const isSelectable = computed(() => {
         />
       </div>
       <div class="gps-filters-sidebar__content">
-        <template
+        <DetailsAccordion
           v-for="{ name, label } in collections"
           :key="name"
+          class="filter-group"
+          :label="label"
+          :summary-tag="'h2'"
         >
-          <DetailsAccordion
-            class="filter-group"
-            :label="label"
-            :summary-tag="'h2'"
-          >
-            <FilterNode :node="(filterStore.getCollectionRootNode(name) as HierarchyNode<FilterItemNode>)" />
-          </DetailsAccordion>
-        </template>
+          <FilterNode :node="(filterStore.getCollectionRootNode(name))" />
+        </DetailsAccordion>
       </div>
     </div>
   </ClientOnly>
