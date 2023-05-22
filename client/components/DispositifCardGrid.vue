@@ -9,13 +9,6 @@ const { breakpoints } = useDsfrBreakpoints()
 const isCol6 = breakpoints?.greater('SM')
 const isCol4 = breakpoints?.greater('MD')
 
-const formatAddresses = (addresses) => {
-  return addresses
-    ?.map(({ address }) => {
-      return address.text
-    })
-    ?.join(', ')
-}
 </script>
 
 <template>
@@ -33,8 +26,8 @@ const formatAddresses = (addresses) => {
       ]"
     >
       <div
-        v-for="d in collection"
-        :key="d.id"
+        v-for="{name, id, addresses} in collection"
+        :key="id"
         :class="[
           'fr-col-12',
           { 'fr-col-sm-6': isListSelected && isCol6 },
@@ -42,14 +35,13 @@ const formatAddresses = (addresses) => {
         ]"
       >
         <DispositifCard
-          :id="d.id"
-          :name="d.name"
-          :description="formatAddresses(d.addresses)"
+          :id="id"
+          :name="name"
+          :description="formatAddresses(addresses)"
         />
       </div>
     </div>
   </div>
-
   <p v-else>
     Aucun dispositif
   </p>

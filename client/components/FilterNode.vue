@@ -27,10 +27,7 @@ const setItem = (
 
 <template>
   <template
-    v-if="(
-      node.data
-      && !node.data.hidden
-    )"
+    v-if="node.data"
   >
     <DsfrRadioButton
       v-if="(

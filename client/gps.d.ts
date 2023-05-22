@@ -171,9 +171,8 @@ declare global {
     name: string;
     collection: FiltersCollection;
     checked?: boolean;
-    children?: OneToManyId;
+    // children?: OneToManyId;
     parent_id: number | null;
-    hidden?: boolean;
     checked?: boolean;
     open?: boolean;
     combination?: 'and' | 'or' | 'unique'

@@ -32,7 +32,7 @@ specifiers:
   eslint-plugin-vue: ^9.11.0
   jsdom: ^20.0.3
   nuxt: ^3.4.3
-  nuxt-directus: ^5.2.1
+  nuxt-directus: ^5.3.0
   oh-vue-icons: 1.0.0-rc3
   pinia: ^2.0.36
   postcss: ^8.4.23
@@ -56,7 +56,7 @@ dependencies:
   d3-array: 3.2.3
   d3-hierarchy: 3.1.2
   nuxt: 3.4.3_s42jb6t7vecpkm2apcpkvjjl4q
-  nuxt-directus: 5.2.1
+  nuxt-directus: 5.3.0
   oh-vue-icons: 1.0.0-rc3_vue@3.2.47
   pinia: 2.0.36_dtjfskxukdxv24psui2m5c75zy
   vue: 3.2.47
@@ -1792,11 +1792,29 @@ packages:
       estree-walker: 2.0.2
       source-map: 0.6.1
 
+  /@vue/compiler-core/3.3.3:
+    resolution: {integrity: sha512-cHGJGye49NicgHZb+z7cvUQngqjQ1744DrdweATwgvCSVYZZFmq5Ye/r8gUSY76mu7mYmlgwGWpRuuXH8tq8/g==}
+    dependencies:
+      '@babel/parser': 7.21.8
+      '@vue/shared': 3.3.3
+      estree-walker: 2.0.2
+      source-map-js: 1.0.2
+    dev: true
+    optional: true
+
   /@vue/compiler-dom/3.2.47:
     resolution: {integrity: sha512-dBBnEHEPoftUiS03a4ggEig74J2YBZ2UIeyfpcRM2tavgMWo4bsEfgCGsu+uJIL/vax9S+JztH8NmQerUo7shQ==}
     dependencies:
       '@vue/compiler-core': 3.2.47
       '@vue/shared': 3.2.47
+
+  /@vue/compiler-dom/3.3.3:
+    resolution: {integrity: sha512-Rau2ZZwBABhIuOOY0gj5ouLtlsOFd98ltcufshCD15ep52Ujue40E36e1tKvC+FI2gZuB25V6ilKSoHhvU6PMw==}
+    dependencies:
+      '@vue/compiler-core': 3.3.3
+      '@vue/shared': 3.3.3
+    dev: true
+    optional: true
 
   /@vue/compiler-sfc/3.2.47:
     resolution: {integrity: sha512-rog05W+2IFfxjMcFw10tM9+f7i/+FFpZJJ5XHX72NP9eC2uRD+42M3pYcQqDXVYoj74kHMSEdQ/WmCjt8JFksQ==}
@@ -1817,6 +1835,14 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.2.47
       '@vue/shared': 3.2.47
+
+  /@vue/compiler-ssr/3.3.3:
+    resolution: {integrity: sha512-71JWLsJJDGe1yt/CQUtbzTRpZl7c1/dyQ5UpEVgOaJ2Ud0EOdk6hPVT5mApXnkc52/BveHQMlh1dNg2MVbMWNQ==}
+    dependencies:
+      '@vue/compiler-dom': 3.3.3
+      '@vue/shared': 3.3.3
+    dev: true
+    optional: true
 
   /@vue/devtools-api/6.5.0:
     resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
@@ -1858,8 +1884,24 @@ packages:
       '@vue/shared': 3.2.47
       vue: 3.2.47
 
+  /@vue/server-renderer/3.3.3_vue@3.2.47:
+    resolution: {integrity: sha512-N8fZ1LzHKUS6H11g8niR7YhRcha3k8k21UMP68hnXXWWVZeAuhUZv7Ln9eV29vnHwbMap63qx0ZNmqDvKO1Ucw==}
+    peerDependencies:
+      vue: 3.3.3
+    dependencies:
+      '@vue/compiler-ssr': 3.3.3
+      '@vue/shared': 3.3.3
+      vue: 3.2.47
+    dev: true
+    optional: true
+
   /@vue/shared/3.2.47:
     resolution: {integrity: sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==}
+
+  /@vue/shared/3.3.3:
+    resolution: {integrity: sha512-CHPWoZcIKVIiDCBZ20RYKaIvdfJG8JLIySfyR2HT79iziM8R8etS7WTj4Q6fcWkFwCV7nKr7ZUoisTI+lbZcbQ==}
+    dev: true
+    optional: true
 
   /@vue/test-utils/2.3.2_vue@3.2.47:
     resolution: {integrity: sha512-hJnVaYhbrIm0yBS0+e1Y0Sj85cMyAi+PAbK4JHqMRUZ6S622Goa+G7QzkRSyvCteG8wop7tipuEbHoZo26wsSA==}
@@ -1869,8 +1911,8 @@ packages:
       js-beautify: 1.14.6
       vue: 3.2.47
     optionalDependencies:
-      '@vue/compiler-dom': 3.2.47
-      '@vue/server-renderer': 3.2.47_vue@3.2.47
+      '@vue/compiler-dom': 3.3.3
+      '@vue/server-renderer': 3.3.3_vue@3.2.47
     dev: true
 
   /@vue/tsconfig/0.1.3_@types+node@18.16.3:
@@ -6083,8 +6125,8 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /nuxt-directus/5.2.1:
-    resolution: {integrity: sha512-xohGmQH6lLjs/06j8htGL+QeSL69qz3XNiknZOQM28vMpoJuGwentE+rJS4B9ECS74nA9UCXGjgJ43a73y/5QA==}
+  /nuxt-directus/5.3.0:
+    resolution: {integrity: sha512-0/0eUyLXcLpl76dgEDb428vacTc9Mc9n+0gGQPQibP73GvtUAeg6mUK06yges/cDo7Fkyrx3lGzd96kOvUDGXQ==}
     dependencies:
       '@nuxt/kit': 3.4.3
     transitivePeerDependencies:

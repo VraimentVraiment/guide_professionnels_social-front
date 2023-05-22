@@ -12,6 +12,7 @@ const search = useGpsSearch()
     v-model="search.query.value"
     :class="['gps-search']"
     label="Rechercher"
+    button-text="Rechercher"
     placeholder="Rechercher un mot, une expression, une référence..."
     large
     @search="search.submit()"

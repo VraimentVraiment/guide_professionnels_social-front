@@ -71,6 +71,8 @@ watch(rootNode, (node) => {
   }
 })
 
+const openDetails = useCollectionObserver<Number>()
+
 </script>
 
 <template>
@@ -86,9 +88,9 @@ watch(rootNode, (node) => {
               'fr-col-12',
               'fr-col-lg-8',
             ]"
+            :type="'info'"
             :title="alertTitle"
             :description="alertDescription"
-            :type="'info'"
           />
         </div>
       </div>
@@ -105,15 +107,15 @@ watch(rootNode, (node) => {
           ]"
         >
           <div
-            v-for="item in items"
-            :key="item.id"
+            v-for="{ id, name } in items"
+            :key="id"
             class="fr-col-12 fr-col-sm-6"
           >
             <DsfrTile
-              :title="item.name"
-              :description="item.name"
+              :title="name"
+              :description="name"
               horizontal
-              @click.prevent="() => setThematique(item.id)"
+              @click.prevent="() => setThematique(id)"
             />
           </div>
         </div>
@@ -124,49 +126,49 @@ watch(rootNode, (node) => {
             <h2>{{ selectedThematique }}</h2>
             <div class="gps-links fr-col-10">
               <details
-                v-for="item in rootNode.children"
-                :key="item.id"
-                :open="item?.data?.open"
+                v-for="node in rootNode.children"
+                :key="node.data.id"
+                :open="openDetails.has(node.data.id)"
                 class="gps-links-group "
                 @click.prevent
               >
                 <summary>
                   <NuxtLink
-                    :key="item.id"
+                    :key="node.data.id"
                     class="gps-link gps-link__parent fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
                     @click="() => filterStore.setItem({
                       collectionName: 'types_dispositif',
-                      id: item.data.id,
+                      id: node.data.id,
                       value: true,
                     })"
                   >
-                    {{ item.data.name }}
+                    {{ node.data.name }}
                   </NuxtLink>
                   <DsfrButton
                     primary
                     icon-only
                     size="small"
-                    :icon="!item.data.open ? 'ri-add-line' : 'ri-subtract-line'"
-                    @click="() => item.data.open = !item.data.open"
+                    :icon="!openDetails.has(node.data.id) ? 'ri-add-line' : 'ri-subtract-line'"
+                    @click="() => openDetails.toggle(node.data.id)"
                   />
                 </summary>
                 <div
-                  v-if="item?.children?.length"
+                  v-if="node?.children?.length"
                   class="gps-link-group__children"
                 >
                   <NuxtLink
-                    v-for="child in item.children"
-                    :key="child.id"
+                    v-for="childNode in node.children"
+                    :key="childNode.data.id"
                     class="gps-link gps-link__child fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
                     @click="() => filterStore.setItem({
                       collectionName: 'types_dispositif',
-                      id: child.data.id,
+                      id: childNode.data.id,
                       value: true,
                     })"
                   >
-                    {{ child.data.name }}
+                    {{ childNode.data.name }}
                   </NuxtLink>
                 </div>
               </details>

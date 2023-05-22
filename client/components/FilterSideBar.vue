@@ -85,7 +85,7 @@ const isSelectable = computed(() => {
     align-items: center;
     font-size: 1rem;
     font-weight: 700;
-    padding: .5rem 1rem;
+    padding: 0.375rem 1rem;
     color: var(--text-active-blue-france);
 
     .gps-filters-sidebar__header__icon {

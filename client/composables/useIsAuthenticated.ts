@@ -1,5 +1,5 @@
 export function useIsAuthenticated (): ComputedRef<boolean> {
-  const user = useDirectusUser()
+  // const user = useDirectusUser()
 
   return computed(() => {
     // return Boolean(user.value)
