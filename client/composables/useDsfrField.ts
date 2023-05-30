@@ -1,20 +1,22 @@
+type GpsFieldStrings = {
+  label: string
+  placeholder: string
+  hint: string
+  autocomplete?: string
+  messages: {
+    error: string
+    valid: string
+  }
+}
+
 /**
  * A model for the DSFR field.
  */
-export function useDsfrField ({
+export function useDsfrField({
   strings,
   isValidCondition,
 }: {
-  strings: {
-    label: string
-    placeholder: string
-    hint: string
-    autocomplete?: string
-    messages: {
-      error: string
-      valid: string
-    }
-  },
+  strings: GpsFieldStrings,
   isValidCondition?: (value: string) => boolean
 }): FieldModel {
   const value = ref('')

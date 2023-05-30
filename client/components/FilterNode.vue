@@ -7,7 +7,7 @@ defineProps<{
   node: HierarchyNode<FilterItemNode>
 }>()
 
-const filterStore = useFilterStore()
+const postStore = useDispositifPostStore()
 
 const { current: currentKeysPressed } = useMagicKeys()
 const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
@@ -16,8 +16,8 @@ const setItem = (
   item: FilterItemNode,
   checked: boolean,
 ): void => {
-  filterStore.setItem({
-    collectionName: item.collection.name,
+  postStore.setItem({
+    collectionName: item.collection.collectionName,
     id: item.id,
     value: checked,
     isAltKeyPressed: isAltKeyPressed.value,
@@ -34,11 +34,12 @@ const setItem = (
         node.data.collection.userSelection === 'single-node'
         && node.depth > 0
       )"
-      :name="node.data.collection.name"
+      :name="node.data.collection.collectionName"
       :label="node.data.name"
       :value="node.data.id"
       :model-value="node.data.id"
       small
+      :checked="node.data.checked"
       @update:model-value="() => setItem(node.data as FilterItemNode, true)"
     />
     <DsfrCheckbox

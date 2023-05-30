@@ -1,11 +1,13 @@
 import * as d3 from 'd3-array'
 
 export function getMatchingIds({
-  collection,
+  relationModel,
+  filtersCollection,
   checkedItems,
   junction,
 }: {
-  collection: FiltersCollection,
+  relationModel: FiltersCollection,
+  filtersCollection: FiltersCollection,
   checkedItems: FilterItemNode[],
   junction: Junction,
 }) {
@@ -25,7 +27,11 @@ export function getMatchingIds({
           ([parent_id, items]) =>
             getIdsMatchingFilters({
               itemsIds: items.map(i => i.id),
-              combination: collection.items.find(i => i.id === parent_id)?.combination ?? 'and',
+              combination: filtersCollection.items
+                .find((item) => {
+                  return item.id === parent_id
+                })
+                ?.combination ?? 'and',
               junction,
             }) as number[],
         ),
@@ -33,7 +39,7 @@ export function getMatchingIds({
     ),
   }
 
-  return idGetter[collection.userSelection as keyof typeof idGetter]()
+  return idGetter[relationModel.userSelection as keyof typeof idGetter]()
 }
 
 export function getIdsMatchingFilters({
@@ -66,10 +72,10 @@ export function getOrItems(
   return junction?.items
     ?.reduce((ids, item) => {
       if (
-        itemsIds.includes(item[junction.targetKey])
-        && !ids.includes(item[junction.sourceKey])
+        itemsIds.includes(item[junction.junctionTargetKey])
+        && !ids.includes(item[junction.junctionSourceKey])
       ) {
-        ids.push(item[junction.sourceKey])
+        ids.push(item[junction.junctionSourceKey])
       }
       return ids
     }, [] as number[])
@@ -82,20 +88,20 @@ export function getAndItems(
 
   const groups = d3.group(
     junction.items,
-    d => d[junction.sourceKey],
+    d => d[junction.junctionSourceKey],
   )
 
   return Array
     .from(groups, ([key, value]) => ({
-      [junction.sourceKey]: key,
-      [junction.targetKey]: value.map(d => d[junction.targetKey]),
+      [junction.junctionSourceKey]: key,
+      [junction.junctionTargetKey]: value.map(d => d[junction.junctionTargetKey]),
     }),
     )
     .filter((d) => {
       return itemsIds.every((id) => {
-        const ids = d[junction.targetKey] as number[]
+        const ids = d[junction.junctionTargetKey] as number[]
         return ids.includes(id)
       })
     })
-    .map(d => d[junction.sourceKey] as number)
+    .map(d => d[junction.junctionSourceKey] as number)
 }

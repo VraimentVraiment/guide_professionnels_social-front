@@ -1,8 +1,13 @@
 <script lang="ts" setup>
 
 defineProps<{
-  collection: DispositifPost[]
-  isListSelected: boolean
+  collection: Post[]
+  wrapCards: boolean
+  getCardProps: (item: Post) => {
+    id: string
+    name: string
+    description: string
+  }
 }>()
 
 const { breakpoints } = useDsfrBreakpoints()
@@ -13,7 +18,6 @@ const isCol4 = breakpoints?.greater('MD')
 
 <template>
   <div
-    v-if="collection.length"
     :class="[
       'gps-card-grid',
       'fr-container-fluid',
@@ -26,35 +30,35 @@ const isCol4 = breakpoints?.greater('MD')
       ]"
     >
       <div
-        v-for="{name, id, addresses} in collection"
-        :key="id"
+        v-for="item, i in collection"
+        :key="i"
         :class="[
           'fr-col-12',
-          { 'fr-col-sm-6': isListSelected && isCol6 },
-          { 'fr-col-lg-4': isListSelected && isCol4 },
+          { 'fr-col-sm-6': wrapCards && isCol6 },
+          { 'fr-col-lg-4': wrapCards && isCol4 },
         ]"
       >
-        <DispositifCard
-          :id="id"
-          :name="name"
-          :description="formatAddresses(addresses)"
+        <DsfrCard
+          v-bind="getCardProps(item)"
         />
       </div>
     </div>
   </div>
-  <p v-else>
-    Aucun dispositif
-  </p>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .gps-card-grid {
   padding: 1px;
   overflow: hidden;
-}
-</style>
-<style lang="scss">
-.gps-card-grid {
+
+  .fr-card__img {
+    display: none !important;
+  }
+
+  .fr-card__detail {
+    display: none !important;
+  }
+
   .fr-card__body {
     padding: 0 1.5rem;
 

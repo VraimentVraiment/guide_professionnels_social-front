@@ -10,9 +10,11 @@ provide('richTextFields', richTextFields)
 </script>
 
 <template>
-  <GpsHeader />
-  <GpsMain>
-    <slot />
-  </GpsMain>
-  <GpsFooter />
+  <div>
+    <GpsHeader />
+    <GpsMain>
+      <slot />
+    </GpsMain>
+    <GpsFooter />
+  </div>
 </template>

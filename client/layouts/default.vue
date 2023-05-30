@@ -3,10 +3,12 @@
 </script>
 
 <template>
-  <GpsHeader />
-  <GpsMain>
-    <GpsHead />
-    <slot />
-  </GpsMain>
-  <GpsFooter />
+  <div>
+    <GpsHeader />
+    <GpsMain>
+      <GpsHead />
+      <slot />
+    </GpsMain>
+    <GpsFooter />
+  </div>
 </template>

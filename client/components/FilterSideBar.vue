@@ -2,11 +2,10 @@
 import { type HierarchyNode } from 'd3-hierarchy'
 
 const props = defineProps<{
-  collections: FiltersCollection[]
-  isListSelected: boolean
+  filterCollections: FiltersCollection[]
+  rootNodes: HierarchyNode<FilterItemNode>[]
+  makeUnselectable: boolean
 }>()
-
-const filterStore = useFilterStore()
 
 const isOpen = ref(false)
 
@@ -15,8 +14,8 @@ const isSmallScreen = breakpoints.smaller('MD')
 
 const isSelectable = computed(() => {
   return (
-    isSmallScreen.value
-    || !props.isListSelected
+    !props.makeUnselectable
+    || isSmallScreen.value
   )
 })
 
@@ -29,7 +28,6 @@ const isSelectable = computed(() => {
         'gps-filters-sidebar',
         { 'open': isOpen },
         { 'is-small-screen': isSmallScreen },
-        { 'is-list-selected': isListSelected },
         { 'is-selectable': isSelectable },
       ]"
     >
@@ -59,14 +57,14 @@ const isSelectable = computed(() => {
       </div>
       <div class="gps-filters-sidebar__content">
         <DetailsAccordion
-          v-for="{ name, label } in collections"
-          :key="name"
+          v-for="{ collectionName, label } in filterCollections"
+          :key="collectionName"
           class="filter-group"
           :label="label"
           :summary-tag="'h2'"
-          :open="name === 'caracteristiques_dispositif'"
+          :open="collectionName === 'caracteristiques_dispositif'"
         >
-          <FilterNode :node="(filterStore.getCollectionRootNode(name)) as HierarchyNode<FilterItemNode>" />
+          <FilterNode :node="rootNodes.find(node => node.data.name === collectionName) as HierarchyNode<FilterItemNode>" />
         </DetailsAccordion>
       </div>
     </div>

@@ -1,0 +1,284 @@
+{
+  "data": [
+    {
+      "collection": "directus_files",
+      "field": "file_id",
+      "related_collection": "gps_fichesdispositif",
+      "schema": {
+        "table": "directus_files",
+        "column": "file_id",
+        "foreign_key_table": "gps_fichesdispositif",
+        "foreign_key_column": "id",
+        "constraint_name": "directus_files_file_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 15,
+        "many_collection": "directus_files",
+        "many_field": "file_id",
+        "one_collection": "gps_fichesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "directus_files",
+      "field": "filename",
+      "related_collection": "gps_fichesdispositif",
+      "schema": {
+        "table": "directus_files",
+        "column": "filename",
+        "foreign_key_table": "gps_fichesdispositif",
+        "foreign_key_column": "id",
+        "constraint_name": "directus_files_filename_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 14,
+        "many_collection": "directus_files",
+        "many_field": "filename",
+        "one_collection": "gps_fichesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_caracteristiquesdispositif",
+      "field": "parent_id",
+      "related_collection": "gps_caracteristiquesdispositif",
+      "schema": {
+        "table": "gps_caracteristiquesdispositif",
+        "column": "parent_id",
+        "foreign_key_table": "gps_caracteristiquesdispositif",
+        "foreign_key_column": "id",
+        "constraint_name": "caracteristiques_parent_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "NO ACTION"
+      },
+      "meta": {
+        "id": 9,
+        "many_collection": "gps_caracteristiquesdispositif",
+        "many_field": "parent_id",
+        "one_collection": "gps_caracteristiquesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": "sort",
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_directus_files",
+      "field": "directus_files_id",
+      "related_collection": "directus_files",
+      "schema": {
+        "table": "gps_fichesdispositif_directus_files",
+        "column": "directus_files_id",
+        "foreign_key_table": "directus_files",
+        "foreign_key_column": "id",
+        "constraint_name": "fichesdispositif_files_1_directus_files_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 18,
+        "many_collection": "gps_fichesdispositif_directus_files",
+        "many_field": "directus_files_id",
+        "one_collection": "directus_files",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "gps_fichesdispositif_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_directus_files",
+      "field": "gps_fichesdispositif_id",
+      "related_collection": "gps_fichesdispositif",
+      "schema": {
+        "table": "gps_fichesdispositif_directus_files",
+        "column": "gps_fichesdispositif_id",
+        "foreign_key_table": "gps_fichesdispositif",
+        "foreign_key_column": "id",
+        "constraint_name": "fichesdispositif_files_1_fiche_dispositif_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 19,
+        "many_collection": "gps_fichesdispositif_directus_files",
+        "many_field": "gps_fichesdispositif_id",
+        "one_collection": "gps_fichesdispositif",
+        "one_field": "images",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "directus_files_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_gps_thematiques",
+      "field": "gps_fichesdispositif_id",
+      "related_collection": "gps_fichesdispositif",
+      "schema": {
+        "table": "gps_fichesdispositif_gps_thematiques",
+        "column": "gps_fichesdispositif_id",
+        "foreign_key_table": "gps_fichesdispositif",
+        "foreign_key_column": "id",
+        "constraint_name": "fichesdispositif_thematiques_fiche_dispositif_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 26,
+        "many_collection": "gps_fichesdispositif_gps_thematiques",
+        "many_field": "gps_fichesdispositif_id",
+        "one_collection": "gps_fichesdispositif",
+        "one_field": "thematique_id",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "gps_thematiques_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_gps_thematiques",
+      "field": "gps_thematiques_id",
+      "related_collection": "gps_thematiques",
+      "schema": {
+        "table": "gps_fichesdispositif_gps_thematiques",
+        "column": "gps_thematiques_id",
+        "foreign_key_table": "gps_thematiques",
+        "foreign_key_column": "id",
+        "constraint_name": "fichesdispositif_thematiques_thematique_id_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "NO ACTION"
+      },
+      "meta": {
+        "id": 25,
+        "many_collection": "gps_fichesdispositif_gps_thematiques",
+        "many_field": "gps_thematiques_id",
+        "one_collection": "gps_thematiques",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "gps_fichesdispositif_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichestechniques",
+      "field": "media",
+      "related_collection": "directus_files",
+      "schema": {
+        "table": "gps_fichestechniques",
+        "column": "media",
+        "foreign_key_table": "directus_files",
+        "foreign_key_column": "id",
+        "constraint_name": "fichestechniques_media_foreign",
+        "on_update": "RESTRICT",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "id": 21,
+        "many_collection": "gps_fichestechniques",
+        "many_field": "media",
+        "one_collection": "directus_files",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_typesdispositif",
+      "field": "parent_id",
+      "related_collection": "gps_typesdispositif",
+      "schema": null,
+      "meta": {
+        "id": 3,
+        "many_collection": "gps_typesdispositif",
+        "many_field": "parent_id",
+        "one_collection": "gps_typesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": "sort",
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_gps_caracteristiquesdispositifs",
+      "field": "gps_caracteristiquesdispositif_id",
+      "related_collection": "gps_caracteristiquesdispositif",
+      "schema": null,
+      "meta": {
+        "id": 10,
+        "many_collection": "gps_fichesdispositif_gps_caracteristiquesdispositifs",
+        "many_field": "gps_caracteristiquesdispositif_id",
+        "one_collection": "gps_caracteristiquesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "gps_fichesdispositif_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif_gps_caracteristiquesdispositifs",
+      "field": "gps_fichesdispositif_id",
+      "related_collection": "gps_fichesdispositif",
+      "schema": null,
+      "meta": {
+        "id": 11,
+        "many_collection": "gps_fichesdispositif_gps_caracteristiquesdispositifs",
+        "many_field": "gps_fichesdispositif_id",
+        "one_collection": "gps_fichesdispositif",
+        "one_field": "caracteristiques_dispositif",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": "gps_caracteristiquesdispositif_id",
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "gps_fichesdispositif",
+      "field": "gps_typesdispositif_id",
+      "related_collection": "gps_typesdispositif",
+      "schema": null,
+      "meta": {
+        "id": 12,
+        "many_collection": "gps_fichesdispositif",
+        "many_field": "gps_typesdispositif_id",
+        "one_collection": "gps_typesdispositif",
+        "one_field": null,
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    }
+  ]
+}

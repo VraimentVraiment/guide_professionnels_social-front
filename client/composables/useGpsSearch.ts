@@ -14,7 +14,7 @@ async function submitSearch (
   console.log('Fetching with query:', query.value)
 
   const items = await useFetchDirectusItems({
-    collectionName: 'fiches_dispositif',
+    collectionName: 'gps_fichesdispositif',
     params: {
       search: query.value,
     },

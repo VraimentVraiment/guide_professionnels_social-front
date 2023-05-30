@@ -161,7 +161,6 @@ declare global {
     name: string;
     children: OneToManyId;
     parent_id: ManyToOneId;
-    slug: string;
     sort: number;
     combination?: 'and' | 'or' | 'unique'
   }
@@ -180,11 +179,9 @@ declare global {
 
   type Junction = {
     items: Record<string, number>[],
-    primaryKey: string,
-    sourceKey: string,
-    targetKey: string,
-    targetCollectionName: string,
-    // joinCollectionName?: string,
+    junctionSourceKey: string,
+    junctionTargetKey: string,
+    collectionName: string,
   }
 
   export type FiltersCollection = {
@@ -193,15 +190,12 @@ declare global {
     label?: string
     relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
     userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
-    foreignKey?: string
-    fieldName?: string
+    field?: string
     rootNode?: RootFilterItemNode
-    foreignKey?: string
-    joinCollectionName?: string
-    primaryKey?: string
-    sourceKey?: string
-    targetKey?: string
-    targetCollectionName?: string
+    junctionCollectionName?: string
+    junctionSourceKey?: string
+    junctionTargetKey?: string
+    collectionName?: string
   }
 
   export interface FilterStore {

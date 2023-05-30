@@ -3,45 +3,6 @@ import {
 } from 'd3-hierarchy'
 
 
-export const fetchFilterCollection = async (
-  collection: FiltersCollection,
-) => {
-  const items = (
-    await useFetchDirectusItems<DirectusFilterItem>({
-      collectionName: collection.name,
-    })
-  )
-    .map((item) => {
-      return directusItemToFilterItem({ item, collection })
-    })
-
-  return {
-    ...collection,
-    items,
-  }
-}
-
-/**
- * Converts a DirectusFilterItem into a FilterItem.
- */
-export function directusItemToFilterItem({
-  item,
-  collection,
-}: {
-  item: DirectusFilterItem,
-  collection: FiltersCollection,
-}): FilterItemNode {
-  return {
-    id: item.id,
-    name: item.name,
-    parent_id: item.parent_id,
-    children: item.children,
-    checked: false,
-    combination: item.combination,
-    collection,
-  }
-}
-
 /**
  * Creates a hierarchical representation of a FiltersCollection using d3-hierarchy's `stratify` function.
  */
@@ -81,4 +42,86 @@ export function stratifyFilters(
     parentAccessor,
     getRootFilterItem,
   )
+}
+
+export const getDirectusFilter = ({
+  relationsModel,
+  checkedItems,
+  relationsCollections,
+  filtersCollections,
+}: {
+  relationsModel: DirectusRelation[],
+  checkedItems: Ref<CheckedItems>,
+  relationsCollections: DirectusFilter[],
+  filtersCollections: FiltersCollection[],
+}): DirectusFilter => {
+
+  const filter: DirectusFilter = {}
+
+  const addFilterCondition = (
+    condition: Record<string, unknown>,
+  ) => {
+    filter._and ??= []
+    filter._and.push(condition)
+  }
+
+  if (!relationsModel) {
+    return filter
+  }
+
+  for (const relationModel of relationsModel) {
+
+    const collectionCheckedItems = checkedItems?.value?.find((collection) => {
+      return collection.collectionName === relationModel.collectionName
+    })?.items
+
+    if (
+      !collectionCheckedItems
+      || collectionCheckedItems.length === 0
+    ) {
+      continue;
+    }
+
+    if (relationModel.relationType === 'many-to-one') {
+      addFilterCondition({
+        [relationModel.field as string]: {
+          "_in": collectionCheckedItems
+            .map(item => item.id),
+        },
+      })
+    }
+
+    if (relationModel.relationType === 'many-to-many') {
+
+      const junction = relationsCollections.value
+        ?.find(j => j.collectionName === relationModel.collectionName);
+
+      if (!junction) {
+        continue;
+      }
+
+      const filtersCollection = filtersCollections.value
+        ?.find((collection) => {
+          return collection.collectionName === relationModel.collectionName
+        })
+
+      const dispositifsIds = getMatchingIds({
+        junction,
+        checkedItems: collectionCheckedItems,
+        filtersCollection,
+        relationModel,
+      })
+
+      if (!dispositifsIds?.length) {
+        console.log('no dispositifsIds', dispositifsIds)
+      }
+
+      addFilterCondition({
+        'id': {
+          "_in": dispositifsIds,
+        },
+      })
+    }
+  }
+  return filter
 }

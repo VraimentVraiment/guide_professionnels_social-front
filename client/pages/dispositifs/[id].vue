@@ -9,14 +9,14 @@ const id = parseInt(
   10)
 
 const dispositif = await useFetchDirectusItem<DispositifPost>({
-  collectionName: 'fiches_dispositif',
+  collectionName: 'gps_fichesdispositif',
   id,
 })
 
 const images = (await useFetchDirectusItems<{
   directus_files_id: string,
 }>({
-  collectionName: 'fiches_dispositif_files',
+  collectionName: 'gps_fichesdispositif_directus_files',
   params: {
     filter: {
       id: {

@@ -1,40 +1,36 @@
 <script setup lang="ts">
 
 definePageMeta({
-  layout: 'filter',
+  layout: 'dispositifs',
 })
 
 const isListSelected = ref(true)
-
 const mounted = ref(false)
+const { breakpoints } = useDsfrBreakpoints()
+const isSmallScreen = breakpoints.smaller('MD')
 
 const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
 
-const filterStore = useFilterStore()
+const postStore = useDispositifPostStore()
 
-const dispositifsStore = usePostStore()
-dispositifsStore.update({
-  collectionName: 'fiches_dispositif',
-  params: {
-    filter: filterStore.directusFilter,
-    fields: ['id', 'name', 'addresses'],
-  },
-})
-
-onMounted(() => {
-  watch(filterStore.collections, () => {
-    dispositifsStore.update({
-      collectionName: 'fiches_dispositif',
-      params: {
-        filter: filterStore.directusFilter,
-      },
-    })
-  })
+onMounted(async () => {
+  await postStore.fetchPosts()
+  watch(
+    postStore.filtersCollections,
+    postStore.fetchPosts,
+    { deep: true },
+  )
   mounted.value = true
 })
 
-const { breakpoints } = useDsfrBreakpoints()
-const isSmallScreen = breakpoints.smaller('MD')
+const getCardProps = (postItem) => {
+  const { name, id, addresses } = postItem
+  return {
+    title: name,
+    description: formatAddresses(addresses),
+    link: `/dispositifs/${id}`,
+  }
+}
 
 </script>
 
@@ -50,9 +46,9 @@ const isSmallScreen = breakpoints.smaller('MD')
         ]"
       >
         <FilterSideBar
-          v-if="filterStore.collections?.length"
-          :is-list-selected="isListSelected"
-          :collections="filterStore.collections as FiltersCollection[]"
+          :make-unselectable="isListSelected"
+          :filter-collections="postStore.filtersCollections"
+          :root-nodes="postStore.rootNodes"
         />
         <div id="dispositifs-sidebar" />
       </div>
@@ -72,10 +68,18 @@ const isSmallScreen = breakpoints.smaller('MD')
             to="#dispositifs-sidebar"
             :disabled="isListSelected || isSmallScreen"
           >
-            <DispositifCardGrid
-              :collection="dispositifsStore.collection"
-              :is-list-selected="isListSelected"
-            />
+            <template v-if="postStore.postsCollection.length > 0">
+              <GpsPostCardGrid
+                :collection="postStore.postsCollection"
+                :wrap-cards="isListSelected"
+                :get-card-props="getCardProps"
+              />
+            </template>
+            <template v-else>
+              <p>
+                Aucun dispositif ne correspond à votre recherche.
+              </p>
+            </template>
           </Teleport>
         </template>
         <template #tab-1>

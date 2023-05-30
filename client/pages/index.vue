@@ -5,7 +5,7 @@ import {
 } from 'd3-hierarchy'
 
 definePageMeta({
-  layout: 'filter',
+  layout: 'dispositifs',
 })
 
 const {
@@ -17,10 +17,14 @@ const { alertContent } = await useGetContent('/home')
 alertTitle.value = alertContent[0].title
 alertDescription.value = alertContent[0].description
 
-const filterStore = useFilterStore()
-filterStore.$reset()
+const postStore = useDispositifPostStore()
+postStore.resetFilters()
 
-const items = filterStore.getCollection('thematiques')?.items
+const items = postStore.filtersCollections
+  ?.find((collection) => {
+    return collection.collectionName === 'gps_thematiques'
+  })
+  ?.items
 
 const themeId = ref<Number | null>(null)
 const rootNode = ref<HierarchyNode<FilterItemNode> | null>(null)
@@ -28,41 +32,8 @@ const selectedThematique = computed(() => {
   if (themeId.value === null) {
     return null
   }
-
   return items?.find(item => item.id === themeId.value)?.name
 })
-
-const setThematique = async (
-  id: number,
-) => {
-
-  if (id === themeId.value) {
-    return
-  }
-
-  filterStore.setItem({
-    collectionName: 'thematiques',
-    id,
-    value: true,
-  })
-
-  themeId.value = id
-  const newTypes = await useFetchDirectusItems<DirectusFilter>({
-    collectionName: 'types_dispositif',
-    params: {
-      filter: {
-        'thematique': {
-          "_eq": id,
-        },
-      },
-    },
-  })
-
-  rootNode.value = stratifyFilters({
-    items: newTypes,
-    name: 'types_dispositif',
-  })
-}
 
 watch(rootNode, (node) => {
   if (node) {
@@ -72,6 +43,40 @@ watch(rootNode, (node) => {
 })
 
 const openDetails = useCollectionObserver<Number>()
+
+const setThematique = async (
+  id: number,
+) => {
+
+  if (id === themeId.value) {
+    return
+  }
+
+  postStore.setItem({
+    collectionName: 'gps_thematiques',
+    id,
+    value: true,
+  })
+
+  themeId.value = id
+  const newTypes = await useFetchDirectusItems<DirectusFilter>({
+    collectionName: 'gps_typesdispositif',
+    params: {
+      filter: {
+        'thematique_id': {
+          'gps_thematiques_id': {
+            "_eq": id,
+          },
+        },
+      },
+    },
+  })
+
+  rootNode.value = stratifyFilters({
+    items: newTypes,
+    name: 'gps_types_dispositif',
+  })
+}
 
 </script>
 
@@ -137,8 +142,8 @@ const openDetails = useCollectionObserver<Number>()
                     :key="node.data.id"
                     class="gps-link gps-link__parent fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
-                    @click="() => filterStore.setItem({
-                      collectionName: 'types_dispositif',
+                    @click="() => postStore.setItem({
+                      collectionName: 'gps_typesdispositif',
                       id: node.data.id,
                       value: true,
                     })"
@@ -162,8 +167,8 @@ const openDetails = useCollectionObserver<Number>()
                     :key="childNode.data.id"
                     class="gps-link gps-link__child fr-link fr-fi-arrow-right-line fr-link--icon-right"
                     :to="`/dispositifs`"
-                    @click="() => filterStore.setItem({
-                      collectionName: 'types_dispositif',
+                    @click="() => postStore.setItem({
+                      collectionName: 'gps_typesdispositif',
                       id: childNode.data.id,
                       value: true,
                     })"

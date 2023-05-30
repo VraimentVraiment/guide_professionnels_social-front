@@ -6,22 +6,24 @@ type CheckItemProps = {
 
 export function setItemCheckSideEffects({
   collection,
+  relationModel,
   isAltKeyPressed,
   item,
   value,
 }: {
   collection: FiltersCollection,
+  relationModel: Record<string, unknown>,
   item: FilterItemNode,
   value: boolean,
   isAltKeyPressed?: boolean,
 }) {
-  if (collection.userSelection === 'single-node') {
+  if (relationModel.userSelection === 'single-node') {
     collection.items.forEach(i => i.checked = false)
   } else if (
     isAltKeyPressed
     && (
-      collection.userSelection === 'leaves-only'
-      || collection.userSelection === 'all-nodes'
+      relationModel.userSelection === 'leaves-only'
+      || relationModel.userSelection === 'all-nodes'
     )
   ) {
     nextTick(() => {
@@ -32,7 +34,7 @@ export function setItemCheckSideEffects({
         }
       })
     })
-  } else if (collection.userSelection === 'all-nodes') {
+  } else if (relationModel.userSelection === 'all-nodes') {
     nextTick(() => {
       setItemChildren({ collection, item, value })
       setItemParent({ collection, item, value })
