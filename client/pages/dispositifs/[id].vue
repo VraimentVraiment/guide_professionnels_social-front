@@ -98,7 +98,7 @@ const richTextFields = inject('richTextFields')
           <img
             v-for="{ directus_files_id }, i in images"
             :key="i"
-            :src="`${useRuntimeConfig().directus.url}/assets/${directus_files_id}`"
+            :src="getDirectusFile(directus_files_id)"
             alt=""
           >
         </div>
@@ -152,7 +152,7 @@ const richTextFields = inject('richTextFields')
 <style scoped lang="scss">
 section.gps-post__content {
 
-  c header,
+  header,
   article {
     background: var(--background-default-grey);
     padding: 3rem;
