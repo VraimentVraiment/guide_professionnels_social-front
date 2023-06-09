@@ -6,6 +6,7 @@ definePageMeta({
 
 const isListSelected = ref(true)
 const mounted = ref(false)
+const hasMapLoaded = ref(false)
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
@@ -73,6 +74,7 @@ const getCardProps = (postItem) => {
                 :collection="postStore.postsCollection"
                 :wrap-cards="isListSelected"
                 :get-card-props="getCardProps"
+                type="link"
               />
             </template>
             <template v-else>
@@ -83,7 +85,12 @@ const getCardProps = (postItem) => {
           </Teleport>
         </template>
         <template #tab-1>
-          <GpsMap />
+          <template v-if="!isListSelected || hasMapLoaded">
+            <GpsMap
+              :collection="postStore.postsCollection"
+              @map-loaded="() => hasMapLoaded = true"
+            />
+          </template>
         </template>
       </GpsTabs>
     </template>

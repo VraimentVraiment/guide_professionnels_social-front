@@ -1,9 +1,13 @@
 <script setup lang="ts">
+
 const postStore = useDispositifPostStore()
+
 await postStore.setCollection('gps_fichesdispositif')
 await postStore.fetchFilterCollections()
 await postStore.fetchRelationsCollections()
+
 </script>
+
 <template>
   <div>
     <GpsHeader />
@@ -11,7 +15,6 @@ await postStore.fetchRelationsCollections()
       <GpsHead />
       <slot />
     </GpsMain>
-    <GpsFooter />
     <GpsFooter />
   </div>
 </template>

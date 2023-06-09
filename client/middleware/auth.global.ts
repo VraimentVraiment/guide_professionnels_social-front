@@ -1,3 +1,6 @@
+/**
+ * Auth middleware
+ */
 export default defineNuxtRouteMiddleware((to, from) => {
   const isAuthenticated = useIsAuthenticated()
 

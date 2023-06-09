@@ -4,6 +4,7 @@ export const useDispositifPostStore = defineStore('posts', () => {
   const postsCollection = ref<Post[]>([])
   const filtersCollections = ref<FiltersCollection[]>([])
   const relationsCollections = ref<DirectusFilter[]>([])
+
   const rootNodes = computed(() => {
     return filtersCollections.value.map((collection) => {
       return stratifyFilters(collection as FiltersCollection)
