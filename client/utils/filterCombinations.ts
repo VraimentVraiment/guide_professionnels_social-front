@@ -6,7 +6,7 @@ export function getMatchingIds({
   checkedItems,
   junction,
 }: {
-  relationModel: FiltersCollection,
+  relationModel: CollectionRelationModel,
   filtersCollection: FiltersCollection,
   checkedItems: FilterItemNode[],
   junction: Junction,

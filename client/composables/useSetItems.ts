@@ -1,10 +1,53 @@
+export function useSetItem(
+  collectionModel: Ref<CollectionModel | null>,
+  filtersCollections: Ref<FiltersCollection[]>,
+) {
+  function setItem({
+    collectionName,
+    id,
+    value,
+    isAltKeyPressed,
+  }: {
+    collectionName: string,
+    id: number,
+    value: any,
+    isAltKeyPressed: boolean
+  }) {
+    const collection = filtersCollections.value
+      .find(c => c.collectionName === collectionName);
+    if (!collection) { return }
+
+    const item = collection.items
+      .find(i => i.id === id);
+    if (!item) { return }
+
+    item.checked = value;
+
+    const relationModel = collectionModel.value?.relations
+      ?.find((relation) => {
+        return relation.collectionName === collectionName
+      })
+    if (!relationModel) { return }
+
+    setItemCheckSideEffects({
+      item,
+      collection,
+      relationModel,
+      value,
+      isAltKeyPressed,
+    })
+    item.checked = value
+  }
+  return setItem;
+}
+
 type CheckItemProps = {
   collection: FiltersCollection,
   item: FilterItemNode,
   value: boolean,
 }
 
-export function setItemCheckSideEffects({
+function setItemCheckSideEffects({
   collection,
   relationModel,
   isAltKeyPressed,
@@ -12,7 +55,7 @@ export function setItemCheckSideEffects({
   value,
 }: {
   collection: FiltersCollection,
-  relationModel: Record<string, unknown>,
+  relationModel: CollectionRelationModel,
   item: FilterItemNode,
   value: boolean,
   isAltKeyPressed?: boolean,

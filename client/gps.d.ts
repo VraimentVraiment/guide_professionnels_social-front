@@ -43,43 +43,43 @@ import {
 } from "nuxt-directus/dist/runtime/types";
 
 export {
-    /* auth */
-    DirectusUser,
-    DirectusAuthCredentials,
-    DirectusAuthResponse,
-    DirectusPasswordForgotCredentials,
-    DirectusPasswordResetCredentials,
-    DirectusUserRequest,
-    DirectusUserCreation,
-    DirectusUserUpdate,
-    DirectusUserDeletion,
-    DirectusRegisterCredentials,
-    /* query params */
-    DirectusQueryParams,
-    /* collections */
-    DirectusCollectionRequest,
-    DirectusCollectionMeta,
-    DirectusCollectionCreation,
-    DirectusCollectionUpdate,
-    /* items */
-    DirectusItemMetadata,
-    DirectusItems,
-    DirectusItem,
-    DirectusItemRequest,
-    DirectusItemCreation,
-    DirectusItemUpdate,
-    DirectusItemDeletion,
-    /* files */
-    DirectusFile,
-    DirectusFolders,
-    DirectusFileRequest,
-    DirectusThumbnailFormat,
-    DirectusThumbnailFit,
-    DirectusThumbnailOptions,
-    /* notification */
-    DirectusNotificationObject,
-    /* revisions */
-    DirectusRevision,
+  /* auth */
+  DirectusUser,
+  DirectusAuthCredentials,
+  DirectusAuthResponse,
+  DirectusPasswordForgotCredentials,
+  DirectusPasswordResetCredentials,
+  DirectusUserRequest,
+  DirectusUserCreation,
+  DirectusUserUpdate,
+  DirectusUserDeletion,
+  DirectusRegisterCredentials,
+  /* query params */
+  DirectusQueryParams,
+  /* collections */
+  DirectusCollectionRequest,
+  DirectusCollectionMeta,
+  DirectusCollectionCreation,
+  DirectusCollectionUpdate,
+  /* items */
+  DirectusItemMetadata,
+  DirectusItems,
+  DirectusItem,
+  DirectusItemRequest,
+  DirectusItemCreation,
+  DirectusItemUpdate,
+  DirectusItemDeletion,
+  /* files */
+  DirectusFile,
+  DirectusFolders,
+  DirectusFileRequest,
+  DirectusThumbnailFormat,
+  DirectusThumbnailFit,
+  DirectusThumbnailOptions,
+  /* notification */
+  DirectusNotificationObject,
+  /* revisions */
+  DirectusRevision,
 }
 
 declare global {
@@ -122,17 +122,6 @@ declare global {
     status: PostStatus
   }
 
-  export interface PostStore<PostType extends Post> {
-    collection: Ref<PostType[]>
-    update: (filters?: FiltersCollection[]) => Promise<void>
-  }
-
-  /*
-   *
-   * GPS14 Posts
-   *
-   */
-
   export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
 
   export interface FicheTechniquePost extends Post {
@@ -156,28 +145,52 @@ declare global {
 
   export type DirectusFilter = Record<string, Record<string, string | DirectusFilter>>;
 
-  export interface DirectusFilterItem {
+  type FilterItem = {
     id: number
-    name: string;
+    name: string
+    parent_id: number | null
+    combination?: 'and' | 'or' | 'unique'
+  }
+  
+  export interface DirectusFilterItem extends FilterItem {
     children: OneToManyId;
-    parent_id: ManyToOneId;
     sort: number;
     combination?: 'and' | 'or' | 'unique'
   }
 
-  export interface FilterItemNode {
-    id: number;
-    name: string;
-    collection: FiltersCollection;
-    checked?: boolean;
-    // children?: OneToManyId;
-    parent_id: number | null;
-    checked?: boolean;
+  export interface FilterItemNode extends FilterItem {
+    relationModel: CollectionRelationModel;
     open?: boolean;
-    combination?: 'and' | 'or' | 'unique'
+    checked?: boolean;
   }
 
-  type Junction = {
+  export type CollectionModel = {
+    label: string
+    type: 'post' | 'taxonomy'
+    collectionName: string
+    relations?: CollectionRelationModel[]
+    thumbnailFields?: string[]
+  }
+
+  export type CollectionRelationModel = {
+    label: string
+    collectionName: string
+    junctionCollectionName?: string
+    junctionSourceKey?: string
+    junctionTargetKey?: string
+    relationType: 'many-to-one' | 'many-to-many'
+    field?: string
+    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
+  }
+
+  export type Collection = {
+    model: CollectionModel
+    items: Ref<unknown>[]
+    rootNode?: HierarchyNode<DirectusFilterItem>
+    checkedItems?: Ref<unknown>[]
+  }
+
+  export type Junction = {
     items: Record<string, number>[],
     junctionSourceKey: string,
     junctionTargetKey: string,
@@ -185,7 +198,7 @@ declare global {
   }
 
   export type FiltersCollection = {
-    name: string
+    collectionName: string;
     items: FilterItemNode[]
     label?: string
     relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
@@ -195,12 +208,6 @@ declare global {
     junctionCollectionName?: string
     junctionSourceKey?: string
     junctionTargetKey?: string
-    collectionName?: string
-  }
-
-  export interface FilterStore {
-    collections: FiltersCollection[],
-    fetchAll: () => Promise<void>,
   }
 
   /*

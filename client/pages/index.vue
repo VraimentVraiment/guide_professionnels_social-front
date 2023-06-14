@@ -17,7 +17,7 @@ const { alertContent } = await useGetContent('/home')
 alertTitle.value = alertContent[0].title
 alertDescription.value = alertContent[0].description
 
-const postStore = useDispositifPostStore()
+const postStore = usePostStore()
 postStore.resetFilters()
 
 const items = postStore.filtersCollections

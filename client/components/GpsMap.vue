@@ -6,89 +6,40 @@ const props = defineProps<{
 
 const emit = defineEmits(["map-loaded"]);
 
-/**
- * @see https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MarkerOptions.html
- */
-type GpMarkerOptions = {
-  position?: {
-    x: number;
-    y: number;
-    projection?: string;
-  };
-  content: string;
-  contentType?: string;
-  url?: string; // Icon URL used to materialize the marker.
-  offset?: [number, number];
-  ppoffset?: [number, number];
-  autoPanOptions: GpAutoPanOptions;
-};
-let map: any;
+const { options: GEOPORTAL_CONFIG } = await useGetContent('/geoportal-config')
 
 const markers = computed(() => {
-  return props.collection.flatMap((post) => {
-    return (post.addresses || [])
-      .map(({ address }): GpMarkerOptions[] => {
-        const coordinates = address?.value?.geometry?.coordinates
-        return {
-          position: {
-            x: coordinates?.[0],
-            y: coordinates?.[1],
-            projection: "CRS:84",
-          },
-          content: getMarkerTooltipContent(post, address),
-          // url: "/images/marker.png",
-        };
-      })
-  })
+  return props.collection
+    .flatMap((post) => {
+      return post.addresses
+        ?.map(geojsonAddressToMarkerOptions(post, GEOPORTAL_CONFIG.center.projection))
+    })
+    .filter(Boolean)
 })
 
 if (process.client) {
   import("@ignf-geoportal/sdk-2d")
-    .then((Gp) => {
-      renderMap(Gp);
-    });
+    .then(loadMap)
 }
 
-function getMarkerTooltipContent(post, address) {
-  return `
-  <div class="gps-marker-tooltip">
-    <h6>${post.name}</h6>
-    <p>${address.text}</p>
-    <p><a class="gps-link fr-link fr-fi-arrow-right-line fr-link--icon-right" href="/dispositifs/${post.id}">Voir le dispositif</a></p>
-  </div>
-  `
-}
+function loadMap(Gp: any) {
 
-function renderMap(Gp: any) {
-  map = Gp.Map.load("map", {
-    apiKey: "cartes,essentiels",
-    center: {
-      x: -0.3596,
-      y: 49.1756,
-      projection: "CRS:84",
-    },
-    zoom: 9,
+  const gpMap = Gp.Map.load("map", {
+    ...GEOPORTAL_CONFIG,
     layersOptions: {
       "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2": {},
-    },
-    controlsOptions: {
-      "search": {
-        maximised: true,
-      },
     },
     mapEventsOptions: {
       "mapLoaded": onMapLoaded,
     },
   });
-}
 
-function onMapLoaded() {
-  emit("map-loaded");
-  map.setMarkersOptions(markers.value);
-  console.log(map)
-  watch(markers, () => {
-    map.setMarkersOptions(markers.value);
-  });
+  function onMapLoaded() {
+    emit("map-loaded");
+    watchEffect(() => {
+      gpMap.setMarkersOptions(markers.value);
+    });
+  }
 }
 
 </script>
@@ -97,12 +48,13 @@ function onMapLoaded() {
   <div id="map" />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 #map {
   width: 100%;
   height: 600px;
 }
 </style>
+
 <style lang="scss">
 .gp-feature-info-div {
   padding: 1rem 1.5rem !important;

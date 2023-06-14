@@ -6,6 +6,6 @@ richTextFields:
   - key: missions
     label: Missions
   - key: demande_dinformation
-    label: Demande d\'information
+    label: Demande d'information
   - key: demarche_a_suivre
     label: Démarche à suivre

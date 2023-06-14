@@ -10,15 +10,15 @@ const hasMapLoaded = ref(false)
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
-const { tabListName, tabTitles } = (await useGetContent('dispositifs'))
+const { tabListName, tabTitles, emptyMessage } = (await useGetContent('dispositifs'))
 
-const postStore = useDispositifPostStore()
+const postStore = usePostStore()
 
 onMounted(async () => {
-  await postStore.fetchPosts()
+  await postStore.fetchPostsCollection()
   watch(
     postStore.filtersCollections,
-    postStore.fetchPosts,
+    postStore.fetchPostsCollection,
     { deep: true },
   )
   mounted.value = true
@@ -61,7 +61,7 @@ const getCardProps = (postItem) => {
         ]"
         :tab-list-name="tabListName"
         :tab-titles="tabTitles"
-        @select-tab="index => isListSelected = index === 0"
+        @select-tab="(index: number) => isListSelected = index === 0"
       >
         <template #tab-0>
           <Teleport
@@ -79,7 +79,7 @@ const getCardProps = (postItem) => {
             </template>
             <template v-else>
               <p>
-                Aucun dispositif ne correspond à votre recherche.
+                {{ emptyMessage }}
               </p>
             </template>
           </Teleport>

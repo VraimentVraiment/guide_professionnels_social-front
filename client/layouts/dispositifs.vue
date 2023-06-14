@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const postStore = useDispositifPostStore()
+const postStore = usePostStore()
 
 await postStore.setCollection('gps_fichesdispositif')
 await postStore.fetchFilterCollections()

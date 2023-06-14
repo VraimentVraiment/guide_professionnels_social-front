@@ -1,0 +1,10 @@
+options:
+  apiKey: cartes,essentiels
+  center:
+    x: -0.3596
+    y: 49.1756
+    projection: CRS:84
+  zoom: 9
+  controlsOptions:
+    search:
+      maximised: true

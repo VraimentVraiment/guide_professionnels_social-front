@@ -13,7 +13,7 @@ const dispositif = await useFetchDirectusItem<DispositifPost>({
   id,
 })
 
-const images = (await useFetchDirectusItems<{
+const images = await useFetchDirectusItems<{
   directus_files_id: string,
 }>({
   collectionName: 'gps_fichesdispositif_directus_files',
@@ -24,13 +24,19 @@ const images = (await useFetchDirectusItems<{
       },
     },
   },
-}))
+})
 
 if (!dispositif) {
   navigateTo('/404')
 }
 
 const richTextFields = inject('richTextFields')
+
+const downloadPdf = (
+  dispositif: DispositifPost,
+  ) => {
+  console.log("download pdf", dispositif);
+}
 
 </script>
 
@@ -67,8 +73,8 @@ const richTextFields = inject('richTextFields')
           />
           <ul>
             <li
-              v-for="address in dispositif.addresses"
-              :key="address.id"
+              v-for="address, i in dispositif.addresses"
+              :key="i"
             >
               {{ address.address.text }}
             </li>
@@ -96,8 +102,8 @@ const richTextFields = inject('richTextFields')
           class="gps-post__images"
         >
           <img
-            v-for="{ directus_files_id }, i in images"
-            :key="i"
+            v-for="{ directus_files_id } in images"
+            :key="directus_files_id"
             :src="getDirectusFile(directus_files_id)"
             alt=""
           >
@@ -118,7 +124,7 @@ const richTextFields = inject('richTextFields')
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => console.log('download')"
+          @click="() => downloadPdf(dispositif)"
         />
         <DsfrButton
           class="fr-mt-4v"

@@ -32,22 +32,19 @@ collections:
       - name
       - addresses
     relations:
-      - name: gps_thematiques
-        collectionName: gps_thematiques
+      - collectionName: gps_thematiques
         label: Thématiques
         userSelection: single-node
         relationType: many-to-many
         junctionCollectionName: gps_fichesdispositif_gps_thematiques
         junctionSourceKey: gps_fichesdispositif_id
         junctionTargetKey: gps_thematiques_id
-      - name: gps_typesdispositif
-        collectionName: gps_typesdispositif
+      - collectionName: gps_typesdispositif
         label: Types de dispositif
         relationType: many-to-one
         userSelection: all-nodes
         field: gps_typesdispositif_id
-      - name: gps_caracteristiquesdispositif
-        collectionName: gps_caracteristiquesdispositif
+      - collectionName: gps_caracteristiquesdispositif
         label: Caractéristiques
         userSelection: leaves-only
         relationType: many-to-many
