@@ -25,8 +25,6 @@ export function useFetchFiltersCollections(
           continue
         }
 
-        console.log("-----------------------------------------");
-
         const existingItemsChecked = existingCollection.items
           .filter(item => item.checked)
           .map(item => item.id)
@@ -41,9 +39,7 @@ export function useFetchFiltersCollections(
       }
     }
 
-    // nextTick(() => {
       cancelWatch.value = false
-    // })
   }
 
   return fetchFiltersCollections;

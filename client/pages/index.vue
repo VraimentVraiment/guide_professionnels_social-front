@@ -1,54 +1,46 @@
 <script setup lang="ts">
 
+import { storeToRefs } from 'pinia'
+
 definePageMeta({
-  layout: 'dispositifs',
+  layout: 'default',
+  middleware: ["collections"],
 })
 
 const postStore = useDispositifPostStore()
-postStore.resetFilters()
 
-const thematiquesItems = computed(() => {
-  return postStore.filtersCollections
-    ?.find((collection) => {
-      return collection.collectionName === 'gps_thematiques'
-    })
-    ?.items
-})
-
-const selectedThematique = computed(() => {
-  return thematiquesItems.value
-    ?.find((item) => {
-      return item.checked === true
-    })
-})
-
-const typesRootNode = computed(() => {
-  return postStore.rootNodes
-    ?.find((node) => {
-      return node?.data.name === 'gps_typesdispositif'
-    })
-})
+const {
+  thematiquesItems,
+  selectedThematique,
+  typesRootNode,
+} = storeToRefs(useGpsCollectionsStore())
 
 const {
   alertTitle,
   alertDescription,
 } = useAlertStore()
 const { alertContent } = await useGetContent('/home')
-alertTitle.value = alertContent[0].title
-alertDescription.value = alertContent[0].description
 
 const openDetails = useCollectionObserver<Number>()
 
-const setThematique = (id: number) => {
+const stepOne = () => {
+  postStore.resetFilters()
+  alertTitle.value = alertContent[0].title
+  alertDescription.value = alertContent[0].description
+}
+
+const stepTwo = (id: number) => {
   postStore.setItem({
     collectionName: 'gps_thematiques',
     id,
     value: true,
   })
   postStore.fetchFiltersCollections()
-      alertTitle.value = alertContent[1].title
-      alertDescription.value = alertContent[1].description
+  alertTitle.value = alertContent[1].title
+  alertDescription.value = alertContent[1].description
 }
+
+stepOne()
 
 </script>
 
@@ -83,24 +75,37 @@ const setThematique = (id: number) => {
             'fr-grid-row--gutters',
           ]"
         >
-          <div
-            v-for="{ id, name } in thematiquesItems"
-            :key="id"
-            class="fr-col-12 fr-col-sm-6"
-          >
-            <DsfrTile
-              :title="name"
-              :description="name"
-              horizontal
-              @click.prevent="() => setThematique(id)"
-            />
-          </div>
+          <ClientOnly>
+            <div
+              v-for="{ id, name } in thematiquesItems"
+              :key="id"
+              class="fr-col-12 fr-col-sm-6"
+            >
+              <DsfrTile
+                :title="name"
+                :description="name"
+                horizontal
+                @click.prevent="() => stepTwo(id)"
+              />
+            </div>
+          </ClientOnly>
         </div>
       </div>
       <template v-else>
         <div class="fr-container--fluid">
           <div class="fr-grid-row">
-            <h2>{{ selectedThematique?.name }}</h2>
+            <h2 class="fr-col-12 fr-mb-1w">
+              {{ selectedThematique?.name }}
+            </h2>
+            <DsfrButton
+              :class="'fr-mb-4w'"
+              type="buttonType"
+              :label="`Selétionner une autre thématique`"
+              tertiary
+              no-outline
+              :icon="'ri-arrow-left-line'"
+              @click="stepOne"
+            />
             <div
               v-if="typesRootNode?.children"
               class="gps-links fr-col-10"
@@ -165,6 +170,7 @@ const setThematique = (id: number) => {
   padding: 1rem;
   background: var(--background-default-grey);
   border: 1px solid var(--border-default-grey);
+  color: var(--alt-blue-france);
 }
 
 details.gps-links-group {

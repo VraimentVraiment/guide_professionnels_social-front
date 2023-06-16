@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 definePageMeta({
-  layout: 'dispositifs',
+  layout: 'default',
+  middleware: ["collections"],
 })
 
 const isListSelected = ref(true)

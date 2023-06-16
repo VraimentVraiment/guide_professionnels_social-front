@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { format } from 'path';
-
 
 definePageMeta({
   layout: 'default',
@@ -16,7 +14,7 @@ const filesData = await Promise.all(
   fichesTechniques.map(async (ficheTechnique) => {
     return (await getFiles({
       params: {
-        fields: 'id, filesize, type',
+        fields: ['id', 'filesize', 'type'],
         filter: {
           id: {
             _in: ficheTechnique.media,

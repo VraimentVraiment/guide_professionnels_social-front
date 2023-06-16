@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 definePageMeta({
-  layout: 'dispositif',
+  layout: 'default',
 })
 
 const id = parseInt(
@@ -30,7 +30,10 @@ if (!dispositif) {
   navigateTo('/404')
 }
 
-const richTextFields = inject('richTextFields')
+const { richTextFields }: {
+  key: RichTextKey,
+  label: string,
+}[] = await useGetContent('/dispositif')
 
 const downloadPdf = (
   dispositif: DispositifPost,
