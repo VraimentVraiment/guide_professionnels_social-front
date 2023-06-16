@@ -64,7 +64,9 @@ const isSelectable = computed(() => {
           :summary-tag="'h2'"
           :open="collectionName === 'caracteristiques_dispositif'"
         >
-          <FilterNode :node="rootNodes.find(node => node.data.name === collectionName) as HierarchyNode<FilterItemNode>" />
+          <FilterNode
+            :node="rootNodes.find(node => node.data.name === collectionName)"
+          />
         </DetailsAccordion>
       </div>
     </div>
@@ -116,7 +118,6 @@ const isSelectable = computed(() => {
     }
 
     .gps-filters-sidebar__header {
-      cursor: pointer;
       background-color: var(--background-action-low-blue-france);
       color: var(--text-action-high-grey);
 

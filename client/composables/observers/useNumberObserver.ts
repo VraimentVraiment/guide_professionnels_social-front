@@ -4,19 +4,19 @@ export function useNumberObserver ({
   const number = ref(defaultValue)
   const prevNumber = ref(defaultValue)
 
-  const select = (value: number): void => {
+  const set = (value: number): void => {
     prevNumber.value = number.value
     number.value = value
   }
 
-  const isSelected = (value: number): boolean => {
+  const is = (value: number): boolean => {
     return number.value === value
   }
 
   return {
     number,
     prevNumber,
-    select,
-    isSelected,
+    set,
+    is,
   }
 }

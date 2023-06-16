@@ -1,28 +1,80 @@
+import { useArrayDifference } from "@vueuse/core"
+
 export function useFetchFiltersCollections(
   filtersCollections: Ref<FiltersCollection[]>,
-  collectionModel: Ref<CollectionModel | null>,
+  postCollectionModel: Ref<CollectionModel | null>,
+  directusFilters,
+  cancelWatch: Ref<boolean>,
 ) {
-  async function fetchFilterCollections(): Promise<void> {
-    filtersCollections.value = await Promise.all(
-      getFiltersCollections(collectionModel.value),
+  async function fetchFiltersCollections(): Promise<void> {
+    cancelWatch.value = true
+    const fetchedCollections = await Promise.all(
+      getFiltersCollections(postCollectionModel.value, directusFilters),
     )
+
+    for (const { items: fetchedItems, ...collection } of fetchedCollections) {
+      const existingCollection = filtersCollections.value
+        .find(c => c.collectionName === collection.collectionName)
+
+      if (!existingCollection) {
+        filtersCollections.value.push({ items: fetchedItems, ...collection })
+      } else {
+        const diff = useArrayDifference(existingCollection.items, fetchedItems, (v1, v2) => v1.id === v2.id)
+
+        if (!diff.value.length) {
+          continue
+        }
+
+        console.log("-----------------------------------------");
+
+        const existingItemsChecked = existingCollection.items
+          .filter(item => item.checked)
+          .map(item => item.id)
+
+        existingCollection.items = fetchedItems
+
+        for (const item of existingCollection.items) {
+          if (existingItemsChecked.includes(item.id)) {
+            item.checked = true
+          }
+        }
+      }
+    }
+
+    // nextTick(() => {
+      cancelWatch.value = false
+    // })
   }
-  return fetchFilterCollections;
+
+  return fetchFiltersCollections;
 }
 
-function getFiltersCollections(
-  collectionModel: CollectionModel | null,
-): Promise<FiltersCollection>[] {
 
-  return collectionModel?.relations
-    ?.map(getInitialFilterCollection) ?? []
+function getFiltersCollections(
+  postCollectionModel: CollectionModel | null,
+  directusFilters,
+): Promise<FiltersCollection>[] {
+  return postCollectionModel?.relations
+    ?.map((relationModel) => {
+
+      const directusFilter = directusFilters.value
+        ?.find((filter) => {
+          return filter.collectionName === relationModel.collectionName
+        })?.filter ?? {} as Record<string, unknown>
+
+      return getInitialFilterCollection(relationModel, directusFilter)
+    }) ?? []
 }
 
 async function getInitialFilterCollection(
   relationModel: CollectionRelationModel,
+  directusFilter,
 ): Promise<FiltersCollection> {
   const items = await useFetchDirectusItems<DirectusFilterItem>({
     collectionName: relationModel.collectionName,
+    params: {
+      filter: directusFilter,
+    },
   })
   return {
     ...relationModel,

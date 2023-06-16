@@ -1,24 +1,30 @@
 export function useFetchPostsCollection(
   postsCollection: Ref<Post[]>,
-  directusFilter: ComputedRef<DirectusFilter>,
-  collectionModel: Ref<CollectionModel | null>,
+  postCollectionModel: Ref<CollectionModel | null>,
+  directusFilters: ComputedRef<DirectusFilter[]>,
 ) {
+
   async function fetchPostsCollection() {
-    const posts = await getPosts(directusFilter.value, collectionModel.value);
+    const directusFilter = directusFilters.value
+    ?.find((filter) => {
+      return filter.collectionName === postCollectionModel.value?.collectionName
+    })?.filter ?? {} as Record<string, unknown>
+
+    const posts = await getPosts(postCollectionModel.value, directusFilter);
     postsCollection.value = posts;
-  }
+  } 
   return fetchPostsCollection;
 }
 
 async function getPosts(
-  directusFilter: DirectusFilter,
-  collectionModel: CollectionModel | null,
+  postCollectionModel: CollectionModel | null,
+  directusFilter: unknown,
 ): Promise<Post[]> {
-  if (!collectionModel) { return [] }
+  if (!postCollectionModel) { return [] }
   const posts = await useFetchDirectusItems<Post>({
-    collectionName: collectionModel?.collectionName,
+    collectionName: postCollectionModel?.collectionName,
     params: {
-      fields: collectionModel?.thumbnailFields ?? ['*'], // TODO: Not sure about brackets
+      fields: postCollectionModel?.thumbnailFields ?? ['*'], // TODO: Not sure about brackets
       filter: directusFilter,
     },
   })

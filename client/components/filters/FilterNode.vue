@@ -7,7 +7,7 @@ defineProps<{
   node: HierarchyNode<FilterItemNode>
 }>()
 
-const postStore = usePostStore()
+const postStore = useDispositifPostStore()
 
 const { current: currentKeysPressed } = useMagicKeys()
 const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))

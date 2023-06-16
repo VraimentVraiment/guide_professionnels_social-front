@@ -1,81 +1,53 @@
 <script setup lang="ts">
 
-import {
-  type HierarchyNode,
-} from 'd3-hierarchy'
-
 definePageMeta({
   layout: 'dispositifs',
+})
+
+const postStore = useDispositifPostStore()
+postStore.resetFilters()
+
+const thematiquesItems = computed(() => {
+  return postStore.filtersCollections
+    ?.find((collection) => {
+      return collection.collectionName === 'gps_thematiques'
+    })
+    ?.items
+})
+
+const selectedThematique = computed(() => {
+  return thematiquesItems.value
+    ?.find((item) => {
+      return item.checked === true
+    })
+})
+
+const typesRootNode = computed(() => {
+  return postStore.rootNodes
+    ?.find((node) => {
+      return node?.data.name === 'gps_typesdispositif'
+    })
 })
 
 const {
   alertTitle,
   alertDescription,
 } = useAlertStore()
-
 const { alertContent } = await useGetContent('/home')
 alertTitle.value = alertContent[0].title
 alertDescription.value = alertContent[0].description
 
-const postStore = usePostStore()
-postStore.resetFilters()
-
-const items = postStore.filtersCollections
-  ?.find((collection) => {
-    return collection.collectionName === 'gps_thematiques'
-  })
-  ?.items
-
-const themeId = ref<Number | null>(null)
-const rootNode = ref<HierarchyNode<FilterItemNode> | null>(null)
-const selectedThematique = computed(() => {
-  if (themeId.value === null) {
-    return null
-  }
-  return items?.find(item => item.id === themeId.value)?.name
-})
-
-watch(rootNode, (node) => {
-  if (node) {
-    alertTitle.value = alertContent[1].title
-    alertDescription.value = alertContent[1].description
-  }
-})
-
 const openDetails = useCollectionObserver<Number>()
 
-const setThematique = async (
-  id: number,
-) => {
-
-  if (id === themeId.value) {
-    return
-  }
-
+const setThematique = (id: number) => {
   postStore.setItem({
     collectionName: 'gps_thematiques',
     id,
     value: true,
   })
-
-  themeId.value = id
-  const newTypes = await useFetchDirectusItems<DirectusFilter>({
-    collectionName: 'gps_typesdispositif',
-    params: {
-      filter: {
-        'thematique_id': {
-          'gps_thematiques_id': {
-            "_eq": id,
-          },
-        },
-      },
-    },
-  })
-
-  rootNode.value = stratifyFilters({
-    items: newTypes,
-    name: 'gps_types_dispositif',
-  })
+  postStore.fetchFiltersCollections()
+      alertTitle.value = alertContent[1].title
+      alertDescription.value = alertContent[1].description
 }
 
 </script>
@@ -102,7 +74,7 @@ const setThematique = async (
     </template>
     <template #bottom-right>
       <div
-        v-if="themeId === null"
+        v-if="!selectedThematique"
         class="fr-container--fluid"
       >
         <div
@@ -112,7 +84,7 @@ const setThematique = async (
           ]"
         >
           <div
-            v-for="{ id, name } in items"
+            v-for="{ id, name } in thematiquesItems"
             :key="id"
             class="fr-col-12 fr-col-sm-6"
           >
@@ -125,13 +97,16 @@ const setThematique = async (
           </div>
         </div>
       </div>
-      <template v-else-if="rootNode?.children">
+      <template v-else>
         <div class="fr-container--fluid">
           <div class="fr-grid-row">
-            <h2>{{ selectedThematique }}</h2>
-            <div class="gps-links fr-col-10">
+            <h2>{{ selectedThematique?.name }}</h2>
+            <div
+              v-if="typesRootNode?.children"
+              class="gps-links fr-col-10"
+            >
               <details
-                v-for="node in rootNode.children"
+                v-for="node in typesRootNode.children"
                 :key="node.data.id"
                 :open="openDetails.has(node.data.id)"
                 class="gps-links-group "

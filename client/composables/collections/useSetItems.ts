@@ -1,6 +1,13 @@
+type CheckItemProps = {
+  collection: FiltersCollection,
+  item: FilterItemNode,
+  value: boolean,
+  isAltKeyPressed: boolean
+}
+
 export function useSetItem(
-  collectionModel: Ref<CollectionModel | null>,
   filtersCollections: Ref<FiltersCollection[]>,
+  postCollectionModel: Ref<CollectionModel | null>,
 ) {
   function setItem({
     collectionName,
@@ -11,7 +18,7 @@ export function useSetItem(
     collectionName: string,
     id: number,
     value: any,
-    isAltKeyPressed: boolean
+    isAltKeyPressed?: boolean
   }) {
     const collection = filtersCollections.value
       .find(c => c.collectionName === collectionName);
@@ -23,147 +30,150 @@ export function useSetItem(
 
     item.checked = value;
 
-    const relationModel = collectionModel.value?.relations
+    const relationModel = postCollectionModel.value?.relations
       ?.find((relation) => {
         return relation.collectionName === collectionName
       })
     if (!relationModel) { return }
 
-    setItemCheckSideEffects({
+    setItemCheckSideEffectsOnSelfCollection({
       item,
       collection,
       relationModel,
       value,
       isAltKeyPressed,
     })
+
     item.checked = value
   }
   return setItem;
-}
 
-type CheckItemProps = {
-  collection: FiltersCollection,
-  item: FilterItemNode,
-  value: boolean,
-}
-
-function setItemCheckSideEffects({
-  collection,
-  relationModel,
-  isAltKeyPressed,
-  item,
-  value,
-}: {
-  collection: FiltersCollection,
-  relationModel: CollectionRelationModel,
-  item: FilterItemNode,
-  value: boolean,
-  isAltKeyPressed?: boolean,
-}) {
-  if (relationModel.userSelection === 'single-node') {
-    collection.items.forEach(i => i.checked = false)
-  } else if (
-    isAltKeyPressed
-    && (
-      relationModel.userSelection === 'leaves-only'
-      || relationModel.userSelection === 'all-nodes'
-    )
-  ) {
-    nextTick(() => {
-      setItemSiblings({ collection, item, value: false })
+  function setItemCheckSideEffectsOnSelfCollection({
+    collection,
+    relationModel,
+    isAltKeyPressed,
+    item,
+    value,
+  }: {
+    collection: FiltersCollection,
+    relationModel: CollectionRelationModel,
+    item: FilterItemNode,
+    value: boolean,
+    isAltKeyPressed: boolean,
+  }) {
+    if (relationModel.userSelection === 'single-node') {
+      collection.items.forEach(i => i.checked = false)
+    } else if (
+      isAltKeyPressed
+      && (
+        relationModel.userSelection === 'leaves-only'
+        || relationModel.userSelection === 'all-nodes'
+      )
+    ) {
       nextTick(() => {
-        if (!item?.checked) {
-          item.checked = true
-        }
+        setItemSiblings({ collection, item, value: false, isAltKeyPressed })
+        nextTick(() => {
+          if (!item?.checked) {
+            item.checked = true
+          }
+        })
       })
-    })
-  } else if (relationModel.userSelection === 'all-nodes') {
-    nextTick(() => {
-      setItemChildren({ collection, item, value })
-      setItemParent({ collection, item, value })
-    })
-  }
-}
-
-export function setItemParent({
-  collection,
-  item,
-  value,
-}: CheckItemProps): void {
-  const parent = collection.items
-    .find(i => i.id === item.parent_id)
-
-  const siblings = collection.items
-    .filter(i => i.parent_id === item.parent_id)
-
-  if (
-    value === true
-    && parent?.checked === false
-  ) {
-    parent.checked = true
-    setItemParent({
-      collection,
-      item: parent,
-      value,
-    })
+    } else if (relationModel.userSelection === 'all-nodes') {
+      nextTick(() => {
+        setItemChildren({ collection, item, value, isAltKeyPressed })
+        setItemParent({ collection, item, value, isAltKeyPressed })
+      })
+    }
   }
 
-  if (parent && siblings?.length) {
+  function setItemParent({
+    collection,
+    item,
+    value,
+    isAltKeyPressed,
+  }: CheckItemProps): void {
+    const parent = collection.items
+      .find(i => i.id === item.parent_id)
 
-    const allSiblingsUnchecked = siblings
-      .every(sibling => !sibling.checked)
+    const siblings = collection.items
+      .filter(i => i.parent_id === item.parent_id)
 
     if (
-      allSiblingsUnchecked
-      && parent?.checked === true
+      value === true
+      && parent?.checked === false
     ) {
-      parent.checked = false
+      parent.checked = true
       setItemParent({
         collection,
         item: parent,
         value,
+        isAltKeyPressed,
       })
     }
+
+    if (parent && siblings?.length) {
+
+      const allSiblingsUnchecked = siblings
+        .every(sibling => !sibling.checked)
+
+      if (
+        allSiblingsUnchecked
+        && parent?.checked === true
+      ) {
+        setItem({
+          collectionName: collection.collectionName,
+          id: parent.id,
+          value: false,
+          isAltKeyPressed,
+        })
+      }
+    }
   }
-}
-export function setItemChildren({
-  collection,
-  item,
-  value,
-}: CheckItemProps): void {
-  const children = collection.items.filter(i => i.parent_id === item.id)
-  children.forEach((child) => {
-    child.checked = value
-    setItemChildren({
-      collection,
-      item: child,
-      value,
+
+  function setItemChildren({
+    collection,
+    item,
+    value,
+    isAltKeyPressed,
+  }: CheckItemProps): void {
+    const children = collection.items.filter(i => i.parent_id === item.id)
+    children.forEach((child) => {
+      setItem({
+        collectionName: collection.collectionName,
+        id: child.id,
+        value,
+        isAltKeyPressed,
+      })
     })
-  })
-}
+  }
 
-export function setItemSiblings({
-  collection,
-  item,
-  value,
-}: CheckItemProps): void {
+  function setItemSiblings({
+    collection,
+    item,
+    value,
+    isAltKeyPressed,
+  }: CheckItemProps): void {
 
-  const parent = collection.items
-    .find(i => i.id === item.parent_id)
+    const parent = collection.items
+      .find(i => i.id === item.parent_id)
 
-  const siblings = collection.items
-    .filter(i => i.parent_id === item.parent_id)
-    .filter(i => i.id !== item.id)
+    const siblings = collection.items
+      .filter(i => (
+        i.parent_id === item.parent_id
+        && i.id !== item.id
+      ))
 
-  siblings?.forEach((sibling) => {
-    sibling.checked = value
-  })
-
-  if (parent) {
-    setItemSiblings({
-      collection,
-      item: parent,
-      value,
+    siblings?.forEach((sibling) => {
+      sibling.checked = value
     })
+  
+    if (parent) {
+      setItemSiblings({
+        collection,
+        item: parent,
+        value,
+        isAltKeyPressed,
+      })
+    }
   }
 }

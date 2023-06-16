@@ -1,12 +1,16 @@
 export function useRootNodes(
   filtersCollections: Ref<FiltersCollection[]>,
-  collectionModel: Ref<CollectionModel>,
+  postCollectionModel: Ref<CollectionModel>,
 ) {
   const rootNodes = computed(() => {
     return filtersCollections.value
       .map((collection) => {
-        return stratifyFilters(collection, collectionModel.value)
+        const relationModel = postCollectionModel.value?.relations
+          ?.find(relation => relation.collectionName === collection.collectionName)
+        if (!relationModel) { return }
+        return stratifyFilters(relationModel, collection.items)
       })
   })
+
   return rootNodes;
 }

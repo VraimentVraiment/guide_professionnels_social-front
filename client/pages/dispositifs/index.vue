@@ -12,15 +12,20 @@ const isSmallScreen = breakpoints.smaller('MD')
 
 const { tabListName, tabTitles, emptyMessage } = (await useGetContent('dispositifs'))
 
-const postStore = usePostStore()
+const postStore = useDispositifPostStore()
 
 onMounted(async () => {
   await postStore.fetchPostsCollection()
   watch(
     postStore.filtersCollections,
-    postStore.fetchPostsCollection,
-    { deep: true },
-  )
+    () => {
+      if (!postStore.cancelWatch) {
+        postStore.fetchFiltersCollections()
+        nextTick(() => {
+          postStore.fetchPostsCollection()
+        })
+      }
+    })
   mounted.value = true
 })
 
@@ -28,7 +33,7 @@ const getCardProps = (postItem) => {
   const { name, id, addresses } = postItem
   return {
     title: name,
-    description: formatAddresses(addresses),
+    description: joinAddresses(addresses),
     link: `/dispositifs/${id}`,
   }
 }

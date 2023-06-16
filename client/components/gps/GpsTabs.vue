@@ -27,8 +27,8 @@ const getTabData = (
 const {
   prevNumber: prevIndex,
   number: index,
-  select,
-  isSelected,
+  set: selectIndex,
+  is: isSelected,
 } = useNumberObserver()
 
 </script>
@@ -39,8 +39,8 @@ const {
     :tab-titles="tabTitles.map(getTabData)"
     :selected-tab-index="index"
     :initial-selected-index="index"
-    @select-tab="index => {
-      select(index)
+    @select-tab="(index: number) => {
+      selectIndex(index)
       $emit('select-tab', index)
     }"
   >

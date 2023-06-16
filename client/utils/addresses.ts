@@ -15,7 +15,7 @@ type GpMarkerOptions = {
   autoPanOptions: GpAutoPanOptions;
 }
 
-export function formatAddresses(addresses) {
+export function joinAddresses(addresses) {
   return addresses
     ?.map(({
       address,

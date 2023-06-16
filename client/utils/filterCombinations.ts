@@ -9,7 +9,7 @@ export function getMatchingIds({
   relationModel: CollectionRelationModel,
   filtersCollection: FiltersCollection,
   checkedItems: FilterItemNode[],
-  junction: Junction,
+  junction: RelationsCollection,
 }) {
 
   const idGetter = {
@@ -48,7 +48,7 @@ export function getIdsMatchingFilters({
   combination,
 }: {
   itemsIds: number[],
-  junction: Junction,
+  junction: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
 }): number[] | null {
 
@@ -66,7 +66,7 @@ export function getIdsMatchingFilters({
 
 
 export function getOrItems(
-  junction: Junction,
+  junction: RelationsCollection,
   itemsIds: number[],
 ): number[] {
   return junction?.items
@@ -82,7 +82,7 @@ export function getOrItems(
 }
 
 export function getAndItems(
-  junction: Junction,
+  junction: RelationsCollection,
   itemsIds: number[],
 ): number[] {
 

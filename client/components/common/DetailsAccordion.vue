@@ -47,7 +47,7 @@ defineProps({
 <style scoped lang="scss">
 details.gps-details {
   padding: .5rem 0;
-
+  cursor: initial;
   &:not(:last-child) {
     border-bottom: 1px solid var(--border-default-grey);
   }

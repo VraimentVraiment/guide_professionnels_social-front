@@ -1,23 +1,13 @@
 export function useSetCollection(
   collectionModel: Ref<CollectionModel | null>,
 ) {
-  const setCollection = async (collectionName: string) => {
+  const setCollection = (
+    collectionName: string,
+  ): void => {
 
-    const {
-      collections: collectionsModel,
-    } = (await useGetContent('/collections')) as {
-      collections: CollectionModel[]
-    }
+    const collectionsModelStore = useCollectionsModel()
 
-    collectionModel.value = collectionsModel
-      .find((collection) => {
-        return collection.collectionName === collectionName
-      }) ?? null
-
-    // nextTick(async () => {
-    //   await fetchFilterCollections()
-    //   await fetchRelationsCollections()
-    // })
+    collectionModel.value = collectionsModelStore.getCollectionByName(collectionName)
   }
 
   return setCollection

@@ -88,17 +88,6 @@ declare global {
    * Fields
    *
    */
-
-  export type Address = {
-    adress: {
-      text: string
-      value: {
-        lat: number
-        lng: number
-      }
-    }
-  }
-
   export type ManyToOneId = number
   export type OneToManyId = number[]
   export type RichText = string
@@ -111,6 +100,7 @@ declare global {
    */
 
   export type PostStatus = 'published' | 'draft' | 'archived'
+  export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
 
   export interface Post {
     date_created: string
@@ -122,8 +112,6 @@ declare global {
     status: PostStatus
   }
 
-  export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
-
   export interface FicheTechniquePost extends Post {
     media: ManyToOneUuid
     type_dispositif: ManyToOneId
@@ -131,9 +119,9 @@ declare global {
 
   export interface DispositifPost extends Post {
     [key in richTextKeys]?: RichText
-    type_dispositif: ManyToOneId
     images: OneToManyId[]
     caracteristiques_dispositif: OneToManyId[]
+    type_dispositif: ManyToOneId
     addresses: address[]
   }
 
@@ -143,7 +131,12 @@ declare global {
    *
    */
 
-  export type DirectusFilter = Record<string, Record<string, string | DirectusFilter>>;
+  export type DirectusItem = unknown
+
+  export type DirectusFilter = {
+    collectionName: string,
+    filter: Record<string, Record<string, unkown>>,
+  }
 
   type FilterItem = {
     id: number
@@ -166,8 +159,8 @@ declare global {
 
   export type CollectionModel = {
     label: string
-    type: 'post' | 'taxonomy'
     collectionName: string
+    type: 'post' | 'taxonomy'
     relations?: CollectionRelationModel[]
     thumbnailFields?: string[]
   }
@@ -175,25 +168,20 @@ declare global {
   export type CollectionRelationModel = {
     label: string
     collectionName: string
+    relationType: 'many-to-one' | 'many-to-many'
+    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
+    field?: string
     junctionCollectionName?: string
     junctionSourceKey?: string
     junctionTargetKey?: string
-    relationType: 'many-to-one' | 'many-to-many'
-    field?: string
-    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
   }
 
-  export type Collection = {
-    model: CollectionModel
-    items: Ref<unknown>[]
-    rootNode?: HierarchyNode<DirectusFilterItem>
-    checkedItems?: Ref<unknown>[]
-  }
-
-  export type Junction = {
-    items: Record<string, number>[],
-    junctionSourceKey: string,
-    junctionTargetKey: string,
+  export type RelationsCollection = {
+    targetCollectionName: string,
+    sourceCollectionName: string,
+    items: DirectusItem[]
+    // junctionSourceKey: string,
+    // junctionTargetKey: string,
     collectionName: string,
   }
 

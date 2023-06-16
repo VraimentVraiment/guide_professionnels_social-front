@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
-const postStore = usePostStore()
+const collectionsModelStore = useCollectionsModel()
+await collectionsModelStore.fetch()
 
+const postStore = useDispositifPostStore()
 await postStore.setCollection('gps_fichesdispositif')
-await postStore.fetchFilterCollections()
+await postStore.fetchFiltersCollections()
 await postStore.fetchRelationsCollections()
 
 </script>

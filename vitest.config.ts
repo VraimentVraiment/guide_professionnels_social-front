@@ -24,10 +24,10 @@ export default defineConfig({
         find: '@',
         replacement: path.resolve(projectDir, 'src'),
       },
-      // {
-      //   find: '#imports',
-      //   replacement: path.resolve(projectDir, '.nuxt/imports.d.ts'),
-      // },
+      {
+        find: '#imports',
+        replacement: path.resolve(projectDir, '.nuxt/imports.d.ts'),
+      },
     ],
   },
 })
