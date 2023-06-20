@@ -4,7 +4,7 @@ const props = defineProps<{
   collection: Post[]
 }>()
 
-const emit = defineEmits(["map-loaded"]);
+const emit = defineEmits(['map-loaded'])
 
 const { options: GEOPORTAL_CONFIG } = await useGetContent('/geoportal-config')
 
@@ -18,27 +18,26 @@ const markers = computed(() => {
 })
 
 if (process.client) {
-  import("@ignf-geoportal/sdk-2d")
+  import('@ignf-geoportal/sdk-2d')
     .then(loadMap)
 }
 
-function loadMap(Gp: any) {
-
-  const gpMap = Gp.Map.load("map", {
+function loadMap (Gp: any) {
+  const gpMap = Gp.Map.load('map', {
     ...GEOPORTAL_CONFIG,
     layersOptions: {
-      "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2": {},
+      'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {},
     },
     mapEventsOptions: {
-      "mapLoaded": onMapLoaded,
+      mapLoaded: onMapLoaded,
     },
-  });
+  })
 
-  function onMapLoaded() {
-    emit("map-loaded");
+  function onMapLoaded () {
+    emit('map-loaded')
     watchEffect(() => {
-      gpMap.setMarkersOptions(markers.value);
-    });
+      gpMap.setMarkersOptions(markers.value)
+    })
   }
 }
 

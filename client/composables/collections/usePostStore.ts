@@ -1,5 +1,4 @@
 export const useGpsPostStore = () => {
-
   const collectionsModelStore = useCollectionsModel()
 
   const postCollectionModel = ref<CollectionModel | null>(null)
@@ -31,7 +30,7 @@ export const useGpsPostStore = () => {
   const setItem = useSetItem(filtersCollections, postCollectionModel)
   const resetFilters = useResetFilters(filtersCollections)
 
-  const fetchPostsCollection = useFetchPostsCollection(postsCollection, postCollectionModel, directusFilters)
+  const fetchPostsCollection = useFetchPostsCollection(postsCollection, postCollectionModel as Ref<CollectionModel>, directusFilters)
   const fetchFiltersCollections = useFetchFiltersCollections(filtersCollections, postCollectionModel, directusFilters, cancelWatch)
   const fetchRelationsCollections = useFetchRelationsCollections(relationsCollections, collectionsModels)
 
@@ -43,7 +42,6 @@ export const useGpsPostStore = () => {
     rootNodes,
     checkedItems,
     cancelWatch,
-    // directusFilter,
     directusFilters,
     setCollection,
     fetchFiltersCollections,
@@ -53,4 +51,3 @@ export const useGpsPostStore = () => {
     setItem,
   }
 }
-

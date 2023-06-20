@@ -1,26 +1,22 @@
-export function useFetchPostsCollection(
+export function useFetchPostsCollection (
   postsCollection: Ref<Post[]>,
-  postCollectionModel: Ref<CollectionModel | null>,
-  directusFilters: ComputedRef<DirectusFilter[]>,
+  postCollectionModel: Ref<CollectionModel>,
+  directusFilters: ComputedRef<CollectionDirectusFilter[]>,
 ) {
-
-  async function fetchPostsCollection() {
-    const directusFilter = directusFilters.value
-    ?.find((filter) => {
-      return filter.collectionName === postCollectionModel.value?.collectionName
-    })?.filter ?? {} as Record<string, unknown>
-
-    const posts = await getPosts(postCollectionModel.value, directusFilter);
-    postsCollection.value = posts;
-  } 
-  return fetchPostsCollection;
+  async function fetchPostsCollection () {
+    const directusFilter = getDirectusFilter(directusFilters.value, postCollectionModel.value.collectionName)
+    const posts = await getPosts(postCollectionModel.value, directusFilter)
+    postsCollection.value = posts
+  }
+  return fetchPostsCollection
 }
 
-async function getPosts(
+async function getPosts (
   postCollectionModel: CollectionModel | null,
-  directusFilter: unknown,
+  directusFilter: DirectusFilter,
 ): Promise<Post[]> {
   if (!postCollectionModel) { return [] }
+
   const posts = await useFetchDirectusItems<Post>({
     collectionName: postCollectionModel?.collectionName,
     params: {
@@ -29,5 +25,5 @@ async function getPosts(
     },
   })
 
-  return posts ?? [];
+  return posts ?? []
 }

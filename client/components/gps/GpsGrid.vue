@@ -17,7 +17,7 @@
     >
       <slot name="top-left" />
     </div>
-    <div 
+    <div
       :class="[
         'fr-col-12',
         'fr-col-md-8',

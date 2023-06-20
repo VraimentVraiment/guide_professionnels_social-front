@@ -1,4 +1,4 @@
-export function useCheckedItems(
+export function useCheckedItems (
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
   const checkedItems = computed(() => {
@@ -6,9 +6,10 @@ export function useCheckedItems(
       .map((collection) => {
         return {
           collectionName: collection.collectionName,
-          items: collection.items.filter(item => item.checked),
+          items: collection.items
+            .filter(item => item.checked),
         }
       })
   })
-  return checkedItems;
+  return checkedItems
 }

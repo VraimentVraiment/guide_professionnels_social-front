@@ -5,7 +5,7 @@ import {
 /**
  * Creates a hierarchical representation of a FiltersCollection using d3-hierarchy's `stratify` function.
  */
-export function stratifyFilters(
+export function stratifyFilters (
   relationModel: CollectionRelationModel,
   items: FilterItemNode[],
 ): HierarchyNode<FilterItemNode> | null {

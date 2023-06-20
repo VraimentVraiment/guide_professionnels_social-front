@@ -14,8 +14,8 @@ const isSmallScreen = breakpoints.smaller('MD')
 
 const isSelectable = computed(() => {
   return (
-    !props.makeUnselectable
-    || isSmallScreen.value
+    !props.makeUnselectable ||
+    isSmallScreen.value
   )
 })
 
@@ -64,9 +64,7 @@ const isSelectable = computed(() => {
           :summary-tag="'h2'"
           :open="collectionName === 'caracteristiques_dispositif'"
         >
-          <FilterNode
-            :node="rootNodes.find(node => node.data.name === collectionName)"
-          />
+          <FilterNode :node="rootNodes.find(node => node.data.name === collectionName)" />
         </DetailsAccordion>
       </div>
     </div>

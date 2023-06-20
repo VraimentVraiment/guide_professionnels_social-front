@@ -1,6 +1,6 @@
 import * as d3 from 'd3-array'
 
-export function getMatchingIds({
+export function getMatchingIds ({
   relationModel,
   filtersCollection,
   checkedItems,
@@ -11,7 +11,6 @@ export function getMatchingIds({
   checkedItems: FilterItemNode[],
   junction: RelationsCollection,
 }) {
-
   const idGetter = {
 
     'single-node': () => getIdsMatchingFilters({
@@ -21,10 +20,9 @@ export function getMatchingIds({
     }),
 
     'leaves-only': () => Array.from(
-      d3.intersection(...
-        Array.from(
-          d3.group(checkedItems, d => d.parent_id),
-          ([parent_id, items]) =>
+      d3.intersection(...Array.from(
+        d3.group(checkedItems, d => d.parent_id),
+        ([parent_id, items]) =>
             getIdsMatchingFilters({
               itemsIds: items.map(i => i.id),
               combination: filtersCollection.items
@@ -34,7 +32,7 @@ export function getMatchingIds({
                 ?.combination ?? 'and',
               junction,
             }) as number[],
-        ),
+      ),
       ),
     ),
   }
@@ -42,7 +40,7 @@ export function getMatchingIds({
   return idGetter[relationModel.userSelection as keyof typeof idGetter]()
 }
 
-export function getIdsMatchingFilters({
+export function getIdsMatchingFilters ({
   itemsIds,
   junction,
   combination,
@@ -51,29 +49,24 @@ export function getIdsMatchingFilters({
   junction: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
 }): number[] | null {
-
   if (combination === 'or') {
-
     return getOrItems(junction, itemsIds)
-
   } else if (combination === 'and') {
-
     return getAndItems(junction, itemsIds)
   }
 
   return null
 }
 
-
-export function getOrItems(
+export function getOrItems (
   junction: RelationsCollection,
   itemsIds: number[],
 ): number[] {
   return junction?.items
     ?.reduce((ids, item) => {
       if (
-        itemsIds.includes(item[junction.junctionTargetKey])
-        && !ids.includes(item[junction.junctionSourceKey])
+        itemsIds.includes(item[junction.junctionTargetKey]) &&
+        !ids.includes(item[junction.junctionSourceKey])
       ) {
         ids.push(item[junction.junctionSourceKey])
       }
@@ -81,11 +74,10 @@ export function getOrItems(
     }, [] as number[])
 }
 
-export function getAndItems(
+export function getAndItems (
   junction: RelationsCollection,
   itemsIds: number[],
 ): number[] {
-
   const groups = d3.group(
     junction.items,
     d => d[junction.junctionSourceKey],

@@ -133,9 +133,11 @@ declare global {
 
   export type DirectusItem = unknown
 
-  export type DirectusFilter = {
+  export type DirectusFilter = Record<string, Record<string, unkown>>
+  
+  export type CollectionDirectusFilter = {
     collectionName: string,
-    filter: Record<string, Record<string, unkown>>,
+    filter: DirectusFilter
   }
 
   type FilterItem = {

@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 
 definePageMeta({
   layout: 'default',
-  middleware: ["collections"],
+  middleware: ['collections'],
 })
 
 const postStore = useDispositifPostStore()
@@ -100,7 +100,7 @@ stepOne()
             <DsfrButton
               :class="'fr-mb-4w'"
               type="buttonType"
-              :label="`Selétionner une autre thématique`"
+              :label="`Sélectionner une autre thématique`"
               tertiary
               no-outline
               :icon="'ri-arrow-left-line'"

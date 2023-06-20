@@ -1,12 +1,12 @@
-import { useArrayDifference } from "@vueuse/core"
+import { useArrayDifference } from '@vueuse/core'
 
-export function useFetchFiltersCollections(
+export function useFetchFiltersCollections (
   filtersCollections: Ref<FiltersCollection[]>,
   postCollectionModel: Ref<CollectionModel | null>,
-  directusFilters,
+  directusFilters: ComputedRef<CollectionDirectusFilter[]>,
   cancelWatch: Ref<boolean>,
 ) {
-  async function fetchFiltersCollections(): Promise<void> {
+  async function fetchFiltersCollections (): Promise<void> {
     cancelWatch.value = true
     const fetchedCollections = await Promise.all(
       getFiltersCollections(postCollectionModel.value, directusFilters),
@@ -39,32 +39,26 @@ export function useFetchFiltersCollections(
       }
     }
 
-      cancelWatch.value = false
+    cancelWatch.value = false
   }
 
-  return fetchFiltersCollections;
+  return fetchFiltersCollections
 }
 
-
-function getFiltersCollections(
+function getFiltersCollections (
   postCollectionModel: CollectionModel | null,
-  directusFilters,
+  directusFilters: ComputedRef<CollectionDirectusFilter[]>,
 ): Promise<FiltersCollection>[] {
   return postCollectionModel?.relations
     ?.map((relationModel) => {
-
-      const directusFilter = directusFilters.value
-        ?.find((filter) => {
-          return filter.collectionName === relationModel.collectionName
-        })?.filter ?? {} as Record<string, unknown>
-
+      const directusFilter = getDirectusFilter(directusFilters.value, relationModel.collectionName)
       return getInitialFilterCollection(relationModel, directusFilter)
     }) ?? []
 }
 
-async function getInitialFilterCollection(
+async function getInitialFilterCollection (
   relationModel: CollectionRelationModel,
-  directusFilter,
+  directusFilter: DirectusFilter,
 ): Promise<FiltersCollection> {
   const items = await useFetchDirectusItems<DirectusFilterItem>({
     collectionName: relationModel.collectionName,
@@ -77,7 +71,7 @@ async function getInitialFilterCollection(
     items: items.map(directusFilterItemToFilterItemNode),
   }
 
-  function directusFilterItemToFilterItemNode(
+  function directusFilterItemToFilterItemNode (
     item: DirectusFilterItem,
   ): FilterItemNode {
     return {

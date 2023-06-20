@@ -4,7 +4,7 @@ defineProps<{
   collection: Post[]
   wrapCards: boolean
   type: 'link' | 'file'
-  getCardProps: (item: Post) => {
+  getCardProps:(item: Post) => {
     id: string
     name: string
     description: string
@@ -39,10 +39,7 @@ const isCol4 = breakpoints?.greater('MD')
           { 'fr-col-lg-4': wrapCards && isCol4 },
         ]"
       >
-        <component
-          :is="type === 'file' ? 'DsfrFileDownload' : 'DsfrCard'"
-          v-bind="getCardProps(item)"
-        />
+        <component :is="type === 'file' ? 'DsfrFileDownload' : 'DsfrCard'" v-bind="getCardProps(item)" />
       </div>
     </div>
   </div>
