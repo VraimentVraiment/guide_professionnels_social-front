@@ -20,12 +20,12 @@ onMounted(async () => {
   watch(
     postStore.filtersCollections,
     () => {
-      if (!postStore.cancelWatch) {
-        postStore.fetchFiltersCollections()
-        nextTick(() => {
-          postStore.fetchPostsCollection()
+      postStore.fetchFiltersCollections()
+        .then(() => {
+          nextTick(() => {
+            postStore.fetchPostsCollection()
+          })
         })
-      }
     })
   mounted.value = true
 })

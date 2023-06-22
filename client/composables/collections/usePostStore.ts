@@ -3,19 +3,17 @@ export const usePostStore = () => {
   const postsCollection = ref<Post[]>([])
   const relationsCollections = ref<RelationsCollection[]>([])
   const filtersCollections = ref<FiltersCollection[]>([])
-  const cancelWatch = ref(false)
 
   const collectionsModels = useCollectionsModels(postCollectionModel, filtersCollections)
-  const checkedItems = useCheckedItems(filtersCollections)
   const rootNodes = useRootNodes(filtersCollections, postCollectionModel as Ref<CollectionModel>)
-  const directusFilters = useDirectusFilters(collectionsModels, checkedItems, relationsCollections, filtersCollections)
+  const directusFilters = useDirectusFilters(collectionsModels, relationsCollections, filtersCollections)
 
   const setCollection = useSetCollection(postCollectionModel)
   const setItem = useSetItem(filtersCollections, postCollectionModel as Ref<CollectionModel>)
   const resetFilters = useResetFilters(filtersCollections)
 
   const fetchPostsCollection = useFetchPostsCollection(postsCollection, postCollectionModel, directusFilters)
-  const fetchFiltersCollections = useFetchFiltersCollections(filtersCollections, postCollectionModel, directusFilters, cancelWatch)
+  const fetchFiltersCollections = useFetchFiltersCollections(filtersCollections, postCollectionModel, directusFilters)
   const fetchRelationsCollections = useFetchRelationsCollections(relationsCollections, collectionsModels)
 
   return {
@@ -24,8 +22,6 @@ export const usePostStore = () => {
     filtersCollections,
     relationsCollections,
     rootNodes,
-    checkedItems,
-    cancelWatch,
     directusFilters,
     setCollection,
     fetchFiltersCollections,

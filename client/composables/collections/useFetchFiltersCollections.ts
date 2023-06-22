@@ -4,10 +4,16 @@ export function useFetchFiltersCollections (
   filtersCollections: Ref<FiltersCollection[]>,
   postCollectionModel: Ref<CollectionModel | null>,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
-  cancelWatch: Ref<boolean>,
 ) {
+  const isFetching = ref(false)
+
   async function fetchFiltersCollections (): Promise<void> {
-    cancelWatch.value = true
+    if (isFetching.value) {
+      return
+    }
+
+    isFetching.value = true
+
     const fetchedFiltersCollections = await Promise.all(
       getFiltersCollections(postCollectionModel.value, directusFilters),
     )
@@ -39,7 +45,7 @@ export function useFetchFiltersCollections (
       }
     }
 
-    cancelWatch.value = false
+    isFetching.value = false
   }
 
   return fetchFiltersCollections

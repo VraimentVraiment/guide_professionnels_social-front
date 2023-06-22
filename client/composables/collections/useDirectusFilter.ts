@@ -1,6 +1,5 @@
 export function useDirectusFilters (
   collectionsModels: ComputedRef<(CollectionModel | null)[]>,
-  checkedItems: ComputedRef<FiltersCollection[]>,
   relationsCollections: Ref<RelationsCollection[]>,
   filtersCollections: Ref<FiltersCollection[]>,
 ): ComputedRef<CollectionDirectusFilter[]> {
@@ -24,14 +23,11 @@ export function useDirectusFilters (
         }
 
         for (const relationModel of collectionModel?.relations) {
-          const collectionCheckedItems = checkedItems.value
-            ?.find((collection: FiltersCollection) => {
-              return collection.collectionName === relationModel.collectionName
-            })?.items
+          const checkedItems = getCheckedItems(filtersCollections.value, relationModel.collectionName)
 
           if (
-            !collectionCheckedItems ||
-            collectionCheckedItems.length === 0
+            !checkedItems ||
+            checkedItems.length === 0
           ) {
             continue
           }
@@ -39,7 +35,7 @@ export function useDirectusFilters (
           if (relationModel.relationType === 'many-to-one') {
             addFilterCondition({
               [relationModel.field as string]: {
-                _in: collectionCheckedItems
+                _in: checkedItems
                   .map((item: FilterItemNode) => item.id),
               },
             })
@@ -67,7 +63,7 @@ export function useDirectusFilters (
 
             const ids = getMatchingIds({
               junction,
-              checkedItems: collectionCheckedItems,
+              checkedItems,
               filtersCollection,
               relationModel,
             })

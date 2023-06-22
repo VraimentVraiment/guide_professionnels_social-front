@@ -22,11 +22,13 @@ export function getMatchingIds ({
     'leaves-only': () => Array.from(
       d3.intersection(...Array.from(
         d3.group(checkedItems, d => d.parent_id),
+        // eslint-disable-next-line camelcase
         ([parent_id, items]) =>
             getIdsMatchingFilters({
               itemsIds: items.map(i => i.id),
               combination: filtersCollection.items
                 .find((item) => {
+                  // eslint-disable-next-line camelcase
                   return item.id === parent_id
                 })
                 ?.combination ?? 'and',
