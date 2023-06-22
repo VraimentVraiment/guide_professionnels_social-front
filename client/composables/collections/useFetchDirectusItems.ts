@@ -2,7 +2,7 @@ import {
   type DirectusQueryParams,
 } from 'nuxt-directus/dist/runtime/types'
 
-export async function useFetchDirectusItems<T>({
+export async function useFetchDirectusItems<T> ({
   collectionName,
   params,
 }: {
@@ -12,11 +12,12 @@ export async function useFetchDirectusItems<T>({
   const { getItems } = useDirectusItems()
 
   try {
-    return (await getItems<T>({
+    const items = await getItems<T>({
       collection: collectionName,
       params,
-    })) as T[]
+    })
 
+    return items
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)
@@ -24,7 +25,7 @@ export async function useFetchDirectusItems<T>({
   }
 }
 
-export async function useFetchDirectusItem<T>({
+export async function useFetchDirectusItem<T> ({
   collectionName,
   id,
 }: {

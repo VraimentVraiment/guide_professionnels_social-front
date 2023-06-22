@@ -1,5 +1,4 @@
 export const useCollectionsModel = defineStore('collectionsModel', () => {
-
   const collections = ref<CollectionModel[]>()
 
   const fetch = async () => {
@@ -27,7 +26,7 @@ export const useCollectionsModel = defineStore('collectionsModel', () => {
       ?.filter((collectionModel) => {
         return collectionModel.relations
           ?.some((relationModel) => {
-            return relationModel.collectionName = collectionName
+            return relationModel.collectionName === collectionName
           })
       }) ?? null
   }
@@ -38,4 +37,6 @@ export const useCollectionsModel = defineStore('collectionsModel', () => {
     getCollectionByName,
     getDependentCollections,
   }
+}, {
+  persist: true,
 })

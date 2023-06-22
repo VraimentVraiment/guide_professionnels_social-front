@@ -2,7 +2,7 @@
 
 definePageMeta({
   layout: 'default',
-  middleware: ["collections"],
+  middleware: ['collections'],
 })
 
 const isListSelected = ref(true)

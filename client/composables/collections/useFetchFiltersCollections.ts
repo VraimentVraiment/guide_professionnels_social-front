@@ -8,11 +8,11 @@ export function useFetchFiltersCollections (
 ) {
   async function fetchFiltersCollections (): Promise<void> {
     cancelWatch.value = true
-    const fetchedCollections = await Promise.all(
+    const fetchedFiltersCollections = await Promise.all(
       getFiltersCollections(postCollectionModel.value, directusFilters),
     )
 
-    for (const { items: fetchedItems, ...collection } of fetchedCollections) {
+    for (const { items: fetchedItems, ...collection } of fetchedFiltersCollections) {
       const existingCollection = filtersCollections.value
         .find(c => c.collectionName === collection.collectionName)
 
@@ -49,35 +49,26 @@ function getFiltersCollections (
   postCollectionModel: CollectionModel | null,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
 ): Promise<FiltersCollection>[] {
-  return postCollectionModel?.relations
-    ?.map((relationModel) => {
-      const directusFilter = getDirectusFilter(directusFilters.value, relationModel.collectionName)
-      return getInitialFilterCollection(relationModel, directusFilter)
-    }) ?? []
-}
+  const filtersCollections = postCollectionModel?.relations
+    ?.map(async (relationModel) => {
+      const items = await useFetchCollectionItems<DirectusFilterItem>(
+        relationModel.collectionName,
+        directusFilters,
+      )
 
-async function getInitialFilterCollection (
-  relationModel: CollectionRelationModel,
-  directusFilter: DirectusFilter,
-): Promise<FiltersCollection> {
-  const items = await useFetchDirectusItems<DirectusFilterItem>({
-    collectionName: relationModel.collectionName,
-    params: {
-      filter: directusFilter,
-    },
-  })
-  return {
-    ...relationModel,
-    items: items.map(directusFilterItemToFilterItemNode),
-  }
+      return {
+        label: relationModel.label,
+        collectionName: relationModel.collectionName,
+        items: items
+          ?.map((item) => {
+            return {
+              ...item,
+              checked: false,
+              relationModel,
+            }
+          }),
+      }
+    })
 
-  function directusFilterItemToFilterItemNode (
-    item: DirectusFilterItem,
-  ): FilterItemNode {
-    return {
-      ...item,
-      checked: false,
-      relationModel,
-    }
-  }
+  return filtersCollections ?? []
 }

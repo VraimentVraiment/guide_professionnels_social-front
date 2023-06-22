@@ -1,7 +1,7 @@
-export function useResetFilters(
+export function useResetFilters (
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
-  function resetFilters() {
+  function resetFilters () {
     filtersCollections.value
       .forEach((collection) => {
         collection.items
@@ -10,5 +10,5 @@ export function useResetFilters(
           })
       })
   }
-  return resetFilters;
+  return resetFilters
 }

@@ -1,16 +1,3 @@
-export const getDirectusFilter = (
-  directusFilters: CollectionDirectusFilter[],
-  collectionName: string,
-): DirectusFilter => {
-  const directusFilter = directusFilters
-    ?.find((filter) => {
-      return filter.collectionName === collectionName
-    })
-    ?.filter ?? {}
-
-  return directusFilter
-}
-
 export function useDirectusFilters (
   collectionsModels: ComputedRef<(CollectionModel | null)[]>,
   checkedItems: ComputedRef<FiltersCollection[]>,
@@ -25,8 +12,7 @@ export function useDirectusFilters (
           filter: {},
         }
 
-        const relationsModel = collectionModel?.relations
-        if (!relationsModel) {
+        if (!collectionModel?.relations) {
           return filter
         }
 
@@ -37,7 +23,7 @@ export function useDirectusFilters (
           filter.filter._and.push(condition)
         }
 
-        for (const relationModel of relationsModel) {
+        for (const relationModel of collectionModel?.relations) {
           const collectionCheckedItems = checkedItems.value
             ?.find((collection: FiltersCollection) => {
               return collection.collectionName === relationModel.collectionName

@@ -130,6 +130,42 @@ declare global {
    * Filters
    *
    */
+  export type CollectionType = 'post' | 'taxonomy'
+  export type RelationType = 'many-to-one' | 'many-to-many'
+  export type UserSelection = 'leaves-only' | 'all-nodes' | 'single-node'
+  export type FilterCombination = 'and' | 'or' | 'unique'
+
+  export type CollectionModel = {
+    label: string
+    collectionName: string
+    type: CollectionType
+    relations?: CollectionRelationModel[]
+    thumbnailFields?: string[]
+  }
+
+  export type CollectionRelationModel = {
+    label: string
+    collectionName: string
+    relationType: RelationType
+    userSelection?: UserSelection
+    field?: string
+    junctionCollectionName?: string
+    junctionSourceKey?: string
+    junctionTargetKey?: string
+  }
+
+  export type RelationsCollection = {
+    collectionName: string,
+    targetCollectionName: string,
+    sourceCollectionName: string,
+    items: DirectusItem[]
+  }
+
+  export type FiltersCollection = {
+    collectionName: string;
+    label?: string
+    items: FilterItemNode[]
+  }
 
   export type DirectusItem = unknown
 
@@ -140,64 +176,22 @@ declare global {
     filter: DirectusFilter
   }
 
-  type FilterItem = {
+  export type FilterItem = {
     id: number
     name: string
     parent_id: number | null
-    combination?: 'and' | 'or' | 'unique'
+    combination?: FilterCombination
   }
   
   export interface DirectusFilterItem extends FilterItem {
     children: OneToManyId;
     sort: number;
-    combination?: 'and' | 'or' | 'unique'
   }
 
   export interface FilterItemNode extends FilterItem {
     relationModel: CollectionRelationModel;
     open?: boolean;
     checked?: boolean;
-  }
-
-  export type CollectionModel = {
-    label: string
-    collectionName: string
-    type: 'post' | 'taxonomy'
-    relations?: CollectionRelationModel[]
-    thumbnailFields?: string[]
-  }
-
-  export type CollectionRelationModel = {
-    label: string
-    collectionName: string
-    relationType: 'many-to-one' | 'many-to-many'
-    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
-    field?: string
-    junctionCollectionName?: string
-    junctionSourceKey?: string
-    junctionTargetKey?: string
-  }
-
-  export type RelationsCollection = {
-    targetCollectionName: string,
-    sourceCollectionName: string,
-    items: DirectusItem[]
-    // junctionSourceKey: string,
-    // junctionTargetKey: string,
-    collectionName: string,
-  }
-
-  export type FiltersCollection = {
-    collectionName: string;
-    items: FilterItemNode[]
-    label?: string
-    relationType?: 'many-to-many' | 'many-to-one' | 'one-to-many'
-    userSelection?: 'leaves-only' | 'all-nodes' | 'single-node'
-    field?: string
-    rootNode?: RootFilterItemNode
-    junctionCollectionName?: string
-    junctionSourceKey?: string
-    junctionTargetKey?: string
   }
 
   /*

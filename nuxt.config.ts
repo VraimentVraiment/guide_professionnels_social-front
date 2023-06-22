@@ -5,9 +5,10 @@
 export default defineNuxtConfig({
   srcDir: 'client/',
   modules: [
-    '@pinia/nuxt',
-    '@nuxt/content',
     'nuxt-directus',
+    '@nuxt/content',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   runtimeConfig: {
     public: {
@@ -20,6 +21,9 @@ export default defineNuxtConfig({
     autoImports: [
       'defineStore',
     ],
+  },
+  piniaPersistedstate: {
+    storage: 'sessionStorage',
   },
   css: [
     '@gouvfr/dsfr/dist/dsfr.min.css',

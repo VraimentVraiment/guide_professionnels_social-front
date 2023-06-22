@@ -4,7 +4,7 @@ import { useMagicKeys } from '@vueuse/core'
 import { type HierarchyNode } from 'd3-hierarchy'
 
 defineProps<{
-  node: HierarchyNode<FilterItemNode>
+  node: HierarchyNode<FilterItemNode> | null
 }>()
 
 const postStore = useDispositifPostStore()
@@ -27,7 +27,7 @@ const setItem = (
 
 <template>
   <template
-    v-if="node.data"
+    v-if="node?.data"
   >
     <DsfrRadioButton
       v-if="(

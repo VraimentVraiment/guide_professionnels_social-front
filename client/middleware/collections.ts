@@ -1,5 +1,4 @@
 export default defineNuxtRouteMiddleware((to) => {
-
   const collectionsModelStore = useCollectionsModel()
   const postStore = useDispositifPostStore()
   const { selectedThematique } = useGpsCollectionsStore()
@@ -9,7 +8,6 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   return new Promise(async (resolve) => {
-
     if (!collectionsModelStore.collections?.length) {
       await collectionsModelStore.fetch()
       postStore.setCollection('gps_fichesdispositif')
@@ -17,9 +15,9 @@ export default defineNuxtRouteMiddleware((to) => {
       await postStore.fetchRelationsCollections()
     }
 
-     if (
-      to.path === '/dispositifs'
-      && !selectedThematique
+    if (
+      to.path === '/dispositifs' &&
+      !selectedThematique
     ) {
       return resolve(navigateTo('/'))
     } else {

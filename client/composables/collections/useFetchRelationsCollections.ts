@@ -1,17 +1,17 @@
-export function useFetchRelationsCollections(
+export function useFetchRelationsCollections (
   relationsCollections: Ref<RelationsCollection[]>,
   collectionsModels: ComputedRef<(CollectionModel | null)[]>,
 ) {
-  async function fetchRelationsCollections(): Promise<void> {
+  async function fetchRelationsCollections (): Promise<void> {
     relationsCollections.value = await Promise.all(
       collectionsModels.value
-      .flatMap(getRelationsCollections),
+        .flatMap(getRelationsCollections),
     )
   }
-  return fetchRelationsCollections;
+  return fetchRelationsCollections
 }
 
-function getRelationsCollections(
+function getRelationsCollections (
   collectionModel: CollectionModel | null,
 ): Promise<RelationsCollection>[] {
   const relations = collectionModel?.relations
@@ -22,10 +22,10 @@ function getRelationsCollections(
       return fetchRelationCollection(collectionModel.collectionName, relationModel)
     })
 
-  return relations ?? [];
+  return relations ?? []
 }
 
-async function fetchRelationCollection(
+async function fetchRelationCollection (
   sourceCollectionName: string,
   relationModel: CollectionRelationModel,
 ): Promise<RelationsCollection> {
@@ -33,6 +33,7 @@ async function fetchRelationCollection(
     collectionName: relationModel.junctionCollectionName as string,
     params: { limit: -1 },
   })
+
   return {
     ...relationModel,
     targetCollectionName: relationModel.collectionName,

@@ -1,6 +1,6 @@
 export function useCheckedItems (
   filtersCollections: Ref<FiltersCollection[]>,
-) {
+): ComputedRef<FiltersCollection[]> {
   const checkedItems = computed(() => {
     return filtersCollections.value
       .map((collection) => {

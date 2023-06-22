@@ -1,5 +1,4 @@
-export const useGpsCollectionsStore = defineStore('gpsCollections', () => {
-
+export const useGpsCollectionsStore = defineStore('collections', () => {
   const postStore = useDispositifPostStore()
 
   const thematiquesItems = computed(() => {
@@ -9,24 +8,26 @@ export const useGpsCollectionsStore = defineStore('gpsCollections', () => {
       })
       ?.items
   })
-  
+
   const selectedThematique = computed(() => {
     return thematiquesItems.value
       ?.find((item) => {
         return item.checked === true
       })
   })
-  
+
   const typesRootNode = computed(() => {
     return postStore.rootNodes
       ?.find((node) => {
         return node?.data.name === 'gps_typesdispositif'
       })
   })
-  
+
   return {
     thematiquesItems,
     selectedThematique,
     typesRootNode,
   }
+}, {
+  persist: true,
 })
