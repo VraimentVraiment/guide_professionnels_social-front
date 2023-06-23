@@ -42,13 +42,13 @@ export function useDirectusFilters (
           }
 
           if (relationModel.relationType === 'many-to-many') {
-            const junction = relationsCollections.value
+            const relationsCollection = relationsCollections.value
               ?.find(j => (
                 j.sourceCollectionName === collectionModel.collectionName &&
                 j.targetCollectionName === relationModel.collectionName
               ))
 
-            if (!junction) {
+            if (!relationsCollection) {
               continue
             }
 
@@ -62,7 +62,7 @@ export function useDirectusFilters (
             }
 
             const ids = getMatchingIds({
-              junction,
+              relationsCollection,
               checkedItems,
               filtersCollection,
               relationModel,

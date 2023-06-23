@@ -35,7 +35,9 @@ const stepTwo = (id: number) => {
     id,
     value: true,
   })
-  postStore.fetchFiltersCollections()
+
+  postStore.fetchFiltersCollection('gps_typesdispositif')
+
   alertTitle.value = alertContent[1].title
   alertDescription.value = alertContent[1].description
 }

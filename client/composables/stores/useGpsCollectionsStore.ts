@@ -29,5 +29,5 @@ export const useGpsCollectionsStore = defineStore('collections', () => {
     typesRootNode,
   }
 }, {
-  persist: true,
+  // persist: true,
 })

@@ -4,19 +4,19 @@ export function getMatchingIds ({
   relationModel,
   filtersCollection,
   checkedItems,
-  junction,
+  relationsCollection,
 }: {
   relationModel: CollectionRelationModel,
   filtersCollection: FiltersCollection,
   checkedItems: FilterItemNode[],
-  junction: RelationsCollection,
+  relationsCollection: RelationsCollection,
 }) {
   const idGetter = {
 
     'single-node': () => getIdsMatchingFilters({
       itemsIds: checkedItems.map(i => i.id),
       combination: 'and',
-      junction,
+      relationsCollection,
     }),
 
     'leaves-only': () => Array.from(
@@ -32,7 +32,7 @@ export function getMatchingIds ({
                   return item.id === parent_id
                 })
                 ?.combination ?? 'and',
-              junction,
+              relationsCollection,
             }) as number[],
       ),
       ),
@@ -44,58 +44,73 @@ export function getMatchingIds ({
 
 export function getIdsMatchingFilters ({
   itemsIds,
-  junction,
+  relationsCollection,
   combination,
 }: {
   itemsIds: number[],
-  junction: RelationsCollection,
+  relationsCollection: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
 }): number[] | null {
   if (combination === 'or') {
-    return getOrItems(junction, itemsIds)
+    return getOrItems(relationsCollection, itemsIds)
   } else if (combination === 'and') {
-    return getAndItems(junction, itemsIds)
+    return getAndItems(relationsCollection, itemsIds)
   }
 
   return null
 }
 
 export function getOrItems (
-  junction: RelationsCollection,
+  relationsCollection: RelationsCollection,
   itemsIds: number[],
 ): number[] {
-  return junction?.items
+  const {
+    targetKey,
+    sourceKey,
+  } = relationsCollection.relationModel as {
+    targetKey: string
+    sourceKey: string
+  }
+  return relationsCollection?.items
     ?.reduce((ids, item) => {
       if (
-        itemsIds.includes(item[junction.junctionTargetKey]) &&
-        !ids.includes(item[junction.junctionSourceKey])
+        itemsIds.includes(item[targetKey]) &&
+        !ids.includes(item[sourceKey])
       ) {
-        ids.push(item[junction.junctionSourceKey])
+        ids.push(item[sourceKey])
       }
       return ids
     }, [] as number[])
 }
 
 export function getAndItems (
-  junction: RelationsCollection,
+  relationsCollection: RelationsCollection,
   itemsIds: number[],
 ): number[] {
+  const {
+    targetKey,
+    sourceKey,
+  } = relationsCollection.relationModel as {
+    targetKey: string
+    sourceKey: string
+  }
+
   const groups = d3.group(
-    junction.items,
-    d => d[junction.junctionSourceKey],
+    relationsCollection.items,
+    d => d[sourceKey],
   )
 
   return Array
     .from(groups, ([key, value]) => ({
-      [junction.junctionSourceKey]: key,
-      [junction.junctionTargetKey]: value.map(d => d[junction.junctionTargetKey]),
+      [sourceKey]: key,
+      [targetKey]: value.map(d => d[targetKey]),
     }),
     )
     .filter((d) => {
       return itemsIds.every((id) => {
-        const ids = d[junction.junctionTargetKey] as number[]
+        const ids = d[targetKey] as number[]
         return ids.includes(id)
       })
     })
-    .map(d => d[junction.junctionSourceKey] as number)
+    .map(d => d[sourceKey] as number)
 }

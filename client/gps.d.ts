@@ -149,16 +149,16 @@ declare global {
     relationType: RelationType
     userSelection?: UserSelection
     field?: string
-    junctionCollectionName?: string
-    junctionSourceKey?: string
-    junctionTargetKey?: string
+    relationCollectionName?: string
+    sourceKey?: string
+    targetKey?: string
   }
 
   export type RelationsCollection = {
-    collectionName: string,
     targetCollectionName: string,
     sourceCollectionName: string,
-    items: DirectusItem[]
+    items: DirectusRelationItem[]
+    relationModel: CollectionRelationModel
   }
 
   export type FiltersCollection = {
@@ -167,7 +167,10 @@ declare global {
     items: FilterItemNode[]
   }
 
-  export type DirectusItem = unknown
+  export type DirectusRelationItem = {
+    id: number
+    [key: string]: number
+  }
 
   export type DirectusFilter = Record<string, Record<string, unkown>>
   

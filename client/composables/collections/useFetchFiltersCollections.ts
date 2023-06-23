@@ -1,80 +1,75 @@
 import { useArrayDifference } from '@vueuse/core'
 
-export function useFetchFiltersCollections (
+export function useFetchFiltersCollection (
   filtersCollections: Ref<FiltersCollection[]>,
-  postCollectionModel: Ref<CollectionModel | null>,
+  postsCollectionModel: Ref<CollectionModel | null>,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
 ) {
-  const isFetching = ref(false)
+  async function fetchFiltersCollection (
+    collectionName: string,
+  ): Promise<void> {
+    const fetchedCollection = await getFiltersCollection(postsCollectionModel.value, directusFilters, collectionName)
 
-  async function fetchFiltersCollections (): Promise<void> {
-    if (isFetching.value) {
+    if (!fetchedCollection) {
       return
     }
 
-    isFetching.value = true
+    const existingCollection = filtersCollections.value
+      .find(c => c.collectionName === fetchedCollection.collectionName)
 
-    const fetchedFiltersCollections = await Promise.all(
-      getFiltersCollections(postCollectionModel.value, directusFilters),
-    )
+    if (!existingCollection) {
+      filtersCollections.value.push(fetchedCollection)
+    } else {
+      const diff = useArrayDifference(existingCollection.items, fetchedCollection.items, (v1, v2) => v1.id === v2.id)
 
-    for (const { items: fetchedItems, ...collection } of fetchedFiltersCollections) {
-      const existingCollection = filtersCollections.value
-        .find(c => c.collectionName === collection.collectionName)
+      if (!diff.value.length) {
+        return
+      }
 
-      if (!existingCollection) {
-        filtersCollections.value.push({ items: fetchedItems, ...collection })
-      } else {
-        const diff = useArrayDifference(existingCollection.items, fetchedItems, (v1, v2) => v1.id === v2.id)
+      const existingItemsChecked = existingCollection.items
+        .filter(item => item.checked)
+        .map(item => item.id)
 
-        if (!diff.value.length) {
-          continue
-        }
+      existingCollection.items = fetchedCollection.items
 
-        const existingItemsChecked = existingCollection.items
-          .filter(item => item.checked)
-          .map(item => item.id)
-
-        existingCollection.items = fetchedItems
-
-        for (const item of existingCollection.items) {
-          if (existingItemsChecked.includes(item.id)) {
-            item.checked = true
-          }
+      for (const item of existingCollection.items) {
+        if (existingItemsChecked.includes(item.id)) {
+          item.checked = true
         }
       }
     }
-
-    isFetching.value = false
   }
 
-  return fetchFiltersCollections
+  return fetchFiltersCollection
 }
 
-function getFiltersCollections (
-  postCollectionModel: CollectionModel | null,
+async function getFiltersCollection (
+  postsCollectionModel: CollectionModel | null,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
-): Promise<FiltersCollection>[] {
-  const filtersCollections = postCollectionModel?.relations
-    ?.map(async (relationModel) => {
-      const items = await useFetchCollectionItems<DirectusFilterItem>(
-        relationModel.collectionName,
-        directusFilters,
-      )
+  collectionName: string,
+): Promise<FiltersCollection | null> {
+  const relationModel = postsCollectionModel?.relations
+    ?.find(r => r.collectionName === collectionName)
 
-      return {
-        label: relationModel.label,
-        collectionName: relationModel.collectionName,
-        items: items
-          ?.map((item) => {
-            return {
-              ...item,
-              checked: false,
-              relationModel,
-            }
-          }),
-      }
-    })
+  if (!relationModel) {
+    return null
+  }
 
-  return filtersCollections ?? []
+  const items = await useFetchCollectionItems<DirectusFilterItem>(
+    relationModel.collectionName,
+    directusFilters,
+  )
+
+  return {
+    label: relationModel.label,
+    collectionName: relationModel.collectionName,
+    items: items
+      ?.map((item) => {
+        return {
+          ...item,
+          checked: false,
+          relationModel,
+        }
+      }),
+  }
 }

@@ -4,8 +4,8 @@ export function useSetCollection (
   const setCollection = (
     collectionName: string,
   ): void => {
-    const collectionsModelStore = useCollectionsModel()
-    collectionModel.value = collectionsModelStore.getCollectionByName(collectionName)
+    const collectionsModelsStore = useCollectionsModelsStore()
+    collectionModel.value = collectionsModelsStore.getCollectionByName(collectionName)
   }
 
   return setCollection
