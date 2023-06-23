@@ -47,5 +47,5 @@ export const useCollectionsModelsStore = defineStore('collectionsModels', () => 
     getDependentCollections,
   }
 }, {
-  // persist: true,
+  persist: true,
 })
