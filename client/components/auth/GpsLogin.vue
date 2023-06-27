@@ -5,7 +5,7 @@ const {
   email,
   password,
   button,
-  infoMessage,
+  alertModel,
   submit,
   isError,
 } = await useGpsLogin()
@@ -21,8 +21,8 @@ const {
       }]"
     >
       <DsfrAlert
-        v-show="infoMessage.display.value"
-        v-bind="infoMessage.props.value"
+        v-show="alertModel.display.value"
+        v-bind="alertModel.props.value"
         small
       />
       <GpsField
@@ -31,7 +31,7 @@ const {
         type="email"
         @input="() => {
           email.validate()
-          infoMessage.reset()
+          alertModel.reset()
         }"
       />
       <GpsField
@@ -40,7 +40,7 @@ const {
         type="password"
         @input="() => {
           password.validate()
-          infoMessage.reset()
+          alertModel.reset()
         }"
         @keydown.enter="submit()"
       />

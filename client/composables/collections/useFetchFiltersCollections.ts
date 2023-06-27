@@ -60,17 +60,6 @@ async function getFiltersCollection (
     label: relationModel.label,
     collectionName: relationModel.collectionName,
     items: items
-      ?.map(item => initialFilterItemState(item, relationModel)),
-  }
-}
-
-function initialFilterItemState (
-  item: DirectusFilterItem,
-  relationModel: CollectionRelationModel,
-): FilterItemNode {
-  return {
-    ...item,
-    checked: false,
-    relationModel,
+      ?.map(item => getInitialFilterItemNode(item, relationModel)),
   }
 }

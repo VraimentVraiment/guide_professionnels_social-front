@@ -65,7 +65,7 @@ const isSelectable = computed(() => {
           :open="collectionName === 'caracteristiques_dispositif'"
         >
           <FilterNode
-            :node="rootNodes.find(node => node.data.name === collectionName)"
+            :node="rootNodes.find(node => node.data.name === collectionName) ?? null"
           />
         </DetailsAccordion>
       </div>

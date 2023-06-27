@@ -1,5 +1,4 @@
-export function useCollectionObserver<T>() {
-
+export function useCollectionObserver<T> () {
   const collection = ref<T[]>([]) as Ref<T[]>
 
   const add = (item: T) => {

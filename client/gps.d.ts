@@ -192,7 +192,8 @@ declare global {
   }
 
   export interface FilterItemNode extends FilterItem {
-    relationModel: CollectionRelationModel;
+    collectionName: string
+    userSelection: UserSelection
     open?: boolean;
     checked?: boolean;
   }
@@ -202,20 +203,6 @@ declare global {
    * Auth
    *
    */
-
-  export type InfoMessageTypes = 'error' | 'success' | 'info'
-
-  export type InfoMessageModel = {
-    display: Ref<boolean>
-    props: Ref<{
-      type?: InfoMessageTypes
-      title?: string
-      description?: string
-    }>,
-    show: (type: InfoMessageTypes) => void
-    reset: () => void
-  }
-
   export type FieldModel = {
     value: Ref<string>
     isError: Ref<boolean>
@@ -260,8 +247,7 @@ declare global {
     loginButton: {
       label: string
     }
-    infoMessage: {
-
+    messages: {
       error: {
         title: string
         description: string
@@ -288,7 +274,7 @@ declare global {
       label: string
       disabled: ComputedRef<boolean>
     }
-    infoMessage: InfoMessageModel
+    alertModel: InfoMessageModel
     isError: Ref<boolean>
     submit(): void
   }

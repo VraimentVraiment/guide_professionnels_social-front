@@ -17,7 +17,7 @@ const setItem = (
   checked: boolean,
 ): void => {
   postStore.setItem({
-    collectionName: item.relationModel.collectionName,
+    collectionName: item.collectionName,
     id: item.id,
     value: checked,
     isAltKeyPressed: isAltKeyPressed.value,
@@ -31,23 +31,23 @@ const setItem = (
   >
     <DsfrRadioButton
       v-if="(
-        node.data.relationModel.userSelection === 'single-node'
+        node.data.userSelection === 'single-node'
         && node.depth > 0
       )"
-      :name="node.data.relationModel.collectionName"
+      :name="node.data.collectionName"
       :label="node.data.name"
       :value="node.data.id"
       :model-value="node.data.id"
       small
       :checked="node.data.checked"
-      @update:model-value="() => setItem(node.data as FilterItemNode, true)"
+      @update:model-value="() => setItem(node.data, true)"
     />
     <DsfrCheckbox
       v-else-if="(
-        node.data.relationModel.userSelection === 'all-nodes'
+        node.data.userSelection === 'all-nodes'
         && node.depth > 0
         || (
-          node.data.relationModel.userSelection === 'leaves-only'
+          node.data.userSelection === 'leaves-only'
           && node.height === 0
         )
       )"
@@ -57,8 +57,8 @@ const setItem = (
       small
       :class="[
         'gps-filters-sidebar__checkbox',
-        { 'all-nodes__checkbox': node.data.relationModel.userSelection === 'all-nodes' },
-        { 'leaves-only__checkbox': node.data.relationModel.userSelection === 'leaves-only' },
+        { 'all-nodes__checkbox': node.data.userSelection === 'all-nodes' },
+        { 'leaves-only__checkbox': node.data.userSelection === 'leaves-only' },
         { 'is-checked': node.data.checked }
       ]"
       :data-node-depth="node.depth"
@@ -67,7 +67,7 @@ const setItem = (
     />
     <h5
       v-else-if="(
-        node.data.relationModel.userSelection === 'leaves-only'
+        node.data.userSelection === 'leaves-only'
         && node.height === 2
       )"
     >
@@ -75,7 +75,7 @@ const setItem = (
     </h5>
     <DetailsAccordion
       v-else-if="(
-        node.data.relationModel.userSelection === 'leaves-only'
+        node.data.userSelection === 'leaves-only'
         && node.height === 1
       )"
       :label="node.data.name"
@@ -92,7 +92,7 @@ const setItem = (
     </DetailsAccordion>
     <div
       v-if="(
-        node.data.relationModel.userSelection === 'all-nodes'
+        node.data.userSelection === 'all-nodes'
         && node.children?.length
       )"
       v-show="(
@@ -112,7 +112,7 @@ const setItem = (
     </div>
     <div
       v-else-if="!(
-        node.data.relationModel.userSelection === 'leaves-only'
+        node.data.userSelection === 'leaves-only'
         && node.height === 1
       )
         && node.children?.length

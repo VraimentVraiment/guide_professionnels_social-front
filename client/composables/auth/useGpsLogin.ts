@@ -20,7 +20,7 @@ export async function useGpsLogin (): Promise<GpsLogin> {
     disabled: computed(() => !email.isValid.value || !password.isValid.value),
   }
 
-  const infoMessage = useInfoMessage(strings.infoMessage)
+  const alertModel = useDsfrAlertModel(strings.messages)
 
   const isError = ref(false)
 
@@ -31,7 +31,7 @@ export async function useGpsLogin (): Promise<GpsLogin> {
 
     const { login: directusLogin } = useDirectusAuth()
 
-    infoMessage.show('info')
+    alertModel.show('info')
 
     directusLogin({
       email: email.value.value,
@@ -41,14 +41,14 @@ export async function useGpsLogin (): Promise<GpsLogin> {
   }
 
   const onSuccess = () => {
-    infoMessage.reset() // TODO: this is necessary to provoke a re-render but should not
-    infoMessage.show('success')
+    alertModel.reset() // TODO: this is necessary to provoke a re-render but should not
+    alertModel.show('success')
     navigateTo('/')
   }
 
   const onError = () => {
     isError.value = true
-    infoMessage.show('error')
+    alertModel.show('error')
     email.reset()
     password.reset()
   }
@@ -59,7 +59,7 @@ export async function useGpsLogin (): Promise<GpsLogin> {
     email,
     password,
     button,
-    infoMessage,
+    alertModel,
     submit,
   }
 }

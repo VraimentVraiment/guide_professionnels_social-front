@@ -15,18 +15,15 @@ const {
   typesRootNode,
 } = storeToRefs(useGpsSelectedThematiqueStore())
 
-const {
-  alertTitle,
-  alertDescription,
-} = useAlertStore()
-const { alertContent } = await useGetContent('/home')
+const { messages } = await useGetContent('/home')
+const alertModel = useDsfrAlertModel(messages)
+alertModel.show('info')
 
 const openDetails = useCollectionObserver<Number>()
 
 const stepOne = () => {
   postStore.resetFilters()
-  alertTitle.value = alertContent[0].title
-  alertDescription.value = alertContent[0].description
+  alertModel.setStep(0)
 }
 
 const stepTwo = (id: number) => {
@@ -37,9 +34,7 @@ const stepTwo = (id: number) => {
   })
 
   postStore.fetchFiltersCollection('gps_typesdispositif')
-
-  alertTitle.value = alertContent[1].title
-  alertDescription.value = alertContent[1].description
+  alertModel.setStep(1)
 }
 
 stepOne()
@@ -59,9 +54,7 @@ stepOne()
               'fr-col-12',
               'fr-col-lg-8',
             ]"
-            :type="'info'"
-            :title="alertTitle"
-            :description="alertDescription"
+            v-bind="alertModel.props.value"
           />
         </div>
       </div>

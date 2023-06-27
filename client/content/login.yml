@@ -18,7 +18,7 @@ passwordField:
     valid: Mot de passe valide
 loginButton:
   label: Se connecter
-infoMessage:
+messages:
   error:
     title: Erreur
     description: Le nom d'utilisateur et/ou le mot de passe sont incorrect

@@ -6,7 +6,7 @@ import {
  * Creates a hierarchical representation of a FiltersCollection using d3-hierarchy's `stratify` function.
  */
 export function stratifyFilters (
-  relationModel: CollectionRelationModel,
+  relationModel: CollectionRelationModel, // TODO use generic object assignment instead
   items: FilterItemNode[],
 ): HierarchyNode<FilterItemNode> | null {
   const idAccessor: Accessor<FilterItemNode> = (item) => {
@@ -17,18 +17,9 @@ export function stratifyFilters (
     return item.parent_id?.toString() || null
   }
 
-  const getRootFilterItem = (): FilterItemNode => {
-    return {
-      id: 0,
-      parent_id: null,
-      relationModel,
-      name: relationModel.collectionName,
-    }
-  }
-
   /**
    * TODO: Make sure items parent_id being null doesn't break the tree.
-   * either by specifying a default value in directus or ficing 'stratify' function.
+   * either by specifying a default value in directus or fixing 'stratify' function.
    */
   items.forEach((item) => {
     if (!item?.parent_id) {
@@ -40,6 +31,6 @@ export function stratifyFilters (
     items,
     idAccessor,
     parentAccessor,
-    getRootFilterItem,
+    () => getRootFilterItemNode(relationModel),
   )
 }

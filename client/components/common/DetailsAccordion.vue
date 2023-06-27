@@ -13,7 +13,7 @@ defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
 </script>
 
@@ -42,7 +42,6 @@ defineProps({
     </div>
   </details>
 </template>
-
 
 <style scoped lang="scss">
 details.gps-details {
