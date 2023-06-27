@@ -13,7 +13,7 @@ const {
   thematiquesItems,
   selectedThematique,
   typesRootNode,
-} = storeToRefs(useGpsCollectionsStore())
+} = storeToRefs(useGpsSelectedThematiqueStore())
 
 const {
   alertTitle,

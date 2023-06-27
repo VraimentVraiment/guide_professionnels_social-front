@@ -1,7 +1,7 @@
 export default defineNuxtRouteMiddleware((to) => {
   const collectionsModelsStore = useCollectionsModelsStore()
   const postStore = useDispositifPostStore()
-  const { selectedThematique } = useGpsCollectionsStore()
+  const { selectedThematique } = useGpsSelectedThematiqueStore()
 
   if (process.server) {
     return

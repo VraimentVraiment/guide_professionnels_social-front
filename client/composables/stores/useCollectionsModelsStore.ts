@@ -1,4 +1,13 @@
-export const useCollectionsModelsStore = defineStore('collectionsModels', () => {
+/**
+ * This file defines a pinia store for managing our app collections' models,
+ * which are abstractions of the entities in the database.
+ */
+
+export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
+  // persist: true,
+})
+
+function useDefineCollectionsModelsStore () {
   const collections = ref<CollectionModel[]>()
 
   const fetch = async () => {
@@ -29,10 +38,12 @@ export const useCollectionsModelsStore = defineStore('collectionsModels', () => 
           !type ||
           collectionModel.type === type
         )
+
         const hasRelation = collectionModel.relations
           ?.some((relationModel) => {
             return relationModel.collectionName === collectionName
           }) ?? false
+
         return (
           isType &&
           hasRelation
@@ -46,6 +57,4 @@ export const useCollectionsModelsStore = defineStore('collectionsModels', () => 
     getCollectionByName,
     getDependentCollections,
   }
-}, {
-  persist: true,
-})
+}

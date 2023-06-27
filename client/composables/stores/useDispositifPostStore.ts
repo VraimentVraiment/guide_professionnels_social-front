@@ -1,3 +1,3 @@
-export const useDispositifPostStore = defineStore('dispositifsPosts', usePostStore, {
-  persist: true,
+export const useDispositifPostStore = defineStore('dispositifsPosts', useDefinePostStore, {
+  // persist: true,
 })

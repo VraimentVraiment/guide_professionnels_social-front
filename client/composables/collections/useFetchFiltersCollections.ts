@@ -1,5 +1,3 @@
-import { useArrayDifference } from '@vueuse/core'
-
 export function useFetchFiltersCollection (
   filtersCollections: Ref<FiltersCollection[]>,
   postsCollectionModel: Ref<CollectionModel | null>,
@@ -20,12 +18,10 @@ export function useFetchFiltersCollection (
     if (!existingCollection) {
       filtersCollections.value.push(fetchedCollection)
     } else {
-      const diff = useArrayDifference(existingCollection.items, fetchedCollection.items, (v1, v2) => v1.id === v2.id)
-
-      if (!diff.value.length) {
+      const difference = useArrayDifference(existingCollection.items, fetchedCollection.items, el => el.id)
+      if (!difference.hasChanges) {
         return
       }
-
       const existingItemsChecked = existingCollection.items
         .filter(item => item.checked)
         .map(item => item.id)
@@ -64,12 +60,17 @@ async function getFiltersCollection (
     label: relationModel.label,
     collectionName: relationModel.collectionName,
     items: items
-      ?.map((item) => {
-        return {
-          ...item,
-          checked: false,
-          relationModel,
-        }
-      }),
+      ?.map(item => initialFilterItemState(item, relationModel)),
+  }
+}
+
+function initialFilterItemState (
+  item: DirectusFilterItem,
+  relationModel: CollectionRelationModel,
+): FilterItemNode {
+  return {
+    ...item,
+    checked: false,
+    relationModel,
   }
 }

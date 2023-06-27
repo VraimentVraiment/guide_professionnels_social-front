@@ -8,8 +8,8 @@ collections:
     relations:
       - collectionName: gps_thematiques
         label: Thématiques
-        userSelection: single-node
         relationType: many-to-many
+        userSelection: single-node
         relationCollectionName: gps_typesdispositif_gps_thematiques
         sourceKey: gps_typesdispositif_id
         targetKey: gps_thematiques_id
@@ -19,8 +19,8 @@ collections:
     relations:
       - collectionName: gps_thematiques
         label: Thématiques
-        userSelection: single-node
         relationType: many-to-many
+        userSelection: single-node
         relationCollectionName: gps_caracteristiquesdispositif_gps_thematiques
         sourceKey: gps_caracteristiquesdispositif_id
         targetKey: gps_thematiques_id

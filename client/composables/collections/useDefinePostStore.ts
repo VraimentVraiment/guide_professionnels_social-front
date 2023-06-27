@@ -1,4 +1,4 @@
-export const usePostStore = () => {
+export const useDefinePostStore = () => {
   const postsCollectionModel = ref<CollectionModel | null>(null)
   const postsCollection = ref<Post[]>([])
   const relationsCollections = ref<RelationsCollection[]>([])
