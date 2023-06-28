@@ -8,7 +8,7 @@ const fichesTechniques = await useFetchDirectusItems<FicheTechniquePost>({
   collectionName: 'gps_fichestechniques',
 })
 
-const { getFiles } = useDirectusFiles();
+const { getFiles } = useDirectusFiles()
 
 const filesData = await Promise.all(
   fichesTechniques.map(async (ficheTechnique) => {

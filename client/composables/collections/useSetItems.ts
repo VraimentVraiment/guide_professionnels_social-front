@@ -6,9 +6,11 @@ type CheckItemProps = {
 }
 
 export function useSetItem (
+  postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
-  postsCollectionModel: Ref<CollectionModel>,
 ) {
+  const { getRelationModel } = useCollectionsModelsStore()
+
   function setItem ({
     collectionName,
     id,
@@ -30,7 +32,7 @@ export function useSetItem (
 
     item.checked = value
 
-    const relationModel = getRelationModel(postsCollectionModel.value, collectionName) as CollectionRelationModel
+    const relationModel = getRelationModel(postsCollectionName.value, collectionName)
 
     setItemCheckSideEffects({
       item,
@@ -50,18 +52,19 @@ export function useSetItem (
     value,
   }: {
     collection: FiltersCollection,
-    relationModel: CollectionRelationModel,
+    relationModel: CollectionRelationModel | null,
     item: FilterItemNode,
     value: boolean,
     isAltKeyPressed?: boolean,
   }) {
-    if (relationModel.userSelection === 'single-node') {
+    if (relationModel?.userSelection === 'single-node') {
       collection.items
         .filter(i => i.id !== item.id)
         .forEach((i) => {
           i.checked = false
         })
     }
+
     // else if (
     //   isAltKeyPressed &&
     //   (
@@ -79,7 +82,7 @@ export function useSetItem (
     //   // })
     //   // })
     // }
-    else if (relationModel.userSelection === 'all-nodes') {
+    else if (relationModel?.userSelection === 'all-nodes') {
       setItemChildren({ collection, item, value, isAltKeyPressed })
       setItemParent({ collection, item, value, isAltKeyPressed })
     }

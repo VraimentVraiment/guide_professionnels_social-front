@@ -1,16 +1,16 @@
 export function useWatchPostFiltering (
+  postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
-  fetchFiltersCollection: (collectionName: string) => Promise<void>,
-  fetchPostsCollection: () => Promise<void>,
+  fetchCollection: (collectionName: string) => Promise<void>,
 ) {
-  const { getDependentCollections } = useCollectionsModelsStore()
+  const { getDependentCollectionsModels } = useCollectionsModelsStore()
 
   const watchPostFiltering = () => {
     for (const filtersCollection of filtersCollections.value) {
       watch(
         filtersCollection,
         () => {
-          const dependentTaxonomiesCollections = getDependentCollections(filtersCollection.collectionName, 'taxonomy')
+          const dependentTaxonomiesCollections = getDependentCollectionsModels(filtersCollection.collectionName, 'taxonomy')
             ?.filter((collection) => {
               return filtersCollections.value
                 .some(({ collectionName }) => {
@@ -19,10 +19,10 @@ export function useWatchPostFiltering (
             })
           if (dependentTaxonomiesCollections?.length) {
             dependentTaxonomiesCollections.forEach(({ collectionName }) => {
-              fetchFiltersCollection(collectionName)
+              fetchCollection(collectionName)
             })
           } else {
-            fetchPostsCollection()
+            fetchCollection(postsCollectionName.value)
           }
         })
     }

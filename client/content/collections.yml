@@ -6,10 +6,11 @@ collections:
     collectionName: gps_typesdispositif
     type: taxonomy
     relations:
-      - collectionName: gps_thematiques
-        label: Thématiques
+      - label: Thématiques
         relationType: many-to-many
         userSelection: single-node
+        sourceCollectionName: gps_typesdispositif
+        targetCollectionName: gps_thematiques
         relationCollectionName: gps_typesdispositif_gps_thematiques
         sourceKey: gps_typesdispositif_id
         targetKey: gps_thematiques_id
@@ -17,47 +18,51 @@ collections:
     collectionName: gps_caracteristiquesdispositif
     type: taxonomy
     relations:
-      - collectionName: gps_thematiques
-        label: Thématiques
+      - label: Thématiques
         relationType: many-to-many
         userSelection: single-node
+        sourceCollectionName: gps_caracteristiquesdispositif
+        targetCollectionName: gps_thematiques
         relationCollectionName: gps_caracteristiquesdispositif_gps_thematiques
         sourceKey: gps_caracteristiquesdispositif_id
         targetKey: gps_thematiques_id
   - label: Fiches dispositif
     collectionName: gps_fichesdispositif
-    type: post
-    thumbnailFields:
+    type: posts
+    fields:
       - id
       - name
       - addresses
     relations:
-      - collectionName: gps_thematiques
-        label: Thématiques
+      - label: Thématiques
         userSelection: single-node
         relationType: many-to-many
+        sourceCollectionName: gps_fichesdispositif
+        targetCollectionName: gps_thematiques
         relationCollectionName: gps_fichesdispositif_gps_thematiques
         sourceKey: gps_fichesdispositif_id
         targetKey: gps_thematiques_id
-      - collectionName: gps_typesdispositif
-        label: Types de dispositif
+      - label: Types de dispositif
         relationType: many-to-one
+        targetCollectionName: gps_typesdispositif
         userSelection: all-nodes
         field: gps_typesdispositif_id
-      - collectionName: gps_caracteristiquesdispositif
-        label: Caractéristiques
+      - label: Caractéristiques
         userSelection: leaves-only
         relationType: many-to-many
+        sourceCollectionName: gps_fichesdispositif
+        targetCollectionName: gps_caracteristiquesdispositif
         relationCollectionName: gps_fichesdispositif_gps_caracteristiquesdispositif
         sourceKey: gps_fichesdispositif_id
         targetKey: gps_caracteristiquesdispositif_id
   - label: Fiches techniques
-    type: post
+    type: posts
     collectionName: gps_fichestechniques
     relations:
-      - collectionName: gps_thematiques
-        userSelection: single-node
+      - userSelection: single-node
         relationType: many-to-many
+        sourceCollectionName: gps_fichestechniques
+        targetCollectionName: gps_thematiques
         relationCollectionName: gps_fichestechnique_gps_thematiques
         sourceKey: gps_fichestechnique_id
         targetKey: gps_thematiques_id

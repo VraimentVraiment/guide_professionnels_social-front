@@ -16,14 +16,11 @@ export default defineNuxtRouteMiddleware((to) => {
 
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
-    if (!collectionsModelsStore.collections?.length) {
+    if (!postStore.postsCollectionName) {
       await collectionsModelsStore.fetch()
-      postStore.setCollection('gps_fichesdispositif')
-
-      await postStore.fetchFiltersCollection('gps_thematiques')
-      await postStore.fetchFiltersCollection('gps_typesdispositif')
-      await postStore.fetchRelationsCollection('gps_thematiques')
-      await postStore.fetchRelationsCollection('gps_typesdispositif')
+      postStore.setPostCollection('gps_fichesdispositif')
+      await postStore.fetchCollection('gps_thematiques')
+      await postStore.fetchCollection('gps_typesdispositif')
     }
     resolve()
   })

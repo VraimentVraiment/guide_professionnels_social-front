@@ -31,7 +31,7 @@ const stepTwo = (id: number) => {
     value: true,
   })
 
-  postStore.fetchFiltersCollection('gps_typesdispositif')
+  postStore.fetchCollection('gps_typesdispositif')
   alertModel.setStep(1)
 }
 

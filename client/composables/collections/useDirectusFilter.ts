@@ -1,10 +1,11 @@
 export function useDirectusFilters (
-  collectionsModels: ComputedRef<(CollectionModel | null)[]>,
-  relationsCollections: Ref<RelationsCollection[]>,
   filtersCollections: Ref<FiltersCollection[]>,
+  relationsCollections: Ref<RelationsCollection[]>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
-    return collectionsModels.value
+    const { collectionsModels } = useCollectionsModelsStore()
+
+    return collectionsModels
       ?.map((collectionModel): CollectionDirectusFilter => {
         const filter: CollectionDirectusFilter = {
           collectionName: collectionModel?.collectionName as string,
@@ -23,7 +24,7 @@ export function useDirectusFilters (
         }
 
         for (const relationModel of collectionModel?.relations) {
-          const checkedItems = getCheckedItems(filtersCollections.value, relationModel.collectionName)
+          const checkedItems = getCheckedItems(filtersCollections.value, relationModel.targetCollectionName)
 
           if (
             !checkedItems ||
@@ -43,9 +44,9 @@ export function useDirectusFilters (
 
           if (relationModel.relationType === 'many-to-many') {
             const relationsCollection = relationsCollections.value
-              ?.find(j => (
-                j.sourceCollectionName === collectionModel.collectionName &&
-                j.targetCollectionName === relationModel.collectionName
+              ?.find(c => (
+                c.relationModel.sourceCollectionName === collectionModel.collectionName &&
+                c.relationModel.targetCollectionName === relationModel.targetCollectionName
               ))
 
             if (!relationsCollection) {
@@ -54,7 +55,7 @@ export function useDirectusFilters (
 
             const filtersCollection = filtersCollections.value
               ?.find((collection) => {
-                return collection.collectionName === relationModel.collectionName
+                return collection.collectionName === relationModel.targetCollectionName
               })
 
             if (!filtersCollection) {

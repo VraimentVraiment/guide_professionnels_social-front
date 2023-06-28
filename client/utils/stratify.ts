@@ -18,39 +18,15 @@ export function stratify <T> (
     .id(idAccessor)
     .parentId(parentAccessor)
 
-  const tabularItems = getStratifiableItems<T>(
-    items,
-    getRootFilterItem,
-    parentAccessor,
-  )
-
-  return d3stratify(tabularItems)
-}
-
-/**
- * Make sure items can be used to create a stratified tree,
- * verifying if array has a root node, or add one if it doesn't.
- */
-function getStratifiableItems<T> (
-  items: T[],
-  getRootItem: () => T,
-  parentAccessor: Accessor<T, string | null>,
-): (T)[] {
   const tabularItems = [...items]
 
-  if (!hasRootNode<T>(items, parentAccessor)) {
-    tabularItems.push(getRootItem())
+  const hasRootItem = items.some((item) => {
+    return parentAccessor(item) === null
+  })
+
+  if (!hasRootItem) {
+    tabularItems.push(getRootFilterItem())
   }
 
-  return tabularItems
-}
-
-/**
- * Check if an array of items has a root node.
- */
-function hasRootNode<T> (
-  items: T[],
-  parentAccessor: Accessor<T, string | null>,
-): boolean {
-  return items.some(item => parentAccessor(item) === null)
+  return d3stratify(tabularItems)
 }

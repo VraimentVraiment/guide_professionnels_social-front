@@ -1,38 +1,31 @@
 export const useDefinePostStore = () => {
-  const postsCollectionModel = ref<CollectionModel | null>(null)
-  const postsCollection = ref<Post[]>([])
-  const relationsCollections = ref<RelationsCollection[]>([])
-  const filtersCollections = ref<FiltersCollection[]>([])
-  // const collections = ref<(FiltersCollection | {
-  //   collectionName: string,
-  //   items: Post[],
-  // })[]>([])
+  const {
+    postsCollectionName,
+    postsCollection,
+    collections,
+    filtersCollections,
+    relationsCollections,
+    setPostCollection,
+  } = useCollections()
 
-  const collectionsModels = useCollectionsModels(postsCollectionModel, filtersCollections)
-  const rootNodes = useRootNodes(filtersCollections, postsCollectionModel as Ref<CollectionModel>)
-  const directusFilters = useDirectusFilters(collectionsModels, relationsCollections, filtersCollections)
+  const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
+  const directusFilters = useDirectusFilters(filtersCollections, relationsCollections)
 
-  const setCollection = useSetCollection(postsCollectionModel)
-  const setItem = useSetItem(filtersCollections, postsCollectionModel as Ref<CollectionModel>)
   const resetFilters = useResetFilters(filtersCollections)
-
-  const fetchPostsCollection = useFetchPostsCollection(postsCollection, postsCollectionModel, directusFilters)
-  const fetchFiltersCollection = useFetchFiltersCollection(filtersCollections, postsCollectionModel, directusFilters)
-  const fetchRelationsCollection = useFetchRelationsCollection(relationsCollections, collectionsModels)
-
-  const watchPostFiltering = useWatchPostFiltering(filtersCollections, fetchFiltersCollection, fetchPostsCollection)
+  const setItem = useSetItem(postsCollectionName, filtersCollections)
+  const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
+  const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
 
   return {
-    postsCollectionModel,
+    postsCollectionName,
     postsCollection,
+    collections,
     filtersCollections,
     relationsCollections,
     rootNodes,
     directusFilters,
-    setCollection,
-    fetchPostsCollection,
-    fetchFiltersCollection,
-    fetchRelationsCollection,
+    setPostCollection,
+    fetchCollection,
     resetFilters,
     setItem,
     watchPostFiltering,

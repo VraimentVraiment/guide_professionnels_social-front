@@ -5,7 +5,7 @@ export function getInitialFilterItemNode (
   return {
     ...item,
     checked: false,
-    collectionName: relationModel.collectionName,
+    collectionName: relationModel.targetCollectionName,
     userSelection: relationModel.userSelection as UserSelection,
   }
 }
@@ -17,7 +17,7 @@ export function getRootFilterItemNode (
     id: 0,
     parent_id: null,
     userSelection: relationModel.userSelection as UserSelection,
-    name: relationModel.collectionName,
-    collectionName: relationModel.collectionName,
+    name: relationModel.targetCollectionName,
+    collectionName: relationModel.targetCollectionName,
   }
 }

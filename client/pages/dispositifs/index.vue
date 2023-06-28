@@ -17,10 +17,8 @@ const { tabListName, tabTitles, emptyMessage } = await useGetContent('dispositif
 const postStore = useDispositifPostStore()
 onMounted(() => {
   // TODO : fetch only if not already fetched
-  postStore.fetchFiltersCollection('gps_caracteristiquesdispositif')
-  postStore.fetchRelationsCollection('gps_caracteristiquesdispositif')
-  postStore.fetchPostsCollection()
-  postStore.fetchRelationsCollection('gps_fichesdispositif')
+  postStore.fetchCollection('gps_caracteristiquesdispositif')
+  postStore.fetchCollection('gps_fichesdispositif')
   postStore.watchPostFiltering()
   mounted.value = true
 })
@@ -70,9 +68,9 @@ const getCardProps = (postItem: DispositifPost) => {
             to="#dispositifs-sidebar"
             :disabled="isListSelected || isSmallScreen"
           >
-            <template v-if="postStore.postsCollection.length > 0">
+            <template v-if="postStore.postsCollection?.items.length > 0">
               <GpsPostCardGrid
-                :collection="postStore.postsCollection"
+                :collection="postStore.postsCollection.items"
                 :wrap-cards="isListSelected"
                 :get-card-props="getCardProps"
                 type="link"
@@ -88,7 +86,7 @@ const getCardProps = (postItem: DispositifPost) => {
         <template #tab-1>
           <template v-if="!isListSelected || hasMapLoaded">
             <GpsMap
-              :collection="postStore.postsCollection"
+              :collection="postStore.postsCollection.items"
               @map-loaded="() => hasMapLoaded = true"
             />
           </template>

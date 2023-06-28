@@ -3,7 +3,7 @@ import { useArrayDifference as useVueUseArrayDifference } from '@vueuse/core'
 export function useArrayDifference<T> (
   oldArray: T[],
   newArray: T[],
-  accessor: Accessor<T>,
+  accessor: Accessor<T, unknown>,
 ) {
   const compareFn = (v1: T, v2: T) => accessor(v1) === accessor(v2)
 

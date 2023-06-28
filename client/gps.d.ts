@@ -47,6 +47,8 @@ import {
 } from "nuxt-directus/dist/runtime/types";
 
 declare global {
+
+  export type DirectusItem = DirectusItem
   /*
    *
    * Fields
@@ -94,7 +96,7 @@ declare global {
    * Filters
    *
    */
-  export type CollectionType = 'post' | 'taxonomy'
+  export type CollectionType = 'posts' | 'taxonomy' | 'relations'
   export type RelationType = 'many-to-one' | 'many-to-many'
   export type UserSelection = 'leaves-only' | 'all-nodes' | 'single-node'
   export type FilterCombination = 'and' | 'or' | 'unique'
@@ -104,33 +106,21 @@ declare global {
     collectionName: string
     type: CollectionType
     relations?: CollectionRelationModel[]
-    thumbnailFields?: string[]
+    fields?: string[]
   }
 
   export type CollectionRelationModel = {
     label: string
-    collectionName: string
+    // collectionName: string
     relationType: RelationType
     userSelection?: UserSelection
     field?: string
+    sourceCollectionName: string
+    targetCollectionName: string
     relationCollectionName?: string
     sourceKey?: string
     targetKey?: string
   }
-
-  export type RelationsCollection = {
-    targetCollectionName: string,
-    sourceCollectionName: string,
-    items: DirectusRelationItem[]
-    relationModel: CollectionRelationModel
-  }
-
-  export type FiltersCollection = {
-    collectionName: string;
-    label?: string
-    items: FilterItemNode[]
-  }
-
   export type DirectusRelationItem = {
     id: number
     [key: string]: number
@@ -162,6 +152,31 @@ declare global {
     open?: boolean;
     checked?: boolean;
   }
+
+  export type CollectionItem = Post | DirectusFilterItem | DirectusRelationItem
+
+  export type PostsCollection = {
+    collectionName: string,
+    label?: string
+    items: Post[]
+    type: 'posts'
+  }
+
+  export type FiltersCollection = {
+    collectionName: string;
+    label?: string
+    items: FilterItemNode[]
+    type: 'taxonomy'
+  }
+
+  export type RelationsCollection = {
+    collectionName: string,
+    items: DirectusRelationItem[]
+    relationModel: CollectionRelationModel
+    type: 'relations'
+  }
+
+  export type ItemsCollection = PostsCollection | FiltersCollection | RelationsCollection
 
   /*
    *
