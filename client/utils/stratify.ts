@@ -10,8 +10,8 @@ import {
  */
 export function stratify <T> (
   items: T[],
-  idAccessor: Accessor<T>,
-  parentAccessor: Accessor<T>,
+  idAccessor: Accessor<T, string | null>,
+  parentAccessor: Accessor<T, string | null>,
   getRootFilterItem: () => T,
 ): HierarchyNode<T> | null {
   const d3stratify = getStratifier<T>()
@@ -34,7 +34,7 @@ export function stratify <T> (
 function getStratifiableItems<T> (
   items: T[],
   getRootItem: () => T,
-  parentAccessor: Accessor<T>,
+  parentAccessor: Accessor<T, string | null>,
 ): (T)[] {
   const tabularItems = [...items]
 
@@ -50,7 +50,7 @@ function getStratifiableItems<T> (
  */
 function hasRootNode<T> (
   items: T[],
-  parentAccessor: Accessor<T>,
+  parentAccessor: Accessor<T, string | null>,
 ): boolean {
   return items.some(item => parentAccessor(item) === null)
 }

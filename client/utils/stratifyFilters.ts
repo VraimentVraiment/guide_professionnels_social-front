@@ -9,11 +9,11 @@ export function stratifyFilters (
   relationModel: CollectionRelationModel, // TODO use generic object assignment instead
   items: FilterItemNode[],
 ): HierarchyNode<FilterItemNode> | null {
-  const idAccessor: Accessor<FilterItemNode> = (item) => {
+  const idAccessor: Accessor<FilterItemNode, string | null> = (item) => {
     return item.id?.toString() || null
   }
 
-  const parentAccessor: Accessor<FilterItemNode> = (item) => {
+  const parentAccessor: Accessor<FilterItemNode, string | null> = (item) => {
     return item.parent_id?.toString() || null
   }
 

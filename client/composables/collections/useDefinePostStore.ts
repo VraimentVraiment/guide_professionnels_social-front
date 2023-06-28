@@ -3,6 +3,10 @@ export const useDefinePostStore = () => {
   const postsCollection = ref<Post[]>([])
   const relationsCollections = ref<RelationsCollection[]>([])
   const filtersCollections = ref<FiltersCollection[]>([])
+  // const collections = ref<(FiltersCollection | {
+  //   collectionName: string,
+  //   items: Post[],
+  // })[]>([])
 
   const collectionsModels = useCollectionsModels(postsCollectionModel, filtersCollections)
   const rootNodes = useRootNodes(filtersCollections, postsCollectionModel as Ref<CollectionModel>)

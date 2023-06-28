@@ -3,84 +3,48 @@ import {
 } from 'd3-hierarchy'
 
 import {
-  /* auth */
-  DirectusUser,
-  DirectusAuthCredentials,
-  DirectusAuthResponse,
-  DirectusPasswordForgotCredentials,
-  DirectusPasswordResetCredentials,
-  DirectusUserRequest,
-  DirectusUserCreation,
-  DirectusUserUpdate,
-  DirectusUserDeletion,
-  DirectusRegisterCredentials,
-  /* query params */
-  DirectusQueryParams,
-  /* collections */
-  DirectusCollectionRequest,
-  DirectusCollectionMeta,
-  DirectusCollectionCreation,
-  DirectusCollectionUpdate,
-  /* items */
-  DirectusItemMetadata,
-  DirectusItems,
-  DirectusItem,
-  DirectusItemRequest,
-  DirectusItemCreation,
-  DirectusItemUpdate,
-  DirectusItemDeletion,
-  /* files */
-  DirectusFile,
-  DirectusFolders,
-  DirectusFileRequest,
-  DirectusThumbnailFormat,
-  DirectusThumbnailFit,
-  DirectusThumbnailOptions,
-  /* notification */
-  DirectusNotificationObject,
-  /* revisions */
-  DirectusRevision,
-} from "nuxt-directus/dist/runtime/types";
+  type Primitive
+} from 'd3-array'
 
-export {
+import {
   /* auth */
-  DirectusUser,
-  DirectusAuthCredentials,
-  DirectusAuthResponse,
-  DirectusPasswordForgotCredentials,
-  DirectusPasswordResetCredentials,
-  DirectusUserRequest,
-  DirectusUserCreation,
-  DirectusUserUpdate,
-  DirectusUserDeletion,
-  DirectusRegisterCredentials,
+  type DirectusUser,
+  type DirectusAuthCredentials,
+  type DirectusAuthResponse,
+  type DirectusPasswordForgotCredentials,
+  type DirectusPasswordResetCredentials,
+  type DirectusUserRequest,
+  type DirectusUserCreation,
+  type DirectusUserUpdate,
+  type DirectusUserDeletion,
+  type DirectusRegisterCredentials,
   /* query params */
-  DirectusQueryParams,
+  type DirectusQueryParams,
   /* collections */
-  DirectusCollectionRequest,
-  DirectusCollectionMeta,
-  DirectusCollectionCreation,
-  DirectusCollectionUpdate,
+  type DirectusCollectionRequest,
+  type DirectusCollectionMeta,
+  type DirectusCollectionCreation,
+  type DirectusCollectionUpdate,
   /* items */
-  DirectusItemMetadata,
-  DirectusItems,
-  DirectusItem,
-  DirectusItemRequest,
-  DirectusItemCreation,
-  DirectusItemUpdate,
-  DirectusItemDeletion,
+  type DirectusItemMetadata,
+  type DirectusItems,
+  type DirectusItem,
+  type DirectusItemRequest,
+  type DirectusItemCreation,
+  type DirectusItemUpdate,
+  type DirectusItemDeletion,
   /* files */
-  DirectusFile,
-  DirectusFolders,
-  DirectusFileRequest,
-  DirectusThumbnailFormat,
-  DirectusThumbnailFit,
-  DirectusThumbnailOptions,
+  type DirectusFile,
+  type DirectusFolders,
+  type DirectusFileRequest,
+  type DirectusThumbnailFormat,
+  type DirectusThumbnailFit,
+  type DirectusThumbnailOptions,
   /* notification */
-  DirectusNotificationObject,
+  type DirectusNotificationObject,
   /* revisions */
-  DirectusRevision,
-}
+  type DirectusRevision,
+} from "nuxt-directus/dist/runtime/types";
 
 declare global {
   /*
@@ -288,5 +252,5 @@ declare global {
 
   export type RecursiveYmlContent = Record<string, string | string[] | RecursiveYmlContent>
 
-  export type Accessor<T> = (item: T) => string | undefined | null
+  export type Accessor<T, U> = (item: T) => U
 }

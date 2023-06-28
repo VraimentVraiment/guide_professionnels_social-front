@@ -3,7 +3,7 @@
 const {
   headerProps,
   mainNavProps,
-} = await useGetContent('/header')
+} = await useGetContent('/layout')
 
 const showNavigation = useIsAuthenticated()
 

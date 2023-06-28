@@ -1,33 +1,33 @@
 login:
   title: 'Connexion'
-  metaTitle: 'Connexion - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Connexion - Guide des Professionnels du Social'
 index:
   title: 'Accueil'
-  metaTitle: 'Home - VueDsfr Starter Template'
+  metaTitle: 'Guide des Professionnels du Social dans le département du Calvados'
 apropos:
   title: 'À propos'
-  metaTitle: 'À propos - Gabarit de démarrage VueDsfr'
+  metaTitle: 'À propos - Guide des Professionnels du Social'
 dispositifs:
   title: 'Dispositifs'
-  metaTitle: 'Dispositifs - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Dispositifs - Guide des Professionnels du Social'
 fichestechniques:
   title: 'Fiches techniques'
-  metaTitle: 'Fiches techniques - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Fiches techniques - Guide des Professionnels du Social'
 dispositif[id]:
   title: dispositif.name
-  metaTitle: dispositif.name + ' - Gabarit de démarrage VueDsfr'
+  metaTitle: dispositif.name + ' - Guide des Professionnels du Social'
 mentions-legales:
   title: 'Mentions légales'
-  metaTitle: 'Mentions légales - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Mentions légales - Guide des Professionnels du Social'
 donnees-personnelles:
   title: 'Données personnelles'
-  metaTitle: 'Données personnelles - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Données personnelles - Guide des Professionnels du Social'
 cookies:
   title: 'Cookies'
-  metaTitle: 'Cookies - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Cookies - Guide des Professionnels du Social'
 accessibilite:
   title: 'Accessibilité'
-  metaTitle: 'Accessibilité - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Accessibilité - Guide des Professionnels du Social'
 monespace:
   title: 'Mon espace'
-  metaTitle: 'Mon espace - Gabarit de démarrage VueDsfr'
+  metaTitle: 'Mon espace - Guide des Professionnels du Social'

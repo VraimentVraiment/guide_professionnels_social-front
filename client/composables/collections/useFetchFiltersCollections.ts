@@ -18,20 +18,9 @@ export function useFetchFiltersCollection (
     if (!existingCollection) {
       filtersCollections.value.push(fetchedCollection)
     } else {
-      const difference = useArrayDifference(existingCollection.items, fetchedCollection.items, el => el.id)
-      if (!difference.hasChanges) {
-        return
-      }
-      const existingItemsChecked = existingCollection.items
-        .filter(item => item.checked)
-        .map(item => item.id)
-
-      existingCollection.items = fetchedCollection.items
-
-      for (const item of existingCollection.items) {
-        if (existingItemsChecked.includes(item.id)) {
-          item.checked = true
-        }
+      const difference = useArrayDifference(existingCollection.items, fetchedCollection.items, (el: FilterItemNode) => el.id)
+      if (difference.hasChanges) {
+        updateCollection(existingCollection, fetchedCollection.items)
       }
     }
   }
@@ -61,5 +50,25 @@ async function getFiltersCollection (
     collectionName: relationModel.collectionName,
     items: items
       ?.map(item => getInitialFilterItemNode(item, relationModel)),
+  }
+}
+
+function updateCollection (
+  collection: FiltersCollection,
+  items: FilterItemNode[],
+): void {
+  const existingItemsChecked = collection.items
+    .filter(item => item.checked)
+    .map(item => item.id)
+
+  collection.items = items
+
+  for (const item of collection.items) {
+    if (
+      existingItemsChecked.includes(item.id) &&
+      !item.checked
+    ) {
+      item.checked = true
+    }
   }
 }
