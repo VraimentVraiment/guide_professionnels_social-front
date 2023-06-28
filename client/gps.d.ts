@@ -184,6 +184,7 @@ declare global {
     name: string
     parent_id: number | null
     combination?: FilterCombination
+    pictogramme?: string
   }
   
   export interface DirectusFilterItem extends FilterItem {
