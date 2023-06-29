@@ -3,10 +3,6 @@ import {
 } from 'd3-hierarchy'
 
 import {
-  type Primitive
-} from 'd3-array'
-
-import {
   /* auth */
   type DirectusUser,
   type DirectusAuthCredentials,

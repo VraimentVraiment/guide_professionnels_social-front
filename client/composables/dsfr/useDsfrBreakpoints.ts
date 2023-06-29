@@ -11,8 +11,7 @@ const BREAKPOINTS = {
   XL: 1248,
 }
 
-export function useDsfrBreakpoints() {
-
+export function useDsfrBreakpoints () {
   const breakpoints = useBreakpoints(BREAKPOINTS)
 
   return {

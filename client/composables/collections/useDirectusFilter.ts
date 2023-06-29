@@ -64,14 +64,10 @@ export function useDirectusFilters (
 
             const ids = getMatchingIds({
               relationsCollection,
-              checkedItems,
               filtersCollection,
+              checkedItems,
               relationModel,
             })
-
-            if (!ids?.length) {
-              // console.log('no dispositifsIds', dispositifsIds)
-            }
 
             addFilterCondition({
               id: {

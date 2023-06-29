@@ -50,8 +50,9 @@ const isSelectable = computed(() => {
           v-show="isSelectable"
           aria-hidden="true"
           :class="[
-            'fr-icon-arrow-left-s-line',
-            'gps-filters-sidebar__header__icon'
+            'gps-filters-sidebar__header__icon',
+            { 'fr-icon-close-line': isOpen },
+            { 'fr-icon-arrow-left-s-line': !isOpen },
           ]"
         />
       </div>
@@ -64,9 +65,7 @@ const isSelectable = computed(() => {
           :summary-tag="'h2'"
           :open="collectionName === 'caracteristiques_dispositif'"
         >
-          <FilterNode
-            :node="rootNodes.find(node => node.data.name === collectionName) ?? null"
-          />
+          <FilterNode :node="rootNodes.find(node => node.data.name === collectionName) ?? null" />
         </DetailsAccordion>
       </div>
     </div>
@@ -87,6 +86,7 @@ const isSelectable = computed(() => {
     font-weight: 700;
     padding: 0.375rem 1rem;
     color: var(--text-active-blue-france);
+    cursor: pointer;
 
     .gps-filters-sidebar__header__icon {
       transform: rotate(0deg);

@@ -55,7 +55,7 @@ export function useFetchCollection (
     } else {
       const difference = useArrayDifference<ItemsCollection['items'][0]>(existingCollection.items, items, el => el.id)
       if (difference.hasChanges) {
-        updateCollection(existingCollection, items, 'taxonomy')
+        updateCollection(existingCollection, items, collectionType)
       }
     }
 
@@ -126,6 +126,7 @@ function getInitialCollection (
         type: 'posts',
         items,
       } as PostsCollection
+
     case 'relations':
       return {
         type: 'relations',
@@ -133,6 +134,7 @@ function getInitialCollection (
         collectionName,
         items,
       } as RelationsCollection
+
     case 'taxonomy':
       return {
         collectionName,
@@ -148,21 +150,29 @@ export function updateCollection (
   items: ItemsCollection['items'],
   type: 'taxonomy' | 'posts' | 'relations',
 ): void {
-  const existingItemsChecked = type === 'taxonomy' &&
-    (collection.items as FilterItemNode[])
-      .filter(item => item.checked)
-      .map(item => item.id)
+  switch (type) {
+    case 'taxonomy': {
+      const existingItemsChecked = (collection.items as FilterItemNode[])
+        .filter(item => item.checked)
+        .map(item => item.id)
 
-  collection.items = items
+      collection.items = items
 
-  if (type === 'taxonomy') {
-    for (const item of collection.items as FilterItemNode[]) {
-      if (
-        (existingItemsChecked as number[]).includes(item.id) &&
-        !item.checked
-      ) {
-        item.checked = true
+      for (const item of collection.items as FilterItemNode[]) {
+        if (
+          (existingItemsChecked as number[]).includes(item.id) &&
+          !item.checked
+        ) {
+          item.checked = true
+        }
       }
+
+      break
+    }
+    case 'posts':
+    case 'relations': {
+      collection.items = items
+      break
     }
   }
 }

@@ -16,7 +16,9 @@ export function isStringValidEmail (
   )
 }
 
-export const formatFormat = (format) => {
+export const formatFormat = (
+  format: string,
+): string => {
   return format
     ?.replace('application/', '')
     ?.toUpperCase()
