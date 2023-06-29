@@ -55,7 +55,6 @@ const openDetails = useCollectionObserver<Number>()
   padding: 1rem;
   background: var(--background-default-grey);
   border: 1px solid var(--border-default-grey);
-  color: var(--alt-blue-france);
 }
 
 details.gps-links-group {

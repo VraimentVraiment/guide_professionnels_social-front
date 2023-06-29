@@ -30,15 +30,7 @@ onMounted(() => {
       postStore.watchPostFiltering()
     })
 })
-
-const getCardProps = (postItem: DispositifPost) => {
-  const { name, id, addresses } = postItem
-  return {
-    title: name,
-    description: joinAddresses(addresses),
-    link: `/dispositifs/${id}`,
-  }
-}
+const searchStore = useSearchStore()
 
 const resetMessageThreshold = 3
 const resetLabel = 'Réinitialiser les filtres'
@@ -52,12 +44,30 @@ const {
     ?.filter(collectionCheckedItems => collectionCheckedItems.collectionName !== 'gps_thematiques')
 }))
 
+const reset = () => {
+  resetAll()
+  searchStore.reset()
+}
+
 const showResetMessage = computed(() => {
   return (
-    hasCheckedItems.value &&
-    postStore.postsCollection?.items?.length < resetMessageThreshold
+    postStore.postItems.length < resetMessageThreshold &&
+    (
+      hasCheckedItems.value ||
+      searchStore.selectedCityList?.length
+    )
   )
 })
+
+const getCardProps = (postItem: DispositifPost) => {
+  const { name, id, addresses } = postItem
+  return {
+    title: name,
+    description: joinAddresses(addresses),
+    link: `/dispositifs/${id}`,
+  }
+}
+
 </script>
 
 <template>
@@ -108,18 +118,18 @@ const showResetMessage = computed(() => {
                 secondary
                 :icon="'ri-close-circle-line'"
                 icon-right
-                @click="resetAll"
+                @click="reset"
               />
             </div>
-            <template v-if="postStore.postsCollection?.items.length > 0">
+            <template v-if="postStore.postItems.length > 0">
               <p
                 v-if="!showResetMessage"
                 class="fr-mb-3w"
               >
-                {{ postStore.postsCollection?.items.length }} résultats
+                {{ postStore.postItems.length }} résultats
               </p>
               <GpsPostCardGrid
-                :collection="postStore.postsCollection.items"
+                :collection="postStore.postItems"
                 :wrap-cards="isListSelected"
                 :get-card-props="getCardProps"
                 type="link"
@@ -135,7 +145,7 @@ const showResetMessage = computed(() => {
         <template #tab-1>
           <template v-if="!isListSelected || hasMapLoaded">
             <GpsMap
-              :collection="postStore.postsCollection.items"
+              :collection="postStore.postItems"
               @map-loaded="() => hasMapLoaded = true"
             />
           </template>

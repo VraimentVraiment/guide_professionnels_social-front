@@ -37,8 +37,8 @@ const { richTextFields }: {
 
 const downloadPdf = (
   dispositif: DispositifPost,
-  ) => {
-  console.log("download pdf", dispositif);
+) => {
+  console.log('download pdf', dispositif)
 }
 
 </script>
@@ -160,7 +160,6 @@ const downloadPdf = (
 
 <style scoped lang="scss">
 section.gps-post__content {
-
   header,
   article {
     background: var(--background-default-grey);

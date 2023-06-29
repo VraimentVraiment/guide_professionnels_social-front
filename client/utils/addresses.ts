@@ -57,3 +57,30 @@ function getMarkerTooltipContent (post, address) {
   </div>
   `
 }
+
+export async function getCities (search: string) {
+  const API_URL = 'https://api-adresse.data.gouv.fr/search'
+  const BASE_POSTAL_CODE = '14'
+  const lat = 49.1756
+  const lon = -0.3596
+  const limit = 5
+
+  const query = `${API_URL}/?q=${search}&type=municipality&limit=${limit}&lat=${lat}&lon=${lon}&autocomplete=1`
+  const data = await (
+    await fetch(query)
+  )?.json()
+
+  return data
+    ?.features
+    ?.filter((feature: any) => {
+      return feature.properties.citycode.substring(0, 2) === BASE_POSTAL_CODE
+    })
+}
+
+export function addressMatch (
+  addresses: Address[], cityList: string[],
+): boolean {
+  return addresses.some((address) => {
+    return cityList.includes(address.address?.value?.properties?.city)
+  })
+}

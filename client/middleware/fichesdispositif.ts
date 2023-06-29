@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware((to) => {
   const postStore = useDispositifPostStore()
+  const searchStore = useSearchStore()
   const { selectedThematique } = useGpsSelectedThematiqueStore()
 
   if (process.server) {
@@ -19,6 +20,7 @@ export default defineNuxtRouteMiddleware((to) => {
       postStore.setPostCollection('gps_fichesdispositif')
       await postStore.fetchCollection('gps_thematiques')
       await postStore.fetchCollection('gps_typesdispositif')
+      searchStore.watchQuery()
     }
     resolve()
   })

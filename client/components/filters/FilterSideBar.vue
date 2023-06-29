@@ -165,7 +165,7 @@ const {
       width: 100%;
 
       &.open {
-        box-shadow: 0 0 10px 10px var(--grey-950-125);
+        box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
       }
 
       .gps-filters-sidebar__content {

@@ -3,7 +3,7 @@ import { render } from '@testing-library/vue'
 import Apropos from './apropos.vue'
 
 describe('apropos', () => {
-  it('should render a simple title', async () => {
+  it('should render a simple title', () => {
     const title = 'À propos'
 
     const { getByText } = render(Apropos)

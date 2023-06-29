@@ -8,10 +8,18 @@ const emit = defineEmits(['map-loaded'])
 
 const { options: GEOPORTAL_CONFIG } = await useGetContent('/geoportal-config')
 
+const searchStore = useSearchStore()
+
 const markers = computed(() => {
   return props.collection
     .flatMap((post) => {
       return post.addresses
+        ?.filter((address) => {
+          if (!searchStore.selectedCityList?.length) {
+            return true
+          }
+          return searchStore.selectedCityList?.includes(address.address?.value?.properties?.city)
+        })
         ?.map(geojsonAddressToMarkerOptions(post, GEOPORTAL_CONFIG.center.projection))
     })
     .filter(Boolean)

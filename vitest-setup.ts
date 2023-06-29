@@ -6,5 +6,5 @@ window.matchMedia = function () {
 }
 
 vi.mock('#imports', () => ({
-  definePageMeta: (meta: any) => {},
+  definePageMeta: () => {},
 }))

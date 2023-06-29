@@ -1,4 +1,6 @@
 export const useDefinePostStore = () => {
+  const searchStore = useSearchStore()
+
   const {
     postsCollectionName,
     postsCollection,
@@ -16,6 +18,19 @@ export const useDefinePostStore = () => {
   const setItem = useSetItem(postsCollectionName, filtersCollections)
   const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
 
+  const postItems = computed(() => {
+    const items = postsCollection?.value?.items || []
+
+    if (!searchStore.selectedCityList?.length) {
+      return items
+    }
+
+    return items
+      ?.filter((post) => {
+        return addressMatch(post.addresses, searchStore.selectedCityList)
+      })
+  })
+
   return {
     postsCollectionName,
     collections,
@@ -25,6 +40,7 @@ export const useDefinePostStore = () => {
     rootNodes,
     checkedItems,
     directusFilters,
+    postItems,
     setPostCollection,
     fetchCollection,
     setItem,

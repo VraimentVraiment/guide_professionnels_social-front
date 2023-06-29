@@ -22,7 +22,7 @@ const {
   typesRootNode,
 } = storeToRefs(useGpsSelectedThematiqueStore())
 
-const { messages, backLinkLabel } = await useGetContent('/home')
+const { messages, backLinkLabel, allTypesLabel } = await useGetContent('/home')
 const alertModel = useDsfrAlertModel(messages)
 alertModel.show('info')
 
@@ -102,13 +102,27 @@ stepOne()
             <h2 class="fr-col-12 fr-mb-1w">
               {{ selectedThematique?.name }}
             </h2>
-            <DsfrButton
-              :class="'fr-mb-4w'"
-              :label="backLinkLabel"
-              tertiary
-              no-outline
-              :icon="'ri-arrow-left-line'"
-              @click="stepOne"
+            <DsfrButtonGroup
+              inline-layout-when="large"
+              :class="[
+                'fr-mb-4v',
+                'fr-mt-4v',
+              ]"
+              :buttons="[
+                {
+                  label: backLinkLabel,
+                  tertiary: true,
+                  icon:'ri-arrow-left-line',
+                  onClick: stepOne,
+                },
+                {
+                  label: allTypesLabel,
+                  tertiary: true,
+                  iconRight: true,
+                  icon: 'ri-arrow-right-line',
+                  onClick: () => navigateTo('/dispositifs'),
+                },
+              ]"
             />
             <GpsDispositifsPostsLinks
               v-if="typesRootNode?.children"

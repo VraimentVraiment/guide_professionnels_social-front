@@ -1,3 +1,4 @@
+<!-- eslint-disable camelcase -->
 <script setup lang="ts">
 
 definePageMeta({
@@ -9,9 +10,6 @@ const credentials = useDirectusUser()
 const {
   first_name,
   email,
-}: {
-  first_name: string
-  mail: string
 } = credentials?.value || {
   first_name: 'NON CONNECTÉ',
   email: 'NON CONNECTÉ',
