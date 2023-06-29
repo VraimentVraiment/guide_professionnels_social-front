@@ -77,7 +77,9 @@ const {
         >
           <DsfrButton
             v-show="hasCollectionCheckedItems(collectionName)"
-            :class="'fr-mb-1w'"
+            :class="[
+              'gps-filters-sidebar__reset-button',
+            ]"
             :label="resetLabel"
             tertiary
             no-outline
@@ -127,7 +129,6 @@ const {
   }
 
   &.is-selectable {
-
     border-color: var(--background-action-low-blue-france);
     border-top-color: var(--background-action-low-blue-france);
 
@@ -158,8 +159,21 @@ const {
       display: none;
     }
 
-    &.open {
+    &.is-selectable {
+      position: absolute;
+      z-index: 10;
+      width: 100%;
 
+      &.open {
+        box-shadow: 0 0 10px 10px var(--grey-950-125);
+      }
+
+      .gps-filters-sidebar__content {
+        background: var(--background-default-grey);
+      }
+    }
+
+    &.open {
       border-color: var(--border-default-grey);
       border-top-color: var(--text-active-blue-france);
 
@@ -185,26 +199,15 @@ const {
       }
     }
   }
+}
 
-  &.is-selectable {
-    position: absolute;
-    z-index: 10;
-    width: 100%;
-
-    &.open {
-      box-shadow: 0 0 10px 10px var(--grey-950-125);
-    }
-
-    .gps-filters-sidebar__content {
-      background: var(--background-default-grey);
-    }
-  }
+.gps-filters-sidebar__reset-button {
+  transform: translate(-0.5rem, -0.5rem);
 }
 </style>
 
 <style lang="scss">
 .gps-filters-sidebar {
-
   h2 {
     font-size: 18px;
     font-weight: 700;

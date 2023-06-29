@@ -64,7 +64,7 @@ const {
 .fr-tabs.gps-dispositifs-tabs {
   box-shadow: none;
 
-  &:before {
+  &::before {
     box-shadow: inset 0 1px 0 0 var(--border-default-grey);
   }
 

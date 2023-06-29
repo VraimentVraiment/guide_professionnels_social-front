@@ -60,6 +60,7 @@ stepOne()
             :class="[
               'fr-col-12',
               'fr-col-lg-8',
+              'fr-mb-4w'
             ]"
             v-bind="alertModel.props.value"
           />
@@ -112,7 +113,8 @@ stepOne()
             <GpsDispositifsPostsLinks
               v-if="typesRootNode?.children"
               :class="[
-                'fr-col-10'
+                'fr-col-12',
+                'fr-col-lg-10',
               ]"
               :root-node="typesRootNode"
             />
@@ -122,6 +124,3 @@ stepOne()
     </template>
   </GpsGrid>
 </template>
-
-<style scoped lang="scss">
-</style>

@@ -22,9 +22,3 @@ const showNavigation = useIsAuthenticated()
     />
   </DsfrHeader>
 </template>
-
-<style scoped>
-.gps-header {
-}
-
-</style>

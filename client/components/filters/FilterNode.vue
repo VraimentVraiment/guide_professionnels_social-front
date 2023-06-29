@@ -130,29 +130,29 @@ const setItem = (
 
 <style scoped lang="scss">
 .filter-node__children {
-  margin-left: .5rem;
-  margin-top: .75rem;
-  margin-bottom: 1.5rem;
-  padding-left: .5rem;
-  border-left: 1px solid var(--border-default-grey);
+  & .filter-node__children {
+    margin-bottom: 1.5rem;
+    padding-left: .5rem;
+    margin-left: .5rem;
+    margin-top: .75rem;
+    border-left: 1px solid var(--border-default-grey);
+  }
 }
 </style>
 
 <style lang="scss">
 .gps-filters-sidebar__checkbox {
-
   &:active {
-    >label:before {
+    >label::before {
       background-color: var(--blue-france-sun-113-625-active) !important;
     }
   }
 
   &.all-nodes__checkbox {
-
     &>label {
       margin-left: 1.8em !important;
 
-      &:before {
+      &::before {
         left: -1.8em !important;
         margin-top: 0.1em !important;
         width: 1.4em !important;
@@ -178,7 +178,7 @@ const setItem = (
 
   &.leaves-only__checkbox {
     &.is-checked {
-      &:before {
+      &::before {
         position: absolute;
         left: -1.25rem;
         text-align: right;
@@ -190,7 +190,7 @@ const setItem = (
 
     [data-combination="and"] & {
       &.is-checked {
-        &:before {
+        &::before {
           content: "et";
         }
       }
@@ -198,7 +198,7 @@ const setItem = (
 
     [data-combination="or"] & {
       &.is-checked {
-        &:before {
+        &::before {
           content: "ou";
         }
       }

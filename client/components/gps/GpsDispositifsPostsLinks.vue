@@ -59,7 +59,6 @@ const openDetails = useCollectionObserver<Number>()
 }
 
 details.gps-links-group {
-
   +details.gps-links-group {
     margin-top: 1.5rem;
   }

@@ -57,7 +57,7 @@ function loadMap (Gp: any) {
 <style lang="scss">
 .gp-feature-info-div {
   padding: 1rem 1.5rem !important;
-  box-shadow: 0 6px 18px 0 rgba(0, 0, 18, 16%) !important;
+  box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
   border-radius: 0 !important;
   border: solid 1px var(--border-default-grey) !important;
 }
