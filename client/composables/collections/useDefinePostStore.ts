@@ -9,11 +9,11 @@ export const useDefinePostStore = () => {
   } = useCollections()
 
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
-  const directusFilters = useDirectusFilters(filtersCollections, relationsCollections)
+  const checkedItems = useGetCheckedItems(filtersCollections)
+  const directusFilters = useDirectusFilters(filtersCollections, checkedItems, relationsCollections)
 
   const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)
-  const resetFilters = useResetFilters(filtersCollections)
   const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
 
   return {
@@ -23,10 +23,10 @@ export const useDefinePostStore = () => {
     filtersCollections,
     relationsCollections,
     rootNodes,
+    checkedItems,
     directusFilters,
     setPostCollection,
     fetchCollection,
-    resetFilters,
     setItem,
     watchPostFiltering,
   }

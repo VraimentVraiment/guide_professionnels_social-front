@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { type HierarchyNode } from 'd3-hierarchy'
 
 const props = defineProps<{
-  filterCollections: FiltersCollection[]
-  rootNodes: HierarchyNode<FilterItemNode>[]
+  postStore: ReturnType<typeof useDispositifPostStore>
   makeUnselectable: boolean
 }>()
 
@@ -18,6 +16,15 @@ const isSelectable = computed(() => {
     isSmallScreen.value
   )
 })
+
+const resetLabel = 'Réinitialiser'
+const {
+  resetCollection,
+  hasCollectionCheckedItems,
+} = useCheckedItemsObserver(computed(() => {
+  return props.postStore.checkedItems
+    ?.filter(collectionCheckedItems => collectionCheckedItems.collectionName !== 'gps_thematiques')
+}))
 
 </script>
 
@@ -58,14 +65,25 @@ const isSelectable = computed(() => {
       </div>
       <div class="gps-filters-sidebar__content">
         <DetailsAccordion
-          v-for="{ collectionName, label } in filterCollections"
+          v-for="{ collectionName, label } in postStore.filtersCollections"
           :key="collectionName"
           class="filter-group"
           :label="label"
           :summary-tag="'h2'"
-          :open="collectionName === 'caracteristiques_dispositif'"
+          :open="collectionName === 'gps_caracteristiques_dispositif'"
         >
-          <FilterNode :node="rootNodes.find(node => node.data.name === collectionName) ?? null" />
+          <DsfrButton
+            v-show="hasCollectionCheckedItems(collectionName)"
+            :class="'fr-mb-1w'"
+            :label="resetLabel"
+            tertiary
+            no-outline
+            size="small"
+            :icon="'ri-close-circle-line'"
+            icon-right
+            @click="() => resetCollection(collectionName)"
+          />
+          <FilterNode :node="postStore.rootNodes.find(node => node.data.name === collectionName) ?? null" />
         </DetailsAccordion>
       </div>
     </div>

@@ -15,14 +15,16 @@ type GpMarkerOptions = {
   autoPanOptions: GpAutoPanOptions;
 }
 
-export function joinAddresses(addresses) {
+export function joinAddresses (
+  addresses,
+): string {
   return addresses
     ?.map(({
       address,
     }) => {
       return address.text
     })
-    ?.join(', ')
+    ?.join(', ') ?? ''
 }
 
 export const geojsonAddressToMarkerOptions = (post, projection) => ({
@@ -38,10 +40,10 @@ export const geojsonAddressToMarkerOptions = (post, projection) => ({
     },
     content: getMarkerTooltipContent(post, address),
     // url: "/images/marker.png",
-  };
+  }
 }
 
-function getMarkerTooltipContent(post, address) {
+function getMarkerTooltipContent (post, address) {
   return `
   <div class="gps-marker-tooltip">
     <h6>${post.name}</h6>

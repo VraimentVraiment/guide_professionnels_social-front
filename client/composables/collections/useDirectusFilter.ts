@@ -1,5 +1,10 @@
+import {
+  intersection,
+} from 'd3-array'
+
 export function useDirectusFilters (
   filtersCollections: Ref<FiltersCollection[]>,
+  checkedItems: ComputedRef<FiltersCollection[]>,
   relationsCollections: Ref<RelationsCollection[]>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
@@ -23,12 +28,18 @@ export function useDirectusFilters (
           filter.filter._and.push(condition)
         }
 
+        const ids: number[][] = []
+
         for (const relationModel of collectionModel?.relations) {
-          const checkedItems = getCheckedItems(filtersCollections.value, relationModel.targetCollectionName)
+          const collectionCheckedItems = checkedItems.value
+            ?.find((collection) => {
+              return collection.collectionName === relationModel.targetCollectionName
+            })
+            ?.items
 
           if (
-            !checkedItems ||
-            checkedItems.length === 0
+            !collectionCheckedItems ||
+            collectionCheckedItems.length === 0
           ) {
             continue
           }
@@ -36,7 +47,7 @@ export function useDirectusFilters (
           if (relationModel.relationType === 'many-to-one') {
             addFilterCondition({
               [relationModel.field as string]: {
-                _in: checkedItems
+                _in: collectionCheckedItems
                   .map((item: FilterItemNode) => item.id),
               },
             })
@@ -62,20 +73,27 @@ export function useDirectusFilters (
               continue
             }
 
-            const ids = getMatchingIds({
-              relationsCollection,
+            const newIds = getIdsMatchingRelatedCollection(
               filtersCollection,
-              checkedItems,
+              relationsCollection,
               relationModel,
-            })
+              collectionCheckedItems,
+            )
 
-            addFilterCondition({
-              id: {
-                _in: ids,
-              },
-            })
+            if (newIds?.length) {
+              ids.push(newIds)
+            }
           }
         }
+
+        if (ids.length) {
+          addFilterCondition({
+            id: {
+              _in: Array.from(intersection(...ids)),
+            },
+          })
+        }
+
         return filter
       })
   })

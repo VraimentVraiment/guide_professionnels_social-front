@@ -22,7 +22,7 @@ export function useWatchPostFiltering (
               fetchCollection(collectionName)
             })
           } else {
-            fetchCollection(postsCollectionName.value)
+            fetchCollection(postsCollectionName.value as string)
           }
         })
     }

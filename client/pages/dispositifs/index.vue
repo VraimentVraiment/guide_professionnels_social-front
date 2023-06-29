@@ -16,11 +16,14 @@ const { tabListName, tabTitles, emptyMessage } = await useGetContent('dispositif
 
 const postStore = useDispositifPostStore()
 onMounted(() => {
-  // TODO : fetch only if not already fetched
-  postStore.fetchCollection('gps_caracteristiquesdispositif')
-  postStore.fetchCollection('gps_fichesdispositif')
-  postStore.watchPostFiltering()
   mounted.value = true
+  Promise.all([
+    postStore.fetchCollection('gps_caracteristiquesdispositif'),
+    postStore.fetchCollection('gps_fichesdispositif'),
+  ])
+    .then(() => {
+      postStore.watchPostFiltering()
+    })
 })
 
 const getCardProps = (postItem: DispositifPost) => {
@@ -32,6 +35,24 @@ const getCardProps = (postItem: DispositifPost) => {
   }
 }
 
+const resetMessageThreshold = 3
+const resetLabel = 'Réinitialiser les filtres'
+const resetMessage = 'Cette recherche a produit peu de résultats. Vous pouvez réinitialiser les filtres pour élargir la recherche.'
+
+const {
+  resetAll,
+  hasCheckedItems,
+} = useCheckedItemsObserver(computed(() => {
+  return postStore.checkedItems
+    ?.filter(collectionCheckedItems => collectionCheckedItems.collectionName !== 'gps_thematiques')
+}))
+
+const showResetMessage = computed(() => {
+  return (
+    hasCheckedItems.value &&
+    postStore.postsCollection?.items?.length < resetMessageThreshold
+  )
+})
 </script>
 
 <template>
@@ -46,9 +67,8 @@ const getCardProps = (postItem: DispositifPost) => {
         ]"
       >
         <FilterSideBar
+          :post-store="postStore"
           :make-unselectable="isListSelected"
-          :filter-collections="postStore.filtersCollections"
-          :root-nodes="postStore.rootNodes"
         />
         <div id="dispositifs-sidebar" />
       </div>
@@ -68,6 +88,21 @@ const getCardProps = (postItem: DispositifPost) => {
             to="#dispositifs-sidebar"
             :disabled="isListSelected || isSmallScreen"
           >
+            <div v-if="showResetMessage">
+              <DsfrAlert
+                :description="resetMessage"
+                :type="'info'"
+                small
+              />
+              <DsfrButton
+                :class="'fr-mt-2w fr-mb-3w'"
+                :label="resetLabel"
+                secondary
+                :icon="'ri-close-circle-line'"
+                icon-right
+                @click="resetAll"
+              />
+            </div>
             <template v-if="postStore.postsCollection?.items.length > 0">
               <GpsPostCardGrid
                 :collection="postStore.postsCollection.items"

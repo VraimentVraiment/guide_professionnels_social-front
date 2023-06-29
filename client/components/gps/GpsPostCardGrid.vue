@@ -4,9 +4,9 @@ defineProps<{
   collection: Post[]
   wrapCards: boolean
   type: 'link' | 'file'
-  getCardProps:(item: Post) => {
-    id: string
-    name: string
+  getCardProps:<T extends Post>(item: T) => {
+    link: string
+    title: string
     description: string
   }
 }>()

@@ -1,63 +1,71 @@
-import * as d3 from 'd3-array'
+/* eslint-disable camelcase */
+import {
+  group,
+  intersection,
+} from 'd3-array'
 
-export function getMatchingIds ({
-  relationModel,
-  filtersCollection,
-  checkedItems,
-  relationsCollection,
-}: {
-  relationModel: CollectionRelationModel,
+export function getIdsMatchingRelatedCollection (
   filtersCollection: FiltersCollection,
-  checkedItems: FilterItemNode[],
   relationsCollection: RelationsCollection,
-}) {
-  const idGetter = {
+  relationModel: CollectionRelationModel,
+  checkedItems: FilterItemNode[],
+) {
+  switch (relationModel.userSelection) {
+    case 'single-node':
+      return getMatchingIds(
+        checkedItems.map(i => i.id),
+        relationsCollection,
+        'and',
+      )
 
-    'single-node': () => getIdsMatchingFilters({
-      itemsIds: checkedItems.map(i => i.id),
-      combination: 'and',
-      relationsCollection,
-    }),
+    case 'leaves-only': {
+      const siblingsGroups = group(checkedItems, d => d.parent_id)
 
-    'leaves-only': () => Array.from(
-      d3.intersection(...Array.from(
-        d3.group(checkedItems, d => d.parent_id),
-        // eslint-disable-next-line camelcase
-        ([parent_id, items]) =>
-            getIdsMatchingFilters({
-              itemsIds: items.map(i => i.id),
-              combination: filtersCollection.items
-                .find((item) => {
-                  // eslint-disable-next-line camelcase
-                  return item.id === parent_id
-                })
-                ?.combination ?? 'and',
-              relationsCollection,
-            }) as number[],
-      ),
-      ),
-    ),
+      const getParentCombination = (
+        parent_id: number | null,
+      ): 'and' | 'or' | 'unique' => {
+        return filtersCollection.items
+          .find((item) => {
+            return item.id === parent_id
+          })
+          ?.combination ?? 'and'
+      }
+
+      const getSiblingGroupMatchingIds = (
+        [parent_id, items]: [number | null, FilterItemNode[]],
+      ): number[] => {
+        return getMatchingIds(
+          items.map(i => i.id),
+          relationsCollection,
+          getParentCombination(parent_id),
+        ) as number[]
+      }
+
+      const siblingGroupsMatchingIds = Array.from(siblingsGroups, getSiblingGroupMatchingIds)
+
+      return Array.from(intersection(...siblingGroupsMatchingIds))
+    }
   }
-
-  return idGetter[relationModel.userSelection as keyof typeof idGetter]()
 }
 
-export function getIdsMatchingFilters ({
-  itemsIds,
-  relationsCollection,
-  combination,
-}: {
+export function getMatchingIds (
   itemsIds: number[],
   relationsCollection: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
-}): number[] | null {
-  if (combination === 'or') {
-    return getOrItems(relationsCollection, itemsIds)
-  } else if (combination === 'and') {
-    return getAndItems(relationsCollection, itemsIds)
-  }
+): number[] | null {
+  switch (combination) {
+    case 'unique': {
+      return itemsIds
+    }
 
-  return null
+    case 'or': {
+      return getOrItems(relationsCollection, itemsIds)
+    }
+
+    case 'and': {
+      return getAndItems(relationsCollection, itemsIds)
+    }
+  }
 }
 
 export function getOrItems (
@@ -95,7 +103,7 @@ export function getAndItems (
     sourceKey: string
   }
 
-  const groups = d3.group(
+  const groups = group(
     relationsCollection.items,
     d => d[sourceKey],
   )

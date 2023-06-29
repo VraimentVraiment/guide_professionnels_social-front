@@ -162,7 +162,7 @@ declare global {
     collectionName: string;
     label?: string
     items: FilterItemNode[]
-    type: 'taxonomy'
+    type?: 'taxonomy'
   }
 
   export type RelationsCollection = {

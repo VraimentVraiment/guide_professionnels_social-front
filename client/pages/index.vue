@@ -9,6 +9,9 @@ definePageMeta({
 
 const postStore = useDispositifPostStore()
 
+const { checkedItems } = storeToRefs(postStore)
+const { resetAll } = useCheckedItemsObserver(checkedItems)
+
 const {
   thematiquesItems,
   selectedThematique,
@@ -20,7 +23,7 @@ const alertModel = useDsfrAlertModel(messages)
 alertModel.show('info')
 
 const stepOne = () => {
-  postStore.resetFilters()
+  resetAll()
   alertModel.setStep(0)
 }
 
