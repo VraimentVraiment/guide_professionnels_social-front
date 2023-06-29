@@ -5,9 +5,13 @@ defineProps<{
   wrapCards: boolean
   type: 'link' | 'file'
   getCardProps:<T extends Post>(item: T) => {
-    link: string
     title: string
-    description: string
+    link?: string
+    description?: string
+    format?: string
+    size?: string
+    href?: string
+    block?: boolean
   }
 }>()
 

@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
 import { storeToRefs } from 'pinia'
+import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
 
 definePageMeta({
   layout: 'default',
-  middleware: ['collections'],
+  middleware: [
+    'collections-models',
+    'fichesdispositif',
+  ],
 })
 
 const postStore = useDispositifPostStore()
@@ -43,7 +47,9 @@ stepOne()
 </script>
 
 <template>
-  <GpsGrid>
+  <GpsGrid
+    show-title
+  >
     <template #top-right>
       <GpsSearchModule />
     </template>

@@ -10,7 +10,7 @@ export const useDefinePostStore = () => {
 
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
   const checkedItems = useGetCheckedItems(filtersCollections)
-  const directusFilters = useDirectusFilters(filtersCollections, checkedItems, relationsCollections)
+  const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections)
 
   const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)

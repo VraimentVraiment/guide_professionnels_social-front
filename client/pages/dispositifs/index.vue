@@ -1,8 +1,13 @@
 <script setup lang="ts">
 
+import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
+
 definePageMeta({
   layout: 'default',
-  middleware: ['collections'],
+  middleware: [
+    'collections-models',
+    'fichesdispositif',
+  ],
 })
 
 const isListSelected = ref(true)
@@ -56,7 +61,9 @@ const showResetMessage = computed(() => {
 </script>
 
 <template>
-  <GpsGrid>
+  <GpsGrid
+    show-title
+  >
     <template #top-right>
       <GpsSearchModule />
     </template>
@@ -69,6 +76,7 @@ const showResetMessage = computed(() => {
         <FilterSideBar
           :post-store="postStore"
           :make-unselectable="isListSelected"
+          :open-details="['gps_caracteristiquesdispositif']"
         />
         <div id="dispositifs-sidebar" />
       </div>
@@ -104,6 +112,12 @@ const showResetMessage = computed(() => {
               />
             </div>
             <template v-if="postStore.postsCollection?.items.length > 0">
+              <p
+                v-if="!showResetMessage"
+                class="fr-mb-3w"
+              >
+                {{ postStore.postsCollection?.items.length }} résultats
+              </p>
               <GpsPostCardGrid
                 :collection="postStore.postsCollection.items"
                 :wrap-cards="isListSelected"

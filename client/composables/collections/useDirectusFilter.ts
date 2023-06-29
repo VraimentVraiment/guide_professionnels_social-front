@@ -3,6 +3,7 @@ import {
 } from 'd3-array'
 
 export function useDirectusFilters (
+  postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
   checkedItems: ComputedRef<FiltersCollection[]>,
   relationsCollections: Ref<RelationsCollection[]>,
@@ -11,6 +12,17 @@ export function useDirectusFilters (
     const { collectionsModels } = useCollectionsModelsStore()
 
     return collectionsModels
+      .filter((collectionModel) => {
+        return (
+          postsCollectionName.value === collectionModel.collectionName ||
+          filtersCollections.value
+            .some((collection) => {
+              return (
+                collection.collectionName === collectionModel.collectionName
+              )
+            })
+        )
+      })
       ?.map((collectionModel): CollectionDirectusFilter => {
         const filter: CollectionDirectusFilter = {
           collectionName: collectionModel?.collectionName as string,
@@ -78,18 +90,20 @@ export function useDirectusFilters (
               relationsCollection,
               relationModel,
               collectionCheckedItems,
-            )
+            ) ?? []
 
-            if (newIds?.length) {
-              ids.push(newIds)
-            }
+            ids.push(newIds)
           }
         }
+
+        const idsIntersection = ids.some(ids => ids.length === 0)
+          ? []
+          : Array.from(intersection(...ids))
 
         if (ids.length) {
           addFilterCondition({
             id: {
-              _in: Array.from(intersection(...ids)),
+              _in: idsIntersection,
             },
           })
         }

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 
+import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
+
 const props = defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore>
   makeUnselectable: boolean
+  openDetails?: string[]
 }>()
 
 const isOpen = ref(false)
@@ -70,7 +73,7 @@ const {
           class="filter-group"
           :label="label"
           :summary-tag="'h2'"
-          :open="collectionName === 'gps_caracteristiques_dispositif'"
+          :open="openDetails?.includes(collectionName)"
         >
           <DsfrButton
             v-show="hasCollectionCheckedItems(collectionName)"
@@ -83,7 +86,10 @@ const {
             icon-right
             @click="() => resetCollection(collectionName)"
           />
-          <FilterNode :node="postStore.rootNodes.find(node => node.data.name === collectionName) ?? null" />
+          <FilterNode
+            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+            :post-store="postStore"
+          />
         </DetailsAccordion>
       </div>
     </div>

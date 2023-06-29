@@ -59,10 +59,11 @@ collections:
     type: posts
     collectionName: gps_fichestechniques
     relations:
-      - userSelection: single-node
+      - label: Thématiques
+        userSelection: single-node
         relationType: many-to-many
         sourceCollectionName: gps_fichestechniques
         targetCollectionName: gps_thematiques
-        relationCollectionName: gps_fichestechnique_gps_thematiques
-        sourceKey: gps_fichestechnique_id
+        relationCollectionName: gps_fichestechniques_gps_thematiques
+        sourceKey: gps_fichestechniques_id
         targetKey: gps_thematiques_id

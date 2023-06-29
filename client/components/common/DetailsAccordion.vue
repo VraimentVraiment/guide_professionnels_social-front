@@ -56,6 +56,12 @@ details.gps-details {
     align-items: center;
     justify-content: space-between;
     padding: .5rem 1rem .5rem .5rem;
+    list-style-type: none;
+
+    &::marker {
+      content: "";
+      display: none;
+    }
 
     &::-webkit-details-marker {
       display: none;

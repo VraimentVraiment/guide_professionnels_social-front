@@ -10,7 +10,6 @@ export function useSetItem (
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
   const { getRelationModel } = useCollectionsModelsStore()
-
   function setItem ({
     collectionName,
     id,

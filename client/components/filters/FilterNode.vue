@@ -3,20 +3,20 @@
 import { useMagicKeys } from '@vueuse/core'
 import { type HierarchyNode } from 'd3-hierarchy'
 
-defineProps<{
+const props = defineProps<{
   node: HierarchyNode<FilterItemNode> | null
+  postStore: ReturnType<typeof useDispositifPostStore>
 }>()
-
-const postStore = useDispositifPostStore()
 
 const { current: currentKeysPressed } = useMagicKeys()
 const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
 
 const setItem = (
-  item: FilterItemNode,
+  item: FilterItemNode | undefined,
   checked: boolean,
 ): void => {
-  postStore.setItem({
+  if (!item) { return }
+  props.postStore.setItem({
     collectionName: item.collectionName,
     id: item.id,
     value: checked,
@@ -26,9 +26,7 @@ const setItem = (
 </script>
 
 <template>
-  <template
-    v-if="node?.data"
-  >
+  <template v-if="node?.data">
     <DsfrRadioButton
       v-if="(
         node.data.userSelection === 'single-node'
@@ -40,7 +38,7 @@ const setItem = (
       :model-value="node.data.id"
       small
       :checked="node.data.checked"
-      @update:model-value="() => setItem(node.data, true)"
+      @update:model-value="() => setItem(node?.data, true)"
     />
     <DsfrCheckbox
       v-else-if="(
@@ -63,7 +61,7 @@ const setItem = (
       ]"
       :data-node-depth="node.depth"
       :model-value="node.data.checked"
-      @update:model-value="(checked: boolean) => setItem(node.data, checked)"
+      @update:model-value="(checked: boolean) => setItem(node?.data, checked)"
     />
     <h5
       v-else-if="(
@@ -87,6 +85,7 @@ const setItem = (
           v-for="childNode in node.children"
           :key="childNode.data.id"
           :node="childNode"
+          :post-store="postStore"
         />
       </template>
     </DetailsAccordion>
@@ -108,6 +107,7 @@ const setItem = (
         v-for="childNode in node.children"
         :key="childNode.data.id"
         :node="childNode"
+        :post-store="postStore"
       />
     </div>
     <div
@@ -122,6 +122,7 @@ const setItem = (
         v-for="childNode in node.children"
         :key="childNode.data.id"
         :node="childNode"
+        :post-store="postStore"
       />
     </div>
   </template>

@@ -1,5 +1,11 @@
 <script setup lang="ts">
 
+defineProps<{
+  showTitle: boolean,
+}>()
+
+const content = await useGetPageContent()
+
 </script>
 
 <template>
@@ -15,6 +21,12 @@
         'fr-col-md-4',
       ]"
     >
+      <h1
+        v-if="showTitle"
+      >
+        {{ content?.title }}
+      </h1>
+
       <slot name="top-left" />
     </div>
     <div

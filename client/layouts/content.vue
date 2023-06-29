@@ -12,6 +12,9 @@ const content = await useGetPageContent()
     />
     <GpsHeader />
     <GpsMain>
+      <h1>
+        {{ content?.title }}
+      </h1>
       <slot />
     </GpsMain>
     <GpsFooter />
