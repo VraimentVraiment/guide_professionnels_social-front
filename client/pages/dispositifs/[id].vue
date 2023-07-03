@@ -80,7 +80,7 @@ const print = () => {
           {{ post?.name }}
         </h1>
         <DateUpdated
-          v-if="post?.date_updated.length"
+          v-if="post?.date_updated?.length"
           :date-updated="post.date_updated"
         />
         <hr class="fr-hr">

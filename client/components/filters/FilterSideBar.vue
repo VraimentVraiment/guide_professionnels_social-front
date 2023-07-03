@@ -90,6 +90,7 @@ const {
           />
           <FilterNode
             :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+            is-root-node
             :post-store="postStore"
           />
         </DetailsAccordion>

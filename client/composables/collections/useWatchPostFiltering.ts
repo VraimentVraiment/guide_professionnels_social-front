@@ -24,6 +24,8 @@ export function useWatchPostFiltering (
           } else {
             fetchCollection(postsCollectionName.value as string)
           }
+        }, {
+          immediate: true,
         })
     }
   }

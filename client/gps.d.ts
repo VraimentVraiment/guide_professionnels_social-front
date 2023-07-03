@@ -174,6 +174,11 @@ declare global {
 
   export type ItemsCollection = PostsCollection | FiltersCollection | RelationsCollection
 
+  export type RelationGroups = {
+    targetKey: string;
+    sourceKey: string;
+    groups: Record<string, number | number[]>[];
+  }[]
   /*
    *
    * Auth

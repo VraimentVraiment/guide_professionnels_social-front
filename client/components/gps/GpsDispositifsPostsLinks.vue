@@ -27,6 +27,7 @@ const openDetails = useCollectionObserver<Number>()
           size="MD"
         />
         <DsfrButton
+          v-if="node?.children?.length"
           primary
           icon-only
           size="small"

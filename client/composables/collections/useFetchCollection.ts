@@ -59,7 +59,7 @@ export function useFetchCollection (
       }
     }
 
-    fetchRelationsCollections(collectionName)
+    await fetchRelationsCollections(collectionName)
   }
 
   async function fetchRelationsCollections (

@@ -7,6 +7,7 @@ export function useDirectusFilters (
   filtersCollections: Ref<FiltersCollection[]>,
   checkedItems: ComputedRef<FiltersCollection[]>,
   relationsCollections: Ref<RelationsCollection[]>,
+  // relationGroups: ComputedRef<RelationGroups>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
     const { collectionsModels } = useCollectionsModelsStore()
@@ -90,6 +91,7 @@ export function useDirectusFilters (
               relationsCollection,
               relationModel,
               collectionCheckedItems,
+              // relationGroups,
             ) ?? []
 
             ids.push(newIds)

@@ -6,6 +6,7 @@ import { type HierarchyNode } from 'd3-hierarchy'
 const props = defineProps<{
   node: HierarchyNode<FilterItemNode> | null
   postStore: ReturnType<typeof useDispositifPostStore>
+  isRootNode?: boolean
 }>()
 
 const { current: currentKeysPressed } = useMagicKeys()
@@ -47,6 +48,7 @@ const setItem = (
         || (
           node.data.userSelection === 'leaves-only'
           && node.height === 0
+          && !isRootNode
         )
       )"
       :id="node.data.id.toString()"
@@ -75,6 +77,7 @@ const setItem = (
       v-else-if="(
         node.data.userSelection === 'leaves-only'
         && node.height === 1
+        && !isRootNode
       )"
       :label="node.data.name"
       :data-combination="node.data.combination"
@@ -89,6 +92,23 @@ const setItem = (
         />
       </template>
     </DetailsAccordion>
+    <div
+      v-else-if="(
+        node.data.userSelection === 'leaves-only'
+        && node.height === 1
+        && isRootNode
+      )"
+      :data-combination="node.data?.combination ?? 'and'"
+    >
+      <template v-if="node.children?.length">
+        <FilterNode
+          v-for="childNode in node.children"
+          :key="childNode.data.id"
+          :node="childNode"
+          :post-store="postStore"
+        />
+      </template>
+    </div>
     <div
       v-if="(
         node.data.userSelection === 'all-nodes'
@@ -116,6 +136,7 @@ const setItem = (
         && node.height === 1
       )
         && node.children?.length
+
       "
     >
       <FilterNode

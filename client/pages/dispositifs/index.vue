@@ -17,12 +17,19 @@ const hasMapLoaded = ref(false)
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
-const { tabListName, tabTitles, emptyMessage } = await useGetContent('dispositifs')
+const {
+  resetMessageThreshold,
+  resetLabel,
+  resetMessage,
+  emptyMessage,
+  tabListName,
+  tabTitles,
+} = await useGetContent('dispositifs')
 
 const postStore = useDispositifPostStore()
 onMounted(() => {
   mounted.value = true
-  Promise.all([
+  Promise.allSettled([
     postStore.fetchCollection('gps_caracteristiquesdispositif'),
     postStore.fetchCollection('gps_fichesdispositif'),
   ])
@@ -30,11 +37,8 @@ onMounted(() => {
       postStore.watchPostFiltering()
     })
 })
-const searchStore = useSearchStore()
 
-const resetMessageThreshold = 3
-const resetLabel = 'Réinitialiser les filtres'
-const resetMessage = 'Cette recherche a produit peu de résultats. Vous pouvez réinitialiser les filtres pour élargir la recherche.'
+const searchStore = useSearchStore()
 
 const {
   resetAll,

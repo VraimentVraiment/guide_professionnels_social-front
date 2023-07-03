@@ -1,3 +1,6 @@
+resetMessageThreshold: 3
+resetLabel: Réinitialiser les filtres
+resetMessage: Cette recherche a produit peu de résultats. Vous pouvez réinitialiser les filtres pour élargir la recherche.
 emptyMessage: Aucun dispositif ne correspond à votre recherche.
 tabListName: Liste
 tabTitles:
