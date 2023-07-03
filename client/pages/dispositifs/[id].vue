@@ -4,11 +4,11 @@ definePageMeta({
   layout: 'default',
 })
 
-const id = parseInt(
-  useRoute().params.id as string,
-  10)
+const html2pdf = process.client && await import('html2pdf.js')
 
-const dispositif = await useFetchDirectusItem<DispositifPost>({
+const id = parseInt(useRoute().params.id as string, 10)
+
+const post = await useFetchDirectusItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
 })
@@ -20,13 +20,13 @@ const images = await useFetchDirectusItems<{
   params: {
     filter: {
       id: {
-        _in: dispositif?.images,
+        _in: post?.images,
       },
     },
   },
 })
 
-if (!dispositif) {
+if (!post) {
   navigateTo('/404')
 }
 
@@ -35,10 +35,27 @@ const { richTextFields }: {
   label: string,
 }[] = await useGetContent('/dispositif')
 
-const downloadPdf = (
-  dispositif: DispositifPost,
-) => {
-  console.log('download pdf', dispositif)
+const isDownload = ref(false)
+
+function download (post) {
+  const printOptions = {
+    margin: [15, 5],
+    filename: post.name + '.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, letterRendering: true },
+    pagebreak: { avoid: '.gps-rich-text-container' },
+  }
+
+  const content = document.querySelector('.gps-post__content')
+  isDownload.value = true
+  html2pdf.default(content, printOptions)
+    .then(function () {
+      isDownload.value = false
+    })
+}
+
+const print = () => {
+  window.print()
 }
 
 </script>
@@ -52,31 +69,29 @@ const downloadPdf = (
   >
     <section
       :class="[
+        'gps-post__content',
+        {'download' : isDownload},
         'fr-col-12',
-        'fr-col-sm-8',
-        'gps-post__content'
+        {'fr-col-sm-8' : !isDownload}
       ]"
     >
       <header>
-        <GpsHead
-          :page-content="{
-            title: dispositif?.name,
-            metaTitle: dispositif?.name,
-          }"
-        />
+        <h1>
+          {{ post?.name }}
+        </h1>
         <DateUpdated
-          v-if="dispositif?.date_updated.length"
-          :date-updated="dispositif.date_updated"
+          v-if="post?.date_updated.length"
+          :date-updated="post.date_updated"
         />
         <hr class="fr-hr">
-        <template v-if="dispositif?.addresses?.length">
+        <template v-if="post?.addresses?.length">
           <span
             class="fr-icon-road-map-fill"
             aria-hidden="true"
           />
           <ul>
             <li
-              v-for="address, i in dispositif.addresses"
+              v-for="address, i in post.addresses"
               :key="i"
             >
               {{ address.address.text }}
@@ -90,18 +105,18 @@ const downloadPdf = (
           :key="key"
         >
           <RichText
-            v-if="dispositif?.[key]"
+            v-if="post?.[key]"
             :field-key="key"
             :field-label="label"
-            :content="dispositif[key]"
+            :content="post[key]"
           />
           <hr
-            v-if="dispositif?.[key]"
-            class="fr-hr"
+            v-if="post?.[key]"
+            class="fr-hr noprint"
           >
         </template>
         <div
-          v-if="dispositif?.images?.length"
+          v-if="post?.images?.length"
           class="gps-post__images"
         >
           <img
@@ -116,9 +131,11 @@ const downloadPdf = (
     <section
       :class="[
         'gps-post__actions',
+        'noprint',
         'fr-col-12',
-        'fr-col-sm-3',
-        'fr-col-offset-sm-1',
+        { 'fr-col-sm-3': !isDownload },
+        { 'fr-col-offset-sm-1': !isDownload },
+        {'download' : isDownload}
       ]"
     >
       <div>
@@ -127,7 +144,7 @@ const downloadPdf = (
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => downloadPdf(dispositif)"
+          @click="() => download(post)"
         />
         <DsfrButton
           class="fr-mt-4v"
@@ -135,15 +152,7 @@ const downloadPdf = (
           icon="ri-printer-line"
           icon-right
           secondary
-          @click="() => console.log('print')"
-        />
-        <DsfrButton
-          class="fr-mt-4v"
-          :label="'Partager'"
-          icon="ri-external-link-line"
-          icon-right
-          secondary
-          @click="() => console.log('share')"
+          @click="() => print()"
         />
         <DsfrButton
           class="fr-mt-8v"
@@ -159,14 +168,21 @@ const downloadPdf = (
 </template>
 
 <style scoped lang="scss">
+
 section.gps-post__content {
-  header,
-  article {
-    background: var(--background-default-grey);
+  @media print {
     padding: 3rem;
   }
 
-  // header {}
+  header,
+  article {
+    background: var(--background-default-grey);
+
+    @media screen {
+      padding: 3rem;
+    }
+  }
+
   article {
     margin-top: 3rem;
 
@@ -178,19 +194,19 @@ section.gps-post__content {
   }
 }
 
-.fr-hr {
-  padding-bottom: 2rem;
-  margin-top: 2rem;
-  max-width: 160px;
-
-  &:last-child {
-    display: none;
+section.gps-post__content.download {
+  header,
+  article {
+    background: none;
+    padding: 0 2rem;
   }
 }
-</style>
 
-<style lang="scss">
 section.gps-post__actions {
+  &.download {
+    display: none !important;
+  }
+
   >div {
     position: sticky;
     top: 4rem;
@@ -199,6 +215,24 @@ section.gps-post__actions {
   button {
     width: 100%;
     justify-content: center;
+  }
+}
+
+.fr-hr {
+  max-width: 160px;
+
+  @media screen {
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+  }
+
+  @media print {
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  &:last-child {
+    display: none;
   }
 }
 </style>

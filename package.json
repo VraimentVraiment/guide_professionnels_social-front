@@ -1,15 +1,19 @@
 {
   "name": "guide_professionnels_social-front",
-  "version": "0.0.0",
+  "description": "Frontend du guide des professionnels du social",
+  "version": "0.1.0",
+  "licence": "MIT",
+  "engines": {
+    "node": ">=16.10.0"
+  },
   "scripts": {
-    "build": "nuxi build",
     "dev": "nuxi dev",
-    "generate": "nuxi generate",
+    "build": "nuxi build",
     "preview": "nuxi preview",
-    "start:back": "npm run start --prefix ${BACKEND_PATH:-'~/guide_professionnels_social-back'}",
     "test": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
-    "format": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "format": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "start:back": "npm run start --prefix ${BACKEND_PATH:-'~/guide_professionnels_social-back'}"
   },
   "dependencies": {
     "@gouvfr/dsfr": "^1.9.3",
@@ -20,6 +24,7 @@
     "@vueuse/core": "^10.2.0",
     "d3-array": "^3.2.4",
     "d3-hierarchy": "^3.1.2",
+    "html2pdf.js": "^0.10.1",
     "nuxt-directus": "^5.4.4",
     "oh-vue-icons": "1.0.0-rc3",
     "pinia": "^2.1.4",

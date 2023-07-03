@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     storage: 'sessionStorage',
   },
   css: [
+    '@/styles/index.scss',
     '@gouvfr/dsfr/dist/dsfr.min.css',
     '@gouvminint/vue-dsfr/styles', // Les styles propres aux composants de VueDsfr
     '@gouvfr/dsfr/dist/utility/icons/icons.min.css', // Facultatif: Si des icônes sont utilisées avec les classes "fr-icon-..."

@@ -6,7 +6,10 @@ const { footerProps } = await useGetContent('/layout')
 
 <template>
   <DsfrFooter
-    :class="['gps-footer']"
+    :class="[
+      'gps-footer',
+      'noprint'
+    ]"
     v-bind="footerProps"
   />
 </template>

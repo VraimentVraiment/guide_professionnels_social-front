@@ -133,6 +133,7 @@ function getInitialCollection (
         relationModel,
         collectionName,
         items,
+        // groupedItems : groupRelationsItems(items as DirectusRelationItem[], relationModel),
       } as RelationsCollection
 
     case 'taxonomy':

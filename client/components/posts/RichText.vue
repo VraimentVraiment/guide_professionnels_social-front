@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="`gps-rich-text-container__${fieldKey}`">
+  <div :class="`gps-rich-text-container`">
     <h2>{{ fieldLabel }}</h2>
     <div
       class="gps-rich-text"
