@@ -88,8 +88,23 @@ function useDefineCollectionsModelsStore () {
       ?.fields ?? null
   }
 
+  const getCollectionFilesModel = (
+    collectionName: string,
+  ): {
+    filesCollectionName: string | null,
+    filesField: string | null,
+  } => {
+    const collectionModel = getCollectionModelByName(collectionName)
+
+    return {
+      filesCollectionName: collectionModel?.filesCollectionName ?? null,
+      filesField: collectionModel?.filesField ?? null,
+    }
+  }
+
   return {
     collectionsModels,
+    getCollectionFilesModel,
     fetch,
     getRelationModel,
     getRelationsModels,

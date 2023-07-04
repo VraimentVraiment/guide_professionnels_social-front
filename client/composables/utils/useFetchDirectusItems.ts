@@ -46,3 +46,49 @@ export async function useFetchDirectusItem<T> ({
     return null
   }
 }
+
+export async function useFetchDirectusSinglePostItem<T extends Post> ({
+  collectionName,
+  id,
+}: {
+  collectionName: string
+  id: number
+}): Promise<{
+  post: T | null
+  files: {
+    directus_files_id: string,
+  }[]
+}> {
+  const {
+    filesCollectionName,
+    filesField,
+  } = useCollectionsModelsStore()
+    .getCollectionFilesModel(collectionName)
+
+  const post = await useFetchDirectusItem<T>({ collectionName, id })
+
+  const files = (
+    !post ||
+    !filesCollectionName ||
+    !filesField ||
+    process.server
+  )
+    ? []
+    : await useFetchDirectusItems<{
+      directus_files_id: string,
+    }>({
+      collectionName: filesCollectionName as string,
+      params: {
+        filter: {
+          id: {
+            _in: post[filesField as keyof T],
+          },
+        },
+      },
+    })
+
+  return {
+    post,
+    files,
+  }
+}

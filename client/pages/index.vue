@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import { storeToRefs } from 'pinia'
-import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
 
 definePageMeta({
   layout: 'default',

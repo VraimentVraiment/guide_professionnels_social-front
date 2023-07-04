@@ -33,6 +33,8 @@ collections:
       - id
       - name
       - addresses
+    filesCollectionName: gps_fichesdispositif_directus_files
+    filesField: images
     relations:
       - label: Thématiques
         userSelection: single-node

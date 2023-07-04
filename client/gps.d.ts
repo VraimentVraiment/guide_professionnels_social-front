@@ -103,6 +103,8 @@ declare global {
     type: CollectionType
     relations?: CollectionRelationModel[]
     fields?: string[]
+    filesCollectionName?: string
+    filesField?: string
   }
 
   export type CollectionRelationModel = {

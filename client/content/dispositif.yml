@@ -1,3 +1,7 @@
+defaultFilename: fiche-dispositif
+buttonsLabels:
+  download: Télécharger
+  print: Imprimer
 richTextFields:
   - key: public_eligible
     label: Public éligible

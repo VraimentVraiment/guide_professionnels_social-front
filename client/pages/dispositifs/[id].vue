@@ -2,61 +2,52 @@
 
 definePageMeta({
   layout: 'default',
+  middleware: [
+    'collections-models',
+  ],
 })
 
-const html2pdf = process.client && await import('html2pdf.js')
+const {
+  richTextFields,
+  defaultFilename,
+  buttonsLabels,
+} = await useGetContent('/dispositif')
+
+/**
+ * @todo Use signal error modal when directus fix this :
+ * - Not able to send notification to everyone assigned to a role,
+ *   which should be working according to this official tutorial :
+ *   @see https://learndirectus.com/how-to-send-a-notification/
+ * - Notification not opening in backend UI
+ */
+const doUseSignalModal = false
 
 const id = parseInt(useRoute().params.id as string, 10)
 
-const post = await useFetchDirectusItem<DispositifPost>({
+const {
+  post,
+  files: images,
+} = await useFetchDirectusSinglePostItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
-})
-
-const images = await useFetchDirectusItems<{
-  directus_files_id: string,
-}>({
-  collectionName: 'gps_fichesdispositif_directus_files',
-  params: {
-    filter: {
-      id: {
-        _in: post?.images,
-      },
-    },
-  },
+  filesCollectionName: 'gps_fichesdispositif_directus_files',
+  filesField: 'images',
 })
 
 if (!post) {
   navigateTo('/404')
 }
 
-const { richTextFields }: {
-  key: RichTextKey,
-  label: string,
-}[] = await useGetContent('/dispositif')
-
-const isDownload = ref(false)
-
-function download (post) {
-  const printOptions = {
-    margin: [15, 5],
-    filename: post.name + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, letterRendering: true },
-    pagebreak: { avoid: '.gps-rich-text-container' },
-  }
-
-  const content = document.querySelector('.gps-post__content')
-  isDownload.value = true
-  html2pdf.default(content, printOptions)
-    .then(function () {
-      isDownload.value = false
-    })
-}
-
 const print = () => {
   window.print()
 }
+
+const {
+  download,
+  isGeneratingDownload,
+} = await useGpsPostDownload('.gps-post__content', {
+  avoid: '.gps-rich-text-container',
+})
 
 </script>
 
@@ -70,9 +61,9 @@ const print = () => {
     <section
       :class="[
         'gps-post__content',
-        {'download' : isDownload},
+        {'download' : isGeneratingDownload},
         'fr-col-12',
-        {'fr-col-sm-8' : !isDownload}
+        {'fr-col-sm-8' : !isGeneratingDownload}
       ]"
     >
       <header>
@@ -133,34 +124,29 @@ const print = () => {
         'gps-post__actions',
         'noprint',
         'fr-col-12',
-        { 'fr-col-sm-3': !isDownload },
-        { 'fr-col-offset-sm-1': !isDownload },
-        {'download' : isDownload}
+        { 'fr-col-sm-3': !isGeneratingDownload },
+        { 'fr-col-offset-sm-1': !isGeneratingDownload },
+        {'download' : isGeneratingDownload}
       ]"
     >
       <div>
         <DsfrButton
-          :label="'Télécharger'"
+          :label="buttonsLabels.download"
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => download(post)"
+          @click="() => download(post?.name ?? defaultFilename)"
         />
         <DsfrButton
           class="fr-mt-4v"
-          :label="'Imprimer'"
+          :label="buttonsLabels.print"
           icon="ri-printer-line"
           icon-right
           secondary
           @click="() => print()"
         />
-        <DsfrButton
-          class="fr-mt-8v"
-          icon="ri-alarm-warning-line"
-          icon-right
-          :label="'Signaler une modification ou une erreur'"
-          secondary
-          @click="() => console.log('Signaler une modification ou une erreur')"
+        <GpsSignalModal
+          v-if="doUseSignalModal"
         />
       </div>
     </section>

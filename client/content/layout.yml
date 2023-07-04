@@ -6,13 +6,13 @@ headerProps:
     - 'du Calvados'
   quickLinks:
     - label: 'Mon espace'
-      path: '/monespace'
+      to: '/monespace'
       icon: 'ri-user-line'
 mainNavProps:
   navItems:
-    - to: '/dispositifs'
+    - href: '/dispositifs'
       text: 'Dispositifs'
-    - to: '/fichestechniques'
+    - href: '/fichestechniques'
       text: 'Fiches techniques'
     - to: '/apropos'
       text: 'À propos'

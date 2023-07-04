@@ -6,6 +6,7 @@ import {
   RiEqualizerFill,
   RiAlarmWarningLine,
   RiCloseCircleLine,
+  RiSendPlaneLine,
 } from 'oh-vue-icons/icons/ri/index'
 
 const icons = [
@@ -14,7 +15,7 @@ const icons = [
   RiEqualizerFill,
   RiAlarmWarningLine,
   RiCloseCircleLine,
-  // fr-icon-close-line
+  RiSendPlaneLine,
 ]
 
 export default defineNuxtPlugin((nuxtApp) => {
