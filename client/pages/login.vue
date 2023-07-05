@@ -4,93 +4,42 @@ definePageMeta({
   layout: 'default',
 })
 
-const {
-  fieldSet,
-  email,
-  password,
-  button,
-  alertModel,
-  submit,
-  isError,
-} = await useGpsLogin()
-
 </script>
 
 <template>
-  <div class="gps-auth">
-    <DsfrFieldset
-      v-bind="fieldSet"
-      :class="[{
-        'gps-auth--error': isError
-      }]"
+  <div
+    :class="[
+      'fr-grid-row',
+      'fr-grid-row--gutters',
+    ]"
+  >
+    <div
+      :class="[
+        'fr-col-12',
+        'fr-col-sm-10',
+        'fr-col-md-8',
+        'fr-col-lg-6',
+        'fr-col-offset-sm-1',
+        'fr-col-offset-md-2',
+        'fr-col-offset-lg-3',
+      ]"
     >
-      <DsfrAlert
-        v-show="alertModel.display.value"
-        v-bind="alertModel.props.value"
-        small
-      />
-      <GpsField
-        v-model="email.value.value"
-        :field="email"
-        type="email"
-        @input="() => {
-          email.validate()
-          alertModel.reset()
-        }"
-      />
-      <GpsField
-        v-model="password.value.value"
-        :field="password"
-        type="password"
-        @input="() => {
-          password.validate()
-          alertModel.reset()
-        }"
-        @keydown.enter="submit()"
-      />
-      <DsfrCheckbox
-        name="rememberMe"
-        label="Se souvenir de moi"
-      />
-      <DsfrButton
-        type="submit"
-        :label="button.label"
-        :disabled="button.disabled.value"
-        :icon="'ri-arrow-right-line'"
-        primary
-        icon-right
-        @click="submit()"
-      />
-    </DsfrFieldset>
+      <GpsSiteBanner />
+      <GpsAuthForm />
+    </div>
   </div>
 </template>
 
-<style>
-.gps-auth--error .fr-input-group {
-  animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
-}
+<style scoped lang="scss">
 
-@keyframes shake {
+.gps-auth {
+  background-color: var(--background-default-grey);
+  border: solid 1px var(--border-default-grey);
+  box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
+  padding: 2rem;
 
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
+  .gps-auth--error .fr-input-group {
+    animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
   }
 }
 </style>

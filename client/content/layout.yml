@@ -1,6 +1,6 @@
 headerProps:
-  serviceTitle: 'GPS14'
-  serviceDescription: 'Dans le département du Calvados'
+  serviceTitle: 'Guide des Professionnels du Social'
+  serviceDescription: 'dans le département du Calvados'
   logoText: 
     - 'Prefet'
     - 'du Calvados'
@@ -10,12 +10,19 @@ headerProps:
       icon: 'ri-user-line'
 mainNavProps:
   navItems:
-    - href: '/dispositifs'
+    - to: '/dispositifs'
       text: 'Dispositifs'
-    - href: '/fichestechniques'
+    - to: '/fichestechniques'
       text: 'Fiches techniques'
     - to: '/apropos'
       text: 'À propos'
+      public: true
+bannerProps:
+  title:
+    - Guide des
+    - Professionnels
+    - du Social
+  baseline: 'dans le département du Calvados'
 footerProps:
   licenceText: 'Sauf mention contraire, tous les contenus de ce site sont sous'
   licenceTo: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md'

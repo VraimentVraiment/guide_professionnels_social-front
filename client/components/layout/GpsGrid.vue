@@ -21,9 +21,7 @@ const content = await useGetPageContent()
         'fr-col-md-4',
       ]"
     >
-      <h1
-        v-if="showTitle"
-      >
+      <h1 v-if="showTitle">
         {{ content?.title }}
       </h1>
 

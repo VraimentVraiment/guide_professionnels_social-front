@@ -1,10 +1,10 @@
 fieldSet:
-  legend: Connexion
-  hint: Veuillez saisir vos identifiants
+  legend: Connectez-vous pour accéder à la plateforme
+  # hint: Veuillez saisir vos identifiants
 emailField:
   label: Email
   placeholder: Email
-  hint: Veuillez saisir une adresse email valide
+  # hint: Veuillez saisir une adresse email valide
   autocomplete: email
   messages:
     error: Email invalide
@@ -12,7 +12,7 @@ emailField:
 passwordField:
   label: Mot de passe
   placeholder: Mot de passe
-  hint: Veuillez saisir un mot de passe valide
+  # hint: Veuillez saisir un mot de passe valide
   messages:
     error: Mot de passe invalide
     valid: Mot de passe valide

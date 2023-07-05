@@ -201,67 +201,7 @@ declare global {
     validate: () => void
     reset: () => void
   }
-
-  export type GpsLoginStrings = {
-    fieldSet: {
-      legend: string
-      hint: string
-    }
-    emailField: {
-      label: string
-      placeholder: string
-      hint: string
-      autocomplete: string
-      messages: {
-        error: string
-        valid: string
-      }
-    }
-    passwordField: {
-      label: string
-      placeholder: string
-      hint: string
-      autocomplete: string
-      messages: {
-        error: string
-        valid: string
-      }
-    }
-    loginButton: {
-      label: string
-    }
-    messages: {
-      error: {
-        title: string
-        description: string
-      }
-      success: {
-        title: string
-        description: string
-      }
-      info: {
-        title: string
-        description: string
-      }
-    }
-  }
-
-  export type GpsLogin = {
-    fieldSet: {
-      legend: string
-      hint: string
-    }
-    email: FieldModel
-    password: FieldModel
-    button: {
-      label: string
-      disabled: ComputedRef<boolean>
-    }
-    alertModel: InfoMessageModel
-    isError: Ref<boolean>
-    submit(): void
-  }
-
+  
   /*
    *
    * Misc
