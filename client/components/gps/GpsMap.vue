@@ -43,6 +43,12 @@ function loadMap (Gp: any) {
 
   function onMapLoaded () {
     emit('map-loaded')
+    if (process.client) {
+      document.querySelectorAll('#map .ol-zoom button')
+        .forEach((btnEl) => {
+          btnEl.classList.add('fr-btn')
+        })
+    }
     watchEffect(() => {
       gpMap.setMarkersOptions(markers.value)
     })
@@ -58,7 +64,7 @@ function loadMap (Gp: any) {
 <style scoped lang="scss">
 #map {
   width: 100%;
-  height: 600px;
+  height: 450px;
 }
 </style>
 
@@ -68,5 +74,22 @@ function loadMap (Gp: any) {
   box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
   border-radius: 0 !important;
   border: solid 1px var(--border-default-grey) !important;
+}
+
+.ol-rotate {
+  display: none !important;
+}
+
+.ol-zoom {
+  right: 0;
+  top: 50%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-50%);
+
+  & button {
+    margin: .25rem .5rem;
+  }
 }
 </style>

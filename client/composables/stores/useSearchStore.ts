@@ -30,6 +30,8 @@ function useDefineSeatchStore () {
       },
     })
 
+    openModal.value ||= true
+
     postItems.value = items
   }
 

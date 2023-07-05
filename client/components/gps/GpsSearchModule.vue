@@ -102,6 +102,8 @@ const searchButtonText = 'Rechercher'
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/";
+
 .gps-search {
   position: relative;
 
@@ -133,6 +135,14 @@ const searchButtonText = 'Rechercher'
 
     h6 {
       max-width: 60%;
+
+      @include sm {
+        max-width: 80%;
+      }
+
+      @include md {
+        max-width: 90%;
+      }
     }
 
     .gps-search--close-button {

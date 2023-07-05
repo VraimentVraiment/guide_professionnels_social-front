@@ -5,6 +5,6 @@ options:
     y: 49.1756
     projection: CRS:84
   zoom: 9
-  controlsOptions:
-    search:
-      maximised: true
+  # controlsOptions:
+  #   search:
+  #     maximised: true

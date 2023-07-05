@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import { useElementBounding } from '@vueuse/core'
-
 definePageMeta({
   layout: 'default',
   middleware: [
@@ -73,8 +71,8 @@ const getCardProps = (postItem: DispositifPost) => {
 }
 
 const { maxHeight } = useMaxHeight({
-  domain: [0, 450],
-  range: [30, 80],
+  domain: [0, 400],
+  range: [40, 80],
 })
 
 </script>
