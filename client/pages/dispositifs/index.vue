@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
+import { useElementBounding } from '@vueuse/core'
 
 definePageMeta({
   layout: 'default',
@@ -72,12 +72,15 @@ const getCardProps = (postItem: DispositifPost) => {
   }
 }
 
+const { maxHeight } = useMaxHeight({
+  domain: [0, 450],
+  range: [30, 80],
+})
+
 </script>
 
 <template>
-  <GpsGrid
-    show-title
-  >
+  <GpsGrid show-title>
     <template #top-right>
       <GpsSearchModule />
     </template>
@@ -91,8 +94,17 @@ const getCardProps = (postItem: DispositifPost) => {
           :post-store="postStore"
           :make-unselectable="isListSelected"
           :open-details="['gps_caracteristiquesdispositif']"
+          :max-height="maxHeight"
         />
-        <div id="dispositifs-sidebar" />
+        <div
+          id="dispositifs-sidebar"
+          :style="{
+            maxHeight: maxHeight,
+          }"
+          :class="[{
+            isListSelected
+          }]"
+        />
       </div>
     </template>
     <template #bottom-right>
@@ -102,6 +114,7 @@ const getCardProps = (postItem: DispositifPost) => {
         ]"
         :tab-list-name="tabListName"
         :tab-titles="tabTitles"
+        :max-height="maxHeight"
         @select-tab="(index: number) => isListSelected = index === 0"
       >
         <template #tab-0>
@@ -166,23 +179,34 @@ const getCardProps = (postItem: DispositifPost) => {
   #dispositifs-sidebar {
     overflow-y: auto;
     width: 100%;
-    padding-top: 4rem;
-    max-height: calc(50vh + 8rem);
+    top: 2.75rem;
+    padding-top: 1.5rem;
+    position: absolute;
+    border-bottom: 1px solid var(--border-default-grey);
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: 10;
+      height: 2px;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
+    }
+
+    &.isListSelected {
+      border:none;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    >*:not(:last-child) {
+      margin-bottom: 1rem;
+    }
   }
-
-  >*:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-}
-
-.gps-filters-sidebar__content {
-  max-height: 50vh;
-  overflow-y: auto;
-}
-
-.gps-dispositifs-tabs .fr-tabs__panel {
-  max-height: 50vh;
-  margin-top: 2px;
-  overflow-y: auto;
 }
 </style>

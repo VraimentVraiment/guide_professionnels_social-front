@@ -7,10 +7,13 @@ type tabTitle = {
   icon: string,
 }
 
-defineProps<{
+withDefaults(defineProps<{
   tabListName: StringConstructor
-  tabTitles: tabTitle[]
-}>()
+  tabTitles: tabTitle[],
+  maxHeight: string
+}>(), {
+  maxHeight: 'none',
+})
 
 const getTabData = (
   { title, icon }: tabTitle,
@@ -54,6 +57,9 @@ const {
       :tab-id="`tab-${i - 1}`"
       :selected="isSelected(i - 1)"
       :asc="index > prevIndex"
+      :style="{
+        maxHeight: maxHeight,
+      }"
     >
       <slot :name="`tab-${i - 1}`" />
     </DsfrTabContent>
@@ -61,11 +67,32 @@ const {
 </template>
 
 <style lang="scss">
-.fr-tabs.gps-dispositifs-tabs {
+@import "@/styles/";
+
+.gps-dispositifs-tabs {
+  transition: none;
   box-shadow: none;
+  border-bottom: solid 1px var(--border-default-grey);
+  margin-top: 3rem;
+
+  @include sm {
+    margin-top: 0;
+  }
 
   &::before {
     box-shadow: inset 0 1px 0 0 var(--border-default-grey);
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 10;
+    height: 2px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
   }
 
   .fr-tabs__tab {
@@ -80,5 +107,10 @@ const {
   .fr-tabs__panel {
     padding: 1.5rem 0 0;
   }
+}
+
+.gps-tab-content {
+  margin-top: 2px;
+  overflow-y: auto;
 }
 </style>

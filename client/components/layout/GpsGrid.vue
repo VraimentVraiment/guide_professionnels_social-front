@@ -53,3 +53,9 @@ const content = await useGetPageContent()
     </div>
   </div>
 </template>
+
+<style scoped>
+h1 {
+  margin-bottom: 0;
+}
+</style>

@@ -1,12 +1,15 @@
 <script setup lang="ts">
 
-import { useCheckedItemsObserver } from '~/composables/collections/useCheckedItemsObserver'
-
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore>
   makeUnselectable: boolean
-  openDetails?: string[]
-}>()
+  maxHeight: string
+  openDetails: string[] | null
+}>(), {
+  makeUnselectable: false,
+  maxHeight: 'none',
+  openDetails: null,
+})
 
 const isOpen = ref(false)
 
@@ -66,7 +69,12 @@ const {
           ]"
         />
       </div>
-      <div class="gps-filters-sidebar__content">
+      <div
+        class="gps-filters-sidebar__content"
+        :style="{
+          maxHeight: maxHeight,
+        }"
+      >
         <DetailsAccordion
           v-for="{ collectionName, label } in postStore.filtersCollections"
           :key="collectionName"
@@ -104,6 +112,7 @@ const {
   background-color: white;
   border: solid 1px var(--border-default-grey);
   border-top: solid 2px var(--text-active-blue-france);
+  padding-bottom: 3px;
 
   .gps-filters-sidebar__header {
     display: flex;
@@ -111,7 +120,7 @@ const {
     align-items: center;
     font-size: 1rem;
     font-weight: 700;
-    padding: 0.375rem 1rem;
+    padding: 0.45rem 1rem;
     color: var(--text-active-blue-france);
     cursor: pointer;
 
@@ -127,11 +136,13 @@ const {
 
   .gps-filters-sidebar__content {
     padding: 0 1rem .5rem;
+    overflow-y: auto;
   }
 
   &.is-selectable {
     border-color: var(--background-action-low-blue-france);
     border-top-color: var(--background-action-low-blue-france);
+    padding-bottom: 0;
 
     &:hover {
       border-color: var(--background-action-low-blue-france-hover);
