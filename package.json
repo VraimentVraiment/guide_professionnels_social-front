@@ -22,7 +22,6 @@
     "@nuxt/content": "^2.7.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@pinia/nuxt": "^0.4.11",
-    "@vue/shared": "^3.3.4",
     "@vueuse/core": "^10.2.1",
     "d3-array": "^3.2.4",
     "d3-hierarchy": "^3.1.2",

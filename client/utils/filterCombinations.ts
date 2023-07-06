@@ -50,9 +50,8 @@ export function getMatchingIds (
 ): number[] | null {
   switch (combination) {
     case 'unique': {
-      return targetIds // TODO
+      return getIdsMatchingAtLeast(targetIds, relationsCollection)
     }
-
     case 'or': {
       return getIdsMatchingAtLeast(targetIds, relationsCollection)
     }

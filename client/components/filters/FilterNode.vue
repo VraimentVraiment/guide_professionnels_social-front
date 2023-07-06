@@ -7,6 +7,8 @@ const props = defineProps<{
   node: HierarchyNode<FilterItemNode> | null
   postStore: ReturnType<typeof useDispositifPostStore>
   isRootNode?: boolean
+  dataCombination?: 'and' | 'or' | 'unique'
+  parentName?: string
 }>()
 
 const { current: currentKeysPressed } = useMagicKeys()
@@ -43,12 +45,15 @@ const setItem = (
     />
     <DsfrCheckbox
       v-else-if="(
-        node.data.userSelection === 'all-nodes'
-        && node.depth > 0
-        || (
-          node.data.userSelection === 'leaves-only'
-          && node.height === 0
-          && !isRootNode
+        dataCombination !== 'unique'
+        && (
+          node.data.userSelection === 'all-nodes'
+          && node.depth > 0
+          || (
+            node.data.userSelection === 'leaves-only'
+            && node.height === 0
+            && !isRootNode
+          )
         )
       )"
       :id="node.data.id.toString()"
@@ -65,6 +70,27 @@ const setItem = (
       :model-value="node.data.checked"
       @update:model-value="(checked: boolean) => setItem(node?.data, checked)"
     />
+    <DsfrRadioButton
+      v-else-if="(
+        dataCombination === 'unique'
+        && (
+          node.data.userSelection === 'all-nodes'
+          && node.depth > 0
+          || (
+            node.data.userSelection === 'leaves-only'
+            && node.height === 0
+            && !isRootNode
+          )
+        )
+      )"
+      :name="node.data.collectionName"
+      :label="node.data.name"
+      :value="node.data.id"
+      :model-value="node.data.id"
+      small
+      :checked="node.data.checked"
+      @update:model-value="() => setItem(node?.data, true)"
+    />
     <h5
       v-else-if="(
         node.data.userSelection === 'leaves-only'
@@ -73,7 +99,7 @@ const setItem = (
     >
       {{ node.data.name }}
     </h5>
-    <DetailsAccordion
+    <GpsDetailsAccordion
       v-else-if="(
         node.data.userSelection === 'leaves-only'
         && node.height === 1
@@ -89,9 +115,11 @@ const setItem = (
           :key="childNode.data.id"
           :node="childNode"
           :post-store="postStore"
+          :data-combination="node.data?.combination ?? 'and'"
+          :parent-name="node.data.name"
         />
       </template>
-    </DetailsAccordion>
+    </GpsDetailsAccordion>
     <div
       v-else-if="(
         node.data.userSelection === 'leaves-only'
@@ -136,7 +164,6 @@ const setItem = (
         && node.height === 1
       )
         && node.children?.length
-
       "
     >
       <FilterNode

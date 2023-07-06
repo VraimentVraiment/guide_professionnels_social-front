@@ -28,19 +28,27 @@ const {
           small
           class="fr-mb-4v"
         />
-        <GpsField
+        <DsfrInputGroup
+          v-bind="email.props"
           v-model="email.value.value"
-          :field="email"
           type="email"
+          :error-message="email.errorMessage.value"
+          :valid-message="email.validMessage.value"
+          aria-required
+          label-visible
           @input="() => {
             email.validate()
             alertModel.reset()
           }"
         />
-        <GpsField
+        <DsfrInputGroup
+          v-bind="password.props"
           v-model="password.value.value"
-          :field="password"
           type="password"
+          :error-message="password.errorMessage.value"
+          :valid-message="password.validMessage.value"
+          aria-required
+          label-visible
           autocomplete="current-password"
           @input="() => {
             password.validate()

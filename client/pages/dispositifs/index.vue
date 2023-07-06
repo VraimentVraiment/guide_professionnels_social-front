@@ -173,6 +173,7 @@ const { maxHeight } = useMaxHeight({
 <style lang="scss">
 .gps-sidebar {
   position: relative;
+  margin-top: 4px;
 
   #dispositifs-sidebar {
     overflow-y: auto;

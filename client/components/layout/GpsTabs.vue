@@ -8,7 +8,7 @@ type tabTitle = {
 }
 
 withDefaults(defineProps<{
-  tabListName: StringConstructor
+  tabListName: StringConstructor,
   tabTitles: tabTitle[],
   maxHeight: string
 }>(), {

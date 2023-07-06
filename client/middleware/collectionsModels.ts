@@ -1,9 +1,9 @@
 export default defineNuxtRouteMiddleware(() => {
-  const collectionsModelsStore = useCollectionsModelsStore()
-
   if (process.server) {
     return
   }
+
+  const collectionsModelsStore = useCollectionsModelsStore()
 
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {

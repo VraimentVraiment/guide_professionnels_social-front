@@ -8,7 +8,6 @@ module.exports = {
   ],
   rules: {
     'comma-dangle': [2, 'always-multiline'],
-    // 'vue/no-multiple-template-root': 'off',
     'vue/max-attributes-per-line': ['error', {
       singleline: 1,
       multiline: 1,

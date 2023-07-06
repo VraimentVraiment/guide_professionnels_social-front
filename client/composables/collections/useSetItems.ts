@@ -57,7 +57,8 @@ export function useSetItem (
     value: boolean,
     isAltKeyPressed?: boolean,
   }) {
-    if (relationModel?.userSelection === 'single-node') {
+    if (
+      relationModel?.userSelection === 'single-node') {
       collection.items
         .filter(i => i.id !== item.id)
         .forEach((i) => {
@@ -65,7 +66,31 @@ export function useSetItem (
         })
     }
 
-    // else if (
+    if (
+      relationModel?.userSelection === 'leaves-only'
+    ) {
+      const parent = collection.items
+        .find(i => i.id === item.parent_id)
+
+      if (
+        parent?.combination === 'unique'
+      ) {
+        const siblings = collection.items
+          .filter((i) => {
+            return (
+              i.parent_id === parent.id &&
+              i.id !== item.id
+            )
+          })
+
+        siblings
+          .forEach((i) => {
+            i.checked = false
+          })
+      }
+    }
+
+    // if (
     //   isAltKeyPressed &&
     //   (
     //     relationModel.userSelection === 'leaves-only' ||
@@ -82,7 +107,8 @@ export function useSetItem (
     //   // })
     //   // })
     // }
-    else if (relationModel?.userSelection === 'all-nodes') {
+
+    if (relationModel?.userSelection === 'all-nodes') {
       setItemChildren({ collection, item, value, isAltKeyPressed })
       setItemParent({ collection, item, value, isAltKeyPressed })
     }

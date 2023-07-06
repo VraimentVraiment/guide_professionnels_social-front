@@ -12,14 +12,21 @@ const {
   openModal,
 } = storeToRefs(searchStore)
 
-const searchBarPlaceholder = 'Rechercher une commune ou un dispositif'
-const searchButtonText = 'Rechercher'
+const {
+  searchBarPlaceholder,
+  searchButtonText,
+} = await useGetContent('/search-module')
 
 </script>
 
 <template>
-  <div class="gps-search fr-mb-3w">
-    <div class="gps-search--tags">
+  <div class="gps-search fr-mb-2v">
+    <div
+      :class="[
+        'gps-search--tags',
+        { 'has-tags': selectedCityList.length > 0 }
+      ]"
+    >
       <DsfrTag
         v-for="cityName in selectedCityList"
         :key="cityName"
@@ -49,7 +56,12 @@ const searchButtonText = 'Rechercher'
           <h6>
             Résultats dans la liste des communes
           </h6>
-          <div class="gps-search--tags">
+          <div
+            :class="[
+              'gps-search--tags',
+              { 'has-tags': queryCityList.length > 0 }
+            ]"
+          >
             <DsfrTag
               v-for="cityName in queryCityList"
               :key="cityName"
@@ -112,7 +124,10 @@ const searchButtonText = 'Rechercher'
     flex-wrap: wrap;
     justify-items: space-between;
     width: 100%;
-    margin-bottom: .75rem;
+
+    &.has-tags {
+      margin-bottom: .75rem;
+    }
 
     .fr-tag {
       margin: 0.5rem 0.5rem 0 0;

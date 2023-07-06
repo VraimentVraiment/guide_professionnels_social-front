@@ -4,6 +4,9 @@
 
 export default defineNuxtConfig({
   srcDir: 'client/',
+  extends: [
+    './layers/dsfr',
+  ],
   modules: [
     'nuxt-directus',
     '@nuxt/content',
@@ -27,10 +30,6 @@ export default defineNuxtConfig({
   },
   css: [
     '@/styles/index.scss',
-    '@gouvfr/dsfr/dist/dsfr.min.css',
-    '@gouvminint/vue-dsfr/styles', // Les styles propres aux composants de VueDsfr
-    '@gouvfr/dsfr/dist/utility/icons/icons.min.css', // Facultatif: Si des icônes sont utilisées avec les classes "fr-icon-..."
-    // '@gouvfr/dsfr/dist/scheme/scheme.min.css', // Facultatif: Si les thèmes sont utilisés (thème sombre, thème en bernes)
   ],
   components: [
     {

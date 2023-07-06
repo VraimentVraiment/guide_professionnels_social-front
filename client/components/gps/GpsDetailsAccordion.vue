@@ -1,18 +1,13 @@
-<script setup>
+<script setup lang="ts">
 
-defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  summaryTag: {
-    type: String,
-    default: 'span',
-  },
-  open: {
-    type: Boolean,
-    default: false,
-  },
+withDefaults(defineProps<{
+  label: String,
+  summaryTag: String,
+  open: Boolean,
+}>(), {
+  label: '',
+  summaryTag: 'span',
+  open: false,
 })
 
 </script>

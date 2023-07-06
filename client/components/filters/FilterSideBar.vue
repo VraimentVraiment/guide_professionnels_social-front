@@ -75,7 +75,7 @@ const {
           maxHeight: maxHeight,
         }"
       >
-        <DetailsAccordion
+        <GpsDetailsAccordion
           v-for="{ collectionName, label } in postStore.filtersCollections"
           :key="collectionName"
           class="filter-group"
@@ -101,7 +101,7 @@ const {
             is-root-node
             :post-store="postStore"
           />
-        </DetailsAccordion>
+        </GpsDetailsAccordion>
       </div>
     </div>
   </ClientOnly>

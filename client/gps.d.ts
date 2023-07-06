@@ -1,47 +1,3 @@
-import {
-  type HierarchyNode,
-} from 'd3-hierarchy'
-
-import {
-  /* auth */
-  type DirectusUser,
-  type DirectusAuthCredentials,
-  type DirectusAuthResponse,
-  type DirectusPasswordForgotCredentials,
-  type DirectusPasswordResetCredentials,
-  type DirectusUserRequest,
-  type DirectusUserCreation,
-  type DirectusUserUpdate,
-  type DirectusUserDeletion,
-  type DirectusRegisterCredentials,
-  /* query params */
-  type DirectusQueryParams,
-  /* collections */
-  type DirectusCollectionRequest,
-  type DirectusCollectionMeta,
-  type DirectusCollectionCreation,
-  type DirectusCollectionUpdate,
-  /* items */
-  type DirectusItemMetadata,
-  type DirectusItems,
-  type DirectusItem,
-  type DirectusItemRequest,
-  type DirectusItemCreation,
-  type DirectusItemUpdate,
-  type DirectusItemDeletion,
-  /* files */
-  type DirectusFile,
-  type DirectusFolders,
-  type DirectusFileRequest,
-  type DirectusThumbnailFormat,
-  type DirectusThumbnailFit,
-  type DirectusThumbnailOptions,
-  /* notification */
-  type DirectusNotificationObject,
-  /* revisions */
-  type DirectusRevision,
-} from "nuxt-directus/dist/runtime/types";
-
 declare global {
 
   export type DirectusItem = DirectusItem
@@ -125,7 +81,7 @@ declare global {
   }
 
   export type DirectusFilter = Record<string, Record<string, unkown>>
-  
+
   export type CollectionDirectusFilter = {
     collectionName: string,
     filter: DirectusFilter
@@ -138,7 +94,7 @@ declare global {
     combination?: FilterCombination
     pictogramme?: string
   }
-  
+
   export interface DirectusFilterItem extends FilterItem {
     children: OneToManyId;
     sort: number;
@@ -201,7 +157,7 @@ declare global {
     validate: () => void
     reset: () => void
   }
-  
+
   /*
    *
    * Misc
@@ -212,3 +168,5 @@ declare global {
 
   export type Accessor<T, U> = (item: T) => U
 }
+
+export { }
