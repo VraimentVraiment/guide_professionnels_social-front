@@ -76,6 +76,20 @@ function loadMap (Gp: any) {
   border: solid 1px var(--border-default-grey) !important;
 }
 
+.ol-selectable {
+  cursor: pointer;
+  filter: hue-rotate(180);
+
+  &:hover {
+    opacity: .8;
+  }
+
+  &:active {
+    opacity: 1;
+    filter: brightness(1.1) saturate(1.1) contrast(1.1);
+  }
+}
+
 .ol-rotate {
   display: none !important;
 }

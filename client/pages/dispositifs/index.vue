@@ -171,6 +171,8 @@ const { maxHeight } = useMaxHeight({
 </template>
 
 <style lang="scss">
+@import "@/styles/";
+
 .gps-sidebar {
   position: relative;
   margin-top: 4px;
@@ -195,12 +197,22 @@ const { maxHeight } = useMaxHeight({
       box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
     }
 
-    &.isListSelected {
-      border:none;
+      display: none;
 
       &::after {
         display: none;
       }
+
+    @include sm {
+      display: block;
+
+      &::after {
+        display: block;
+      }
+    }
+
+    &.isListSelected {
+      display: none;
     }
 
     >*:not(:last-child) {

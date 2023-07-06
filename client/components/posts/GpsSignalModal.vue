@@ -52,9 +52,9 @@ const send = () => {
       messageContent.value = ''
       close()
     })
-    .catch((error) => {
-      console.error(error)
-    })
+    // .catch((error) => {
+    //   console.error(error)
+    // })
 }
 
 </script>

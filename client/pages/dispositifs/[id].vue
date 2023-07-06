@@ -15,8 +15,8 @@ const {
 
 /**
  * @todo Use signal error modal when directus fix this :
- * - Not able to send notification to everyone assigned to a role,
- *   which should be working according to this official tutorial :
+ * - Not being able to send notification to everyone assigned to a role,
+ *   which should be working according to this tutorial :
  *   @see https://learndirectus.com/how-to-send-a-notification/
  * - Notification not opening in backend UI
  */
@@ -30,8 +30,6 @@ const {
 } = await useFetchDirectusSinglePostItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
-  filesCollectionName: 'gps_fichesdispositif_directus_files',
-  filesField: 'images',
 })
 
 if (!post) {
@@ -42,6 +40,8 @@ const print = () => {
   window.print()
 }
 
+const { getFiles } = useDirectusFiles()
+
 const {
   download,
   isGeneratingDownload,
@@ -49,6 +49,24 @@ const {
   avoid: '.gps-rich-text-container',
 })
 
+const important_file = (
+  post?.important_file_title &&
+  post?.important_file
+)
+  ? (
+      await getFiles({
+        params: {
+          filter: {
+            id: {
+              _eq: post.important_file,
+            },
+          },
+        },
+      })
+    )?.[0]
+  : null
+
+console.log(important_file)
 </script>
 
 <template>
@@ -61,9 +79,9 @@ const {
     <section
       :class="[
         'gps-post__content',
-        {'download' : isGeneratingDownload},
+        { 'download': isGeneratingDownload },
         'fr-col-12',
-        {'fr-col-sm-8' : !isGeneratingDownload}
+        { 'fr-col-sm-8': !isGeneratingDownload }
       ]"
     >
       <header>
@@ -113,7 +131,7 @@ const {
           <img
             v-for="{ directus_files_id } in images"
             :key="directus_files_id"
-            :src="getDirectusFile(directus_files_id)"
+            :src="getDirectusFileLink(directus_files_id)"
             alt=""
           >
         </div>
@@ -126,7 +144,7 @@ const {
         'fr-col-12',
         { 'fr-col-sm-3': !isGeneratingDownload },
         { 'fr-col-offset-sm-1': !isGeneratingDownload },
-        {'download' : isGeneratingDownload}
+        { 'download': isGeneratingDownload }
       ]"
     >
       <div>
@@ -145,16 +163,23 @@ const {
           secondary
           @click="() => print()"
         />
-        <GpsSignalModal
-          v-if="doUseSignalModal"
+        <DsfrFileDownload
+          v-if="important_file"
+          class="fr-mt-8v"
+          block
+          :title="post?.important_file_title"
+          :description="post?.important_file_description"
+          :format="formatFormat(important_file?.type)"
+          :size="formatBytes(important_file?.filesize)"
+          :href="`${getDirectusFileLink(important_file.id)}?download`"
         />
+        <GpsSignalModal v-if="doUseSignalModal" />
       </div>
     </section>
   </div>
 </template>
 
 <style scoped lang="scss">
-
 section.gps-post__content {
   @media print {
     padding: 3rem;

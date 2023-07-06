@@ -8,9 +8,20 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   const isAuthenticated = useIsAuthenticated()
 
+  /**
+   * @todo Setup configurables public routes
+   */
+  const PUBLIC_ROUTES = [
+    '/login',
+    '/apropos',
+  ]
+  const isPublicRoute = (path: string) => {
+    return PUBLIC_ROUTES.includes(path)
+  }
+
   if (
-    !isAuthenticated.value &&
-    to.path !== '/login'
+    !isPublicRoute(to.path) &&
+    !isAuthenticated.value
   ) {
     return navigateTo('/login')
   }

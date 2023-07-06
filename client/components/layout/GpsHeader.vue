@@ -8,15 +8,20 @@ const {
 const isAuthenticated = useIsAuthenticated()
 
 const quickLinks = computed(() => {
-  return headerProps.quickLinks
-    ?.filter((quickLink: {
-    to: string
-    label: string
-    icon?: boolean
-    public?: boolean
-  }) => {
-      return isAuthenticated.value || quickLink.public
-    })
+  return []
+
+  /**
+   * @todo Add quick links when 'account' page is set up
+   */
+  // return headerProps.quickLinks
+  //   ?.filter((quickLink: {
+  //   to: string
+  //   label: string
+  //   icon?: boolean
+  //   public?: boolean
+  // }) => {
+  //     return isAuthenticated.value || quickLink.public
+  //   })
 })
 
 const navItems = computed(() => {

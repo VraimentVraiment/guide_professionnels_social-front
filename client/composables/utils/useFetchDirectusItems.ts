@@ -71,6 +71,7 @@ export async function useFetchDirectusSinglePostItem<T extends Post> ({
     !post ||
     !filesCollectionName ||
     !filesField ||
+    post?.[filesField]?.length === 0 ||
     process.server
   )
     ? []

@@ -41,6 +41,9 @@ declare global {
     caracteristiques_dispositif: OneToManyId[]
     type_dispositif: ManyToOneId
     addresses: address[]
+    important_file?: string
+    important_file_title?: string
+    important_file_description?: string
   }
 
   /*

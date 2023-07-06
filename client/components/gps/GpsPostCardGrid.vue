@@ -57,6 +57,10 @@ const isCol4 = breakpoints?.greater('MD')
   padding: 1px;
   overflow: hidden;
 
+  .fr-card__title {
+    margin: 0 !important;
+  }
+
   .fr-card__img {
     display: none !important;
   }

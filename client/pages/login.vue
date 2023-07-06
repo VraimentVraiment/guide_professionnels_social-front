@@ -9,6 +9,7 @@ definePageMeta({
 <template>
   <div
     :class="[
+      'gps-login-container',
       'fr-grid-row',
       'fr-grid-row--gutters',
     ]"
@@ -29,3 +30,19 @@ definePageMeta({
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@import "@/styles";
+
+.gps-login-container {
+  margin-top: -2rem;
+
+  @include sm {
+    margin-top: 0;
+  }
+
+  @include md {
+    margin-top: 4vh;
+  }
+}
+</style>

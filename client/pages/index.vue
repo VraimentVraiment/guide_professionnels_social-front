@@ -87,7 +87,7 @@ stepOne()
                 :title="name"
                 horizontal
                 to=""
-                :img-src="getDirectusFile(pictogramme)"
+                :img-src="getDirectusFileLink(pictogramme)"
                 title-tag="h2"
                 @click.prevent="() => stepTwo(id)"
               />

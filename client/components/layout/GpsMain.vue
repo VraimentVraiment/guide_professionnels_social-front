@@ -1,5 +1,3 @@
-<script lang="ts" setup>
-</script>
 <template>
   <main class="fr-container">
     <slot />
@@ -7,17 +5,26 @@
 </template>
 
 <style lang="scss">
+@import '@/styles/';
+
 body {
   background-color: var(--background-alt-grey);
 }
 
 main.fr-container {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  min-height: 50vh
-}
+  min-height: 80vh;
+  padding: 3rem 1rem;
 
-h1 {
-  margin-top: 0;
+  @include md {
+    padding: 4rem 2rem;
+  }
+
+  @include lg {
+    padding: 6rem 2rem;
+  }
+
+  @include xl {
+    padding: 8rem 2rem;
+  }
 }
 </style>

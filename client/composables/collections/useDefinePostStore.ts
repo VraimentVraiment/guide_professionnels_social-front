@@ -1,7 +1,3 @@
-import {
-  group,
-} from 'd3-array'
-
 export const useDefinePostStore = () => {
   const searchStore = useSearchStore()
 
@@ -14,45 +10,11 @@ export const useDefinePostStore = () => {
     setPostCollection,
   } = useCollections()
 
-  const relationGroups = computed(() => {
-    return relationsCollections.value
-      .filter((relationsCollection) => {
-        return relationsCollection.relationModel.relationType === 'many-to-many'
-      })
-      .map((relationsCollection) => {
-        const {
-          targetKey,
-          sourceKey,
-        } = relationsCollection.relationModel as {
-          targetKey: string
-          sourceKey: string
-        }
-
-        // Group relations if they are related to the same source item
-        const relationsGroups = group(
-          relationsCollection.items,
-          item => item[sourceKey],
-        )
-
-        // Convert the relationsGroups InternMap to an array of objects
-        return {
-          targetKey,
-          sourceKey,
-          groups: Array
-            .from(relationsGroups, ([sourceId, relationGroup]) => {
-              return {
-                [sourceKey]: sourceId,
-                [targetKey]: relationGroup.map(relationItem => relationItem[targetKey]),
-              }
-            }),
-        }
-      })
-  })
-
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
   const checkedItems = useGetCheckedItems(filtersCollections)
-  const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
+  const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections)
   // const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
+  const relationGroups = useRelationGroups(relationsCollections)
 
   const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)

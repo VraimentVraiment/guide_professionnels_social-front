@@ -1,4 +1,4 @@
-export const getDirectusFile = (
+export const getDirectusFileLink = (
   fileId: string | null | undefined,
 ): string => {
   if (!fileId) {

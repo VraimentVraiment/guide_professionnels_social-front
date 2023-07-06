@@ -39,7 +39,7 @@ export const geojsonAddressToMarkerOptions = (post, projection) => ({
       projection,
     },
     content: getMarkerTooltipContent(post, address),
-    // url: "/images/marker.png",
+    // url: "/marker.svg",
   }
 }
 
