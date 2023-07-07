@@ -37,11 +37,11 @@ definePageMeta({
 .gps-login-container {
   margin-top: -2rem;
 
-  @include sm {
+  @include lg {
     margin-top: 0;
   }
 
-  @include md {
+  @include xl {
     margin-top: 4vh;
   }
 }

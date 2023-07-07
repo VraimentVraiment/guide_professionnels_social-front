@@ -220,4 +220,12 @@ const { maxHeight } = useMaxHeight({
     }
   }
 }
+
+.gps-dispositifs-tabs {
+  margin-top: 3rem;
+
+  @include md {
+    margin-top: 0;
+  }
+}
 </style>

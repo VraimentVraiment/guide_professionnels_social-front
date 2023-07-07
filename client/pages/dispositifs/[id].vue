@@ -94,8 +94,8 @@ console.log(important_file)
         />
         <hr class="fr-hr">
         <template v-if="post?.addresses?.length">
-          <span
-            class="fr-icon-road-map-fill"
+          <v-icon
+            name="ri-road-map-fill"
             aria-hidden="true"
           />
           <ul>

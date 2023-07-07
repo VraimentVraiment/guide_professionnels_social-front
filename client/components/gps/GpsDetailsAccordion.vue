@@ -24,11 +24,11 @@ withDefaults(defineProps<{
       >
         {{ label }}
       </component>
-      <span
+      <v-icon
         :class="[
           'gps-details__icon',
-          'fr-icon-arrow-left-s-line',
         ]"
+        :name="'ri-arrow-left-s-line'"
         aria-hidden="true"
       />
     </summary>
@@ -79,13 +79,13 @@ details.gps-details {
 
     .gps-details__icon {
       display: block;
-      transform: rotate(0deg) scale(0.75);
+      transform: rotate(0deg);
       transition: transform .2s ease-in-out;
     }
   }
 
   &[open]>summary.gps-details__summary>.gps-details__icon {
-    transform: rotate(-90deg) scale(0.75);
+    transform: rotate(-90deg);
   }
 
   >.gps-details__content {

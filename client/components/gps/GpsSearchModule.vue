@@ -87,11 +87,13 @@ const {
                 :to="`/dispositifs/${item.id}`"
                 :class="[
                   'fr-link',
-                  'fr-fi-arrow-right-line',
-                  'fr-link--icon-right',
                 ]"
               >
                 {{ item.name }}
+                <v-icon
+                  :name="'ri-arrow-right-line'"
+                  aria-hidden="true"
+                />
               </NuxtLink>
             </li>
           </ul>

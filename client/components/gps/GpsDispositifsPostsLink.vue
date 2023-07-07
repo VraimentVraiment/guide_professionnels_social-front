@@ -17,8 +17,6 @@ const postStore = useDispositifPostStore()
       {'gps-link__MD': size === 'MD'},
       {'gps-link__SM': size === 'SM'},
       'fr-link',
-      'fr-fi-arrow-right-line',
-      'fr-link--icon-right',
     ]"
     :to="`/dispositifs`"
     @click="() => postStore.setItem({
@@ -28,6 +26,10 @@ const postStore = useDispositifPostStore()
     })"
   >
     {{ name }}
+    <v-icon
+      :name="'ri-arrow-right-line'"
+      aria-hidden="true"
+    />
   </NuxtLink>
 </template>
 

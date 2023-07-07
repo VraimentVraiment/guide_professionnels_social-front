@@ -73,11 +73,6 @@ const {
   transition: none;
   box-shadow: none;
   border-bottom: solid 1px var(--border-default-grey);
-  margin-top: 3rem;
-
-  @include sm {
-    margin-top: 0;
-  }
 
   &::before {
     box-shadow: inset 0 1px 0 0 var(--border-default-grey);

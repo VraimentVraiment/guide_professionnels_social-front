@@ -59,14 +59,13 @@ const {
           />
           Filtrer
         </span>
-        <span
+        <v-icon
           v-show="isSelectable"
-          aria-hidden="true"
           :class="[
             'gps-filters-sidebar__header__icon',
-            { 'fr-icon-close-line': isOpen },
-            { 'fr-icon-arrow-left-s-line': !isOpen },
           ]"
+          :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
+          aria-hidden="true"
         />
       </div>
       <div
@@ -125,7 +124,7 @@ const {
     cursor: pointer;
 
     .gps-filters-sidebar__header__icon {
-      transform: rotate(0deg);
+      transform: rotate(0deg) scale(1.2);
       transition: transform .2s ease-in-out;
     }
 
@@ -202,7 +201,7 @@ const {
         }
 
         .gps-filters-sidebar__header__icon {
-          transform: rotate(-90deg);
+          transform: rotate(-90deg) scale(1.2);
         }
       }
 
