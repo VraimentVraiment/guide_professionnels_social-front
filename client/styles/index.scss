@@ -1,2 +1,6 @@
 @import 'utilities/';
 @import 'animations/';
+
+body {
+  background-color: var(--background-alt-grey) !important;
+}

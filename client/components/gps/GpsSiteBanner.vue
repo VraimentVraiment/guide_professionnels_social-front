@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const logoPath = '/boussole_V2.svg'
+const logoPath = '/boussole_v3.svg'
 
 const { bannerProps } = await useGetContent('/layout')
 

@@ -17,10 +17,6 @@
 <style lang="scss">
 @import '@/styles/';
 
-body {
-  background-color: var(--background-alt-grey);
-}
-
 main.fr-container {
   min-height: 80vh;
   padding: 3rem 1rem;
