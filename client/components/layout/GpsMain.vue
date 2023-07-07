@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" setup>
 /**
  * @todo Render some parts of main on the server
  * Right know it causes issues with the global auth middleware
