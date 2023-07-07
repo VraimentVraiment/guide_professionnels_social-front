@@ -4,7 +4,7 @@
  */
 
 export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
-  // persist: true,
+  persist: true,
 })
 
 function useDefineCollectionsModelsStore () {

@@ -35,15 +35,15 @@ const {
 </script>
 
 <template>
-  <ClientOnly>
-    <div
-      :class="[
-        'gps-filters-sidebar',
-        { 'open': isOpen },
-        { 'is-small-screen': isSmallScreen },
-        { 'is-selectable': isSelectable },
-      ]"
-    >
+  <div
+    :class="[
+      'gps-filters-sidebar',
+      { 'open': isOpen },
+      { 'is-small-screen': isSmallScreen },
+      { 'is-selectable': isSelectable },
+    ]"
+  >
+    <ClientOnly>
       <div
         class="gps-filters-sidebar__header"
         @click="() => {
@@ -102,8 +102,8 @@ const {
           />
         </GpsDetailsAccordion>
       </div>
-    </div>
-  </ClientOnly>
+    </ClientOnly>
+  </div>
 </template>
 
 <style scoped lang="scss">

@@ -46,11 +46,10 @@ const getCardProps = (item: FicheTechniquePost) => {
 </script>
 
 <template>
-  <GpsGrid
-    show-title
-  >
+  <GpsGrid show-title>
     <template #bottom-left>
       <FilterSideBar
+        :class="['fichestechniques-filtersidebar']"
         :post-store="postStore"
         make-unselectable
         :open-details="['gps_thematiques']"
@@ -60,6 +59,7 @@ const getCardProps = (item: FicheTechniquePost) => {
       <ClientOnly>
         <GpsPostCardGrid
           v-if="postStore.postsCollection?.items?.length"
+          class="fichestechniques-postcard-grid"
           :collection="postStore.postsCollection?.items"
           :wrap-cards="true"
           :get-card-props="getCardProps"
@@ -71,6 +71,20 @@ const getCardProps = (item: FicheTechniquePost) => {
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/";
+
+.fichestechniques-filtersidebar {
+  left: 0;
+}
+
+.fichestechniques-postcard-grid {
+  margin-top: 3rem;
+
+  @include md {
+    margin-top: 0;
+  }
+}
+
 .fr-grid-row {
   margin: 0;
 }

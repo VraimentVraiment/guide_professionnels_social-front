@@ -55,7 +55,13 @@ const content = await useGetPageContent()
 </template>
 
 <style scoped>
+
 h1 {
   margin-bottom: 0;
 }
+
+.fr-grid-row > div {
+  position: relative;
+}
+
 </style>

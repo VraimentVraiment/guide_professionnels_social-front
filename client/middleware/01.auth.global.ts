@@ -2,11 +2,10 @@
  * Auth middleware
  */
 export default defineNuxtRouteMiddleware((to, from) => {
-  if (process.server) {
-    return
-  }
+  if (process.server) { return }
 
   const isAuthenticated = useIsAuthenticated()
+  console.log('isAuthenticated.value :', isAuthenticated.value)
 
   /**
    * @todo Setup configurables public routes
@@ -14,6 +13,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const PUBLIC_ROUTES = [
     '/login',
     '/apropos',
+    '/404',
   ]
   const isPublicRoute = (path: string) => {
     return PUBLIC_ROUTES.includes(path)

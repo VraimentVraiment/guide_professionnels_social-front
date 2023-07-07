@@ -1,5 +1,5 @@
 export const useGpsSelectedThematiqueStore = defineStore('gpsSelectedThematique', useDefineGpsSelectedThematiqueStore, {
-  // persist: true,
+  persist: true,
 })
 
 function useDefineGpsSelectedThematiqueStore () {

@@ -184,10 +184,11 @@ const { maxHeight } = useMaxHeight({
     padding-top: 1.5rem;
     position: absolute;
     border-bottom: 1px solid var(--border-default-grey);
+    display: none;
 
     &::after {
       content: '';
-      display: block;
+      display: none;
       position: absolute;
       z-index: 10;
       height: 2px;
@@ -197,17 +198,13 @@ const { maxHeight } = useMaxHeight({
       box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
     }
 
-      display: none;
-
-      &::after {
-        display: none;
-      }
-
-    @include sm {
-      display: block;
-
-      &::after {
+    @include md {
+      &:not(.isListSelected) {
         display: block;
+
+        &::after {
+          display: block;
+        }
       }
     }
 

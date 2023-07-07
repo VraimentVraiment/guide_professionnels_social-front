@@ -2,7 +2,13 @@
 
 import { storeToRefs } from 'pinia'
 
+const {
+  searchBarPlaceholder,
+  searchButtonText,
+} = await useGetContent('/search-module')
+
 const searchStore = useSearchStore()
+searchStore.watchQuery()
 
 const {
   query,
@@ -11,11 +17,6 @@ const {
   postItems,
   openModal,
 } = storeToRefs(searchStore)
-
-const {
-  searchBarPlaceholder,
-  searchButtonText,
-} = await useGetContent('/search-module')
 
 </script>
 

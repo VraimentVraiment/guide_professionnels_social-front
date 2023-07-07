@@ -1,6 +1,4 @@
 declare global {
-
-  export type DirectusItem = DirectusItem
   /*
    *
    * Fields
@@ -51,6 +49,7 @@ declare global {
    * Filters
    *
    */
+
   export type CollectionType = 'posts' | 'taxonomy' | 'relations'
   export type RelationType = 'many-to-one' | 'many-to-many'
   export type UserSelection = 'leaves-only' | 'all-nodes' | 'single-node'

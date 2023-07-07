@@ -1,9 +1,9 @@
 export default defineNuxtRouteMiddleware(() => {
-  const postStore = useFicheTechniquePostStore()
-
   if (process.server) {
     return
   }
+
+  const postStore = useFicheTechniquePostStore()
 
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {

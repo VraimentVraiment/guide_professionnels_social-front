@@ -1,6 +1,16 @@
+<script lang="ts">
+/**
+ * @todo Render some parts of main on the server
+ * Right know it causes issues with the global auth middleware
+ * and the rendered layout
+ */
+</script>
+
 <template>
   <main class="fr-container">
-    <slot />
+    <ClientOnly>
+      <slot />
+    </ClientOnly>
   </main>
 </template>
 
@@ -21,10 +31,6 @@ main.fr-container {
 
   @include lg {
     padding: 6rem 2rem;
-  }
-
-  @include xl {
-    padding: 8rem 2rem;
   }
 }
 </style>

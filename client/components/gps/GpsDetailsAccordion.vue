@@ -3,7 +3,7 @@
 withDefaults(defineProps<{
   label: string,
   summaryTag: string,
-  open: boolean,
+  open?: boolean,
 }>(), {
   label: '',
   summaryTag: 'span',
