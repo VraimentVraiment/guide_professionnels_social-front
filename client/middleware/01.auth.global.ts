@@ -5,7 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (process.server) { return }
 
   const isAuthenticated = useIsAuthenticated()
-  console.log('isAuthenticated.value :', isAuthenticated.value)
 
   /**
    * @todo Setup configurables public routes
