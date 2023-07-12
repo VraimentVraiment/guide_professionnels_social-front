@@ -85,6 +85,9 @@ devDependencies:
   '@types/d3-hierarchy':
     specifier: ^3.1.2
     version: 3.1.2
+  '@types/d3-scale':
+    specifier: ^4.0.3
+    version: 4.0.3
   '@types/jsdom':
     specifier: ^20.0.1
     version: 20.0.1
@@ -1665,6 +1668,16 @@ packages:
 
   /@types/d3-hierarchy@3.1.2:
     resolution: {integrity: sha512-9hjRTVoZjRFR6xo8igAJyNXQyPX6Aq++Nhb5ebrUF414dv4jr2MitM2fWiOY475wa3Za7TOS2Gh9fmqEhLTt0A==}
+    dev: true
+
+  /@types/d3-scale@4.0.3:
+    resolution: {integrity: sha512-PATBiMCpvHJSMtZAMEhc2WyL+hnzarKzI6wAHYjhsonjWJYGq5BXTzQjv4l8m2jO183/4wZ90rKvSeT7o72xNQ==}
+    dependencies:
+      '@types/d3-time': 3.0.0
+    dev: true
+
+  /@types/d3-time@3.0.0:
+    resolution: {integrity: sha512-sZLCdHvBUcNby1cB6Fd3ZBrABbjz3v1Vm90nysCQ6Vt7vd6e/h9Lt7SiJUoEX0l4Dzc7P5llKyhqSi1ycSf1Hg==}
     dev: true
 
   /@types/debug@4.1.8:
@@ -4447,6 +4460,7 @@ packages:
     transitivePeerDependencies:
       - encoding
     dev: false
+    bundledDependencies: []
 
   /geoportal-extensions-openlayers@3.3.1:
     resolution: {integrity: sha512-9c56ZbIS69d817Qc4kWrGSJYDUjrhu3Tfwt6v+fMy5UeInqEVQ6YbGeAEdTUeq0w+S6SQW7RBjveNXrO4YMAbA==}

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useElementBounding } from '@vueuse/core'
 
 definePageMeta({
   layout: 'default',
@@ -70,9 +71,15 @@ const getCardProps = (postItem: DispositifPost) => {
   }
 }
 
-const { maxHeight } = useMaxHeight({
-  domain: [0, 400],
-  range: [40, 80],
+const el = ref(null)
+const { top } = useElementBounding(el)
+const maxHeight = computed(() => {
+  const { result } = useScaleLinear({
+    domain: [400, 0],
+    range: [50, 80],
+    value: top,
+  })
+  return `${result.value}vh`
 })
 
 </script>
@@ -89,6 +96,8 @@ const { maxHeight } = useMaxHeight({
         ]"
       >
         <FilterSideBar
+          id="dispositifs-filtersidebar"
+          ref="el"
           :post-store="postStore"
           :make-unselectable="isListSelected"
           :open-details="['gps_caracteristiquesdispositif']"
@@ -182,7 +191,9 @@ const { maxHeight } = useMaxHeight({
     width: 100%;
     top: 2.75rem;
     padding-top: 1.5rem;
-    position: absolute;
+    position: relative;
+
+    // position: absolute;
     border-bottom: 1px solid var(--border-default-grey);
     display: none;
 
@@ -190,7 +201,7 @@ const { maxHeight } = useMaxHeight({
       content: '';
       display: none;
       position: absolute;
-      z-index: 10;
+      z-index: 5;
       height: 2px;
       width: 100%;
       left: 0;

@@ -5,6 +5,7 @@ const props = withDefaults(defineProps<{
   makeUnselectable: boolean
   maxHeight: string
   openDetails: string[] | null
+  id: string
 }>(), {
   makeUnselectable: false,
   maxHeight: 'none',
@@ -36,6 +37,7 @@ const {
 
 <template>
   <div
+    :id="id"
     :class="[
       'gps-filters-sidebar',
       { 'open': isOpen },
@@ -44,8 +46,13 @@ const {
     ]"
   >
     <ClientOnly>
-      <div
+      <button
+        :id="`${id}-header`"
         class="gps-filters-sidebar__header"
+        :aria-expanded="isOpen"
+        :aria-controls="`${id}-content`"
+        :aria-disabled="!isSelectable"
+        :disabled="!isSelectable"
         @click="() => {
           if (isSelectable) {
             isOpen = !isOpen
@@ -67,8 +74,9 @@ const {
           :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
           aria-hidden="true"
         />
-      </div>
+      </button>
       <div
+        :id="`${id}-content`"
         class="gps-filters-sidebar__content"
         :style="{
           maxHeight: maxHeight,
@@ -116,6 +124,7 @@ const {
   .gps-filters-sidebar__header {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     align-items: center;
     font-size: 1rem;
     font-weight: 700;

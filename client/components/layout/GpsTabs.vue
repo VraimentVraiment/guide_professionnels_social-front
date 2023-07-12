@@ -82,7 +82,7 @@ const {
     content: '';
     display: block;
     position: absolute;
-    z-index: 10;
+    z-index: 5;
     height: 2px;
     width: 100%;
     left: 0;

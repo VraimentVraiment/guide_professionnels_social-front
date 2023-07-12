@@ -34,7 +34,7 @@ const {
           type="email"
           :error-message="email.errorMessage.value"
           :valid-message="email.validMessage.value"
-          aria-required
+          aria-required="true"
           label-visible
           @input="() => {
             email.validate()
@@ -47,7 +47,7 @@ const {
           type="password"
           :error-message="password.errorMessage.value"
           :valid-message="password.validMessage.value"
-          aria-required
+          aria-required="true"
           label-visible
           autocomplete="current-password"
           @input="() => {

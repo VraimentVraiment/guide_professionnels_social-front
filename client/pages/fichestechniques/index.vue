@@ -49,6 +49,7 @@ const getCardProps = (item: FicheTechniquePost) => {
   <GpsGrid show-title>
     <template #bottom-left>
       <FilterSideBar
+        id="fichestechniques-filtersidebar"
         :class="['fichestechniques-filtersidebar']"
         :post-store="postStore"
         make-unselectable
