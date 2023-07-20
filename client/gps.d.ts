@@ -16,6 +16,7 @@ declare global {
    */
 
   export type PostStatus = 'published' | 'draft' | 'archived'
+  export type PageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
   export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
 
   export interface Post {

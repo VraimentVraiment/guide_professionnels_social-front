@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
-const content = await useGetPageContent()
+const pageContent = await useGetPageContent()
 
 </script>
 
 <template>
   <div>
     <GpsHead
-      :title="content?.metaTitle"
-      :description="content?.metaDescription"
+      :title="pageContent?.metatitle ?? ''"
+      :description="pageContent?.metadescription ?? ''"
     />
     <GpsHeader />
     <GpsMain>

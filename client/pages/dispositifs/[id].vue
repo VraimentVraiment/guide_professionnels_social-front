@@ -113,12 +113,24 @@ console.log(important_file)
           v-for="{ key, label } in richTextFields"
           :key="key"
         >
-          <RichText
+          <div
             v-if="post?.[key]"
-            :field-key="key"
-            :field-label="label"
-            :content="post[key]"
-          />
+            :class="`gps-rich-text-container`"
+          >
+            <h2>{{ label }}</h2>
+            <div
+              class="gps-rich-text"
+              :class="[
+                'gps-rich-text',
+                `gps-rich-text__${key}`
+              ]"
+            >
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div
+                v-html="post[key]"
+              />
+            </div>
+          </div>
           <hr
             v-if="post?.[key]"
             class="fr-hr noprint"

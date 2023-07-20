@@ -1,33 +1,33 @@
 login:
   title: 'Connexion'
-  metaTitle: 'Connexion | Guide des Professionnels du Social'
+  metatitle: 'Connexion | Guide des Professionnels du Social'
 index:
   title: 'Accueil'
-  metaTitle: 'Accueil | Guide des Professionnels du Social dans le département du Calvados'
+  metatitle: 'Accueil | Guide des Professionnels du Social dans le département du Calvados'
 apropos:
   title: 'À propos'
-  metaTitle: 'À propos | Guide des Professionnels du Social'
+  metatitle: 'À propos | Guide des Professionnels du Social'
 dispositifs:
   title: 'Dispositifs'
-  metaTitle: 'Dispositifs | Guide des Professionnels du Social'
+  metatitle: 'Dispositifs | Guide des Professionnels du Social'
 fichestechniques:
   title: 'Fiches techniques'
-  metaTitle: 'Fiches techniques | Guide des Professionnels du Social'
+  metatitle: 'Fiches techniques | Guide des Professionnels du Social'
 dispositif[id]:
   title: dispositif.name
-  metaTitle: dispositif.name + ' | Guide des Professionnels du Social'
+  metatitle: dispositif.name + ' | Guide des Professionnels du Social'
 mentions-legales:
   title: 'Mentions légales'
-  metaTitle: 'Mentions légales | Guide des Professionnels du Social'
+  metatitle: 'Mentions légales | Guide des Professionnels du Social'
 donnees-personnelles:
   title: 'Données personnelles'
-  metaTitle: 'Données personnelles | Guide des Professionnels du Social'
+  metatitle: 'Données personnelles | Guide des Professionnels du Social'
 cookies:
   title: 'Cookies'
-  metaTitle: 'Cookies | Guide des Professionnels du Social'
+  metatitle: 'Cookies | Guide des Professionnels du Social'
 accessibilite:
   title: 'Accessibilité'
-  metaTitle: 'Accessibilité | Guide des Professionnels du Social'
+  metatitle: 'Accessibilité | Guide des Professionnels du Social'
 monespace:
   title: 'Mon espace'
-  metaTitle: 'Mon espace | Guide des Professionnels du Social'
+  metatitle: 'Mon espace | Guide des Professionnels du Social'

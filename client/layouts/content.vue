@@ -1,20 +1,23 @@
 <script setup lang="ts">
 
-const content = await useGetPageContent()
-
+const pageContent = await useGetPageContent()
 </script>
 
 <template>
   <div>
     <GpsHead
-      :title="content?.metaTitle"
-      :description="content?.metaDescription"
+      :title="pageContent?.metatitle ?? ''"
+      :description="pageContent?.metadescription ?? ''"
     />
     <GpsHeader />
     <GpsMain>
       <h1>
-        {{ content?.title }}
+        {{ pageContent?.title }}
       </h1>
+      <div
+        v-if="pageContent?.content"
+        v-html="pageContent?.content"
+      />
       <slot />
     </GpsMain>
     <GpsFooter />

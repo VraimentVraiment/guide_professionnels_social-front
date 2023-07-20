@@ -34,9 +34,17 @@ footerProps:
   personalDataLink: /donnees-personnelles
   cookiesLink: /cookies
   a11yComplianceLink: /accessibilite
-  descText: '
-  La boussole du travailleur social dans le département du Calvados
-  est une plateforme portée par la préfecture du Calvados.
-  Le code source de ce site web est disponible en licence libre.
-  Le design de ce site est conçu avec le système de design de l’État.'
+  descText: |
+    La boussole du travailleur social dans le département du Calvados
+    est une plateforme portée par la préfecture du Calvados.
+    Le code source de ce site web est disponible en licence libre.
+    Le design de ce site est conçu avec le système de design de l’État.
+    Ce projet est lauréat de l'Appel à défis pour une action publique co-construite avec les usagers et les agents,
+    porté par la Direction interministérielle de la fonction publique (DITP) et financé dans le cadre de France Relance
   homeLink: /
+  operatorImgSrc: /logo-FR-kit-com.png
+  operatorLinkText: 'Accueil'
+  operatorTo: '/'
+  operatorImgStyle:
+    maxWidth: '21.5rem !important'
+    padding: '0 0 0 1rem'

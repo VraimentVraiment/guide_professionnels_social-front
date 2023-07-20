@@ -2,7 +2,7 @@
 
 defineProps<{
   title: string
-  description?: string
+  description: string
 }>()
 
 </script>

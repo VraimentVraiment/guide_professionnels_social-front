@@ -13,6 +13,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
     '/login',
     '/apropos',
     '/404',
+    '/donnees-personnelles',
+    '/mentions-legales',
+    '/cookies',
+    '/accessibilite',
   ]
   const isPublicRoute = (path: string) => {
     return PUBLIC_ROUTES.includes(path)
