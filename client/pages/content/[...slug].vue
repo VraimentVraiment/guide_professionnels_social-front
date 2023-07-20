@@ -5,3 +5,5 @@ definePageMeta({
 })
 
 </script>
+
+<template />

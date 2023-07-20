@@ -26,6 +26,10 @@ type GpsSiteNavMenu = {
 }
 
 export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
+  if (process.server) { return [] }
+
+  const isAuthenticated = useIsAuthenticated().value
+
   const navigationMenu = (await useFetchDirectusItems<GpsSiteNavMenu>({
     collectionName: 'gps_site',
     params: {
@@ -33,38 +37,55 @@ export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
         'navigation_menu.collection',
         'navigation_menu.item:gps_pages.title',
         'navigation_menu.item:gps_pages.slug',
+        'navigation_menu.item:gps_pages.status',
         'navigation_menu.item:gps_pages_groups.name',
         'navigation_menu.item:gps_pages_groups.pages.title',
         'navigation_menu.item:gps_pages_groups.pages.slug',
+        'navigation_menu.item:gps_pages_groups.pages.status',
       ],
     },
   })) as unknown as GpsSiteNavMenu // site collection is a singleton
 
-  console.log('siteProps :', navigationMenu)
-
   return navigationMenu.navigation_menu
     .map((el) => {
       if (el.collection === 'gps_pages_groups') {
-        const item = el.item as { name: string, pages: GpsPage[] }
-        return {
-          title: item.name,
-          links: item.pages.map(page => ({
+        const pageGroup = el.item as { name: string, pages: GpsPage[] }
+
+        const links = pageGroup.pages
+          .filter(filterPageStatus)
+          .map(page => ({
             text: page.title,
-            to: `/${page.slug}`,
-            toggleId () {
-              console.log('toggleId :', page.slug)
-            },
-          })),
+            to: `/content/${page.slug}`,
+          }))
+
+        if (links.length > 0) {
+          return {
+            title: pageGroup.name,
+            links,
+          }
         }
       } else if (el.collection === 'gps_pages') {
-        const item = el.item as GpsPage
-        return {
-          text: item.title,
-          to: `/${item.slug}`,
+        const page = el.item as GpsPage
+        if (filterPageStatus(page)) {
+          return {
+            text: page.title,
+            to: `/content/${page.slug}`,
+          }
         }
       }
 
       return null
     })
     .filter(el => el !== null) as DsfrNavItem[]
+
+  function filterPageStatus (page) {
+    if (isAuthenticated) {
+      return (
+        page.status === 'published-private' ||
+        page.status === 'published-public'
+      )
+    } else {
+      return page.status === 'published-public'
+    }
+  }
 }

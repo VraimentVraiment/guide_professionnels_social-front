@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 const pageContent = await useGetPageContent()
+
 </script>
 
 <template>

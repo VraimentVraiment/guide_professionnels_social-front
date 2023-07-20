@@ -24,18 +24,25 @@ const quickLinks = computed(() => {
   //   })
 })
 
-// const navItems = computed(() => {
-//   return mainNavProps.navItems
-//     ?.filter((navItem: {
-//       to: string
-//       text: string
-//       public?: boolean
-//     }) => {
-//       return isAuthenticated.value || navItem.public
-//     })
-// })
+const contentNavItems = computed(() => {
+  return mainNavProps.navItems
+    ?.filter((navItem: {
+      to: string
+      text: string
+      public?: boolean
+    }) => {
+      return isAuthenticated.value || navItem.public
+    })
+})
 
-const navItems = await useFetchMainNav()
+const directusNavItems = await useFetchMainNav()
+
+const navItems = computed(() => {
+  return [
+    ...contentNavItems.value,
+    ...directusNavItems,
+  ]
+})
 
 </script>
 
@@ -50,9 +57,11 @@ const navItems = await useFetchMainNav()
     :service-description="headerProps.serviceDescription"
     :quick-links="quickLinks"
   >
-    <DsfrNavigation
-      v-if="navItems.length > 0"
-      :nav-items="navItems"
-    />
+    <ClientOnly>
+      <DsfrNavigation
+        v-if="navItems.length > 0"
+        :nav-items="navItems"
+      />
+    </ClientOnly>
   </DsfrHeader>
 </template>

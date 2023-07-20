@@ -66,7 +66,6 @@ const important_file = (
     )?.[0]
   : null
 
-console.log(important_file)
 </script>
 
 <template>

@@ -14,9 +14,6 @@ mainNavProps:
       text: 'Dispositifs'
     - to: '/fichestechniques'
       text: 'Fiches techniques'
-    - to: '/apropos'
-      text: 'À propos'
-      public: true
 bannerProps:
   title:
     - Guide des
@@ -31,9 +28,10 @@ footerProps:
   logoText:
     - 'Prefet'
     - 'du Calvados'
-  personalDataLink: /donnees-personnelles
-  cookiesLink: /cookies
-  a11yComplianceLink: /accessibilite
+  legalLink: /content/mentions-legales
+  personalDataLink: /content/donnees-personnelles
+  cookiesLink: /content/cookies
+  a11yComplianceLink: /content/accessibilite
   descText: |
     La boussole du travailleur social dans le département du Calvados
     est une plateforme portée par la préfecture du Calvados.

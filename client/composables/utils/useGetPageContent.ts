@@ -11,7 +11,12 @@ export function useGetPageContent () {
   const route = useRoute()
 
   return computedAsync(async () => {
-    const slug = route.name as string
+    let slug = route.params?.slug
+
+    if (Array.isArray(slug)) {
+      slug = slug[0]
+    }
+
     const pageContent = (
       await getDirectusPageContent(slug)
     ) ?? (
@@ -23,8 +28,9 @@ export function useGetPageContent () {
 }
 
 async function getDirectusPageContent (
-  slug: string,
+  slug?: string,
 ): Promise<GpsContentPage | null> {
+  if (!slug) { return null }
   const pages = await useFetchDirectusItems<GpsContentPage>({
     collectionName: 'gps_pages',
     params: {
