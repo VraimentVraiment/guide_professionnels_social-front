@@ -6,27 +6,24 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   const isAuthenticated = useIsAuthenticated()
 
-  /**
-   * @todo Setup configurables public routes
-   */
-  const PUBLIC_ROUTES = [
-    '/login',
-    '/apropos',
-    '/404',
-    '/donnees-personnelles',
-    '/mentions-legales',
-    '/cookies',
-    '/accessibilite',
-  ]
-  const isPublicRoute = (path: string) => {
-    return PUBLIC_ROUTES.includes(path)
-  }
-
   if (
-    !isPublicRoute(to.path) &&
     !isAuthenticated.value
   ) {
-    return navigateTo('/login')
+    let slug = to.params?.slug
+    if (!slug) {
+      slug = to.path
+    }
+    if (Array.isArray(slug)) {
+      slug = slug[0]
+    }
+
+    return new Promise(async (resolve) => {
+      const isPublicRoute = await useIsPublicRoute(slug)
+      if (!isPublicRoute) {
+        resolve(navigateTo('/login'))
+      }
+      resolve()
+    })
   }
 
   if (

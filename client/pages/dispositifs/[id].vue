@@ -97,7 +97,7 @@ const important_file = (
             name="ri-road-map-fill"
             aria-hidden="true"
           />
-          <ul>
+          <ul class="addresses-list">
             <li
               v-for="address, i in post.addresses"
               :key="i"
@@ -125,9 +125,7 @@ const important_file = (
               ]"
             >
               <!-- eslint-disable-next-line vue/no-v-html -->
-              <div
-                v-html="post[key]"
-              />
+              <div v-html="post[key]" />
             </div>
           </div>
           <hr
@@ -191,6 +189,7 @@ const important_file = (
 </template>
 
 <style scoped lang="scss">
+@import '@/styles/';
 section.gps-post__content {
   @media print {
     padding: 3rem;
@@ -201,7 +200,14 @@ section.gps-post__content {
     background: var(--background-default-grey);
 
     @media screen {
-      padding: 3rem;
+      padding: 1.5rem;
+
+      @include sm {
+        padding: 2rem;
+      }
+      @include md {
+        padding: 3rem;
+      }
     }
   }
 
@@ -217,6 +223,7 @@ section.gps-post__content {
 }
 
 section.gps-post__content.download {
+
   header,
   article {
     background: none;
@@ -238,6 +245,11 @@ section.gps-post__actions {
     width: 100%;
     justify-content: center;
   }
+}
+
+ul.addresses-list {
+  list-style: none;
+  padding: 0;
 }
 
 .fr-hr {

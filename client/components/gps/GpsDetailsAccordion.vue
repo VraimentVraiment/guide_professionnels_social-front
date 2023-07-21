@@ -79,13 +79,13 @@ details.gps-details {
 
     .gps-details__icon {
       display: block;
-      transform: rotate(0deg);
-      transition: transform .2s ease-in-out;
+      transform: rotate(270deg);
+      transition: transform .3s ease-in-out;
     }
   }
 
   &[open]>summary.gps-details__summary>.gps-details__icon {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
   }
 
   >.gps-details__content {
