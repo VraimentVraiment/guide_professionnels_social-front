@@ -2,6 +2,10 @@ import {
   intersection,
 } from 'd3-array'
 
+/**
+ * Return, for each collection used in the app,
+ * the reactive filters to use when querying Directus.
+ */
 export function useDirectusFilters (
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,

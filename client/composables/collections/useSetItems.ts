@@ -5,6 +5,10 @@ type CheckItemProps = {
   isAltKeyPressed?: boolean,
 }
 
+/**
+ * Set the checked value of a filter item,
+ * and apply side effects based on the relation model
+ */
 export function useSetItem (
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,

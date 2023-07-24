@@ -1,3 +1,7 @@
+/**
+ * A watcher that will trigger a collection's items fetching when a filter is toggled,
+ * if the collection is related to the filter.
+ */
 export function useWatchPostFiltering (
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
@@ -17,6 +21,7 @@ export function useWatchPostFiltering (
                   return collectionName === collection.collectionName
                 })
             })
+
           if (dependentTaxonomiesCollections?.length) {
             dependentTaxonomiesCollections.forEach(({ collectionName }) => {
               fetchCollection(collectionName)

@@ -1,3 +1,7 @@
+/**
+ * Collections composable to manage the collections of the app,
+ * based on their type (posts, filters, relations)
+ */
 export const useCollections = () => {
   const postsCollectionName = ref<string | null>(null)
 

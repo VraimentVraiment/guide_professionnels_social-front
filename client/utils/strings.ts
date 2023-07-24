@@ -3,6 +3,9 @@ const DOMAIN_NAME_BLACKLIST = [
   'mailinator.com',
 ]
 
+/**
+ * Given a string, return a boolean indicating whether it is a valid email address.
+ */
 export function isStringValidEmail (
   string: string,
 ): boolean {
@@ -16,6 +19,9 @@ export function isStringValidEmail (
   )
 }
 
+/**
+ * Given a string describing a file format, return a string with the first letter capitalized.
+ */
 export const formatFormat = (
   format: string,
 ): string => {
@@ -24,6 +30,9 @@ export const formatFormat = (
     ?.toUpperCase()
 }
 
+/**
+ * Given a number of bytes, return a string with the number of bytes and the unit.
+ */
 export const formatBytes = (
   bytes: number,
   decimals = 2,

@@ -16,6 +16,7 @@ export default defineNuxtRouteMiddleware(() => {
         resolve()
       })
     } else {
+      postStore.watchPostFiltering()
       resolve()
     }
   })

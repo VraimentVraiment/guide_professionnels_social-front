@@ -1,3 +1,6 @@
+/**
+ * A composable that will be used in pinia to define the store for a certain post type.
+ */
 export const useDefinePostStore = () => {
   const searchStore = useSearchStore()
 
@@ -14,7 +17,7 @@ export const useDefinePostStore = () => {
   const checkedItems = useGetCheckedItems(filtersCollections)
   const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections)
   // const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
-  const relationGroups = useRelationGroups(relationsCollections)
+  // const relationGroups = useRelationGroups(relationsCollections)
 
   const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)
@@ -42,7 +45,7 @@ export const useDefinePostStore = () => {
     rootNodes,
     checkedItems,
     directusFilters,
-    relationGroups,
+    // relationGroups,
     postItems,
     setPostCollection,
     fetchCollection,

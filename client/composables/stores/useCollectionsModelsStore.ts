@@ -1,8 +1,6 @@
 /**
  * Defines a pinia store for managing our app collections' models,
- * which are abstractions of the entities in the database.
  */
-
 export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
   persist: true,
 })

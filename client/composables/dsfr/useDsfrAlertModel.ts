@@ -12,6 +12,10 @@ type DsfrAlertModel = {
   setStep: (newStep: number) => void
 }
 
+/**
+ * Provide reactive methods to manage the state of an alert component in DSFR.
+ * @see https://vue-dsfr.netlify.app/?path=/docs/composants-dsfralert--docs
+ */
 export function useDsfrAlertModel (
   strings: RecursiveYmlContent,
 ): DsfrAlertModel {

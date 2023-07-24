@@ -1,3 +1,7 @@
+/**
+ * For each filters collection, compute the hierarchy tree
+ * of the filters items, based on their parent_id
+ */
 export function useRootNodes (
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,

@@ -6,6 +6,9 @@ const PRINT_OPTIONS = {
   html2canvas: { scale: 2, letterRendering: true },
 }
 
+/**
+ * An interface to use the html2pdf library to generate a PDF from a DOM element.
+ */
 export async function useGpsPostDownload (
   contentSelector: string,
   pagebreak : {

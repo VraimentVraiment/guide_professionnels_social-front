@@ -22,8 +22,7 @@ export const useGetCheckedItems = (
           collectionName: collection.collectionName,
           items: collection.items.filter(item => item.checked),
         }
-      },
-      )
+      })
   })
 
   return checkedItems

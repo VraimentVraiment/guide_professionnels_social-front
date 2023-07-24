@@ -51,7 +51,6 @@ function loadMap(Gp: any) {
         setTimeout(() => {
           document.querySelectorAll('.ol-selectable img')
           .forEach((imgEl) => {
-            console.log(imgEl)
             imgEl.setAttribute('alt', 'Voir la fiche')
           })
         }, 1000)

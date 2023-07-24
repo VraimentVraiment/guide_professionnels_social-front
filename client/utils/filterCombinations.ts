@@ -120,6 +120,9 @@ export function getIdsMatchingEvery (
       }
     })
 
+  /**
+   * @todo relatedTargetIdsGroups does not need to be computed every time this function is called.
+   */
   return relatedTargetIdsGroups
     .filter((relatedIdsGroup) => {
       return targetIds.every((id) => {

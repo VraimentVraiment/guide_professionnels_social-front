@@ -1,15 +1,20 @@
 import { watchDebounced } from '@vueuse/core'
 
-export const useSearchStore = defineStore('search', useDefineSeatchStore, {
+type PostSearchResultInfo = {
+  id: number
+  name: string
+}
+
+export const useSearchStore = defineStore('search', useDefineSearchStore, {
   // persist: true,
 })
 
-function useDefineSeatchStore () {
-  const query = ref('')
-  const openModal = ref(false)
-  const queryCityList = ref([])
-  const selectedCityList = ref([])
-  const postItems = ref([])
+function useDefineSearchStore () {
+  const query = ref<string>('')
+  const openModal = ref<Boolean>(false)
+  const queryCityList = ref<string[]>([])
+  const selectedCityList = ref<string[]>([])
+  const postItems = ref<PostSearchResultInfo[]>([])
 
   const add = (cityName: string) => {
     if (!selectedCityList.value.includes(cityName)) {
@@ -22,7 +27,7 @@ function useDefineSeatchStore () {
   }
 
   const submit = async () => {
-    const items = await useFetchDirectusItems({
+    const items = await useFetchDirectusItems<PostSearchResultInfo>({
       collectionName: 'gps_fichesdispositif',
       params: {
         search: query.value,

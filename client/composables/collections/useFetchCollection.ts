@@ -2,6 +2,10 @@ import {
   type DirectusQueryParams,
 } from 'nuxt-directus/dist/runtime/types'
 
+/**
+ * Return a function that will fetch a collection from Directus,
+ * based on the collection type (posts, filters, relations).
+ */
 export function useFetchCollection (
   postsCollectionName: Ref<string | null>,
   collections: Ref<ItemsCollection[]>,
