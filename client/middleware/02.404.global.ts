@@ -1,7 +1,3 @@
-/**
- * 404 middleware
- */
-
 export default defineNuxtRouteMiddleware((to) => {
   if (process.client) {
     return

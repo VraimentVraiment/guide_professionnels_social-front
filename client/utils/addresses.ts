@@ -53,6 +53,7 @@ function getMarkerTooltipContent (post, address) {
       <a
         class="gps-link fr-link"
         href="/dispositifs/${post.id}"
+
       >
         Voir le dispositif ${ovArrowIcon}
       </a>

@@ -4,7 +4,7 @@ defineProps<{
   showTitle: boolean,
 }>()
 
-const content = await useGetPageContent()
+const content = useGetPageContent()
 
 </script>
 
@@ -21,8 +21,8 @@ const content = await useGetPageContent()
         'fr-col-md-4',
       ]"
     >
-      <h1 v-if="showTitle">
-        {{ content?.title }}
+      <h1 v-if="showTitle && content?.title">
+        {{ content.title }}
       </h1>
 
       <slot name="top-left" />

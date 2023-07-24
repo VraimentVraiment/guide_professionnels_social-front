@@ -30,7 +30,9 @@ const {
   hasCollectionCheckedItems,
 } = useCheckedItemsObserver(computed(() => {
   return props.postStore.checkedItems
-    ?.filter(collectionCheckedItems => collectionCheckedItems.collectionName !== 'gps_thematiques')
+    ?.filter((collectionCheckedItems) => {
+      return collectionCheckedItems.collectionName !== 'gps_thematiques'
+    })
 }))
 
 </script>

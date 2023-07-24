@@ -49,7 +49,7 @@ const {
   avoid: '.gps-rich-text-container',
 })
 
-const important_file = (
+const importantFile = (
   post?.important_file_title &&
   post?.important_file
 )
@@ -173,14 +173,14 @@ const important_file = (
           @click="() => print()"
         />
         <DsfrFileDownload
-          v-if="important_file"
+          v-if="importantFile"
           class="fr-mt-8v"
           block
           :title="post?.important_file_title"
           :description="post?.important_file_description"
-          :format="formatFormat(important_file?.type)"
-          :size="formatBytes(important_file?.filesize)"
-          :href="`${getDirectusFileLink(important_file.id)}?download`"
+          :format="formatFormat(importantFile?.type)"
+          :size="formatBytes(importantFile?.filesize)"
+          :href="`${getDirectusFileLink(importantFile.id)}?download`"
         />
         <GpsSignalModal v-if="doUseSignalModal" />
       </div>
@@ -190,6 +190,7 @@ const important_file = (
 
 <style scoped lang="scss">
 @import '@/styles/';
+
 section.gps-post__content {
   @media print {
     padding: 3rem;
@@ -205,6 +206,7 @@ section.gps-post__content {
       @include sm {
         padding: 2rem;
       }
+
       @include md {
         padding: 3rem;
       }

@@ -40,6 +40,7 @@ const {
     <DsfrSearchBar
       v-model="query"
       class="gps-search--bar"
+      :label="searchBarPlaceholder"
       :button-text="searchButtonText"
       :placeholder="searchBarPlaceholder"
       large

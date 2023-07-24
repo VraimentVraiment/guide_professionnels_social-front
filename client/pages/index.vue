@@ -56,6 +56,7 @@ stepOne()
       <div class="fr-container--fluid">
         <div class="fr-grid-row">
           <DsfrAlert
+            titleTag="h2"
             :class="[
               'fr-col-12',
               'fr-col-lg-8',

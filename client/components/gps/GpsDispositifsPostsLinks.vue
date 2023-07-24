@@ -28,6 +28,7 @@ const openDetails = useCollectionObserver<Number>()
         />
         <DsfrButton
           v-if="node?.children?.length"
+          label="Voir plus"
           primary
           icon-only
           size="small"

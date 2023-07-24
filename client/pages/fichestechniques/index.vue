@@ -54,6 +54,7 @@ const getCardProps = (item: FicheTechniquePost) => {
         :post-store="postStore"
         make-unselectable
         :open-details="['gps_thematiques']"
+        max-height="100vh"
       />
     </template>
     <template #bottom-right>

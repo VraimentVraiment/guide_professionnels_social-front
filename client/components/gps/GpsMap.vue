@@ -30,7 +30,7 @@ if (process.client) {
     .then(loadMap)
 }
 
-function loadMap (Gp: any) {
+function loadMap(Gp: any) {
   const gpMap = Gp.Map.load('map', {
     ...GEOPORTAL_CONFIG,
     layersOptions: {
@@ -41,13 +41,20 @@ function loadMap (Gp: any) {
     },
   })
 
-  function onMapLoaded () {
+  function onMapLoaded() {
     emit('map-loaded')
     if (process.client) {
       document.querySelectorAll('#map .ol-zoom button')
         .forEach((btnEl) => {
           btnEl.classList.add('fr-btn')
         })
+        setTimeout(() => {
+          document.querySelectorAll('.ol-selectable img')
+          .forEach((imgEl) => {
+            console.log(imgEl)
+            imgEl.setAttribute('alt', 'Voir la fiche')
+          })
+        }, 1000)
     }
     watchEffect(() => {
       gpMap.setMarkersOptions(markers.value)

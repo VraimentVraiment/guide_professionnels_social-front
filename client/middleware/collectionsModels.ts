@@ -5,11 +5,12 @@ export default defineNuxtRouteMiddleware(() => {
 
   const collectionsModelsStore = useCollectionsModelsStore()
 
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     if (!collectionsModelsStore.collectionsModels.length) {
-      await collectionsModelsStore.fetch()
+      collectionsModelsStore.fetch()
+        .then(resolve)
+    } else {
+      resolve()
     }
-    resolve()
   })
 })

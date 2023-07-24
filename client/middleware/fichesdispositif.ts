@@ -12,14 +12,18 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo('/')
   }
 
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     const postStore = useDispositifPostStore()
     if (!postStore.postsCollectionName) {
       postStore.setPostCollection('gps_fichesdispositif')
-      await postStore.fetchCollection('gps_thematiques')
-      await postStore.fetchCollection('gps_typesdispositif')
+      Promise.allSettled([
+        postStore.fetchCollection('gps_thematiques'),
+        postStore.fetchCollection('gps_typesdispositif'),
+      ]).then(() => {
+        resolve()
+      })
+    } else {
+      resolve()
     }
-    resolve()
   })
 })
