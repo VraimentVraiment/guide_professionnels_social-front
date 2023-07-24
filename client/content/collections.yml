@@ -29,6 +29,7 @@ collections:
   - label: Fiches dispositif
     collectionName: gps_fichesdispositif
     type: posts
+    filterStatus: published
     fields:
       - id
       - name

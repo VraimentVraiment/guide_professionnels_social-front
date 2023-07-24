@@ -9,7 +9,7 @@ export const useSearchStore = defineStore('search', useDefineSearchStore, {
   // persist: true,
 })
 
-function useDefineSearchStore () {
+function useDefineSearchStore() {
   const query = ref<string>('')
   const openModal = ref<Boolean>(false)
   const queryCityList = ref<string[]>([])
@@ -27,12 +27,22 @@ function useDefineSearchStore () {
   }
 
   const submit = async () => {
+    /**
+     * @todo use collection model
+     */
+    const params = {
+      search: query.value,
+      fields: ['id', 'name'],
+      filter: {
+        status: {
+          _eq: 'published',
+        },
+      }
+    }
+
     const items = await useFetchDirectusItems<PostSearchResultInfo>({
       collectionName: 'gps_fichesdispositif',
-      params: {
-        search: query.value,
-        fields: ['id', 'name'],
-      },
+      params,
     })
 
     openModal.value ||= true
