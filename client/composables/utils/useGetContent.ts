@@ -1,5 +1,5 @@
-export async function useGetContent (
+export function useGetContent (
   path: string,
 ): Promise<RecursiveYmlContent> {
-  return (await queryContent(path).findOne()) as RecursiveYmlContent
+  return queryContent(path).findOne() as Promise<RecursiveYmlContent>
 }

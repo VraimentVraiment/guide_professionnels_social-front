@@ -10,7 +10,25 @@ definePageMeta({
   ],
 })
 
+// const collectionsModelsStore = useCollectionsModelsStore()
+
+// if (!collectionsModelsStore.collectionsModels.length) {
+//   if (!collectionsModelsStore.collectionsModels.length) {
+//     await collectionsModelsStore.fetch()
+//   }
+// }
+
 const postStore = useDispositifPostStore()
+
+if (!postStore.postsCollectionName) {
+  postStore.setPostCollection('gps_fichesdispositif')
+}
+if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_thematiques')) {
+  await postStore.fetchCollection('gps_thematiques')
+}
+if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_typesdispositif')) {
+  await postStore.fetchCollection('gps_typesdispositif')
+}
 
 const { checkedItems } = storeToRefs(postStore)
 const { resetAll } = useCheckedItemsObserver(checkedItems)
@@ -46,9 +64,7 @@ stepOne()
 </script>
 
 <template>
-  <GpsGrid
-    show-title
-  >
+  <GpsGrid show-title>
     <template #top-right>
       <GpsSearchModule />
     </template>
@@ -112,7 +128,7 @@ stepOne()
                 {
                   label: backLinkLabel,
                   tertiary: true,
-                  icon:'ri-arrow-left-line',
+                  icon: 'ri-arrow-left-line',
                   onClick: stepOne,
                 },
                 {

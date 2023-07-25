@@ -62,6 +62,8 @@ collections:
   - label: Fiches techniques
     type: posts
     collectionName: gps_fichestechniques
+    filterStatus:
+      - published
     relations:
       - label: Thématiques
         userSelection: single-node

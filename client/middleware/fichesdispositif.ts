@@ -4,7 +4,6 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   const selectedThematiqueStore = useGpsSelectedThematiqueStore()
-
   if (
     to.path === '/dispositifs' &&
     !selectedThematiqueStore.selectedThematique
@@ -13,17 +12,20 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   return new Promise((resolve) => {
+    const promises = []
+
     const postStore = useDispositifPostStore()
     if (!postStore.postsCollectionName) {
       postStore.setPostCollection('gps_fichesdispositif')
-      Promise.allSettled([
-        postStore.fetchCollection('gps_thematiques'),
-        postStore.fetchCollection('gps_typesdispositif'),
-      ]).then(() => {
-        resolve()
-      })
-    } else {
-      resolve()
     }
+    if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_thematiques')) {
+      promises.push(postStore.fetchCollection('gps_thematiques'))
+    }
+    if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_typesdispositif')) {
+      promises.push(postStore.fetchCollection('gps_typesdispositif'))
+    }
+
+    Promise.allSettled(promises)
+      .then(() => resolve())
   })
 })
