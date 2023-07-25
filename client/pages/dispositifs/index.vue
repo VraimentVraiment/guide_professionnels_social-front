@@ -62,7 +62,7 @@ const showResetMessage = computed(() => {
   )
 })
 
-const getCardProps = (postItem: DispositifPost) => {
+const getCardProps = (postItem: Post) => {
   const { name, id, addresses } = postItem
   return {
     title: name,

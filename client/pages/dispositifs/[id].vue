@@ -11,7 +11,14 @@ const {
   richTextFields,
   defaultFilename,
   buttonsLabels,
-} = await useGetContent('/dispositif')
+} = (await useGetContent('/dispositif')) as {
+  richTextFields: {
+    key: RichTextKey
+    label: string
+  }[]
+  defaultFilename: string
+  buttonsLabels: Record<string, string>
+}
 
 /**
  * @todo Use signal error modal when directus fix this :
@@ -140,7 +147,7 @@ const importantFile = (
           <img
             v-for="{ directus_files_id } in images"
             :key="directus_files_id"
-            :src="getDirectusFileLink(directus_files_id)"
+            :src="useGetDirectusFileLink(directus_files_id)"
             alt=""
           >
         </div>
@@ -180,7 +187,7 @@ const importantFile = (
           :description="post?.important_file_description"
           :format="formatFormat(importantFile?.type)"
           :size="formatBytes(importantFile?.filesize)"
-          :href="`${getDirectusFileLink(importantFile.id)}?download`"
+          :href="`${useGetDirectusFileLink(importantFile.id)}?download`"
         />
         <GpsSignalModal v-if="doUseSignalModal" />
       </div>
@@ -225,7 +232,6 @@ section.gps-post__content {
 }
 
 section.gps-post__content.download {
-
   header,
   article {
     background: none;

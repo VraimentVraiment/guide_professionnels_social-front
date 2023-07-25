@@ -38,7 +38,7 @@ const getCardProps = (item: FicheTechniquePost) => {
     title: item.name,
     format: formatFormat(fileData?.type),
     size: formatBytes(fileData?.filesize),
-    href: `${getDirectusFileLink(item.media)}?download`,
+    href: `${useGetDirectusFileLink(item.media)}?download`,
     block: true,
   }
 }

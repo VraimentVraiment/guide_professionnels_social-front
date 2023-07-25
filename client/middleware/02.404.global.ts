@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   if (to.path !== '/404') {
-    const routeExists = useRoute().matched.length > 0
+    const routeExists = to.matched.length > 0
     if (!routeExists) {
       return navigateTo('/404')
     }

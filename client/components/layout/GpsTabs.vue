@@ -2,21 +2,21 @@
 
 defineEmits(['select-tab'])
 
-type tabTitle = {
+type TabTitle = {
   title: string,
   icon: string,
 }
 
 withDefaults(defineProps<{
-  tabListName: StringConstructor,
-  tabTitles: tabTitle[],
+  tabListName: string
+  tabTitles: TabTitle[]
   maxHeight: string
 }>(), {
   maxHeight: 'none',
 })
 
 const getTabData = (
-  { title, icon }: tabTitle,
+  { title, icon }: TabTitle,
   i: number,
 ) => {
   return {
@@ -24,7 +24,7 @@ const getTabData = (
     icon,
     tabId: `tab-${i}`,
     panelId: `tab-content-${i}`,
-  } as unknown as string
+  }
 }
 
 const {

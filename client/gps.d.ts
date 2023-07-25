@@ -1,13 +1,4 @@
 declare global {
-  /*
-   *
-   * Fields
-   *
-   */
-  export type ManyToOneId = number
-  export type OneToManyId = number[]
-  export type RichText = string
-  export type ManyToOneUuid = string
 
   /*
    *
@@ -16,7 +7,9 @@ declare global {
    */
 
   export type PostStatus = 'published' | 'draft' | 'archived'
+
   export type PageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
+
   export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
 
   export interface Post {
@@ -27,19 +20,20 @@ declare global {
     slug: string
     sort: number | null
     status: PostStatus
+    addresses?: GpsAddress[]
   }
 
   export interface FicheTechniquePost extends Post {
-    media: ManyToOneUuid
-    type_dispositif: ManyToOneId
+    media: string
+    type_dispositif: number
   }
 
   export interface DispositifPost extends Post {
-    [key in richTextKeys]?: RichText
-    images: OneToManyId[]
-    caracteristiques_dispositif: OneToManyId[]
-    type_dispositif: ManyToOneId
-    addresses: address[]
+    [key: RichTextKey]: string
+    images: number[][]
+    caracteristiques_dispositif: number[][]
+    type_dispositif: number
+    // addresses: GpsAddress[]
     important_file?: string
     important_file_title?: string
     important_file_description?: string
@@ -52,8 +46,11 @@ declare global {
    */
 
   export type CollectionType = 'posts' | 'taxonomy' | 'relations'
+
   export type RelationType = 'many-to-one' | 'many-to-many'
+
   export type UserSelection = 'leaves-only' | 'all-nodes' | 'single-node'
+
   export type FilterCombination = 'and' | 'or' | 'unique'
 
   export type CollectionModel = {
@@ -64,11 +61,11 @@ declare global {
     fields?: string[]
     filesCollectionName?: string
     filesField?: string
+    filterStatus?: PostStatus[]
   }
 
   export type CollectionRelationModel = {
     label: string
-    // collectionName: string
     relationType: RelationType
     userSelection?: UserSelection
     field?: string
@@ -78,6 +75,7 @@ declare global {
     sourceKey?: string
     targetKey?: string
   }
+
   export type DirectusRelationItem = {
     id: number
     [key: string]: number
@@ -99,7 +97,7 @@ declare global {
   }
 
   export interface DirectusFilterItem extends FilterItem {
-    children: OneToManyId;
+    children: number[];
     sort: number;
   }
 
@@ -140,6 +138,89 @@ declare global {
     sourceKey: string;
     groups: Record<string, number | number[]>[];
   }[]
+
+  /*
+   *
+   * Geocoding
+   *
+   */
+
+  type GeoJsonPointFeature = {
+    type: 'Feature'
+    geometry: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+    properties: {
+      [key: string]: string | number | boolean
+    }
+  }
+
+  /**
+   * @see https://adresse.data.gouv.fr/api-doc/adresse
+   */
+  type GouvAddressApiPointProperties = {
+    city: string
+    citycode: string
+    context: string
+    id: string
+    importance: number
+    housenumber: string
+    label: string
+    name: string
+    postcode: string
+    score: number
+    type: 'housenumber' | 'street' | 'locality' | 'municipality'
+    street: string
+    x: number
+    y: number
+    district?: string
+    oldcitycode?: string
+    oldcity?: string
+  }
+
+  type GouvAddressApiFeatureCollection = {
+    type: "FeatureCollection",
+    version: "draft",
+    features: GouvAddressFeature[]
+    attribution: "BAN",
+    licence: "ODbL 1.0",
+    query: string
+    limit: number
+  }
+
+  type GouvAddressFeature = GeoJsonPointFeature & {
+    properties: GouvAddressApiPointProperties
+  }
+
+  type GpsAddress = {
+    address: {
+      text: string
+      value: GouvAddressFeature
+    }
+  }
+
+  /**
+   * @see https://ignf.github.io/geoportal-sdk/latest/jsdoc/Gp.MarkerOptions.html
+   */
+  type GpMarkerOptions = {
+    position?: {
+      x: number;
+      y: number;
+      projection?: string;
+    };
+    content: string;
+    contentType?: string;
+    url?: string; // Icon URL used to materialize the marker.
+    offset?: [number, number];
+    ppoffset?: [number, number];
+    autoPanOptions?: {
+      autoPan: boolean;
+      duration: number;
+      margin: number;
+    }
+  }
+
   /*
    *
    * Auth

@@ -14,16 +14,16 @@ module.exports = {
     }],
   },
   overrides: [
-    {
-      files: [
-        'cypress/support/*.{js,ts,jsx,tsx}',
-        'cypress/integration/*.{spec,e2e}.{js,ts,jsx,tsx}',
-        'src/**/*.ct.{js,ts,jsx,tsx}',
-      ],
-      extends: [
-        'plugin:cypress/recommended',
-      ],
-    },
+    // {
+    //   files: [
+    //     'cypress/support/*.{js,ts,jsx,tsx}',
+    //     'cypress/integration/*.{spec,e2e}.{js,ts,jsx,tsx}',
+    //     'src/**/*.ct.{js,ts,jsx,tsx}',
+    //   ],
+    //   extends: [
+    //     'plugin:cypress/recommended',
+    //   ],
+    // },
     {
       files: [
         'client/**/*.{spec,test}.{js,ts,jsx,tsx}',

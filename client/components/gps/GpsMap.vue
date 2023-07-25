@@ -14,11 +14,11 @@ const markers = computed(() => {
   return props.collection
     .flatMap((post) => {
       return post.addresses
-        ?.filter((address) => {
+        ?.filter((gpsAddress) => {
           if (!searchStore.selectedCityList?.length) {
             return true
           }
-          return searchStore.selectedCityList?.includes(address.address?.value?.properties?.city)
+          return searchStore.selectedCityList?.includes(gpsAddress.address?.value?.properties?.city)
         })
         ?.map(geojsonAddressToMarkerOptions(post, GEOPORTAL_CONFIG.center.projection))
     })
@@ -30,7 +30,7 @@ if (process.client) {
     .then(loadMap)
 }
 
-function loadMap(Gp: any) {
+function loadMap (Gp: any) {
   const gpMap = Gp.Map.load('map', {
     ...GEOPORTAL_CONFIG,
     layersOptions: {
@@ -41,19 +41,19 @@ function loadMap(Gp: any) {
     },
   })
 
-  function onMapLoaded() {
+  function onMapLoaded () {
     emit('map-loaded')
     if (process.client) {
       document.querySelectorAll('#map .ol-zoom button')
         .forEach((btnEl) => {
           btnEl.classList.add('fr-btn')
         })
-        setTimeout(() => {
-          document.querySelectorAll('.ol-selectable img')
+      setTimeout(() => {
+        document.querySelectorAll('.ol-selectable img')
           .forEach((imgEl) => {
             imgEl.setAttribute('alt', 'Voir la fiche')
           })
-        }, 1000)
+      }, 1000)
     }
     watchEffect(() => {
       gpMap.setMarkersOptions(markers.value)

@@ -56,7 +56,7 @@ stepOne()
       <div class="fr-container--fluid">
         <div class="fr-grid-row">
           <DsfrAlert
-            titleTag="h2"
+            title-tag="h2"
             :class="[
               'fr-col-12',
               'fr-col-lg-8',
@@ -88,7 +88,7 @@ stepOne()
                 :title="name"
                 horizontal
                 to=""
-                :img-src="getDirectusFileLink(pictogramme)"
+                :img-src="useGetDirectusFileLink(pictogramme)"
                 title-tag="h2"
                 @click.prevent="() => stepTwo(id)"
               />

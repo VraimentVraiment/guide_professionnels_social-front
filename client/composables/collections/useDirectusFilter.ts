@@ -29,8 +29,6 @@ export function useDirectusFilters (
         )
       })
       ?.map((collectionModel): CollectionDirectusFilter => {
-
-        console.log(collectionModel)
         const filter: CollectionDirectusFilter = {
           collectionName: collectionModel?.collectionName as string,
           filter: {},
@@ -117,10 +115,9 @@ export function useDirectusFilters (
         }
 
         if (collectionModel.filterStatus) {
-          console.log("filterStatus :", collectionModel.filterStatus);
           addFilterCondition({
             status: {
-              _eq: collectionModel.filterStatus,
+              _in: collectionModel.filterStatus,
             },
           })
         }
