@@ -10,14 +10,6 @@ definePageMeta({
   ],
 })
 
-// const collectionsModelsStore = useCollectionsModelsStore()
-
-// if (!collectionsModelsStore.collectionsModels.length) {
-//   if (!collectionsModelsStore.collectionsModels.length) {
-//     await collectionsModelsStore.fetch()
-//   }
-// }
-
 const postStore = useDispositifPostStore()
 
 if (!postStore.postsCollectionName) {

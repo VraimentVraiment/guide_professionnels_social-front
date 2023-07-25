@@ -86,11 +86,11 @@ function loadMap (Gp: any) {
   cursor: pointer;
   filter: hue-rotate(180);
 
-  &:hover {
+  &:hover img{
     opacity: .8;
   }
 
-  &:active {
+  &:active img{
     opacity: 1;
     filter: brightness(1.1) saturate(1.1) contrast(1.1);
   }

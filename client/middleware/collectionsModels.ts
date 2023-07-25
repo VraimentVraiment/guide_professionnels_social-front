@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware(() => {
 
   return new Promise((resolve) => {
     if (!collectionsModelsStore.collectionsModels.length) {
-      console.log('-----------------------------------------')
       collectionsModelsStore.fetch()
         .then(() => resolve())
     } else {
