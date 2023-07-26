@@ -11,4 +11,3 @@ export function useIsAuthenticated (): ComputedRef<boolean> {
     // return true
   })
 }
-#
