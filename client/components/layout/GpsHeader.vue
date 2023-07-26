@@ -5,7 +5,7 @@ const {
   mainNavProps,
 } = await useGetContent('/layout')
 
-const isAuthenticated = useIsAuthenticated()
+const isAuthenticated = await useIsAuthenticated()
 
 const quickLinks = computed(() => {
   return []

@@ -1,10 +1,10 @@
 /**
  * Auth middleware
  */
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.server) { return }
 
-  const isAuthenticated = useIsAuthenticated()
+  const isAuthenticated = await useIsAuthenticated()
 
   if (
     isAuthenticated.value &&

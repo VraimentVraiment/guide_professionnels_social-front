@@ -29,7 +29,7 @@ type GpsSiteNavMenu = {
 export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
   if (process.server) { return [] }
 
-  const isAuthenticated = useIsAuthenticated().value
+  const isAuthenticated = (await useIsAuthenticated()).value
 
   const navigationMenu = (await useFetchDirectusItems<GpsSiteNavMenu>({
     collectionName: 'gps_site',
