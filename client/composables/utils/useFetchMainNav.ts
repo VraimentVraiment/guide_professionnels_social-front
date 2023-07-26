@@ -13,6 +13,7 @@ type DsfrNavItem = DsfrNavigationMenuLinkProps | {
 type GpsPage = {
   title: string,
   slug: string,
+  status: PageStatus
 }
 
 type GpsSiteNavMenu = {
@@ -65,8 +66,8 @@ export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
           }
         }
       } else if (el.collection === 'gps_pages') {
-        const page = el.item as GpsPage
-        if (filterPageStatus(page)) {
+        const page = el.item as GpsPage | null
+        if (page && filterPageStatus(page)) {
           return {
             text: page.title,
             to: `/content/${page.slug}`,
@@ -78,7 +79,9 @@ export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
     })
     .filter(el => el !== null) as DsfrNavItem[]
 
-  function filterPageStatus (page) {
+  function filterPageStatus (
+    page: GpsPage,
+  ) {
     if (isAuthenticated) {
       return (
         page.status === 'published-private' ||
