@@ -1,40 +1,43 @@
 /**
  * Auth middleware
  */
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   if (process.server) { return }
+  return new Promise((resolve) => {
+    useIsAuthenticated()
+      .then((isAuthenticated) => {
+        if (
+          isAuthenticated.value &&
+          to.path === '/login'
+        ) {
+          return from.path === '/login'
+            ? '/'
+            : from.path
+        }
 
-  const isAuthenticated = await useIsAuthenticated()
-
-  if (
-    isAuthenticated.value &&
-    to.path === '/login'
-  ) {
-    return from.path === '/login'
-      ? '/'
-      : from.path
-  }
-
-  if (
-    !isAuthenticated.value
-  ) {
-    return new Promise((resolve) => {
-      let slug = to.params?.slug
-      if (!slug) {
-        slug = to.path
-      }
-      if (Array.isArray(slug)) {
-        slug = slug[0]
-      }
-
-      useIsPublicRoute(slug as string)
-        .then((isPublicRoute) => {
-          if (!isPublicRoute) {
-            resolve(navigateTo('/login'))
-          } else {
-            resolve()
+        if (
+          !isAuthenticated.value
+        ) {
+          const pageName = to.params?.slug?.[0] ?? to.name as string
+          let slug = to.params?.slug
+          if (!slug) {
+            slug = to.path
           }
-        })
-    })
-  }
+          if (Array.isArray(slug)) {
+            slug = slug[0]
+          }
+
+          useIsPublicRoute(pageName as string)
+            .then((isPublicRoute) => {
+              if (!isPublicRoute) {
+                resolve(navigateTo('/login'))
+              } else {
+                resolve()
+              }
+            })
+        } else {
+          resolve()
+        }
+      })
+  })
 })

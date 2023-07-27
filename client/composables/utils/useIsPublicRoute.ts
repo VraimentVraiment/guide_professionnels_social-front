@@ -1,8 +1,8 @@
-export async function useIsPublicRoute (slug: string) {
+export async function useIsPublicRoute (pageName: string) {
   if ([
-    '/login',
-    '/404',
-  ].includes(slug)) {
+    'login',
+    '404',
+  ].includes(pageName)) {
     return true
   }
 
@@ -14,7 +14,7 @@ export async function useIsPublicRoute (slug: string) {
           status: {
             _in: ['published-public'],
           },
-          slug,
+          slug: `/${pageName}`,
         },
         fields: ['id'],
       },

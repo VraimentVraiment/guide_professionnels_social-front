@@ -29,7 +29,7 @@ type GpsSiteNavMenu = {
 export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
   if (process.server) { return [] }
 
-  const isAuthenticated = (await useIsAuthenticated()).value
+  const isAuthenticated = await useIsAuthenticated()
 
   const navigationMenu = (await useFetchDirectusItems<GpsSiteNavMenu>({
     collectionName: 'gps_site',
@@ -82,7 +82,7 @@ export async function useFetchMainNav (): Promise<DsfrNavItem[]> {
   function filterPageStatus (
     page: GpsPage,
   ) {
-    if (isAuthenticated) {
+    if (isAuthenticated.value) {
       return (
         page.status === 'published-private' ||
         page.status === 'published-public'
