@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-  collection: Post[]
+  collection: LocalizedPost[]
 }>()
 
 const emit = defineEmits(['map-loaded'])

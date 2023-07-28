@@ -44,7 +44,5 @@ export function useRelationGroups(
       })
   })
 
-  return {
-    relationGroups,
-  }
+  return relationGroups
 }

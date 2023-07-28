@@ -9,6 +9,7 @@ export function getIdsMatchingRelatedCollection(
   relationsCollection: RelationsCollection,
   relationModel: CollectionRelationModel,
   checkedItems: FilterItemNode[],
+  relationGroups: RelationGroups,
 ) {
   switch (relationModel.userSelection) {
     case 'single-node':
@@ -16,6 +17,7 @@ export function getIdsMatchingRelatedCollection(
         checkedItems.map(i => i.id),
         relationsCollection,
         'and',
+        relationGroups,
       )
 
     case 'leaves-only': {
@@ -39,6 +41,7 @@ export function getIdsMatchingRelatedCollection(
       siblingsItems.map(i => i.id),
       relationsCollection,
       combination,
+      relationGroups,
     ) as number[]
   }
 }
@@ -47,6 +50,7 @@ export function getMatchingIds(
   targetIds: number[],
   relationsCollection: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
+  relationGroups: RelationGroups,
 ): number[] | null {
   switch (combination) {
     case 'unique': {
@@ -57,7 +61,7 @@ export function getMatchingIds(
     }
 
     case 'and': {
-      return getIdsMatchingEvery(targetIds, relationsCollection)
+      return getIdsMatchingEvery(targetIds, relationsCollection, relationGroups)
     }
   }
 }
@@ -96,6 +100,7 @@ export function getIdsMatchingAtLeast(
 export function getIdsMatchingEvery(
   targetIds: number[],
   relationsCollection: RelationsCollection,
+  relationGroups: RelationGroups,
 ): number[] {
   const {
     targetKey,
@@ -105,30 +110,23 @@ export function getIdsMatchingEvery(
     sourceKey: string
   }
 
-  // Group relations if they are related to the same source item
-  const relationsGroups = group(
-    relationsCollection.items,
-    item => item[sourceKey],
-  )
-
-  // Convert the relationsGroups InternMap to an array of objects
-  const relatedTargetIdsGroups = Array
-    .from(relationsGroups, ([sourceId, relationGroup]) => {
-      return {
-        [sourceKey]: sourceId,
-        [targetKey]: relationGroup.map(relationItem => relationItem[targetKey]),
-      }
+  const relationsGroup = relationGroups
+    .find((relationGroup) => {
+      return (
+        relationGroup.sourceKey === sourceKey &&
+        relationGroup.targetKey === targetKey
+      )
     })
+    ?.groups
 
-  /**
-   * @todo relatedTargetIdsGroups does not need to be computed every time this function is called.
-   */
-  return relatedTargetIdsGroups
-    .filter((relatedIdsGroup) => {
+  const ids = relationsGroup
+    ?.filter((relatedIdsGroup) => {
       return targetIds.every((id) => {
         const relatedTargetIds = relatedIdsGroup[targetKey] as number[]
         return relatedTargetIds.includes(id)
       })
     })
     .map(relatedIdsGroup => relatedIdsGroup[sourceKey] as number)
+
+  return ids ?? []
 }

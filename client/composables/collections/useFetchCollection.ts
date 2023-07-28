@@ -6,7 +6,7 @@ import {
  * Return a function that will fetch a collection from Directus,
  * based on the collection type (posts, filters, relations).
  */
-export function useFetchCollection(
+export function useFetchCollection<PostType extends Post>(
   postsCollectionName: Ref<string | null>,
   collections: Ref<ItemsCollection[]>,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
@@ -44,7 +44,7 @@ export function useFetchCollection(
       })
 
     const items = (
-      await useFetchDirectusItems<CollectionItem>({
+      await useFetchDirectusItems<CollectionItem<PostType>>({
         collectionName,
         params: Object.assign(params, {
           filter: getDirectusFilter(directusFilters, collectionName),
@@ -52,10 +52,10 @@ export function useFetchCollection(
         }),
       })
     )
-      ?.map(getInitialItem(collectionType, relationModel)) as ItemsCollection['items']
+      ?.map(getInitialItem<PostType>(collectionType, relationModel)) as ItemsCollection['items']
 
     if (!existingCollection) {
-      collections.value.push(getInitialCollection(collectionName, collectionType, items, relationModel))
+      collections.value.push(getInitialCollection<PostType>(collectionName, collectionType, items, relationModel))
     } else {
       const difference = useArrayDifference<ItemsCollection['items'][0]>(existingCollection.items, items, el => el.id)
       if (difference.hasChanges) {
@@ -103,10 +103,10 @@ export function useFetchCollection(
   return fetchCollection
 }
 
-function getInitialItem(
+function getInitialItem<PostType extends Post>(
   type: CollectionType,
   relationModel?: CollectionRelationModel,
-): (d: CollectionItem) => ItemsCollection['items'][0] {
+): (d: CollectionItem<PostType>) => ItemsCollection['items'][0] {
   switch (type) {
     case 'posts':
       return item => item as unknown as Post
@@ -117,7 +117,7 @@ function getInitialItem(
   }
 }
 
-function getInitialCollection(
+function getInitialCollection<PostType extends Post>(
   collectionName: string,
   type: CollectionType,
   items: ItemsCollection['items'],
@@ -129,7 +129,7 @@ function getInitialCollection(
         collectionName,
         type: 'posts',
         items,
-      } as PostsCollection
+      } as PostsCollection<PostType>
 
     case 'relations':
       return {

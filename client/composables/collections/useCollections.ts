@@ -2,7 +2,7 @@
  * Collections composable to manage the collections of the app,
  * based on their type (posts, filters, relations)
  */
-export const useCollections = () => {
+export const useCollections = <PostType extends Post>() => {
   const postsCollectionName = ref<string | null>(null)
 
   const setPostCollection = (
@@ -17,7 +17,7 @@ export const useCollections = () => {
     return collections.value
       .find((c) => {
         return c.collectionName === postsCollectionName.value
-      }) as PostsCollection
+      }) as PostsCollection<PostType>
   })
 
   const filtersCollections = computed(() => {

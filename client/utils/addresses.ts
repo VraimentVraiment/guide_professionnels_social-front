@@ -11,7 +11,7 @@ export function joinAddresses(
 }
 
 export const geojsonAddressToMarkerOptions = (
-  post: Post,
+  post: LocalizedPost,
   projection: string,
 ) => (
   gpsAddress: GpsAddress,
@@ -33,7 +33,7 @@ export const geojsonAddressToMarkerOptions = (
 }
 
 function getMarkerTooltipContent(
-  post: Post,
+  post: LocalizedPost,
   address: GpsAddress['address'],
 ) {
   const ovArrowIcon = '<svg class="ov-icon" aria-hidden="true" width="19.2" height="19.2" viewBox="0 0 24 24" fill="currentColor" style="font-size: 1.2em;"><path fill="none" d="M0 0h24v24H0z"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path></svg>'

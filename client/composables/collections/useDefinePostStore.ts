@@ -1,9 +1,7 @@
 /**
  * A composable that will be used in pinia to define the store for a certain post type.
  */
-export const useDefinePostStore = () => {
-  const searchStore = useSearchStore()
-
+export const useDefinePostStore = <PostType extends Post>() => {
   const {
     postsCollectionName,
     postsCollection,
@@ -11,30 +9,17 @@ export const useDefinePostStore = () => {
     filtersCollections,
     relationsCollections,
     setPostCollection,
-  } = useCollections()
+  } = useCollections<PostType>()
 
+  const localisedPostItems = useLocalisedPostItems<PostType>(postsCollection)
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
   const checkedItems = useGetCheckedItems(filtersCollections)
-  const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections)
-  // const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
-  // const relationGroups = useRelationGroups(relationsCollections)
+  const relationGroups = useRelationGroups(relationsCollections)
+  const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
 
-  const fetchCollection = useFetchCollection(postsCollectionName, collections, directusFilters)
+  const fetchCollection = useFetchCollection<PostType>(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)
   const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
-
-  const postItems = computed(() => {
-    const items = postsCollection?.value?.items || []
-
-    if (!searchStore.selectedCityList?.length) {
-      return items
-    }
-
-    return items
-      ?.filter((post) => {
-        return addressMatch(post.addresses, searchStore.selectedCityList)
-      })
-  })
 
   return {
     postsCollectionName,
@@ -45,8 +30,8 @@ export const useDefinePostStore = () => {
     rootNodes,
     checkedItems,
     directusFilters,
-    // relationGroups,
-    postItems,
+    relationGroups,
+    localisedPostItems,
     setPostCollection,
     fetchCollection,
     setItem,

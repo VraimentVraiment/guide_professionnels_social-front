@@ -71,23 +71,26 @@ declare global {
     slug: string
     sort: number | null
     status: PostStatus
+    // addresses?: GpsAddress[]
+  }
+
+  export interface LocalizedPost extends Post {
     addresses?: GpsAddress[]
+  }
+
+  export interface DispositifPost extends LocalizedPost {
+    [key: RichTextKey]: string
+    caracteristiques_dispositif: number[][]
+    type_dispositif: number
+    images: number[][]
+    important_file?: string
+    important_file_title?: string
+    important_file_description?: string
   }
 
   export interface FicheTechniquePost extends Post {
     media: string
     type_dispositif: number
-  }
-
-  export interface DispositifPost extends Post {
-    [key: RichTextKey]: string
-    images: number[][]
-    caracteristiques_dispositif: number[][]
-    type_dispositif: number
-    // addresses: GpsAddress[]
-    important_file?: string
-    important_file_title?: string
-    important_file_description?: string
   }
 
   /*
@@ -159,12 +162,12 @@ declare global {
     checked?: boolean;
   }
 
-  export type CollectionItem = Post | DirectusFilterItem | DirectusRelationItem
+  export type CollectionItem<PostType extends Post> = PostType | DirectusFilterItem | DirectusRelationItem
 
-  export type PostsCollection = {
+  export type PostsCollection<PostType extends Post> = {
     collectionName: string,
     label?: string
-    items: Post[]
+    items: PostType[]
     type: 'posts'
   }
 

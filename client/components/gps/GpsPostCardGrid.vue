@@ -1,10 +1,10 @@
-<script lang="ts" setup>
+<script setup lang="ts" generic="PostType extends Post">
 
 defineProps<{
-  collection: Post[]
+  collection: PostType[]
   wrapCards: boolean
   type: 'link' | 'file'
-  getCardProps:<T extends Post>(item: T) => {
+  getCardProps:(item: PostType) => {
     title: string
     link?: string
     description?: string

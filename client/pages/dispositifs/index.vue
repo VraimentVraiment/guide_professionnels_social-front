@@ -54,7 +54,7 @@ const reset = () => {
 
 const showResetMessage = computed(() => {
   return (
-    postStore.postItems.length < resetMessageThreshold &&
+    postStore.localisedPostItems.length < resetMessageThreshold &&
     (
       hasCheckedItems.value ||
       searchStore.selectedCityList?.length
@@ -62,7 +62,7 @@ const showResetMessage = computed(() => {
   )
 })
 
-const getCardProps = (postItem: Post) => {
+const getCardProps = (postItem: DispositifPost) => {
   const { name, id, addresses } = postItem
   return {
     title: name,
@@ -145,15 +145,15 @@ const maxHeight = computed(() => {
                 @click="reset"
               />
             </div>
-            <template v-if="postStore.postItems.length > 0">
+            <template v-if="postStore.localisedPostItems.length > 0">
               <p
                 v-if="!showResetMessage"
                 class="fr-mb-3w"
               >
-                {{ postStore.postItems.length }} résultats
+                {{ postStore.localisedPostItems.length }} résultats
               </p>
               <GpsPostCardGrid
-                :collection="postStore.postItems"
+                :collection="postStore.localisedPostItems"
                 :wrap-cards="isListSelected"
                 :get-card-props="getCardProps"
                 type="link"
@@ -169,7 +169,7 @@ const maxHeight = computed(() => {
         <template #tab-1>
           <template v-if="!isListSelected || hasMapLoaded">
             <GpsMap
-              :collection="postStore.postItems"
+              :collection="postStore.localisedPostItems"
               @map-loaded="() => hasMapLoaded = true"
             />
           </template>
