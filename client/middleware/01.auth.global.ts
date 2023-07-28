@@ -27,7 +27,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
             slug = slug[0]
           }
 
-          useIsPublicRoute(pageName as string)
+          useIsPublicPage(pageName as string)
             .then((isPublicRoute) => {
               if (!isPublicRoute) {
                 resolve(navigateTo('/login'))

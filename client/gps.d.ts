@@ -1,4 +1,18 @@
+import {
+  type DirectusQueryParams,
+} from 'nuxt-directus/dist/runtime/types'
+
 declare global {
+
+  export type FetchDirectusItemsParams = {
+    collectionName: string
+    params?: DirectusQueryParams
+  }
+
+  export type FetchDirectusItemParams = {
+    collectionName: string
+    id: number
+  }
 
   /*
    *

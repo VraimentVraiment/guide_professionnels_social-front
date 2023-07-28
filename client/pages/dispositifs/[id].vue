@@ -31,12 +31,14 @@ const doUseSignalModal = false
 
 const id = parseInt(useRoute().params.id as string, 10)
 
-const {
-  post,
-  files: images,
-} = await useFetchDirectusSinglePostItem<DispositifPost>({
+const post = await useFetchDirectusItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
+})
+
+const imagesIds = await useFetchItemFilesIds({
+  item: post,
+  collectionName: 'gps_fichesdispositif',
 })
 
 if (!post) {
@@ -52,7 +54,7 @@ const { getFiles } = useDirectusFiles()
 const {
   download,
   isGeneratingDownload,
-} = await useGpsPostDownload('.gps-post__content', {
+} = await html2pdf('.gps-post__content', {
   avoid: '.gps-rich-text-container',
 })
 
@@ -145,9 +147,9 @@ const importantFile = (
           class="gps-post__images"
         >
           <img
-            v-for="{ directus_files_id } in images"
-            :key="directus_files_id"
-            :src="useGetDirectusFileLink(directus_files_id)"
+            v-for="imageId in imagesIds"
+            :key="imageId"
+            :src="useGetDirectusFileLink(imageId)"
             alt=""
           >
         </div>
