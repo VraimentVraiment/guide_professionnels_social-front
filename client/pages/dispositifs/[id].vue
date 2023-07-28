@@ -11,7 +11,17 @@ const {
   richTextFields,
   defaultFilename,
   buttonsLabels,
-} = await queryContent('/dispositif').findOne()
+} = await queryContent('/dispositif').findOne() as unknown as {
+  richTextFields: {
+    key: keyof DispositifPost
+    label: string
+  }[]
+  defaultFilename: string
+  buttonsLabels: {
+    download: string
+    print: string
+  }
+}
 
 /**
  * @todo Use signal error modal when directus fix this :
@@ -42,8 +52,6 @@ const print = () => {
   window.print()
 }
 
-const { getFiles } = useDirectusFiles()
-
 const {
   download,
   isGeneratingDownload,
@@ -51,12 +59,18 @@ const {
   avoid: '.gps-rich-text-container',
 })
 
-const importantFile = (
-  post?.important_file_title &&
-  post?.important_file
-)
-  ? (
-      await getFiles({
+/**
+ * @todo create a useGetPostFiles composable that uses collection models
+ * same as in fichestechniques/index.vue
+ */
+const { getFiles } = useDirectusFiles()
+const getImportantFile = async(): Promise<DirectusFileData | null> => {
+  if (
+    post?.important_file_title &&
+    post?.important_file
+  ) {
+    const files = (
+      await getFiles<DirectusFileData>({
         params: {
           filter: {
             id: {
@@ -65,8 +79,14 @@ const importantFile = (
           },
         },
       })
-    )?.[0]
-  : null
+    )
+
+    return files?.[0]
+  } else {
+    return null
+  }
+}
+const importantFile = await getImportantFile()
 
 </script>
 
@@ -182,7 +202,7 @@ const importantFile = (
           :description="post?.important_file_description"
           :format="formatFileFormat(importantFile?.type)"
           :size="formatBytes(importantFile?.filesize)"
-          :href="`${useGetDirectusFileLink(importantFile.id, { download: true })}`"
+          :href="`${useGetDirectusFileLink(importantFile.id.toString(), { download: true })}`"
         />
         <GpsSignalModal v-if="doUseSignalModal" />
       </div>

@@ -1,4 +1,4 @@
-type InfoMessageTypes = 'error' | 'success' | 'info'
+type InfoMessageTypes = 'error' | 'success' | 'info' | 'warning'
 
 type AlertContent = {
   title: string
@@ -7,9 +7,11 @@ type AlertContent = {
 
 type DsfrAlertModel = {
   display: Ref<boolean>
-  props: ComputedRef<AlertContent & {
+  props: ComputedRef<{
+    title?: string
+    description: string
     type?: InfoMessageTypes
-  } | null>
+  }>
   show: (type: InfoMessageTypes) => void
   reset: () => void
   setStep: (newStep: number) => void
@@ -30,7 +32,7 @@ export function useDsfrAlertModel(
     const type = messageType.value
 
     if (!type) {
-      return null
+      return { description: '' }
     }
     const content = Array.isArray(strings[type])
       ? (strings[type] as AlertContent[])[step.value]
@@ -39,7 +41,7 @@ export function useDsfrAlertModel(
     return {
       type: messageType.value,
       title: content?.title,
-      description: content?.description,
+      description: content?.description || '',
     }
   })
 

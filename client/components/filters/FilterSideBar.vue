@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const props = withDefaults(defineProps<{
-  postStore: ReturnType<typeof useDispositifPostStore>
+  postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   makeUnselectable: boolean
   maxHeight: string
   openDetails: string[] | null

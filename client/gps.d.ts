@@ -8,6 +8,12 @@ import {
 
 declare global {
 
+  export type DirectusFileData = {
+    id: number
+    filesize: number
+    type: string
+  }
+
   export type DsfrNavigationMenuLinkProps = {
     text: string
     to: RouteLocationRaw

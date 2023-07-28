@@ -5,7 +5,7 @@ import { type HierarchyNode } from 'd3-hierarchy'
 
 const props = defineProps<{
   node: HierarchyNode<FilterItemNode> | null
-  postStore: ReturnType<typeof useDispositifPostStore>
+    postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   isRootNode?: boolean
   dataCombination?: 'and' | 'or' | 'unique'
   parentName?: string

@@ -13,12 +13,16 @@ const postStore = useFicheTechniquePostStore()
 
 const { getFiles } = useDirectusFiles()
 
+/**
+ * @todo create a useGetPostFiles composable that uses collection models
+ * same as in dispositifs/[id].vue
+ */
 const filesData = computedAsync(async() => {
   return await Promise.all(
     postStore.postsCollection
       ?.items
       ?.map(async(ficheTechnique) => {
-        return (await getFiles({
+        const files = await getFiles<DirectusFileData>({
           params: {
             fields: ['id', 'filesize', 'type'],
             filter: {
@@ -27,17 +31,18 @@ const filesData = computedAsync(async() => {
               },
             },
           },
-        }))?.[0]
+        })
+        return files?.[0]
       }),
   )
 }, [])
 
 const getCardProps = (item: FicheTechniquePost) => {
-  const fileData = filesData.value?.find(file => file.id === item.media)
+  const fileData = filesData.value?.find(file => file.id.toString() === item.media)
   return {
     title: item.name,
-    format: formatFileFormat(fileData?.type),
-    size: formatBytes(fileData?.filesize),
+    format: formatFileFormat(fileData?.type ?? null),
+    size: formatBytes(fileData?.filesize ?? null),
     href: `${useGetDirectusFileLink(item.media, { download: true })}`,
     block: true,
   }

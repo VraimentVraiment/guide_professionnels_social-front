@@ -23,7 +23,7 @@ export function isStringValidEmail(
  * Given a string describing a file format, return a string with the first letter capitalized.
  */
 export const formatFileFormat = (
-  fileFormat: string,
+  fileFormat: string | null,
 ): string => {
   const result = fileFormat
     ?.replace('application/', '')
@@ -36,10 +36,10 @@ export const formatFileFormat = (
  * Given a number of bytes, return a string with the number of bytes and the unit.
  */
 export const formatBytes = (
-  bytes: number,
+  bytes: number | null,
   decimals = 2,
 ): string => {
-  if (bytes === 0) { return '0 Bytes' }
+  if (bytes === null || bytes === 0) { return '0 Bytes' }
 
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
