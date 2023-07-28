@@ -5,9 +5,7 @@ type PostSearchResultInfo = {
   name: string
 }
 
-export const useSearchStore = defineStore('search', useDefineSearchStore, {
-  // persist: true,
-})
+export const useSearchStore = defineStore('search', useDefineSearchStore)
 
 function useDefineSearchStore() {
   const query = ref<string>('')
@@ -23,10 +21,11 @@ function useDefineSearchStore() {
   }
 
   const remove = (cityName: string) => {
-    selectedCityList.value = selectedCityList.value.filter((t: string) => t !== cityName)
+    selectedCityList.value = selectedCityList.value
+      .filter((t: string) => t !== cityName)
   }
 
-  const submit = async () => {
+  const submit = async() => {
     /**
      * @todo use collection model
      */
@@ -37,7 +36,7 @@ function useDefineSearchStore() {
         status: {
           _eq: 'published',
         },
-      }
+      },
     }
 
     const items = await useFetchDirectusItems<PostSearchResultInfo>({
@@ -58,23 +57,17 @@ function useDefineSearchStore() {
   }
 
   const watchQuery = () => {
-    watchEffect(() => {
-      if (
-        queryCityList.value.length > 0 ||
-        postItems.value.length > 0
-      ) {
-        openModal.value = true
-      } else {
-        openModal.value = false
-      }
-    })
-
-    watchDebounced(query, async () => {
+    watchDebounced(query, async() => {
       const cities = await getCities(query.value)
+
       queryCityList.value = cities
         ?.map((city: any) => {
           return city.properties.label
         }) ?? []
+
+      if (queryCityList.value.length) {
+        openModal.value ||= true
+      }
     }, { debounce: 500, maxWait: 1000 })
   }
 

@@ -1,12 +1,15 @@
 type InfoMessageTypes = 'error' | 'success' | 'info'
 
+type AlertContent = {
+  title: string
+  description: string
+}
+
 type DsfrAlertModel = {
   display: Ref<boolean>
-  props: ComputedRef<{
+  props: ComputedRef<AlertContent & {
     type?: InfoMessageTypes
-    title: string
-    description: string
-  }>
+  } | null>
   show: (type: InfoMessageTypes) => void
   reset: () => void
   setStep: (newStep: number) => void
@@ -16,8 +19,8 @@ type DsfrAlertModel = {
  * Provide reactive methods to manage the state of an alert component in DSFR.
  * @see https://vue-dsfr.netlify.app/?path=/docs/composants-dsfralert--docs
  */
-export function useDsfrAlertModel (
-  strings: RecursiveYmlContent,
+export function useDsfrAlertModel(
+  strings: Record<InfoMessageTypes, AlertContent | AlertContent[]>,
 ): DsfrAlertModel {
   const display = ref(false)
   const step = ref(0)
@@ -26,12 +29,12 @@ export function useDsfrAlertModel (
   const props = computed(() => {
     const type = messageType.value
 
-    const content = (Array.isArray(strings[type])
-      ? strings[type][step.value]
-      : strings[type]) as {
-        title: string
-        description: string
-      }
+    if (!type) {
+      return null
+    }
+    const content = Array.isArray(strings[type])
+      ? (strings[type] as AlertContent[])[step.value]
+      : strings[type] as AlertContent
 
     return {
       type: messageType.value,

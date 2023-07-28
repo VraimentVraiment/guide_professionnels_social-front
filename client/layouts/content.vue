@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const pageContent = useGetPageContent()
+const pageContent = useFetchPageContent()
 
 </script>
 

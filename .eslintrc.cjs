@@ -7,6 +7,7 @@ module.exports = {
     '@nuxtjs/eslint-config-typescript',
   ],
   rules: {
+    'space-before-function-paren': ['error', 'never'],
     'comma-dangle': [2, 'always-multiline'],
     'vue/max-attributes-per-line': ['error', {
       singleline: 1,

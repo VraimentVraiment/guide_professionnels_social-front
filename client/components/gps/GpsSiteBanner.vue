@@ -2,7 +2,7 @@
 
 const logoPath = '/boussole_v3.svg'
 
-const { bannerProps } = await useGetContent('/layout')
+const { bannerProps } = await queryContent('/layout').findOne()
 
 </script>
 

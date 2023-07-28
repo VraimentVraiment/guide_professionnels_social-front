@@ -3,6 +3,7 @@
  */
 export default defineNuxtRouteMiddleware((to, from) => {
   if (process.server) { return }
+
   return new Promise((resolve) => {
     useIsAuthenticated()
       .then((isAuthenticated) => {

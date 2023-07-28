@@ -2,7 +2,7 @@
  * Given several collections of checked items, this composable provides
  * reactive methods to observe and reset those items.
  */
-export function useCheckedItemsObserver (
+export function useCheckedItemsObserver(
   checkedItems: Ref<FiltersCollection[]>,
 ) {
   const resetCollection = (collectionName: string) => {

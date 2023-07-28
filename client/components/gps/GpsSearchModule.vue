@@ -3,9 +3,11 @@
 import { storeToRefs } from 'pinia'
 
 const {
+  cityResultsLabel,
+  postsResultsLabel,
   searchBarPlaceholder,
   searchButtonText,
-} = await useGetContent('/search-module')
+} = await queryContent('/search-module').findOne()
 
 const searchStore = useSearchStore()
 searchStore.watchQuery()
@@ -56,7 +58,7 @@ const {
           class="gps-search--modal--tags"
         >
           <h6>
-            Résultats dans la liste des communes
+            {{ cityResultsLabel }}
           </h6>
           <div
             :class="[
@@ -78,7 +80,7 @@ const {
           class="gps-search--modal--posts"
         >
           <h6>
-            Résultats dans la liste des fiches dispositifs
+            {{ postsResultsLabel }}
           </h6>
           <ul>
             <li

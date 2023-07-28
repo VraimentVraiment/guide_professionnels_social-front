@@ -1,4 +1,4 @@
-export function joinAddresses (
+export function joinAddresses(
   gpsAddresses: GpsAddress[] | undefined,
 ): string {
   const join = gpsAddresses
@@ -32,7 +32,7 @@ export const geojsonAddressToMarkerOptions = (
   }
 }
 
-function getMarkerTooltipContent (
+function getMarkerTooltipContent(
   post: Post,
   address: GpsAddress['address'],
 ) {
@@ -53,7 +53,7 @@ function getMarkerTooltipContent (
   `
 }
 
-export async function getCities (
+export async function getCities(
   search: string,
 ): Promise<GouvAddressFeature[] | null> {
   const API_URL = 'https://api-adresse.data.gouv.fr/search'
@@ -75,7 +75,7 @@ export async function getCities (
   return features ?? null
 }
 
-export function addressMatch (
+export function addressMatch(
   gpsAddresses: GpsAddress[] | undefined,
   cityList: string[],
 ): boolean {

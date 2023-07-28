@@ -9,7 +9,7 @@ const PRINT_OPTIONS = {
 /**
  * An interface to use the html2pdf library to generate a PDF from a DOM element.
  */
-export async function html2pdf (
+export async function html2pdf(
   contentSelector: string,
   pagebreak : {
     [key: string]: string
@@ -31,7 +31,7 @@ export async function html2pdf (
     isGeneratingDownload.value = true
 
     html2pdfLib.default(content, printOptions)
-      .then(function () {
+      .then(function() {
         isGeneratingDownload.value = false
       })
   }

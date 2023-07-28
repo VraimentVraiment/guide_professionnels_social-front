@@ -2,7 +2,7 @@
  * A watcher that will trigger a collection's items fetching when a filter is toggled,
  * if the collection is related to the filter.
  */
-export function useWatchPostFiltering (
+export function useWatchPostFiltering(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
   fetchCollection: (collectionName: string) => Promise<void>,

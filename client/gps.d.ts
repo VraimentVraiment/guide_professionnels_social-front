@@ -2,7 +2,44 @@ import {
   type DirectusQueryParams,
 } from 'nuxt-directus/dist/runtime/types'
 
+import {
+  type RouteLocationRaw
+} from 'vue-router'
+
 declare global {
+
+  export type DsfrNavigationMenuLinkProps = {
+    text: string
+    to: RouteLocationRaw
+  };
+
+  export type DsfrNavItem = DsfrNavigationMenuLinkProps | {
+    title: string
+    links: DsfrNavigationMenuLinkProps[]
+  }
+
+  export type GpsPage = {
+    title: string,
+    slug: string,
+    status: PageStatus
+    metatitle?: string
+    metadescription?: string
+    content?: string
+  }
+
+  export type GpsPagesGroup = {
+    name: string;
+    pages: GpsPage[];
+  }
+
+  export type GpsSiteNavMenu = {
+    collection: 'gps_pages' | 'gps_pages_groups',
+    item: GpsPage | {
+      name: string,
+      pages: GpsPage[]
+    }
+  }[]
+
 
   export type FetchDirectusItemsParams = {
     collectionName: string
@@ -261,8 +298,6 @@ declare global {
    * Misc
    *
    */
-
-  export type RecursiveYmlContent = Record<string, string | string[] | RecursiveYmlContent>
 
   export type Accessor<T, U> = (item: T) => U
 }

@@ -2,11 +2,11 @@
  * A composable that provides a model for the login form,
  * based on the DSFR form model and the Directus auth API.
  */
-export async function useGpsAuth () {
+export async function useGpsAuth() {
   const isError = ref(false)
   const rememberMe = ref(false)
 
-  const strings = await useGetContent('login')
+  const strings = await queryContent('login').findOne()
 
   const email = useDsfrField({
     strings: strings.emailField,

@@ -1,4 +1,7 @@
-export function useNumberObserver ({
+/**
+ * Provides a reactive observer for managing a number value.
+ */
+export function useNumberObserver({
   defaultValue = 0,
 } = {}) {
   const number = ref(defaultValue)

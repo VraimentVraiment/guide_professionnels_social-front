@@ -8,7 +8,7 @@ const {
   errorTitle,
   errorDescription,
   returnHomeLabel,
-} = await useGetContent('/404')
+} = await queryContent('/404').findOne()
 
 </script>
 

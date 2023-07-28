@@ -11,14 +11,7 @@ const {
   richTextFields,
   defaultFilename,
   buttonsLabels,
-} = (await useGetContent('/dispositif')) as {
-  richTextFields: {
-    key: RichTextKey
-    label: string
-  }[]
-  defaultFilename: string
-  buttonsLabels: Record<string, string>
-}
+} = await queryContent('/dispositif').findOne()
 
 /**
  * @todo Use signal error modal when directus fix this :
@@ -36,7 +29,7 @@ const post = await useFetchDirectusItem<DispositifPost>({
   id,
 })
 
-const imagesIds = await useFetchItemFilesIds({
+const imagesIds = await useFetchDirectusItemFilesIds({
   item: post,
   collectionName: 'gps_fichesdispositif',
 })

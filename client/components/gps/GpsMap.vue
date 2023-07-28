@@ -6,7 +6,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['map-loaded'])
 
-const { options: GEOPORTAL_CONFIG } = await useGetContent('/geoportal-config')
+const { options: GEOPORTAL_CONFIG } = await queryContent('/geoportal-config').findOne()
 
 const searchStore = useSearchStore()
 
@@ -30,7 +30,7 @@ if (process.client) {
     .then(loadMap)
 }
 
-function loadMap (Gp: any) {
+function loadMap(Gp: any) {
   const gpMap = Gp.Map.load('map', {
     ...GEOPORTAL_CONFIG,
     layersOptions: {
@@ -41,7 +41,7 @@ function loadMap (Gp: any) {
     },
   })
 
-  function onMapLoaded () {
+  function onMapLoaded() {
     emit('map-loaded')
     if (process.client) {
       document.querySelectorAll('#map .ol-zoom button')

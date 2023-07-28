@@ -6,7 +6,7 @@ const DOMAIN_NAME_BLACKLIST = [
 /**
  * Given a string, return a boolean indicating whether it is a valid email address.
  */
-export function isStringValidEmail (
+export function isStringValidEmail(
   string: string,
 ): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

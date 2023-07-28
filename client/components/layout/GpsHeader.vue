@@ -3,7 +3,7 @@
 const {
   headerProps,
   mainNavProps,
-} = await useGetContent('/layout')
+} = await queryContent('/layout').findOne()
 
 const isAuthenticated = await useIsAuthenticated()
 

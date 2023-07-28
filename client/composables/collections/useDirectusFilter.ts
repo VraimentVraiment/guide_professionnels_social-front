@@ -6,7 +6,7 @@ import {
  * Return, for each collection used in the app,
  * the reactive filters to use when querying Directus.
  */
-export function useDirectusFilters (
+export function useDirectusFilters(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
   checkedItems: ComputedRef<FiltersCollection[]>,

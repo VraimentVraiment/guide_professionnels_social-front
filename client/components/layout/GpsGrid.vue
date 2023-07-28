@@ -4,7 +4,7 @@ defineProps<{
   showTitle: boolean,
 }>()
 
-const content = useGetPageContent()
+const content = useFetchPageContent()
 
 </script>
 

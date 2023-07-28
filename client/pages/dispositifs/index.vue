@@ -23,7 +23,7 @@ const {
   emptyMessage,
   tabListName,
   tabTitles,
-} = await useGetContent('dispositifs')
+} = await queryContent('dispositifs').findOne()
 
 const postStore = useDispositifPostStore()
 onMounted(() => {

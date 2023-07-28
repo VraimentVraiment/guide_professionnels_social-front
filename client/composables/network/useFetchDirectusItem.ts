@@ -1,7 +1,7 @@
 /**
  * Fetches a single item from Directus, given a collection name and an id.
  */
-export async function useFetchDirectusItem<T> ({
+export async function useFetchDirectusItem<T>({
   collectionName,
   id,
 }: FetchDirectusItemParams): Promise<T | null> {

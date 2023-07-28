@@ -12,7 +12,7 @@ type GpsFieldStrings = {
 /**
  * A model for the DSFR field.
  */
-export function useDsfrField ({
+export function useDsfrField({
   strings,
   isValidCondition,
 }: {

@@ -6,7 +6,7 @@ import {
  * Return a function that will fetch a collection from Directus,
  * based on the collection type (posts, filters, relations).
  */
-export function useFetchCollection (
+export function useFetchCollection(
   postsCollectionName: Ref<string | null>,
   collections: Ref<ItemsCollection[]>,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
@@ -18,7 +18,7 @@ export function useFetchCollection (
     getFields,
   } = useCollectionsModelsStore()
 
-  async function fetchCollection (
+  async function fetchCollection(
     collectionName: string,
     params: DirectusQueryParams = {},
     collectionType?: CollectionType,
@@ -66,7 +66,7 @@ export function useFetchCollection (
     await fetchRelationsCollections(collectionName)
   }
 
-  async function fetchRelationsCollections (
+  async function fetchRelationsCollections(
     collectionName: string,
   ) {
     const relationsModels = getManyToManyRelationsModels(collectionName)
@@ -103,7 +103,7 @@ export function useFetchCollection (
   return fetchCollection
 }
 
-function getInitialItem (
+function getInitialItem(
   type: CollectionType,
   relationModel?: CollectionRelationModel,
 ): (d: CollectionItem) => ItemsCollection['items'][0] {
@@ -117,7 +117,7 @@ function getInitialItem (
   }
 }
 
-function getInitialCollection (
+function getInitialCollection(
   collectionName: string,
   type: CollectionType,
   items: ItemsCollection['items'],
@@ -150,7 +150,7 @@ function getInitialCollection (
   }
 }
 
-export function updateCollection (
+export function updateCollection(
   collection: ItemsCollection,
   items: ItemsCollection['items'],
   type: 'taxonomy' | 'posts' | 'relations',

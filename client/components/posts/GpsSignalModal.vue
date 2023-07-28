@@ -17,7 +17,7 @@ const {
   modalTitle,
   messageContentProps,
   messageObjectProps,
-} = await useGetContent('/signal-modal')
+} = await queryContent('/signal-modal').findOne()
 
 const messageObject = ref()
 const messageContent = ref('')

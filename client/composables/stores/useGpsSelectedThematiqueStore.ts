@@ -2,7 +2,7 @@ export const useGpsSelectedThematiqueStore = defineStore('gpsSelectedThematique'
   persist: true,
 })
 
-function useDefineGpsSelectedThematiqueStore () {
+function useDefineGpsSelectedThematiqueStore() {
   const postStore = useDispositifPostStore()
 
   const thematiquesItems = computed(() => {

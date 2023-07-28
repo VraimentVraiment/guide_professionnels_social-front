@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { footerProps } = await useGetContent('/layout')
+const { footerProps } = await queryContent('/layout').findOne()
 
 </script>
 

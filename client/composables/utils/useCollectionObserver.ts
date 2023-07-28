@@ -1,4 +1,7 @@
-export function useCollectionObserver<T> () {
+/**
+ * Provides a reactive observer for managing a collection of items.
+ */
+export function useCollectionObserver<T>() {
   const collection = ref<T[]>([]) as Ref<T[]>
 
   const add = (item: T) => {

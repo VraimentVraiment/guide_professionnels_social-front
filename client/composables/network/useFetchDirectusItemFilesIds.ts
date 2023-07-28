@@ -3,7 +3,7 @@
  * NB: "Posts" is not a native collection in Directus,
  * but a custom family of collections created for GPS ('gps_dispositifs', 'gps_fichestechniques').
  */
-export async function useFetchItemFilesIds<ItemType> ({
+export async function useFetchDirectusItemFilesIds<ItemType>({
   item,
   collectionName,
 }: {

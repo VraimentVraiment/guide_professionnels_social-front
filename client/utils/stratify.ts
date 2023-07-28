@@ -8,7 +8,7 @@ import {
  * Wrapper around d3.stratify().
  * @see https://observablehq.com/@d3/d3-stratify
  */
-export function stratify <T> (
+export function stratify <T>(
   items: T[],
   getId: Accessor<T, string | null>,
   getParentId: Accessor<T, string | null>,

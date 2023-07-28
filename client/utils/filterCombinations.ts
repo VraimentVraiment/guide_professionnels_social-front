@@ -4,7 +4,7 @@ import {
   intersection,
 } from 'd3-array'
 
-export function getIdsMatchingRelatedCollection (
+export function getIdsMatchingRelatedCollection(
   filtersCollection: FiltersCollection,
   relationsCollection: RelationsCollection,
   relationModel: CollectionRelationModel,
@@ -25,7 +25,7 @@ export function getIdsMatchingRelatedCollection (
     }
   }
 
-  function getSiblingGroupMatchingIds (
+  function getSiblingGroupMatchingIds(
     [parent_id, siblingsItems]: [number | null, FilterItemNode[]],
   ): number[] {
     const parentItem = filtersCollection.items
@@ -43,7 +43,7 @@ export function getIdsMatchingRelatedCollection (
   }
 }
 
-export function getMatchingIds (
+export function getMatchingIds(
   targetIds: number[],
   relationsCollection: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
@@ -66,7 +66,7 @@ export function getMatchingIds (
  * Given an array of targetIds and a collection of relations between targetIds and sourceIds,
  * return an array of sourceIds that are related to at least one of the targetIds.
  */
-export function getIdsMatchingAtLeast (
+export function getIdsMatchingAtLeast(
   targetIds: number[],
   relationsCollection: RelationsCollection,
 ): number[] {
@@ -93,7 +93,7 @@ export function getIdsMatchingAtLeast (
  * Given an array of targetIds and a collection of relations between targetIds and sourceIds,
  * return an array of sourceIds that are related to all of the targetIds.
  */
-export function getIdsMatchingEvery (
+export function getIdsMatchingEvery(
   targetIds: number[],
   relationsCollection: RelationsCollection,
 ): number[] {

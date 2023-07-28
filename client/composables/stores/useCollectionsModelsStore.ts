@@ -5,15 +5,13 @@ export const useCollectionsModelsStore = defineStore('collectionsModels', useDef
   persist: true,
 })
 
-function useDefineCollectionsModelsStore () {
+function useDefineCollectionsModelsStore() {
   const collectionsModels = ref<CollectionModel[]>([])
 
-  const fetch = async () => {
+  const fetch = async() => {
     const {
       collections,
-    } = (await useGetContent('/collections')) as {
-      collections: CollectionModel[]
-    }
+    } = await queryContent('/collections').findOne()
     collectionsModels.value = collections
   }
 

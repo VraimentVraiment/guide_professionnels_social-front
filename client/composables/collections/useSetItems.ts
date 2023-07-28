@@ -9,13 +9,13 @@ type CheckItemProps = {
  * Set the checked value of a filter item,
  * and apply side effects based on the relation model
  */
-export function useSetItem (
+export function useSetItem(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
   const { getRelationModel } = useCollectionsModelsStore()
 
-  function setItem ({
+  function setItem({
     collectionName,
     id,
     value,
@@ -48,7 +48,7 @@ export function useSetItem (
   }
   return setItem
 
-  function setItemCheckSideEffects ({
+  function setItemCheckSideEffects({
     collection,
     relationModel,
     isAltKeyPressed,
@@ -118,7 +118,7 @@ export function useSetItem (
     }
   }
 
-  function setItemParent ({
+  function setItemParent({
     collection,
     item,
     value,
@@ -165,7 +165,7 @@ export function useSetItem (
     }
   }
 
-  function setItemChildren ({
+  function setItemChildren({
     collection,
     item,
     value,
@@ -186,7 +186,7 @@ export function useSetItem (
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function setItemSiblings ({
+  function setItemSiblings({
     collection,
     item,
     value,

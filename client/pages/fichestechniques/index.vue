@@ -13,11 +13,11 @@ const postStore = useFicheTechniquePostStore()
 
 const { getFiles } = useDirectusFiles()
 
-const filesData = computedAsync(async () => {
+const filesData = computedAsync(async() => {
   return await Promise.all(
     postStore.postsCollection
       ?.items
-      ?.map(async (ficheTechnique) => {
+      ?.map(async(ficheTechnique) => {
         return (await getFiles({
           params: {
             fields: ['id', 'filesize', 'type'],

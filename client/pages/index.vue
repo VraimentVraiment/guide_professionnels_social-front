@@ -11,19 +11,8 @@ definePageMeta({
 })
 
 const postStore = useDispositifPostStore()
-
-if (!postStore.postsCollectionName) {
-  postStore.setPostCollection('gps_fichesdispositif')
-}
-if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_thematiques')) {
-  await postStore.fetchCollection('gps_thematiques')
-}
-if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_typesdispositif')) {
-  await postStore.fetchCollection('gps_typesdispositif')
-}
-
 const { checkedItems } = storeToRefs(postStore)
-const { resetAll } = useCheckedItemsObserver(checkedItems)
+const { resetAll: resetAllCheckedItems } = useCheckedItemsObserver(checkedItems)
 
 const {
   thematiquesItems,
@@ -31,12 +20,13 @@ const {
   typesRootNode,
 } = storeToRefs(useGpsSelectedThematiqueStore())
 
-const { messages, backLinkLabel, allTypesLabel } = await useGetContent('/home')
+const { messages, backLinkLabel, allTypesLabel } = await queryContent('/home').findOne()
 const alertModel = useDsfrAlertModel(messages)
+
 alertModel.show('info')
 
 const stepOne = () => {
-  resetAll()
+  resetAllCheckedItems()
   alertModel.setStep(0)
 }
 
