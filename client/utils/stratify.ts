@@ -18,12 +18,17 @@ export function stratify <T>(
     .id(getId)
     .parentId(getParentId)
 
+  /**
+   * Use a copy of the items
+   */
   const tabularItems = [...items]
 
+  /**
+   * If the array does not contain a root item, create one and add it to the array.
+   */
   const hasRootItem = items.some((item) => {
     return getParentId(item) === null
   })
-
   if (!hasRootItem) {
     tabularItems.push(getRootFilterItem())
   }

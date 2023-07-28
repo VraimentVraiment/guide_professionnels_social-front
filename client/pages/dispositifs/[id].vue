@@ -47,7 +47,7 @@ const { getFiles } = useDirectusFiles()
 const {
   download,
   isGeneratingDownload,
-} = await html2pdf('.gps-post__content', {
+} = await useHtml2pdf('.gps-post__content', {
   avoid: '.gps-rich-text-container',
 })
 
@@ -180,9 +180,9 @@ const importantFile = (
           block
           :title="post?.important_file_title"
           :description="post?.important_file_description"
-          :format="formatFormat(importantFile?.type)"
+          :format="formatFileFormat(importantFile?.type)"
           :size="formatBytes(importantFile?.filesize)"
-          :href="`${useGetDirectusFileLink(importantFile.id)}?download`"
+          :href="`${useGetDirectusFileLink(importantFile.id, { download: true })}`"
         />
         <GpsSignalModal v-if="doUseSignalModal" />
       </div>
