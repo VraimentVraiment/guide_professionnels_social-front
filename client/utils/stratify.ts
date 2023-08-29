@@ -8,16 +8,12 @@ import {
  * Wrapper around d3.stratify().
  * @see https://observablehq.com/@d3/d3-stratify
  */
-export function stratify <T>(
+export function stratify<T>(
   items: T[],
   getId: Accessor<T, string | null>,
   getParentId: Accessor<T, string | null>,
   getRootFilterItem: () => T,
 ): HierarchyNode<T> | null {
-  const d3stratify = getStratifier<T>()
-    .id(getId)
-    .parentId(getParentId)
-
   /**
    * Use a copy of the items
    */
@@ -33,5 +29,54 @@ export function stratify <T>(
     tabularItems.push(getRootFilterItem())
   }
 
-  return d3stratify(tabularItems)
+  /**
+   * Detect circular references so that d3.stratify() does not throw an error.
+  */
+  const circularReferences = tabularItems
+    .filter((item) => {
+      const chain: string[] = []
+      let limit = 10
+      let currentItemId = getId(item)
+      while (
+        currentItemId !== null &&
+        currentItemId !== undefined &&
+        currentItemId !== '0' &&
+        limit > 0
+      ) {
+        if (chain.includes(currentItemId)) {
+          return true
+        }
+        chain.push(currentItemId)
+        limit--
+        const currentItem = tabularItems.find((ti) => {
+          return getId(ti) === currentItemId
+        })
+        if (!currentItem) {
+          return false
+        }
+        const parentItem = tabularItems.find((ti) => {
+          return getId(ti) === getParentId(currentItem)
+        })
+        if (!parentItem) {
+          return false
+        }
+        currentItemId = getId(parentItem)
+      }
+      return false
+    })
+    .map(item => getId(item))
+
+  const stratifyOperator = getStratifier<T>()
+    .id(getId)
+    .parentId((item: T) => {
+      const id = getId(item)
+      const circularReference = circularReferences.find(crId => crId === id)
+      if (circularReference && id) {
+        console.warn('Circular reference detected with item:', item)
+        return '0'
+      }
+      return getParentId(item)
+    })
+
+  return stratifyOperator(tabularItems)
 }
