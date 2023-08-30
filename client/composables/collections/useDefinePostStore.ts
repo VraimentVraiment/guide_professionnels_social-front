@@ -11,11 +11,11 @@ export const useDefinePostStore = <PostType extends Post>() => {
     setPostCollection,
   } = useCollections<PostType>()
 
-  const localisedPostItems = useLocalisedPostItems<PostType>(postsCollection)
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
   const checkedItems = useGetCheckedItems(filtersCollections)
   const relationGroups = useRelationGroups(relationsCollections)
   const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
+  const localisedPostItems = useLocalisedPostItems<PostType>(postsCollection)
 
   const fetchCollection = useFetchCollection<PostType>(postsCollectionName, collections, directusFilters)
   const setItem = useSetItem(postsCollectionName, filtersCollections)

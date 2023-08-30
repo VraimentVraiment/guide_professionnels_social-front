@@ -2,6 +2,7 @@ type CheckItemProps = {
   collection: FiltersCollection,
   item: FilterItemNode,
   value: boolean,
+  avoid: number[],
   isAltKeyPressed?: boolean,
 }
 
@@ -19,11 +20,13 @@ export function useSetItem(
     collectionName,
     id,
     value,
+    avoid = [],
     isAltKeyPressed,
   }: {
     collectionName: string,
     id: number,
     value: any,
+    avoid: number[],
     isAltKeyPressed?: boolean
   }) {
     const collection = filtersCollections.value
@@ -36,13 +39,16 @@ export function useSetItem(
 
     item.checked = value
 
-    const relationModel = getRelationModel(postsCollectionName.value, collectionName)
+    if (avoid.includes(item.id)) { return } // avoid infinite loop when circular relations
 
+    avoid.push(item.id)
+    const relationModel = getRelationModel(postsCollectionName.value, collectionName)
     setItemCheckSideEffects({
       item,
       collection,
       relationModel,
       value,
+      avoid,
       isAltKeyPressed,
     })
   }
@@ -53,12 +59,14 @@ export function useSetItem(
     relationModel,
     isAltKeyPressed,
     item,
+    avoid,
     value,
   }: {
     collection: FiltersCollection,
     relationModel: CollectionRelationModel | null,
     item: FilterItemNode,
     value: boolean,
+    avoid: number[],
     isAltKeyPressed?: boolean,
   }) {
     if (
@@ -94,6 +102,10 @@ export function useSetItem(
       }
     }
 
+    /**
+     * @todo Fix this which is not working as expected
+     * (We want this: when alt key is pressed, uncheck siblings)
+     */
     // if (
     //   isAltKeyPressed &&
     //   (
@@ -113,8 +125,15 @@ export function useSetItem(
     // }
 
     if (relationModel?.userSelection === 'all-nodes') {
-      setItemChildren({ collection, item, value, isAltKeyPressed })
-      setItemParent({ collection, item, value, isAltKeyPressed })
+      const props = {
+        collection,
+        avoid,
+        item,
+        value,
+        isAltKeyPressed,
+      }
+      setItemChildren(props)
+      setItemParent(props)
     }
   }
 
@@ -123,12 +142,25 @@ export function useSetItem(
     item,
     value,
     isAltKeyPressed,
+    avoid,
   }: CheckItemProps): void {
     const parent = collection.items
       .find(i => i.id === item.parent_id)
 
+    if (
+      !parent || (
+        parent?.id &&
+        avoid.includes(parent.id)
+      )
+    ) { return }
+
     const siblings = collection.items
-      .filter(i => i.parent_id === item.parent_id)
+      .filter((i) => {
+        return (
+          i.parent_id === item.parent_id &&
+          i.id !== item.id
+        )
+      })
 
     if (
       value === true &&
@@ -141,6 +173,7 @@ export function useSetItem(
         item: parent,
         value,
         isAltKeyPressed,
+        avoid,
       })
     }
 
@@ -160,6 +193,7 @@ export function useSetItem(
           id: parent.id,
           value: false,
           isAltKeyPressed,
+          avoid,
         })
       }
     }
@@ -169,6 +203,7 @@ export function useSetItem(
     collection,
     item,
     value,
+    avoid,
     isAltKeyPressed,
   }: CheckItemProps): void {
     const children = collection.items
@@ -180,6 +215,7 @@ export function useSetItem(
           collectionName: collection.collectionName,
           id: child.id,
           value,
+          avoid,
           isAltKeyPressed,
         })
       })
@@ -190,6 +226,7 @@ export function useSetItem(
     collection,
     item,
     value,
+    avoid,
   }: CheckItemProps): void {
     const parent = collection.items
       .find(i => i.id === item.parent_id)
@@ -210,6 +247,7 @@ export function useSetItem(
         collection,
         item: parent,
         value,
+        avoid,
       })
     }
   }

@@ -1,5 +1,5 @@
 /**
- * Assign some props to a filter item node before it is added to the tree.
+ * Assign some props to a filter item node (as fetched from backend) before it is added to the filter tree.
  */
 export function getInitialFilterItemNode(
   item: DirectusFilterItem,
@@ -14,7 +14,7 @@ export function getInitialFilterItemNode(
 }
 
 /**
- * Assign some props to the root node item before it is added to the tree.
+ * Create a root node for a filter before it is used to create it.
  */
 export function getRootFilterItemNode(
   relationModel: CollectionRelationModel,

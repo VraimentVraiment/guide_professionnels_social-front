@@ -29,6 +29,7 @@ const content = useFetchPageContent()
     </div>
     <div
       :class="[
+        'fr-mb-12v',
         'fr-col-12',
         'fr-col-md-8',
       ]"
@@ -37,6 +38,7 @@ const content = useFetchPageContent()
     </div>
     <div
       :class="[
+        'fr-mb-12v',
         'fr-col-12',
         'fr-col-md-4',
       ]"

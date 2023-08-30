@@ -1,3 +1,6 @@
+/**
+ * Returns a list of posts filtered by the selected cities
+ */
 export function useLocalisedPostItems<PostType extends LocalizedPost>(
   postsCollection: Ref<PostsCollection<PostType>>,
 ) {

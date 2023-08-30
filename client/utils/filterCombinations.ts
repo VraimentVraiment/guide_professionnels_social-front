@@ -4,6 +4,37 @@ import {
   intersection,
 } from 'd3-array'
 
+/**
+ * This code is used to determine which items in a collection are related to
+ * a set of checkable items in a filters collection (which has a hierarchical structure), following a many-to-many relation.
+ *
+ * For example, given a collection of posts and a collection of filters, we want to know
+ * which posts are related to the checked filters.
+ *
+ * Several behaviors are supported:
+ * - "single-node": Only one filter can be checked at a time. Only the posts that are related to the checked filter are returned.
+ * - "leaves-only": Only the filters that have no children can be checked. Three rules of combination are supported within a group of leaves:
+ *    - 'And' combination: Only the posts that are related to all of the checked filters are returned.
+ *    - 'Or' combination: Only the posts that are related to at least one of the checked filters are returned.
+ *    - 'Unique' combination: Only one leaf filter can be checked at a time. Only the posts that are related to the checked filter are returned.
+ *    Groups or leaves are then combined using the 'And' combination.
+ *
+ * We have to fetch relationsCollection and compute matches in our app,
+ * because directus does not support for now queries that use the same field several times.
+ * For example, this type of query does not work:
+ * filter: [
+ *  "and": [
+ *    "id": {
+ *      "_in": [1, 2, 3]
+ *    },
+ *    "id": {
+ *      "_in": [3, 4, 5]
+ *    }
+ * ]
+ *
+ * But it may be possible to do it in the future
+ */
+
 export function getIdsMatchingRelatedCollection(
   filtersCollection: FiltersCollection,
   relationsCollection: RelationsCollection,
@@ -46,7 +77,12 @@ export function getIdsMatchingRelatedCollection(
   }
 }
 
-export function getMatchingIds(
+/**
+ * Given an array of targetIds and a collection of relations between targetIds and sourceIds,
+ * return an array of sourceIds that are related to the targetIds,
+ * following the given combination rule ('and', 'or', 'unique')
+ */
+function getMatchingIds(
   targetIds: number[],
   relationsCollection: RelationsCollection,
   combination: 'and' | 'or' | 'unique',
