@@ -11,8 +11,8 @@ export function useArrayDifference<T>(
 ) {
   const compareFn = (v1: T, v2: T) => accessor(v1) === accessor(v2)
 
-  const added = useVueUseArrayDifference(oldArray, newArray, compareFn).value
-  const removed = useVueUseArrayDifference(newArray, oldArray, compareFn).value
+  const added = useVueUseArrayDifference(newArray, oldArray, compareFn).value
+  const removed = useVueUseArrayDifference(oldArray, newArray, compareFn).value
 
   const hasChanges = Boolean(added.length || removed.length)
 
