@@ -8,12 +8,6 @@ import {
 
 declare global {
 
-  export type DirectusFileData = {
-    id: number
-    filesize: number
-    type: string
-  }
-
   export type DsfrNavigationMenuLinkProps = {
     text: string
     to: RouteLocationRaw
@@ -113,14 +107,15 @@ declare global {
 
   export type FilterCombination = 'and' | 'or' | 'unique'
 
+  export type RelatedFilesModelType = 'files' | 'file' | 'many-to-many'
+
   export type CollectionModel = {
     label: string
     collectionName: string
     type: CollectionType
     relations?: CollectionRelationModel[]
     fields?: string[]
-    filesCollectionName?: string
-    filesField?: string
+    relatedFiles: RelatedFilesModel[]
     filterStatus?: PostStatus[]
   }
 
@@ -134,6 +129,16 @@ declare global {
     relationCollectionName?: string
     sourceKey?: string
     targetKey?: string
+  }
+
+  export type RelatedFilesModel = {
+    type: RelatedFilesModelType
+    field: string
+    relationCollectionName: string
+    targetKey: string
+
+    sourceKey?: string
+    targetCollectionName?: string
   }
 
   export type DirectusRelationItem = {

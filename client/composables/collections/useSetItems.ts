@@ -104,7 +104,7 @@ export function useSetItem(
 
     /**
      * @todo Fix this which is not working as expected
-     * (We want this: when alt key is pressed, uncheck siblings)
+     * (We want siblings to get unchecked when alt key is pressed while checking a node)
      */
     // if (
     //   isAltKeyPressed &&

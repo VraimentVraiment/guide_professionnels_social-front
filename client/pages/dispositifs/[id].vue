@@ -39,14 +39,21 @@ const post = await useFetchDirectusItem<DispositifPost>({
   id,
 })
 
-const imagesIds = await useFetchDirectusItemFilesIds({
-  item: post,
-  collectionName: 'gps_fichesdispositif',
-})
-
 if (!post) {
   navigateTo('/404')
 }
+
+const imagesData = await useFetchDirectusItemRelatedFilesIds({
+  collectionName: 'gps_fichesdispositif',
+  item: post,
+  field: 'images',
+})
+
+const importantFilesData = await useFetchDirectusRelatedFilesData({
+  collectionName: 'gps_fichesdispositif',
+  item: post as DispositifPost,
+  field: 'important_file',
+})
 
 const print = () => {
   window.print()
@@ -58,35 +65,6 @@ const {
 } = await useHtml2pdf('.gps-post__content', {
   avoid: '.gps-rich-text-container',
 })
-
-/**
- * @todo create a useGetPostFiles composable that uses collection models
- * same as in fichestechniques/index.vue
- */
-const { getFiles } = useDirectusFiles()
-const getImportantFile = async(): Promise<DirectusFileData | null> => {
-  if (
-    post?.important_file_title &&
-    post?.important_file
-  ) {
-    const files = (
-      await getFiles<DirectusFileData>({
-        params: {
-          filter: {
-            id: {
-              _eq: post.important_file,
-            },
-          },
-        },
-      })
-    )
-
-    return files?.[0]
-  } else {
-    return null
-  }
-}
-const importantFile = await getImportantFile()
 
 </script>
 
@@ -160,9 +138,9 @@ const importantFile = await getImportantFile()
           class="gps-post__images"
         >
           <img
-            v-for="imageId in imagesIds"
-            :key="imageId"
-            :src="useGetDirectusFileLink(imageId)"
+            v-for="{ id: imgId } in imagesData"
+            :key="imgId"
+            :src="useGetDirectusFileLink(imgId)"
             alt=""
           >
         </div>
@@ -194,16 +172,25 @@ const importantFile = await getImportantFile()
           secondary
           @click="() => print()"
         />
-        <DsfrFileDownload
-          v-if="importantFile"
-          class="fr-mt-8v"
-          block
-          :title="post?.important_file_title"
-          :description="post?.important_file_description"
-          :format="formatFileFormat(importantFile?.type)"
-          :size="formatBytes(importantFile?.filesize)"
-          :href="`${useGetDirectusFileLink(importantFile.id.toString(), { download: true })}`"
-        />
+        <h3
+          class="fr-mt-8v fr-mb-0"
+        >
+          Fichiers liés
+        </h3>
+        <div class="important-files">
+          <DsfrFileDownload
+            v-for="{ id: fileId, file, meta } in importantFilesData"
+            :key="fileId"
+            class="fr-mt-8v"
+            block
+            :title="meta.title"
+            :description="meta.description"
+            :format="formatFileFormat(file?.type as string)"
+            :size="formatBytes(file?.filesize as number)"
+            :href="`${useGetDirectusFileLink(fileId, { download: true })}`"
+          />
+        </div>
+
         <GpsSignalModal v-if="doUseSignalModal" />
       </div>
     </section>
@@ -292,4 +279,9 @@ ul.addresses-list {
     display: none;
   }
 }
+
+// .important-files {
+//   max-height: 60vh;
+//   overflow-y: auto;
+// }
 </style>

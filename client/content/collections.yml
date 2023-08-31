@@ -35,8 +35,17 @@ collections:
       - id
       - name
       - addresses
-    filesCollectionName: gps_fichesdispositif_directus_files
-    filesField: images
+    relatedFiles:
+      - field: images
+        type: files
+        relationCollectionName: gps_fichesdispositif_directus_files
+        targetKey: directus_files_id
+      - field: important_file
+        type: many-to-many
+        sourceKey: gps_fichesdispositif_id
+        targetKey: gps_important_files_id
+        targetCollectionName: gps_important_files
+        relationCollectionName: gps_fichesdispositif_gps_important_files
     relations:
       - label: Thématiques
         userSelection: single-node
@@ -73,3 +82,6 @@ collections:
         relationCollectionName: gps_fichestechniques_gps_thematiques
         sourceKey: gps_fichestechniques_id
         targetKey: gps_thematiques_id
+    relatedFiles:
+      - field: media
+        type: file

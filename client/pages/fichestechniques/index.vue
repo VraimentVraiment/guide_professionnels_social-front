@@ -10,40 +10,31 @@ definePageMeta({
 })
 
 const postStore = useFicheTechniquePostStore()
+const fileFieldKey = 'media'
 
-const { getFiles } = useDirectusFiles()
-
-/**
- * @todo create a useGetPostFiles composable that uses collection models
- * same as in dispositifs/[id].vue
- */
 const filesData = computedAsync(async() => {
   return await Promise.all(
     postStore.postsCollection
       ?.items
-      ?.map(async(ficheTechnique) => {
-        const files = await getFiles<DirectusFileData>({
-          params: {
-            fields: ['id', 'filesize', 'type'],
-            filter: {
-              id: {
-                _in: ficheTechnique.media,
-              },
-            },
-          },
-        })
-        return files?.[0]
-      }),
-  )
+      ?.map(item => useFetchDirectusRelatedFilesData<FicheTechniquePost>({
+        collectionName: 'gps_fichestechniques',
+        item,
+        field: fileFieldKey,
+      })),
+  ).then(files => files.flat())
 }, [])
 
-const getCardProps = (item: FicheTechniquePost) => {
-  const fileData = filesData.value?.find(file => file.id.toString() === item.media)
+const getCardProps = (
+  item: FicheTechniquePost,
+) => {
+  const fileData = filesData.value
+    ?.find(file => file?.id.toString() === item[fileFieldKey])
+
   return {
     title: item.name,
-    format: formatFileFormat(fileData?.type ?? null),
-    size: formatBytes(fileData?.filesize ?? null),
-    href: `${useGetDirectusFileLink(item.media, { download: true })}`,
+    format: formatFileFormat(fileData?.file.type ?? null),
+    size: formatBytes(fileData?.file.filesize ?? null),
+    href: `${useGetDirectusFileLink(item[fileFieldKey], { download: true })}`,
     block: true,
   }
 }

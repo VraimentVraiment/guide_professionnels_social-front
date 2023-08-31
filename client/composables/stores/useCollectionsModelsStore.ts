@@ -2,7 +2,7 @@
  * Defines a pinia store for managing our app collections' models,
  */
 export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
-  persist: true,
+  // persist: true,
 })
 
 function useDefineCollectionsModelsStore() {
@@ -86,16 +86,17 @@ function useDefineCollectionsModelsStore() {
 
   const getCollectionFilesModel = (
     collectionName: string,
-  ): {
-    filesCollectionName: string | null,
-    filesField: string | null,
-  } => {
+    field: string,
+  ): RelatedFilesModel | null => {
     const collectionModel = getCollectionModelByName(collectionName)
 
-    return {
-      filesCollectionName: collectionModel?.filesCollectionName ?? null,
-      filesField: collectionModel?.filesField ?? null,
-    }
+    const relatedFileModel = collectionModel
+      ?.relatedFiles
+      ?.find((m) => {
+        return m.field === field
+      })
+
+    return relatedFileModel ?? null
   }
 
   return {
