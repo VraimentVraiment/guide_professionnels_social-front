@@ -50,6 +50,7 @@ collections:
         metaFields:
           - title
           - description
+          - block
     relations:
       - label: Thématiques
         userSelection: single-node

@@ -82,10 +82,8 @@ declare global {
     [key: RichTextKey]: string
     caracteristiques_dispositif: number[][]
     type_dispositif: number
-    images: number[][]
-    important_file?: string
-    important_file_title?: string
-    important_file_description?: string
+    images: number[]
+    important_files: number[]
   }
 
   export interface FicheTechniquePost extends Post {

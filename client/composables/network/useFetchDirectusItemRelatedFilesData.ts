@@ -2,12 +2,16 @@ import {
   type DirectusFile,
 } from 'nuxt-directus/dist/runtime/types'
 
-type RelatedFileData = {
-  id: string
-  file?: DirectusFile
-  meta?: Record<string, any>
-}
-
+/**
+ *
+ * Given a collection name and an item id in that collection, fetches related files data from the Directus API.
+ * Depending on params 'getMeta', it will also fetch the meta data of the files (if not, it will only return the file ids).
+ *
+ * Several types of relations are supported:
+ * - 'file': the field describes a single file id (default directus 'file' field)
+ * - 'files': the field describes an array of relation_ids, which are ids of the relations in the relation collection (default directus 'files' field)
+ * - 'many-to-many': the field describes an array of relation_ids, which are ids of the relations in the relation collection (custom M2M field)
+ */
 export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>({
   collectionName,
   item,
@@ -18,67 +22,102 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
   item: T
   field: string
   getMeta?: false | string[]
-}): Promise<RelatedFileData[]> {
+}): Promise<{
+  id: string
+  file?: DirectusFile
+  meta?: Record<string, any>
+}[]> {
   const { getCollectionFilesModel } = useCollectionsModelsStore()
   const model = getCollectionFilesModel(collectionName as string, field)
 
-  if (!model) {
+  if (
+    !item ||
+    !field ||
+    !model
+  ) {
+    return []
+  }
+
+  const { ids, filesMeta } = (await getRelatedIds(item, field, model)) ?? { ids: [] }
+
+  if (!ids?.length) {
+    return []
+  }
+
+  if (!getMeta) {
+    return ids
+  }
+
+  if ((
+    model.type === 'files' && (
+      !model.targetKey
+    )
+  ) || (
+    model.type === 'many-to-many' && (
+      !model.targetKey ||
+        !model.relationCollectionName ||
+        !model.targetCollectionName ||
+        !model.fileIdField
+    )
+  )) {
     return []
   }
 
   const { getFiles } = useDirectusFiles()
 
+  const files = await getFiles<DirectusFile>({
+    params: {
+      fields: ['id', ...getMeta],
+      filter: {
+        id: {
+          _in: ids?.map(item => item.id),
+        },
+      },
+    },
+  })
+
+  if (!files.length) {
+    return []
+  }
+
+  return files
+    ?.map((file) => {
+      const id = file?.id as string
+      const meta = model.type === 'many-to-many' && filesMeta?.find(item => item[model.fileIdField as string] === id)
+      return {
+        id,
+        file,
+        ...meta && { meta },
+      }
+    })
+}
+
+async function getRelatedIds<T extends { id: number }>(
+  item: T,
+  field: string,
+  model: RelatedFilesModel,
+): Promise<{
+  ids: { id: string }[]
+  filesMeta?: Record<string, any>[]
+} | undefined> {
   switch (model.type) {
     case 'file': {
       const id = item[field as keyof T] as string
-
       if (!id) {
-        return []
+        break
       }
-
-      const ids = [{ id }]
-
-      if (!getMeta) {
-        return ids
+      return {
+        ids: [{ id }],
       }
-
-      const files = await getFiles<DirectusFile>({
-        params: {
-          fields: ['id', ...getMeta],
-          filter: {
-            id: {
-              _in: ids?.map(item => item.id),
-            },
-          },
-        },
-      })
-
-      return files
-        .map((file) => {
-          return {
-            id,
-            file,
-          }
-        })
     }
+
     case 'files': {
-      if (
-        !item ||
-        !field ||
-        !model ||
-        !model.targetKey
-      ) {
-        return []
-      }
-
       const relationsIds = item[field as keyof T] as string[]
-
       if (!relationsIds?.length) {
-        return []
+        break
       }
-
       const relations = await useFetchDirectusItems<{
-        [model.targetKey]: string,
+        [model.targetKey]: number
       }>({
         collectionName: model.relationCollectionName,
         params: {
@@ -90,54 +129,17 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
         },
       })
 
-      const ids = relations
-        ?.map((relation) => {
-          return {
-            id: relation[model.targetKey],
-          }
-        })
-
-      if (!getMeta) {
-        return ids
+      return {
+        ids: relations
+          ?.map((relation) => {
+            return {
+              id: relation[model.targetKey],
+            }
+          }),
       }
-
-      const files = (
-        await getFiles<DirectusFile>({
-          params: {
-            fields: ['id', ...getMeta],
-            filter: {
-              id: {
-                _in: ids?.map(item => item.id),
-              },
-            },
-          },
-        })
-      )
-
-      const filesData = files
-        .map((file) => {
-          return {
-            id: file?.id as string,
-            file,
-          }
-        })
-
-      return filesData
     }
-    case 'many-to-many': {
-      if (
-        !process.client ||
-        !item.id ||
-        !field ||
-        !model ||
-        !model.targetKey ||
-        !model.relationCollectionName ||
-        !model.targetCollectionName ||
-        !model.fileIdField
-      ) {
-        return []
-      }
 
+    case 'many-to-many': {
       const relations = await useFetchDirectusItems<{
         [model.sourceKey]: number
         [model.targetKey]: number
@@ -154,7 +156,7 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
         })
 
       if (!relations?.length) {
-        return []
+        break
       }
 
       const filesMeta = (
@@ -178,52 +180,21 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
       )
 
       if (!filesMeta.length) {
-        return []
+        break
       }
 
-      const ids = filesMeta
-        ?.map((item) => {
-          return {
-            id: item[model.fileIdField],
-          }
-        })
-
-      if (!getMeta) {
-        return ids
+      return {
+        ids: filesMeta
+          ?.map((fileMeta) => {
+            return {
+              id: fileMeta[model.fileIdField],
+            }
+          }),
+        filesMeta,
       }
-
-      const files = (
-        await getFiles<DirectusFile>({
-          params: {
-            fields: ['id', ...getMeta],
-            filter: {
-              id: {
-                _in: ids?.map(item => item.id),
-              },
-            },
-          },
-        })
-      )
-
-      if (!files.length) {
-        return []
-      }
-
-      const filesData = ids
-        ?.map(({ id }) => {
-          const file = files.find(item => item?.id === id)
-          const meta = filesMeta.find(item => item[model.fileIdField] === id)
-          return {
-            id,
-            file,
-            meta,
-          }
-        })
-
-      return filesData
     }
     default: {
-      return []
+      break
     }
   }
 }

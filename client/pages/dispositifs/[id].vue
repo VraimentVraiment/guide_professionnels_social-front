@@ -186,7 +186,7 @@ const {
             v-for="{ id: fileId, file, meta } in importantFilesData"
             :key="fileId"
             class="fr-mt-8v"
-            block
+            :block="meta?.block"
             :title="meta?.title"
             :description="meta?.description"
             :format="formatFileFormat(file?.type as string)"
