@@ -46,6 +46,10 @@ collections:
         targetKey: gps_important_files_id
         targetCollectionName: gps_important_files
         relationCollectionName: gps_fichesdispositif_gps_important_files
+        fileIdField: file
+        metaFields:
+          - title
+          - description
     relations:
       - label: Thématiques
         userSelection: single-node

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core'
 
+import {
+  type DirectusFile,
+} from 'nuxt-directus/dist/runtime/types'
+
 definePageMeta({
   layout: 'default',
   middleware: [
@@ -16,10 +20,11 @@ const filesData = computedAsync(async() => {
   return await Promise.all(
     postStore.postsCollection
       ?.items
-      ?.map(item => useFetchDirectusRelatedFilesData<FicheTechniquePost>({
+      ?.map(item => useFetchDirectusItemRelatedFiles<FicheTechniquePost>({
         collectionName: 'gps_fichestechniques',
         item,
         field: fileFieldKey,
+        getMeta: ['type', 'filesize'],
       })),
   ).then(files => files.flat())
 }, [])
@@ -28,7 +33,7 @@ const getCardProps = (
   item: FicheTechniquePost,
 ) => {
   const fileData = filesData.value
-    ?.find(file => file?.id.toString() === item[fileFieldKey])
+    ?.find(file => file?.id.toString() === item[fileFieldKey]) as DirectusFile
 
   return {
     title: item.name,

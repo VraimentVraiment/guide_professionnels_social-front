@@ -7,6 +7,8 @@ definePageMeta({
   ],
 })
 
+const importantFilesLabel = 'Fichiers liés'
+
 const {
   richTextFields,
   defaultFilename,
@@ -39,20 +41,21 @@ const post = await useFetchDirectusItem<DispositifPost>({
   id,
 })
 
-if (!post) {
+if (post === null) {
   navigateTo('/404')
 }
 
-const imagesData = await useFetchDirectusItemRelatedFilesIds({
+const imagesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
-  item: post,
+  item: post as DispositifPost,
   field: 'images',
 })
 
-const importantFilesData = await useFetchDirectusRelatedFilesData({
+const importantFilesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   item: post as DispositifPost,
   field: 'important_file',
+  getMeta: ['type', 'filesize'],
 })
 
 const print = () => {
@@ -173,9 +176,10 @@ const {
           @click="() => print()"
         />
         <h3
+          v-if="importantFilesData?.length"
           class="fr-mt-8v fr-mb-0"
         >
-          Fichiers liés
+          {{ importantFilesLabel }}
         </h3>
         <div class="important-files">
           <DsfrFileDownload
@@ -183,8 +187,8 @@ const {
             :key="fileId"
             class="fr-mt-8v"
             block
-            :title="meta.title"
-            :description="meta.description"
+            :title="meta?.title"
+            :description="meta?.description"
             :format="formatFileFormat(file?.type as string)"
             :size="formatBytes(file?.filesize as number)"
             :href="`${useGetDirectusFileLink(fileId, { download: true })}`"

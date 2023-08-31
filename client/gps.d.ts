@@ -136,9 +136,10 @@ declare global {
     field: string
     relationCollectionName: string
     targetKey: string
-
     sourceKey?: string
     targetCollectionName?: string
+    metaFields?: string[]
+    fileIdField?: string
   }
 
   export type DirectusRelationItem = {
