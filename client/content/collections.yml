@@ -40,12 +40,12 @@ collections:
         type: files
         relationCollectionName: gps_fichesdispositif_directus_files
         targetKey: directus_files_id
-      - field: important_file
+      - field: download_file
         type: many-to-many
         sourceKey: gps_fichesdispositif_id
-        targetKey: gps_important_files_id
-        targetCollectionName: gps_important_files
-        relationCollectionName: gps_fichesdispositif_gps_important_files
+        targetKey: gps_download_files_id
+        targetCollectionName: gps_download_files
+        relationCollectionName: gps_fichesdispositif_gps_download_files
         fileIdField: file
         metaFields:
           - title

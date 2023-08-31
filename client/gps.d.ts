@@ -83,7 +83,7 @@ declare global {
     caracteristiques_dispositif: number[][]
     type_dispositif: number
     images: number[]
-    important_files: number[]
+    download_files: number[]
   }
 
   export interface FicheTechniquePost extends Post {

@@ -54,7 +54,7 @@ const imagesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
 const importantFilesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   item: post as DispositifPost,
-  field: 'important_file',
+  field: 'download_file',
   getMeta: ['type', 'filesize'],
 })
 
