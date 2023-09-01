@@ -160,6 +160,14 @@ declare global {
     pictogramme?: string
   }
 
+  export type FilterNodeProps = {
+    node: HierarchyNode<FilterItemNode> | null
+    postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
+    isRootNode?: boolean
+    dataCombination?: 'and' | 'or' | 'unique'
+    parentName?: string
+  }
+
   export interface DirectusFilterItem extends FilterItem {
     children: number[];
     sort: number;

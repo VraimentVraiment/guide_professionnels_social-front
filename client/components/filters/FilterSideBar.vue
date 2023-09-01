@@ -24,7 +24,11 @@ const isSelectable = computed(() => {
   )
 })
 
-const resetLabel = 'Réinitialiser'
+// @todo move to content file
+const content = {
+  header: 'Filtrer',
+  resetLabel: 'Réinitialiser',
+}
 const {
   resetCollection,
   hasCollectionCheckedItems,
@@ -47,72 +51,77 @@ const {
       { 'is-selectable': isSelectable },
     ]"
   >
-    <ClientOnly>
-      <button
-        :id="`${id}-header`"
-        class="gps-filters-sidebar__header"
-        :aria-expanded="isOpen"
-        :aria-controls="`${id}-content`"
-        :aria-disabled="!isSelectable"
-        :disabled="!isSelectable"
-        @click="() => {
-          if (isSelectable) {
-            isOpen = !isOpen
-          }
-        }"
-      >
-        <span>
-          <v-icon
-            name="ri-equalizer-fill"
-            aria-hidden="true"
-          />
-          Filtrer
-        </span>
+    <!-- <ClientOnly> -->
+    <button
+      :class="[
+        'gps-filters-sidebar__header'
+      ]"
+      :aria-expanded="isSelectable ? isOpen : undefined"
+      :aria-controls="isSelectable ? `${id}-content` : undefined"
+      :aria-disabled="!isSelectable"
+      :disabled="!isSelectable"
+      @click="() => {
+        if (isSelectable) {
+          isOpen = !isOpen
+        }
+      }"
+    >
+      <span>
         <v-icon
-          v-show="isSelectable"
-          :class="[
-            'gps-filters-sidebar__header__icon',
-          ]"
-          :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
+          name="ri-equalizer-fill"
           aria-hidden="true"
         />
-      </button>
-      <div
-        :id="`${id}-content`"
-        class="gps-filters-sidebar__content"
-        :style="{
-          maxHeight: maxHeight,
-        }"
+        {{ content.header }}
+      </span>
+      <v-icon
+        v-show="isSelectable"
+        :class="[
+          'gps-filters-sidebar__header__icon',
+        ]"
+        :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
+        aria-hidden="true"
+      />
+    </button>
+    <div
+      :id="`${id}-content`"
+      :class="[
+        'gps-filters-sidebar__content'
+      ]"
+      :style="{
+        maxHeight: maxHeight,
+      }"
+    >
+      <GpsDetailsAccordion
+        v-for="{ collectionName, label } in postStore.filtersCollections"
+        :key="collectionName"
+        :class="[
+          'filter-group'
+        ]"
+        :label="label"
+        :summary-tag="'h2'"
+        :open="openDetails?.includes(collectionName)"
       >
-        <GpsDetailsAccordion
-          v-for="{ collectionName, label } in postStore.filtersCollections"
-          :key="collectionName"
-          class="filter-group"
-          :label="label"
-          :summary-tag="'h2'"
-          :open="openDetails?.includes(collectionName)"
-        >
-          <DsfrButton
-            v-show="hasCollectionCheckedItems(collectionName)"
-            :class="[
-              'gps-filters-sidebar__reset-button',
-            ]"
-            :label="resetLabel"
-            tertiary
-            no-outline
-            size="small"
-            :icon="'ri-close-circle-line'"
-            icon-right
-            @click="() => resetCollection(collectionName)"
-          />
-          <FilterNode
-            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
-            is-root-node
-            :post-store="postStore"
-          />
-        </GpsDetailsAccordion>
-      </div>
-    </ClientOnly>
+        <DsfrButton
+          v-show="hasCollectionCheckedItems(collectionName)"
+          :class="[
+            'gps-filters-sidebar__reset-button',
+          ]"
+          :label="content.resetLabel"
+          tertiary
+          no-outline
+          size="small"
+          :icon="'ri-close-circle-line'"
+          icon-right
+          @click="() => resetCollection(collectionName)"
+        />
+        <FilterNode
+          :post-store="postStore"
+          :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+          is-root-node
+        />
+      </GpsDetailsAccordion>
+    </div>
+    <!-- </ClientOnly> -->
   </div>
 </template>
 
@@ -132,7 +141,7 @@ const {
     font-weight: 700;
     padding: 0.45rem 1rem;
     color: var(--text-active-blue-france);
-    cursor: pointer;
+    cursor: initial;
 
     .gps-filters-sidebar__header__icon {
       transform: rotate(0deg) scale(1.2);
@@ -165,6 +174,7 @@ const {
     }
 
     .gps-filters-sidebar__header {
+      cursor: pointer;
       background-color: var(--background-action-low-blue-france);
       color: var(--text-action-high-grey);
 

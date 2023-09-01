@@ -7,17 +7,17 @@ definePageMeta({
   ],
 })
 
-const importantFilesLabel = 'Fichiers liés'
-
 const {
   richTextFields,
   defaultFilename,
   buttonsLabels,
+  downloadFilesLabel,
 } = await queryContent('/dispositif').findOne() as unknown as {
   richTextFields: {
     key: keyof DispositifPost
     label: string
   }[]
+  downloadFilesLabel: string
   defaultFilename: string
   buttonsLabels: {
     download: string
@@ -179,7 +179,7 @@ const {
           v-if="importantFilesData?.length"
           class="fr-mt-8v fr-mb-0"
         >
-          {{ importantFilesLabel }}
+          {{ downloadFilesLabel }}
         </h3>
         <div class="important-files">
           <DsfrFileDownload

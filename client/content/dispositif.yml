@@ -1,4 +1,5 @@
 defaultFilename: fiche-dispositif
+downloadFilesLabel: Fichiers liés
 buttonsLabels:
   download: Télécharger
   print: Imprimer

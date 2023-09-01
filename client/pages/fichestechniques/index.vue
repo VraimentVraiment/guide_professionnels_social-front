@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core'
 
-import {
-  type DirectusFile,
-} from 'nuxt-directus/dist/runtime/types'
-
 definePageMeta({
   layout: 'default',
   middleware: [
@@ -14,32 +10,39 @@ definePageMeta({
 })
 
 const postStore = useFicheTechniquePostStore()
-const fileFieldKey = 'media'
+const FILE_FIELD = 'media'
+
+const fetchRelatedFiles = (item: FicheTechniquePost) => {
+  return useFetchDirectusItemRelatedFiles<FicheTechniquePost>({
+    collectionName: 'gps_fichestechniques',
+    item,
+    field: FILE_FIELD,
+    getMeta: ['type', 'filesize'],
+  })
+}
 
 const filesData = computedAsync(async() => {
-  return await Promise.all(
+  const files = await Promise.all(
     postStore.postsCollection
       ?.items
-      ?.map(item => useFetchDirectusItemRelatedFiles<FicheTechniquePost>({
-        collectionName: 'gps_fichestechniques',
-        item,
-        field: fileFieldKey,
-        getMeta: ['type', 'filesize'],
-      })),
-  ).then(files => files.flat())
+      ?.map(fetchRelatedFiles))
+
+  return files.flat()
 }, [])
 
 const getCardProps = (
   item: FicheTechniquePost,
 ) => {
   const fileData = filesData.value
-    ?.find(file => file?.id.toString() === item[fileFieldKey]) as DirectusFile
+    ?.find((file) => {
+      return file?.id.toString() === item[FILE_FIELD]
+    })
 
   return {
     title: item.name,
-    format: formatFileFormat(fileData?.file.type ?? null),
-    size: formatBytes(fileData?.file.filesize ?? null),
-    href: `${useGetDirectusFileLink(item[fileFieldKey], { download: true })}`,
+    format: formatFileFormat(fileData?.file?.type ?? null),
+    size: formatBytes(fileData?.file?.filesize ?? null),
+    href: `${useGetDirectusFileLink(item[FILE_FIELD], { download: true })}`,
     block: true,
   }
 }
@@ -59,36 +62,22 @@ const getCardProps = (
       />
     </template>
     <template #bottom-right>
-      <ClientOnly>
-        <GpsPostCardGrid
-          v-if="postStore.postsCollection?.items?.length"
-          class="fichestechniques-postcard-grid"
-          :collection="postStore.postsCollection?.items"
-          :wrap-cards="true"
-          :get-card-props="getCardProps"
-          type="file"
-        />
-      </ClientOnly>
+      <!-- <ClientOnly> -->
+      <GpsPostCardGrid
+        v-if="postStore.postsCollection?.items?.length"
+        class="fichestechniques-postcard-grid"
+        :collection="postStore.postsCollection?.items"
+        :wrap-cards="true"
+        :get-card-props="getCardProps"
+        type="file"
+      />
+      <!-- </ClientOnly> -->
     </template>
   </GpsGrid>
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/";
-
 .fichestechniques-filtersidebar {
   left: 0;
-}
-
-.fichestechniques-postcard-grid {
-  margin-top: 3rem;
-
-  @include md {
-    margin-top: 0;
-  }
-}
-
-.fr-grid-row {
-  margin: 0;
 }
 </style>

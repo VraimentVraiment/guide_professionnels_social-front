@@ -16,14 +16,7 @@ const hasMapLoaded = ref(false)
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
-const {
-  resetMessageThreshold,
-  resetLabel,
-  resetMessage,
-  emptyMessage,
-  tabListName,
-  tabTitles,
-} = await queryContent('dispositifs').findOne()
+const content = await queryContent('/dispositifs').findOne()
 
 const postStore = useDispositifPostStore()
 onMounted(() => {
@@ -46,7 +39,6 @@ const {
   return postStore.checkedItems
     ?.filter(collectionCheckedItems => collectionCheckedItems.collectionName !== 'gps_thematiques')
 }))
-
 const reset = () => {
   resetAll()
   searchStore.reset()
@@ -54,7 +46,7 @@ const reset = () => {
 
 const showResetMessage = computed(() => {
   return (
-    postStore.localisedPostItems.length < resetMessageThreshold &&
+    postStore.localisedPostItems.length < content.resetMessageThreshold &&
     (
       hasCheckedItems.value ||
       searchStore.selectedCityList?.length
@@ -106,7 +98,7 @@ const maxHeight = computed(() => {
         <div
           id="dispositifs-sidebar"
           :style="{
-            maxHeight: maxHeight,
+            maxHeight,
           }"
           :class="[{
             isListSelected
@@ -119,8 +111,8 @@ const maxHeight = computed(() => {
         :class="[
           'gps-dispositifs-tabs'
         ]"
-        :tab-list-name="tabListName"
-        :tab-titles="tabTitles"
+        :tab-list-name="content.tabListName"
+        :tab-titles="content.tabTitles"
         :max-height="maxHeight"
         @select-tab="(index: number) => isListSelected = index === 0"
       >
@@ -132,13 +124,13 @@ const maxHeight = computed(() => {
           >
             <div v-if="showResetMessage">
               <DsfrAlert
-                :description="resetMessage"
+                :description="content.resetMessage"
                 :type="'info'"
                 small
               />
               <DsfrButton
                 :class="'fr-mt-2w fr-mb-3w'"
-                :label="resetLabel"
+                :label="content.resetLabel"
                 secondary
                 :icon="'ri-close-circle-line'"
                 icon-right
@@ -161,7 +153,7 @@ const maxHeight = computed(() => {
             </template>
             <template v-else>
               <p>
-                {{ emptyMessage }}
+                {{ content.emptyMessage }}
               </p>
             </template>
           </Teleport>

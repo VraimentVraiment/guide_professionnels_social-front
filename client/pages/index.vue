@@ -20,8 +20,8 @@ const {
   typesRootNode,
 } = storeToRefs(useGpsSelectedThematiqueStore())
 
-const { messages, backLinkLabel, allTypesLabel } = await queryContent('/home').findOne()
-const alertModel = useDsfrAlertModel(messages)
+const content = await queryContent('/home').findOne()
+const alertModel = useDsfrAlertModel(content.messages)
 
 alertModel.show('info')
 
@@ -76,22 +76,22 @@ stepOne()
             'fr-grid-row--gutters',
           ]"
         >
-          <ClientOnly>
-            <div
-              v-for="{ id, name, pictogramme } in thematiquesItems"
-              :key="id"
-              class="fr-col-12 fr-col-sm-6"
-            >
-              <DsfrTile
-                :title="name"
-                horizontal
-                to=""
-                :img-src="useGetDirectusFileLink(pictogramme)"
-                title-tag="h2"
-                @click.prevent="() => stepTwo(id)"
-              />
-            </div>
-          </ClientOnly>
+          <!-- <ClientOnly> -->
+          <div
+            v-for="{ id, name, pictogramme } in thematiquesItems"
+            :key="id"
+            class="fr-col-12 fr-col-sm-6"
+          >
+            <DsfrTile
+              :title="name"
+              horizontal
+              to=""
+              :img-src="useGetDirectusFileLink(pictogramme)"
+              title-tag="h2"
+              @click.prevent="() => stepTwo(id)"
+            />
+          </div>
+          <!-- </ClientOnly> -->
         </div>
       </div>
       <template v-else>
@@ -108,13 +108,13 @@ stepOne()
               ]"
               :buttons="[
                 {
-                  label: backLinkLabel,
+                  label: content.backLinkLabel,
                   tertiary: true,
                   icon: 'ri-arrow-left-line',
                   onClick: stepOne,
                 },
                 {
-                  label: allTypesLabel,
+                  label: content.allTypesLabel,
                   tertiary: true,
                   iconRight: true,
                   icon: 'ri-arrow-right-line',

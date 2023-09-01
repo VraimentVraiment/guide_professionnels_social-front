@@ -4,11 +4,7 @@ definePageMeta({
   layout: 'default',
 })
 
-const {
-  errorTitle,
-  errorDescription,
-  returnHomeLabel,
-} = await queryContent('/404').findOne()
+const content = await queryContent('/404').findOne()
 
 </script>
 
@@ -16,10 +12,10 @@ const {
   <div class="fr-container">
     <div class="fr-grid-row">
       <div class="fr-col-12">
-        <h1>{{ errorTitle }}</h1>
-        <p>{{ errorDescription }}</p>
+        <h1>{{ content.errorTitle }}</h1>
+        <p>{{ content.errorDescription }}</p>
         <p>
-          <a href="/">{{ returnHomeLabel }}</a>
+          <a href="/">{{ content.returnHomeLabel }}</a>
         </p>
       </div>
     </div>

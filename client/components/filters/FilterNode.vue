@@ -3,16 +3,15 @@
 import { useMagicKeys } from '@vueuse/core'
 import { type HierarchyNode } from 'd3-hierarchy'
 
-const props = defineProps<{
+type FilterNodeProps = {
   node: HierarchyNode<FilterItemNode> | null
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   isRootNode?: boolean
   dataCombination?: 'and' | 'or' | 'unique'
   parentName?: string
-}>()
+}
 
-const { current: currentKeysPressed } = useMagicKeys()
-const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
+const props = defineProps<FilterNodeProps>()
 
 const setItem = (
   item: FilterItemNode | undefined,
@@ -26,15 +25,20 @@ const setItem = (
     isAltKeyPressed: isAltKeyPressed.value,
   })
 }
+
+const shouldRenderNodeAs = props.node?.data
+  ? getShouldRenderNodeAs(props as FilterNodeProps)
+  : null
+
+const { current: currentKeysPressed } = useMagicKeys()
+const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
+
 </script>
 
 <template>
   <template v-if="node?.data">
     <DsfrRadioButton
-      v-if="(
-        node.data.userSelection === 'single-node'
-        && node.depth > 0
-      )"
+      v-if="shouldRenderNodeAs?.radio()"
       :name="node.data.collectionName"
       :label="node.data.name"
       :value="node.data.id"
@@ -44,18 +48,7 @@ const setItem = (
       @update:model-value="() => setItem(node?.data, true)"
     />
     <DsfrCheckbox
-      v-else-if="(
-        dataCombination !== 'unique'
-        && (
-          node.data.userSelection === 'all-nodes'
-          && node.depth > 0
-          || (
-            node.data.userSelection === 'leaves-only'
-            && node.height === 0
-            && !isRootNode
-          )
-        )
-      )"
+      v-else-if="shouldRenderNodeAs?.checkbox()"
       :id="node.data.id.toString()"
       :name="node.data.name"
       :label="node.data.name"
@@ -70,107 +63,43 @@ const setItem = (
       :model-value="node.data.checked"
       @update:model-value="(checked: boolean) => setItem(node?.data, checked)"
     />
-    <DsfrRadioButton
-      v-else-if="(
-        dataCombination === 'unique'
-        && (
-          node.data.userSelection === 'all-nodes'
-          && node.depth > 0
-          || (
-            node.data.userSelection === 'leaves-only'
-            && node.height === 0
-            && !isRootNode
-          )
-        )
-      )"
-      :name="node.data.collectionName"
-      :label="node.data.name"
-      :value="node.data.id"
-      :model-value="node.data.id"
-      small
-      :checked="node.data.checked"
-      @update:model-value="() => setItem(node?.data, true)"
-    />
-    <h5
-      v-else-if="(
-        node.data.userSelection === 'leaves-only'
-        && node.height === 2
-      )"
-    >
+    <h5 v-else-if="shouldRenderNodeAs?.title()">
       {{ node.data.name }}
     </h5>
     <GpsDetailsAccordion
-      v-else-if="(
-        node.data.userSelection === 'leaves-only'
-        && node.height === 1
-        && !isRootNode
-      )"
+      v-else-if="shouldRenderNodeAs?.accordionAndChildren()"
       :label="node.data.name"
       :data-combination="node.data.combination"
       :summary-tag="'h6'"
     >
-      <template v-if="node.children?.length">
-        <FilterNode
-          v-for="childNode in node.children"
-          :key="childNode.data.id"
-          :node="childNode"
-          :post-store="postStore"
-          :data-combination="node.data?.combination ?? 'and'"
-          :parent-name="node.data.name"
-        />
-      </template>
+      <FilterNode
+        v-for="childNode in node.children"
+        :key="childNode.data.id"
+        :node="childNode"
+        :post-store="props.postStore"
+        :data-combination="node.data?.combination ?? 'and'"
+        :parent-name="node.data.name"
+      />
     </GpsDetailsAccordion>
     <div
-      v-else-if="(
-        node.data.userSelection === 'leaves-only'
-        && node.height === 1
-        && isRootNode
-      )"
-      :data-combination="node.data?.combination ?? 'and'"
-    >
-      <template v-if="node.children?.length">
-        <FilterNode
-          v-for="childNode in node.children"
-          :key="childNode.data.id"
-          :node="childNode"
-          :post-store="postStore"
-        />
-      </template>
-    </div>
-    <div
-      v-if="(
-        node.data.userSelection === 'all-nodes'
-        && node.children?.length
-      )"
+      v-if="shouldRenderNodeAs?.childrenInContainer()"
       v-show="(
-        node.depth === 0
-        || node.data.checked
+        node.data.userSelection === 'leaves-only' ||
+        node.depth === 0 ||
+        node.data.checked
       )"
       :data-node-height="node.height"
+      :data-combination="node.data?.combination ?? 'and'"
       :class="[
         'filter-node__children',
+        `filter-node__children--${node.data.userSelection}`
       ]"
     >
       <FilterNode
         v-for="childNode in node.children"
         :key="childNode.data.id"
         :node="childNode"
-        :post-store="postStore"
-      />
-    </div>
-    <div
-      v-else-if="!(
-        node.data.userSelection === 'leaves-only'
-        && node.height === 1
-      )
-        && node.children?.length
-      "
-    >
-      <FilterNode
-        v-for="childNode in node.children"
-        :key="childNode.data.id"
-        :node="childNode"
-        :post-store="postStore"
+        :post-store="props.postStore"
       />
     </div>
   </template>
@@ -178,7 +107,7 @@ const setItem = (
 
 <style scoped lang="scss">
 .filter-node__children {
-  & .filter-node__children {
+  & .filter-node__children--all-nodes {
     margin-bottom: 1.5rem;
     padding-left: .5rem;
     margin-left: .5rem;
