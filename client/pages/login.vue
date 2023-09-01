@@ -7,28 +7,30 @@ definePageMeta({
 </script>
 
 <template>
-  <div
-    :class="[
-      'gps-login-container',
-      'fr-grid-row',
-      'fr-grid-row--gutters',
-    ]"
-  >
+  <ClientOnly>
     <div
       :class="[
-        'fr-col-12',
-        'fr-col-sm-10',
-        'fr-col-md-8',
-        'fr-col-lg-6',
-        'fr-col-offset-sm-1',
-        'fr-col-offset-md-2',
-        'fr-col-offset-lg-3',
+        'gps-login-container',
+        'fr-grid-row',
+        'fr-grid-row--gutters',
       ]"
     >
-      <GpsSiteBanner />
-      <GpsAuthForm />
+      <div
+        :class="[
+          'fr-col-12',
+          'fr-col-sm-10',
+          'fr-col-md-8',
+          'fr-col-lg-6',
+          'fr-col-offset-sm-1',
+          'fr-col-offset-md-2',
+          'fr-col-offset-lg-3',
+        ]"
+      >
+        <GpsSiteBanner />
+        <GpsAuthForm />
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <style scoped lang="scss">

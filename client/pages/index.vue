@@ -78,25 +78,25 @@ stepOne()
             'fr-grid-row--gutters',
           ]"
         >
-          <!-- <ClientOnly> -->
-          <div
-            v-for="{ id, name, pictogramme } in thematiquesItems"
-            :key="id"
-            :class="[
-              'fr-col-12',
-              'fr-col-sm-6'
-            ]"
-          >
-            <DsfrTile
-              :title="name"
-              horizontal
-              to=""
-              :img-src="useGetDirectusFileLink(pictogramme)"
-              title-tag="h2"
-              @click.prevent="() => stepTwo(id)"
-            />
-          </div>
-          <!-- </ClientOnly> -->
+          <ClientOnly>
+            <div
+              v-for="{ id, name, pictogramme } in thematiquesItems"
+              :key="id"
+              :class="[
+                'fr-col-12',
+                'fr-col-sm-6'
+              ]"
+            >
+              <DsfrTile
+                :title="name"
+                horizontal
+                to=""
+                :img-src="useGetDirectusFileLink(pictogramme)"
+                title-tag="h2"
+                @click.prevent="() => stepTwo(id)"
+              />
+            </div>
+          </ClientOnly>
         </div>
       </div>
       <template v-else>

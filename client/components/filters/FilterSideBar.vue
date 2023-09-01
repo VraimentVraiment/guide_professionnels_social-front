@@ -51,77 +51,77 @@ const {
       { 'is-selectable': isSelectable },
     ]"
   >
-    <!-- <ClientOnly> -->
-    <button
-      :class="[
-        'gps-filters-sidebar__header'
-      ]"
-      :aria-expanded="isSelectable ? isOpen : undefined"
-      :aria-controls="isSelectable ? `${id}-content` : undefined"
-      :aria-disabled="!isSelectable"
-      :disabled="!isSelectable"
-      @click="() => {
-        if (isSelectable) {
-          isOpen = !isOpen
-        }
-      }"
-    >
-      <span>
+    <ClientOnly>
+      <button
+        :class="[
+          'gps-filters-sidebar__header'
+        ]"
+        :aria-expanded="isSelectable ? isOpen : undefined"
+        :aria-controls="isSelectable ? `${id}-content` : undefined"
+        :aria-disabled="!isSelectable"
+        :disabled="!isSelectable"
+        @click="() => {
+          if (isSelectable) {
+            isOpen = !isOpen
+          }
+        }"
+      >
+        <span>
+          <v-icon
+            name="ri-equalizer-fill"
+            aria-hidden="true"
+          />
+          {{ content.header }}
+        </span>
         <v-icon
-          name="ri-equalizer-fill"
+          v-show="isSelectable"
+          :class="[
+            'gps-filters-sidebar__header__icon',
+          ]"
+          :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
           aria-hidden="true"
         />
-        {{ content.header }}
-      </span>
-      <v-icon
-        v-show="isSelectable"
+      </button>
+      <div
+        :id="`${id}-content`"
         :class="[
-          'gps-filters-sidebar__header__icon',
+          'gps-filters-sidebar__content'
         ]"
-        :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
-        aria-hidden="true"
-      />
-    </button>
-    <div
-      :id="`${id}-content`"
-      :class="[
-        'gps-filters-sidebar__content'
-      ]"
-      :style="{
-        maxHeight: maxHeight,
-      }"
-    >
-      <GpsDetailsAccordion
-        v-for="{ collectionName, label } in postStore.filtersCollections"
-        :key="collectionName"
-        :class="[
-          'filter-group'
-        ]"
-        :label="label"
-        :summary-tag="'h2'"
-        :open="openDetails?.includes(collectionName)"
+        :style="{
+          maxHeight: maxHeight,
+        }"
       >
-        <DsfrButton
-          v-show="hasCollectionCheckedItems(collectionName)"
+        <GpsDetailsAccordion
+          v-for="{ collectionName, label } in postStore.filtersCollections"
+          :key="collectionName"
           :class="[
-            'gps-filters-sidebar__reset-button',
+            'filter-group'
           ]"
-          :label="content.resetLabel"
-          tertiary
-          no-outline
-          size="small"
-          :icon="'ri-close-circle-line'"
-          icon-right
-          @click="() => resetCollection(collectionName)"
-        />
-        <FilterNode
-          :post-store="postStore"
-          :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
-          is-root-node
-        />
-      </GpsDetailsAccordion>
-    </div>
-    <!-- </ClientOnly> -->
+          :label="label"
+          :summary-tag="'h2'"
+          :open="openDetails?.includes(collectionName)"
+        >
+          <DsfrButton
+            v-show="hasCollectionCheckedItems(collectionName)"
+            :class="[
+              'gps-filters-sidebar__reset-button',
+            ]"
+            :label="content.resetLabel"
+            tertiary
+            no-outline
+            size="small"
+            :icon="'ri-close-circle-line'"
+            icon-right
+            @click="() => resetCollection(collectionName)"
+          />
+          <FilterNode
+            :post-store="postStore"
+            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+            is-root-node
+          />
+        </GpsDetailsAccordion>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 

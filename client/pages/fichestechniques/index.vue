@@ -64,18 +64,18 @@ const getCardProps = (
       />
     </template>
     <template #bottom-right>
-      <!-- <ClientOnly> -->
-      <GpsPostCardGrid
-        v-if="postStore.postsCollection?.items?.length"
-        :class="[
-          'fichestechniques-postcard-grid'
-        ]"
-        :collection="postStore.postsCollection?.items"
-        :wrap-cards="true"
-        :get-card-props="getCardProps"
-        type="file"
-      />
-      <!-- </ClientOnly> -->
+      <ClientOnly>
+        <GpsPostCardGrid
+          v-if="postStore.postsCollection?.items?.length"
+          :class="[
+            'fichestechniques-postcard-grid'
+          ]"
+          :collection="postStore.postsCollection?.items"
+          :wrap-cards="true"
+          :get-card-props="getCardProps"
+          type="file"
+        />
+      </ClientOnly>
     </template>
   </GpsGrid>
 </template>

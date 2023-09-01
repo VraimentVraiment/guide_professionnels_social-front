@@ -12,9 +12,9 @@
       'fr-container'
     ]"
   >
-    <ClientOnly>
-      <slot />
-    </ClientOnly>
+    <!-- <ClientOnly> -->
+    <slot />
+    <!-- </ClientOnly> -->
   </main>
 </template>
 
