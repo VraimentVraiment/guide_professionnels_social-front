@@ -3,9 +3,9 @@
  */
 
 export default defineNuxtConfig({
-  srcDir: 'client/',
+  srcDir: 'src/',
   extends: [
-    './layers/dsfr',
+    './src/layers/dsfr',
   ],
   modules: [
     'nuxt-directus',
@@ -38,14 +38,23 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  imports: {
-    dirs: [
-      'composables/**',
-    ],
-  },
   ignore: [
     '**/*.test.*',
     '**/*.spec.*',
     '**/*.cy.*',
   ],
+  imports: {
+    dirs: [
+      'composables/**',
+    ],
+    presets: [
+      {
+        from: 'd3-hierarchy',
+        imports: [
+          'HierarchyNode',
+        ],
+        type: true,
+      },
+    ],
+  },
 })

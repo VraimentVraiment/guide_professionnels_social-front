@@ -8,12 +8,13 @@ export default defineVitestConfig({
       imports: [
         'vitest',
       ],
+      dts: './tests/tests-auto-imports.d.ts',
     }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './client'),
-      '~': path.resolve(__dirname, './client'),
+      '@': path.resolve(__dirname, './src'),
+      '~': path.resolve(__dirname, './src'),
       '#imports': path.resolve(__dirname, './.nuxt/imports.d.ts'),
     },
   },

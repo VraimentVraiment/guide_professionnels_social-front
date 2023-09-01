@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 
 import { useMagicKeys } from '@vueuse/core'
-import { type HierarchyNode } from 'd3-hierarchy'
 
 type FilterNodeProps = {
   node: HierarchyNode<FilterItemNode> | null

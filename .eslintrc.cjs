@@ -17,7 +17,7 @@ module.exports = {
   overrides: [
     {
       files: [
-        'client/**/*.{spec,test}.{js,ts,jsx,tsx}',
+        'src/**/*.{spec,test}.{js,ts,jsx,tsx}',
       ],
       env: {
         jest: true,

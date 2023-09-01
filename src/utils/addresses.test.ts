@@ -1,5 +1,3 @@
-import { getCities } from '@/utils/addresses'
-
 describe('joinAddresses', () => {
   it('returns an empty string for undefined input', () => {
     expect(joinAddresses(undefined)).toBe('')

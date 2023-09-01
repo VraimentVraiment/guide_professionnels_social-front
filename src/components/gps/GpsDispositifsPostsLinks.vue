@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HierarchyNode } from 'd3-hierarchy'
+import { type HierarchyNode } from 'd3-hierarchy'
 
 defineProps<{
   rootNode: HierarchyNode<FilterItemNode>,
