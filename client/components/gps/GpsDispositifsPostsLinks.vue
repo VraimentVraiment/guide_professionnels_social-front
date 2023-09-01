@@ -11,13 +11,17 @@ const openDetails = useCollectionObserver<Number>()
 
 <template>
   <div
-    class="gps-links"
+    :class="[
+      'gps-links'
+    ]"
   >
     <details
       v-for="node in rootNode.children"
       :key="node.data.id"
       :open="openDetails.has(node.data.id)"
-      class="gps-links-group"
+      :class="[
+        'gps-links-group'
+      ]"
       @click.prevent
     >
       <summary>
@@ -38,7 +42,9 @@ const openDetails = useCollectionObserver<Number>()
       </summary>
       <div
         v-if="node?.children?.length"
-        class="gps-link-group__children"
+        :class="[
+          'gps-link-group__children'
+        ]"
       >
         <GpsDispositifsPostsLink
           v-for="childNode in node.children"

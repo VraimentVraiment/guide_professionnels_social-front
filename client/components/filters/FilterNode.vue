@@ -92,7 +92,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
       :data-combination="node.data?.combination ?? 'and'"
       :class="[
         'filter-node__children',
-        `filter-node__children--${node.data.userSelection}`
+        `filter-node__children__${node.data.userSelection}`
       ]"
     >
       <FilterNode
@@ -107,7 +107,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
 
 <style scoped lang="scss">
 .filter-node__children {
-  & .filter-node__children--all-nodes {
+  & .filter-node__children__all-nodes {
     margin-bottom: 1.5rem;
     padding-left: .5rem;
     margin-left: .5rem;

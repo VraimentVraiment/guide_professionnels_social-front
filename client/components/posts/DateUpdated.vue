@@ -12,7 +12,12 @@ const getDate = (date: string) => {
 </script>
 
 <template>
-  <p class="fr-text--sm gps-date">
+  <p
+    :class="[
+      'fr-text--sm',
+      'gps-date'
+    ]"
+  >
     Dernière mise à jour le
     {{ getDate(dateUpdated) }}
   </p>

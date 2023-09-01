@@ -54,7 +54,9 @@ const getCardProps = (
     <template #bottom-left>
       <FilterSideBar
         id="fichestechniques-filtersidebar"
-        :class="['fichestechniques-filtersidebar']"
+        :class="[
+          'fichestechniques-filtersidebar'
+        ]"
         :post-store="postStore"
         make-unselectable
         :open-details="['gps_thematiques']"
@@ -65,7 +67,9 @@ const getCardProps = (
       <!-- <ClientOnly> -->
       <GpsPostCardGrid
         v-if="postStore.postsCollection?.items?.length"
-        class="fichestechniques-postcard-grid"
+        :class="[
+          'fichestechniques-postcard-grid'
+        ]"
         :collection="postStore.postsCollection?.items"
         :wrap-cards="true"
         :get-card-props="getCardProps"

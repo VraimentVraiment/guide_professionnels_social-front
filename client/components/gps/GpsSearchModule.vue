@@ -23,17 +23,23 @@ const {
 </script>
 
 <template>
-  <div class="gps-search fr-mb-2v">
+  <div
+    :class="[
+      'gps-search fr-mb-2v'
+    ]"
+  >
     <div
       :class="[
-        'gps-search--tags',
+        'gps-search__tags',
         { 'has-tags': selectedCityList.length > 0 }
       ]"
     >
       <DsfrTag
         v-for="cityName in selectedCityList"
         :key="cityName"
-        class="fr-tag--dismiss"
+        :class="[
+          'fr-tag--dismiss'
+        ]"
         :label="cityName"
         tag-name="button"
         @click="() => searchStore.remove(cityName)"
@@ -41,28 +47,38 @@ const {
     </div>
     <DsfrSearchBar
       v-model="query"
-      class="gps-search--bar"
+      :class="[
+        'gps-search__bar'
+      ]"
       :label="searchBarPlaceholder"
       :button-text="searchButtonText"
       :placeholder="searchBarPlaceholder"
       large
       @search="searchStore.submit"
     />
-    <div class="gps-search--modal-wrapper">
+    <div
+      :class="[
+        'gps-search__modal-wrapper'
+      ]"
+    >
       <div
         v-if="openModal"
-        class="gps-search--modal"
+        :class="[
+          'gps-search__modal'
+        ]"
       >
         <div
           v-if="queryCityList.length"
-          class="gps-search--modal--tags"
+          :class="[
+            'gps-search__modal__tags'
+          ]"
         >
           <h6>
             {{ cityResultsLabel }}
           </h6>
           <div
             :class="[
-              'gps-search--tags',
+              'gps-search__tags',
               { 'has-tags': queryCityList.length > 0 }
             ]"
           >
@@ -77,7 +93,9 @@ const {
         </div>
         <div
           v-if="postItems.length"
-          class="gps-search--modal--posts"
+          :class="[
+            'gps-search__modal__posts'
+          ]"
         >
           <h6>
             {{ postsResultsLabel }}
@@ -104,7 +122,9 @@ const {
         </div>
 
         <DsfrButton
-          class="gps-search--close-button"
+          :class="[
+            'gps-search__close-button'
+          ]"
           type="buttonType"
           :label="'Fermer'"
           tertiary
@@ -125,7 +145,7 @@ const {
 .gps-search {
   position: relative;
 
-  .gps-search--tags {
+  .gps-search__tags {
     display: flex;
     flex-wrap: wrap;
     justify-items: space-between;
@@ -140,7 +160,7 @@ const {
     }
   }
 
-  .gps-search--modal {
+  .gps-search__modal {
     border: 2px solid var(--border-active-blue-france);
     position: absolute;
     top: calc(100% - 2px);
@@ -166,13 +186,13 @@ const {
       }
     }
 
-    .gps-search--close-button {
+    .gps-search__close-button {
       position: absolute;
       top: .5rem;
       right: .5rem;
     }
 
-    .gps-search--modal--tags {
+    .gps-search__modal__tags {
       margin-bottom: 2rem;
 
       h6 {
@@ -181,7 +201,7 @@ const {
 
     }
 
-    .gps-search--modal--posts {
+    .gps-search__modal__posts {
       ul {
         list-style: none;
         padding: 0;
@@ -193,7 +213,7 @@ const {
       }
     }
 
-    .gps-search--modal--tags+.gps-search--modal--posts {
+    .gps-search__modal__tags+.gps-search__modal__posts {
       margin-top: 2rem;
     }
   }

@@ -94,13 +94,21 @@ const {
           v-if="post?.date_updated?.length"
           :date-updated="post.date_updated"
         />
-        <hr class="fr-hr">
+        <hr
+          :class="[
+            'fr-hr'
+          ]"
+        >
         <template v-if="post?.addresses?.length">
           <v-icon
             name="ri-road-map-fill"
             aria-hidden="true"
           />
-          <ul class="addresses-list">
+          <ul
+            :class="[
+              'addresses-list'
+            ]"
+          >
             <li
               v-for="address, i in post.addresses"
               :key="i"
@@ -117,11 +125,12 @@ const {
         >
           <div
             v-if="post?.[key]"
-            :class="`gps-rich-text-container`"
+            :class="[
+              'gps-rich-text-container'
+            ]"
           >
             <h2>{{ label }}</h2>
             <div
-              class="gps-rich-text"
               :class="[
                 'gps-rich-text',
                 `gps-rich-text__${key}`
@@ -133,12 +142,16 @@ const {
           </div>
           <hr
             v-if="post?.[key]"
-            class="fr-hr noprint"
+            :class="[
+              'fr-hr noprint'
+            ]"
           >
         </template>
         <div
           v-if="post?.images?.length"
-          class="gps-post__images"
+          :class="[
+            'gps-post__images'
+          ]"
         >
           <img
             v-for="{ id: imgId } in imagesData"

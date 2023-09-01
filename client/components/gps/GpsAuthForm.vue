@@ -14,19 +14,22 @@ const {
 </script>
 
 <template>
-  <div class="gps-auth--form-container">
+  <div
+    :class="[
+      'gps-auth__form-container'
+    ]"
+  >
     <form>
       <DsfrFieldset
         v-bind="fieldSet"
         :class="[{
-          'gps-auth--error': isError
+          'gps-auth__error': isError
         }]"
       >
         <DsfrAlert
           v-show="alertModel.display.value"
           v-bind="alertModel.props.value"
           small
-          class="fr-mb-4v"
         />
         <DsfrInputGroup
           v-bind="email.props"
@@ -63,7 +66,9 @@ const {
       /> -->
       </DsfrFieldset>
       <DsfrButtonGroup
-        class="fr-mt-2v"
+        :class="[
+          'fr-mt-2v'
+        ]"
         :buttons="[
           {
             type: 'button',
@@ -73,20 +78,20 @@ const {
             disabled: submitButtonModel.disabled.value,
             onClick: submit
           },
-          /**
-           * @todo Implement forgot password
-           */
-          // {
-          //   label: 'Mot de passe oublié ?',
-          //   icon: 'ri-question-line',
-          //   iconRight: true,
-          //   type: 'button',
-          //   secondary: true,
-          //   onClick: () => {
-          //     alertModel.reset()
-          //     $router.push('/forgot-password')
-          //   }
-          // }
+        /**
+         * @todo Implement forgot password
+         */
+        // {
+        //   label: 'Mot de passe oublié ?',
+        //   icon: 'ri-question-line',
+        //   iconRight: true,
+        //   type: 'button',
+        //   secondary: true,
+        //   onClick: () => {
+        //     alertModel.reset()
+        //     $router.push('/forgot-password')
+        //   }
+        // }
         ]"
       />
     </form>
@@ -94,13 +99,13 @@ const {
 </template>
 
 <style scoped lang="scss">
-.gps-auth--form-container {
+.gps-auth__form-container {
   background-color: var(--background-default-grey);
   border: solid 1px var(--border-default-grey);
   box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
   padding: 2rem;
 
-  .gps-auth--error .fr-input-group {
+  .gps-auth__error .fr-input-group {
     animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
   }
 }

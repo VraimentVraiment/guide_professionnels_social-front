@@ -68,7 +68,9 @@ stepOne()
     <template #bottom-right>
       <div
         v-if="!selectedThematique"
-        class="fr-container--fluid"
+        :class="[
+          'fr-container--fluid'
+        ]"
       >
         <div
           :class="[
@@ -80,7 +82,10 @@ stepOne()
           <div
             v-for="{ id, name, pictogramme } in thematiquesItems"
             :key="id"
-            class="fr-col-12 fr-col-sm-6"
+            :class="[
+              'fr-col-12',
+              'fr-col-sm-6'
+            ]"
           >
             <DsfrTile
               :title="name"
@@ -95,9 +100,22 @@ stepOne()
         </div>
       </div>
       <template v-else>
-        <div class="fr-container--fluid">
-          <div class="fr-grid-row">
-            <h2 class="fr-col-12 fr-mb-1w">
+        <div
+          :class="[
+            'fr-container--fluid'
+          ]"
+        >
+          <div
+            :class="[
+              'fr-grid-row'
+            ]"
+          >
+            <h2
+              :class="[
+                'fr-col-12',
+                'fr-mb-1w'
+              ]"
+            >
               {{ selectedThematique?.name }}
             </h2>
             <DsfrButtonGroup

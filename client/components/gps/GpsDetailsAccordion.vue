@@ -14,13 +14,21 @@ withDefaults(defineProps<{
 
 <template>
   <details
-    class="gps-details"
+    :class="[
+      'gps-details'
+    ]"
     :open="open"
   >
-    <summary class="gps-details__summary">
+    <summary
+      :class="[
+        'gps-details__summary'
+      ]"
+    >
       <component
         :is="summaryTag"
-        class="gps-details__summary__label"
+        :class="[
+          'gps-details__summary__label'
+        ]"
       >
         {{ label }}
       </component>
@@ -32,7 +40,11 @@ withDefaults(defineProps<{
         aria-hidden="true"
       />
     </summary>
-    <div class="gps-details__content">
+    <div
+      :class="[
+        'gps-details__content'
+      ]"
+    >
       <slot />
     </div>
   </details>

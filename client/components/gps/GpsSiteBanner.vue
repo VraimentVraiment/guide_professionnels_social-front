@@ -7,24 +7,52 @@ const { bannerProps } = await queryContent('/layout').findOne()
 </script>
 
 <template>
-  <div class="gps-banner fr-mb-6v">
-    <div class="gps-banner__logo fr-col-3 fr-col-sm-4">
+  <div
+    :class="[
+      'gps-banner fr-mb-6v'
+    ]"
+  >
+    <div
+      :class="[
+        'gps-banner__logo',
+        'fr-col-3',
+        'fr-col-sm-4'
+      ]"
+    >
       <img
         :src="logoPath"
         alt="Logo GPS"
       >
     </div>
-    <div class="gps-banner__content fr-col-offset-sm-1 fr-mb-2v">
-      <h1 class="gps-banner__title fr-mb-2v">
+    <div
+      :class="[
+        'gps-banner__content',
+        'fr-col-offset-sm-1',
+        'fr-mb-2v'
+      ]"
+    >
+      <h1
+        :class="[
+          'gps-banner__title',
+          'fr-mb-2v'
+        ]"
+      >
         <span
           v-for="line, i in bannerProps.title"
           :key="i"
-          class="gps-banner__title--line"
+          :class="[
+            'gps-banner__title--line'
+          ]"
         >
           {{ line }}
         </span>
       </h1>
-      <p class="gps-banner__baseline fr-text--lg">
+      <p
+        :class="[
+          'gps-banner__baseline',
+          'fr-text--lg'
+        ]"
+      >
         {{ bannerProps.baseline }}
       </p>
     </div>

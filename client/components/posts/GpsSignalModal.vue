@@ -27,7 +27,7 @@ const isValidMessage = computed(() => {
   return (
     messageContent.value.length === 0 || (
       messageContent.value.length >= messageContentProps.minLength &&
-        messageContent.value.length <= messageContentProps.maxLength
+      messageContent.value.length <= messageContentProps.maxLength
     )
   )
 })
@@ -52,16 +52,18 @@ const send = () => {
       messageContent.value = ''
       close()
     })
-    // .catch((error) => {
-    //   console.error(error)
-    // })
+  // .catch((error) => {
+  //   console.error(error)
+  // })
 }
 
 </script>
 
 <template>
   <DsfrButton
-    class="fr-mt-8v"
+    :class="[
+      'fr-mt-8v'
+    ]"
     icon="ri-alarm-warning-line"
     icon-right
     :label="signalButtonLabel"

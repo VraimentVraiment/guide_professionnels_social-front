@@ -7,7 +7,11 @@
 </script>
 
 <template>
-  <main class="fr-container">
+  <main
+    :class="[
+      'fr-container'
+    ]"
+  >
     <ClientOnly>
       <slot />
     </ClientOnly>
