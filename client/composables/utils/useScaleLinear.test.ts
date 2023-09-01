@@ -1,6 +1,3 @@
-import { describe, it, expect } from 'vitest'
-import { useScaleLinear } from './useScaleLinear'
-
 describe('useScaleLinear', () => {
   it('should create a linear scale with the given domain and range', () => {
     const value = ref(75)
@@ -27,8 +24,8 @@ describe('useScaleLinear', () => {
 
   it('should update the scale when the value changes', () => {
     const value = ref(50)
-    const domain = [0, 100].map(ref)
-    const range = [0, 1].map(ref)
+    const domain = [ref(0), ref(100)]
+    const range = [ref(0), ref(1)]
 
     const { result } = useScaleLinear({ value, domain, range })
 

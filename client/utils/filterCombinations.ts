@@ -67,7 +67,6 @@ export function getIdsMatchingRelatedCollection(
       })
 
     const combination = parentItem?.combination ?? 'and'
-
     return getMatchingIds(
       siblingsItems.map(i => i.id),
       relationsCollection,
@@ -88,16 +87,23 @@ function getMatchingIds(
   combination: 'and' | 'or' | 'unique',
   relationGroups: RelationGroups,
 ): number[] | null {
+  const {
+    sourceKey,
+    targetKey,
+  } = relationsCollection.relationModel as {
+    targetKey: string
+    sourceKey: string
+  }
   switch (combination) {
     case 'unique': {
-      return getIdsMatchingAtLeast(targetIds, relationsCollection)
+      return getIdsMatchingAtLeast(targetIds, relationsCollection.items, sourceKey, targetKey)
     }
     case 'or': {
-      return getIdsMatchingAtLeast(targetIds, relationsCollection)
+      return getIdsMatchingAtLeast(targetIds, relationsCollection.items, sourceKey, targetKey)
     }
 
     case 'and': {
-      return getIdsMatchingEvery(targetIds, relationsCollection, relationGroups)
+      return getIdsMatchingEvery(targetIds, relationGroups, sourceKey, targetKey)
     }
   }
 }
@@ -108,22 +114,19 @@ function getMatchingIds(
  */
 export function getIdsMatchingAtLeast(
   targetIds: number[],
-  relationsCollection: RelationsCollection,
+  relationItems: DirectusRelationItem[],
+  sourceKey: string,
+  targetKey: string,
 ): number[] {
-  const {
-    sourceKey,
-    targetKey,
-  } = relationsCollection.relationModel as {
-    targetKey: string
-    sourceKey: string
-  }
-  return relationsCollection?.items
-    ?.reduce((sourceIds, item) => {
+  return relationItems
+    ?.reduce((sourceIds, relationItem) => {
       if (
-        targetIds.includes(item[targetKey]) &&
-        !sourceIds.includes(item[sourceKey])
+        !targetIds?.length || (
+          targetIds.includes(relationItem[targetKey]) &&
+          !sourceIds.includes(relationItem[sourceKey])
+        )
       ) {
-        sourceIds.push(item[sourceKey])
+        sourceIds.push(relationItem[sourceKey])
       }
       return sourceIds
     }, [] as number[])
@@ -135,18 +138,11 @@ export function getIdsMatchingAtLeast(
  */
 export function getIdsMatchingEvery(
   targetIds: number[],
-  relationsCollection: RelationsCollection,
   relationGroups: RelationGroups,
+  sourceKey: string,
+  targetKey: string,
 ): number[] {
-  const {
-    targetKey,
-    sourceKey,
-  } = relationsCollection.relationModel as {
-    targetKey: string
-    sourceKey: string
-  }
-
-  const relationsGroup = relationGroups
+  const groups = relationGroups
     .find((relationGroup) => {
       return (
         relationGroup.sourceKey === sourceKey &&
@@ -155,11 +151,11 @@ export function getIdsMatchingEvery(
     })
     ?.groups
 
-  const ids = relationsGroup
+  const ids = groups
     ?.filter((relatedIdsGroup) => {
       return targetIds.every((id) => {
         const relatedTargetIds = relatedIdsGroup[targetKey] as number[]
-        return relatedTargetIds.includes(id)
+        return relatedTargetIds?.includes(id)
       })
     })
     .map(relatedIdsGroup => relatedIdsGroup[sourceKey] as number)

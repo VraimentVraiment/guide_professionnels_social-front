@@ -2,7 +2,7 @@ type CheckItemProps = {
   collection: FiltersCollection,
   item: FilterItemNode,
   value: boolean,
-  avoid: number[],
+  avoid?: number[],
   isAltKeyPressed?: boolean,
 }
 
@@ -26,7 +26,7 @@ export function useSetItem(
     collectionName: string,
     id: number,
     value: any,
-    avoid: number[],
+    avoid?: number[],
     isAltKeyPressed?: boolean
   }) {
     const collection = filtersCollections.value

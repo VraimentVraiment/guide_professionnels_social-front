@@ -1,6 +1,3 @@
-import { describe, it, expect } from 'vitest'
-import { useCollectionObserver } from './useCollectionObserver'
-
 describe('useCollectionObserver', () => {
   it('should initialize with an empty collection', () => {
     const { collection } = useCollectionObserver<number>()

@@ -1,6 +1,3 @@
-import { describe, it, expect } from 'vitest'
-import { useArrayDifference } from './useArrayDifference'
-
 describe('useArrayDifference', () => {
   it('should return an empty object if both arrays are empty', () => {
     const oldArray: unknown[] = []

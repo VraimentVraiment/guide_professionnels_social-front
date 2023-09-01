@@ -5,7 +5,9 @@ type PostSearchResultInfo = {
   name: string
 }
 
-export const useSearchStore = defineStore('search', useDefineSearchStore)
+export const useSearchStore = defineStore('search', useDefineSearchStore, {
+  persist: PERSISTANCE_CONFIG.SEARCH_STORE,
+})
 
 function useDefineSearchStore() {
   const query = ref<string>('')

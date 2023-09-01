@@ -2,7 +2,7 @@
  * Defines a pinia store for managing our app collections' models,
  */
 export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
-  // persist: true,
+  persist: PERSISTANCE_CONFIG.COLLECTIONS_MODELS,
 })
 
 function useDefineCollectionsModelsStore() {
