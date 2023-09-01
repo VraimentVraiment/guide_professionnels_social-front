@@ -9,10 +9,8 @@ function useDefineCollectionsModelsStore() {
   const collectionsModels = ref<CollectionModel[]>([])
 
   const fetch = async() => {
-    const {
-      collections,
-    } = await queryContent('/collections').findOne()
-    collectionsModels.value = collections
+    const content = await queryContent('/collections').findOne()
+    collectionsModels.value = content.collections
   }
 
   const getCollectionModelByName = (

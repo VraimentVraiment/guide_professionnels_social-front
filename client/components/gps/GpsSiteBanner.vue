@@ -2,7 +2,7 @@
 
 const logoPath = '/boussole_v3.svg'
 
-const { bannerProps } = await queryContent('/layout').findOne()
+const content = await queryContent('/layout').findOne()
 
 </script>
 
@@ -38,10 +38,10 @@ const { bannerProps } = await queryContent('/layout').findOne()
         ]"
       >
         <span
-          v-for="line, i in bannerProps.title"
+          v-for="line, i in content.bannerProps.title"
           :key="i"
           :class="[
-            'gps-banner__title--line'
+            'gps-banner__title__line'
           ]"
         >
           {{ line }}
@@ -53,7 +53,7 @@ const { bannerProps } = await queryContent('/layout').findOne()
           'fr-text--lg'
         ]"
       >
-        {{ bannerProps.baseline }}
+        {{ content.bannerProps.baseline }}
       </p>
     </div>
   </div>

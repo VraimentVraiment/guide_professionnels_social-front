@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const { footerProps } = await queryContent('/layout').findOne()
+const content = await queryContent('/layout').findOne()
 
 </script>
 
@@ -10,7 +10,7 @@ const { footerProps } = await queryContent('/layout').findOne()
       'gps-footer',
       'noprint'
     ]"
-    v-bind="footerProps"
+    v-bind="content.footerProps"
   />
 </template>
 

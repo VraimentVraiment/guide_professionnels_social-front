@@ -11,13 +11,7 @@ const rolesIds = {
 }
 const { createNotification } = useDirectusNotifications()
 
-const {
-  sendButtonLabel,
-  signalButtonLabel,
-  modalTitle,
-  messageContentProps,
-  messageObjectProps,
-} = await queryContent('/signal-modal').findOne()
+const content = await queryContent('/signal-modal').findOne()
 
 const messageObject = ref()
 const messageContent = ref('')
@@ -26,8 +20,8 @@ const isModalOpen = ref(false)
 const isValidMessage = computed(() => {
   return (
     messageContent.value.length === 0 || (
-      messageContent.value.length >= messageContentProps.minLength &&
-      messageContent.value.length <= messageContentProps.maxLength
+      messageContent.value.length >= content.messageContentProps.minLength &&
+      messageContent.value.length <= content.messageContentProps.maxLength
     )
   )
 })
@@ -66,33 +60,33 @@ const send = () => {
     ]"
     icon="ri-alarm-warning-line"
     icon-right
-    :label="signalButtonLabel"
+    :label="content.signalButtonLabel"
     secondary
     @click="() => open()"
   />
   <DsfrModal
-    :title="modalTitle"
+    :title="content.modalTitle"
     icon="ri-alarm-warning-line"
     :opened="isModalOpen"
     @close="() => close()"
   >
     <DsfrSelect
       v-model="messageObject"
-      :label="messageObjectProps.label"
-      :options="messageObjectProps.list"
+      :label="content.messageObjectProps.label"
+      :options="content.messageObjectProps.list"
       :required="true"
     />
     <DsfrInputGroup
       v-model="messageContent"
-      :label="messageContentProps.label"
-      :placeholder="messageContentProps.placeholder"
+      :label="content.messageContentProps.label"
+      :placeholder="content.messageContentProps.placeholder"
       is-textarea
       label-visible
       :required="true"
-      :error-message="!isValidMessage ? messageContentProps.errorMessage : null"
+      :error-message="!isValidMessage ? content.messageContentProps.errorMessage : null"
     />
     <DsfrButton
-      :label="sendButtonLabel"
+      :label="content.sendButtonLabel"
       icon="ri-send-plane-line"
       icon-right
       :disabled="!messageObject || messageContent.length === 0 || !isValidMessage"

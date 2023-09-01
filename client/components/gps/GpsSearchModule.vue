@@ -2,12 +2,7 @@
 
 import { storeToRefs } from 'pinia'
 
-const {
-  cityResultsLabel,
-  postsResultsLabel,
-  searchBarPlaceholder,
-  searchButtonText,
-} = await queryContent('/search-module').findOne()
+const content = await queryContent('/search-module').findOne()
 
 const searchStore = useSearchStore()
 searchStore.watchQuery()
@@ -50,9 +45,9 @@ const {
       :class="[
         'gps-search__bar'
       ]"
-      :label="searchBarPlaceholder"
-      :button-text="searchButtonText"
-      :placeholder="searchBarPlaceholder"
+      :label="content.searchBarPlaceholder"
+      :button-text="content.searchButtonText"
+      :placeholder="content.searchBarPlaceholder"
       large
       @search="searchStore.submit"
     />
@@ -74,7 +69,7 @@ const {
           ]"
         >
           <h6>
-            {{ cityResultsLabel }}
+            {{ content.cityResultsLabel }}
           </h6>
           <div
             :class="[
@@ -98,7 +93,7 @@ const {
           ]"
         >
           <h6>
-            {{ postsResultsLabel }}
+            {{ content.postsResultsLabel }}
           </h6>
           <ul>
             <li

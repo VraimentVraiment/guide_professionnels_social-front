@@ -7,12 +7,7 @@ definePageMeta({
   ],
 })
 
-const {
-  richTextFields,
-  defaultFilename,
-  buttonsLabels,
-  downloadFilesLabel,
-} = await queryContent('/dispositif').findOne() as unknown as {
+const content = await queryContent('/dispositif').findOne() as unknown as {
   richTextFields: {
     key: keyof DispositifPost
     label: string
@@ -120,7 +115,7 @@ const {
       </header>
       <article>
         <template
-          v-for="{ key, label } in richTextFields"
+          v-for="{ key, label } in content.richTextFields"
           :key="key"
         >
           <div
@@ -174,15 +169,15 @@ const {
     >
       <div>
         <DsfrButton
-          :label="buttonsLabels.download"
+          :label="content.buttonsLabels.download"
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => download(post?.name ?? defaultFilename)"
+          @click="() => download(post?.name ?? content.defaultFilename)"
         />
         <DsfrButton
           class="fr-mt-4v"
-          :label="buttonsLabels.print"
+          :label="content.buttonsLabels.print"
           icon="ri-printer-line"
           icon-right
           secondary
@@ -192,7 +187,7 @@ const {
           v-if="importantFilesData?.length"
           class="fr-mt-8v fr-mb-0"
         >
-          {{ downloadFilesLabel }}
+          {{ content.downloadFilesLabel }}
         </h3>
         <div class="important-files">
           <DsfrFileDownload

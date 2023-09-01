@@ -6,28 +6,28 @@ export async function useGpsAuth() {
   const isError = ref(false)
   const rememberMe = ref(false)
 
-  const strings = await queryContent('login').findOne()
+  const content = await queryContent('login').findOne()
 
   const email = useDsfrField({
-    strings: strings.emailField,
+    strings: content.emailField,
     isValidCondition: (value) => {
       return isStringValidEmail(value)
     },
   })
 
   const password = useDsfrField({
-    strings: strings.passwordField,
+    strings: content.passwordField,
     isValidCondition: (value) => {
       return value.length >= 8
     },
   })
 
   const submitButtonModel = {
-    label: strings.loginButton.label,
+    label: content.loginButton.label,
     disabled: computed(() => !email.isValid.value || !password.isValid.value),
   }
 
-  const alertModel = useDsfrAlertModel(strings.messages)
+  const alertModel = useDsfrAlertModel(content.messages)
 
   const submit = () => {
     const {
@@ -72,7 +72,7 @@ export async function useGpsAuth() {
   return {
     isError,
     rememberMe,
-    fieldSet: strings.fieldSet,
+    fieldSet: content.fieldSet,
     email,
     password,
     submitButtonModel,
