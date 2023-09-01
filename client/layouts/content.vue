@@ -17,10 +17,8 @@ const pageContent = useFetchPageContent()
       >
         {{ pageContent.title }}
       </h1>
-      <div
-        v-if="pageContent?.content"
-        v-html="pageContent?.content"
-      />
+      <!-- eslint-disable-next-line vue/no-v-html vue/max-attributes-per-line-->
+      <div v-if="pageContent?.content" v-html="pageContent?.content" />
       <slot />
     </GpsMain>
     <GpsFooter />

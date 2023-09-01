@@ -5,7 +5,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 export default defineVitestConfig({
   plugins: [
     AutoImport({
-      imports: ['vitest'],
+      imports: [
+        'vitest',
+      ],
     }),
   ],
   resolve: {
