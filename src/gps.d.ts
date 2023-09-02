@@ -115,6 +115,10 @@ declare global {
     fields?: string[]
     relatedFiles: RelatedFilesModel[]
     filterStatus?: PostStatus[]
+    richTextFields?: {
+      label: string
+      key: string
+    }[]
   }
 
   export type CollectionRelationModel = {

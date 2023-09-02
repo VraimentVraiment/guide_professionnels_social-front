@@ -1,25 +1,26 @@
 export async function useFetchMainNav(): Promise<DsfrNavItem[]> {
   if (process.server) { return [] }
 
-  const isAuthenticated = await useIsAuthenticated()
-
-  const { navigation_menu: navigationMenu } = (await useFetchDirectusItems<GpsSiteNavMenu>({
-    collectionName: 'gps_site',
-    params: {
-      fields: [
-        'navigation_menu.collection',
-        'navigation_menu.item:gps_pages.title',
-        'navigation_menu.item:gps_pages.slug',
-        'navigation_menu.item:gps_pages.status',
-        'navigation_menu.item:gps_pages_groups.name',
-        'navigation_menu.item:gps_pages_groups.pages.title',
-        'navigation_menu.item:gps_pages_groups.pages.slug',
-        'navigation_menu.item:gps_pages_groups.pages.status',
-      ],
-    },
-  })) as unknown as {
+  const { navigation_menu: navigationMenu } = (
+    await useFetchDirectusItems<GpsSiteNavMenu>({
+      collectionName: 'gps_site',
+      params: {
+        fields: [
+          'navigation_menu.collection',
+          'navigation_menu.item:gps_pages.title',
+          'navigation_menu.item:gps_pages.slug',
+          'navigation_menu.item:gps_pages.status',
+          'navigation_menu.item:gps_pages_groups.name',
+          'navigation_menu.item:gps_pages_groups.pages.title',
+          'navigation_menu.item:gps_pages_groups.pages.slug',
+          'navigation_menu.item:gps_pages_groups.pages.status',
+        ],
+      },
+    })) as unknown as {
     navigation_menu: GpsSiteNavMenu
   } // 'gps_site' collection is defined as a singleton in directus, we can safely cast to GpsSiteNavMenu
+
+  const isAuthenticated = await useIsAuthenticated()
 
   const navItems = navigationMenu
     .map(({ collection: collectionName, item }) => {

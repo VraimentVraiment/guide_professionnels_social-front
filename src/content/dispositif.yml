@@ -1,16 +1,6 @@
 defaultFilename: fiche-dispositif
 downloadFilesLabel: Fichiers liés
+lastUpdateLabel: Dernière mise à jour le
 buttonsLabels:
   download: Télécharger
   print: Imprimer
-richTextFields:
-  - key: public_eligible
-    label: Public éligible
-  - key: cadre_de_vie
-    label: Cadre de vie
-  - key: missions
-    label: Missions
-  - key: demande_dinformation
-    label: Demande d'information
-  - key: demarche_a_suivre
-    label: Démarche à suivre

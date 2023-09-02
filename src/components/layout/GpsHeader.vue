@@ -32,6 +32,9 @@ const contentNavItems = computed(() => {
     })
 })
 
+/**
+ * @todo issue here, this should be fetched again on route change
+ */
 const directusNavItems = await useFetchMainNav()
 
 const navItems = computed(() => {

@@ -4,16 +4,24 @@
 
 export default defineNuxtConfig({
   srcDir: 'src/',
+
+  devtools: {
+    enabled: true,
+  },
+
   extends: [
     './src/layers/dsfr',
   ],
+
   modules: [
-    'nuxt-directus',
     '@nuxt/content',
+    '@nuxt/devtools',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt-directus',
     'nuxt-vitest',
   ],
+
   runtimeConfig: {
     public: {
       directus: {
@@ -21,28 +29,34 @@ export default defineNuxtConfig({
       },
     },
   },
+
   pinia: {
     autoImports: [
       'defineStore',
     ],
   },
+
   piniaPersistedstate: {
     storage: 'sessionStorage',
   },
+
   css: [
     '@/styles/index.scss',
   ],
+
   components: [
     {
       path: '~/components',
       pathPrefix: false,
     },
   ],
+
   ignore: [
     '**/*.test.*',
     '**/*.spec.*',
     '**/*.cy.*',
   ],
+
   imports: {
     dirs: [
       'composables/**',

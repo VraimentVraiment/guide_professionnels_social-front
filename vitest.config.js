@@ -3,12 +3,15 @@ import { defineVitestConfig } from 'nuxt-vitest/config'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineVitestConfig({
+  test: {
+    root: './src/tests',
+  },
   plugins: [
     AutoImport({
       imports: [
         'vitest',
       ],
-      dts: './tests/tests-auto-imports.d.ts',
+      dts: './tests-auto-imports.d.ts',
     }),
   ],
   resolve: {

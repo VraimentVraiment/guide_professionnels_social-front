@@ -9,14 +9,14 @@ export async function useGpsAuth() {
   const content = await queryContent('login').findOne()
 
   const email = useDsfrField({
-    strings: content.emailField,
+    props: content.emailField,
     isValidCondition: (value) => {
       return isStringValidEmail(value)
     },
   })
 
   const password = useDsfrField({
-    strings: content.passwordField,
+    props: content.passwordField,
     isValidCondition: (value) => {
       return value.length >= 8
     },

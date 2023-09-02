@@ -1,4 +1,4 @@
-type GpsFieldStrings = {
+type DsfrFieldProps = {
   label: string
   placeholder: string
   hint: string
@@ -13,10 +13,10 @@ type GpsFieldStrings = {
  * A model for the DSFR field.
  */
 export function useDsfrField({
-  strings,
+  props,
   isValidCondition,
 }: {
-  strings: GpsFieldStrings,
+  props: DsfrFieldProps,
   isValidCondition?: (value: string) => boolean
 }): FieldModel {
   const value = ref('')
@@ -48,16 +48,16 @@ export function useDsfrField({
     isError,
     isValid,
     props: {
-      label: strings.label,
-      placeholder: strings.placeholder,
-      hint: strings.hint,
-      autocomplete: strings.autocomplete,
+      label: props.label,
+      placeholder: props.placeholder,
+      hint: props.hint,
+      autocomplete: props.autocomplete,
     },
     errorMessage: computed(() => {
-      return (isError.value && strings.messages.error) || undefined
+      return (isError.value && props.messages.error) || undefined
     }),
     validMessage: computed(() => {
-      return (isValid.value && strings.messages.valid) || undefined
+      return (isValid.value && props.messages.valid) || undefined
     }),
     validate,
     reset,

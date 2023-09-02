@@ -8,17 +8,17 @@ definePageMeta({
 })
 
 const content = await queryContent('/dispositif').findOne() as unknown as {
-  richTextFields: {
-    key: keyof DispositifPost
-    label: string
-  }[]
   downloadFilesLabel: string
   defaultFilename: string
+  lastUpdateLabel: string
   buttonsLabels: {
     download: string
     print: string
   }
 }
+
+const { getCollectionModelByName } = useCollectionsModelsStore()
+const model = getCollectionModelByName('gps_fichesdispositif')
 
 /**
  * @todo Use signal error modal when directus fix this :
@@ -85,10 +85,16 @@ const {
         <h1>
           {{ post?.name }}
         </h1>
-        <DateUpdated
+        <p
           v-if="post?.date_updated?.length"
-          :date-updated="post.date_updated"
-        />
+          :class="[
+            'fr-text--sm',
+            'gps-date'
+          ]"
+        >
+          {{ content.lastUpdateLabel }}
+          {{ getLocaleDate(post.date_updated) }}
+        </p>
         <hr
           :class="[
             'fr-hr'
@@ -115,11 +121,11 @@ const {
       </header>
       <article>
         <template
-          v-for="{ key, label } in content.richTextFields"
+          v-for="{ key, label } in model?.richTextFields"
           :key="key"
         >
           <div
-            v-if="post?.[key]"
+            v-if="post?.[key as keyof DispositifPost]"
             :class="[
               'gps-rich-text-container'
             ]"
@@ -132,11 +138,11 @@ const {
               ]"
             >
               <!-- eslint-disable-next-line vue/no-v-html -->
-              <div v-html="post[key]" />
+              <div v-html="post[key as keyof DispositifPost] as string" />
             </div>
           </div>
           <hr
-            v-if="post?.[key]"
+            v-if="post?.[key as keyof DispositifPost]"
             :class="[
               'fr-hr noprint'
             ]"
