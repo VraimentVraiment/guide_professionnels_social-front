@@ -1,7 +1,6 @@
 logoPath: /boussole_v3.svg
-props:
-  title:
-    - Guide des
-    - Professionnels du
-    - Social
-  baseline: 'dans le département du Calvados'
+title:
+  - Guide des
+  - Professionnels du
+  - Social
+baseline: 'dans le département du Calvados'

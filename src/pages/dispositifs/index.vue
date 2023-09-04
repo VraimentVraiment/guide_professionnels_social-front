@@ -20,7 +20,9 @@ const content = await queryContent('/pages/dispositifs').findOne()
 
 const postStore = useDispositifPostStore()
 onMounted(() => {
-  mounted.value = true
+  if (process.client) {
+    mounted.value = true
+  }
   Promise.allSettled([
     postStore.fetchCollection('gps_caracteristiquesdispositif'),
     postStore.fetchCollection('gps_fichesdispositif'),

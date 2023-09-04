@@ -2,7 +2,7 @@
 
 import { storeToRefs } from 'pinia'
 
-const content = await queryContent('/components/search-module').findOne()
+const content = await queryContent('/components/gps-search-bar').findOne()
 
 const searchStore = useSearchStore()
 searchStore.watchQuery()

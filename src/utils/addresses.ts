@@ -53,23 +53,40 @@ function getMarkerTooltipContent(
   `
 }
 
-export async function getCities(
+export async function geocodeCities(
   search: string,
+  apiOptions: {
+    apiUrl: string,
+    basePostalCode?: string,
+    queryParams: {
+      lat?: number,
+      lon?: number,
+      limit?: number,
+      type: string,
+    }
+  },
 ): Promise<GouvAddressFeature[] | null> {
-  const API_URL = 'https://api-adresse.data.gouv.fr/search'
-  const BASE_POSTAL_CODE = '14'
-  const lat = 49.1756
-  const lon = -0.3596
-  const limit = 5
+  let query = `${apiOptions.apiUrl}/?q=${search}`
 
-  const query = `${API_URL}/?q=${search}&type=municipality&limit=${limit}&lat=${lat}&lon=${lon}&autocomplete=1`
+  const queryParams = Object.entries(apiOptions.queryParams)
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+
+  if (queryParams) {
+    query += `&${queryParams}`
+  }
+
   const result = await fetch(query)
   const data = (await result?.json()) as GouvAddressApiFeatureCollection
 
   const features = data
     ?.features
     ?.filter((feature) => {
-      return feature.properties.citycode.substring(0, 2) === BASE_POSTAL_CODE
+      return (
+        !apiOptions.basePostalCode ||
+        feature.properties.citycode.substring(0, 2) === apiOptions.basePostalCode.toString()
+      )
     })
 
   return features ?? null

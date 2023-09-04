@@ -58,9 +58,10 @@ function useDefineSearchStore() {
     postItems.value = []
   }
 
+  const content = queryContent('/components/gps-search-bar').findOne()
   const watchQuery = () => {
     watchDebounced(query, async() => {
-      const cities = await getCities(query.value)
+      const cities = await geocodeCities(query.value, (await content).apiOptions)
 
       queryCityList.value = cities
         ?.map((city: any) => {

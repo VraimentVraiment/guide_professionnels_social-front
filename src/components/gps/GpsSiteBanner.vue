@@ -7,7 +7,8 @@ const content = await queryContent('/components/gps-site-banner').findOne()
 <template>
   <div
     :class="[
-      'gps-banner fr-mb-6v'
+      'gps-banner',
+      'fr-mb-6v'
     ]"
   >
     <div
@@ -36,7 +37,7 @@ const content = await queryContent('/components/gps-site-banner').findOne()
         ]"
       >
         <span
-          v-for="line, i in content.props.title"
+          v-for="line, i in content.title"
           :key="i"
           :class="[
             'gps-banner__title__line'
@@ -51,7 +52,7 @@ const content = await queryContent('/components/gps-site-banner').findOne()
           'fr-text--lg'
         ]"
       >
-        {{ content.props.baseline }}
+        {{ content.baseline }}
       </p>
     </div>
   </div>
@@ -81,7 +82,7 @@ const content = await queryContent('/components/gps-site-banner').findOne()
 
   .gps-banner__content {
     .gps-banner__title {
-      &--line {
+      .gps-banner__title__line {
         display: block;
 
         &::first-letter {

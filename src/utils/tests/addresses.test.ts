@@ -48,19 +48,19 @@ describe('geojsonAddressToMarkerOptions', () => {
   })
 })
 
-describe('getCities', () => {
+describe('geocodeCities', () => {
   it('returns null for empty search string', async() => {
-    const result = await getCities('')
+    const result = await geocodeCities('')
     expect(result).toBeNull()
   })
 
   it('returns null for invalid search string', async() => {
-    const result = await getCities('!@#$%^&*()')
+    const result = await geocodeCities('!@#$%^&*()')
     expect(result).toBeNull()
   })
 
   it('returns an array of GouvAddressFeature objects for valid search string', async() => {
-    const result = await getCities('Caen')
+    const result = await geocodeCities('Caen')
     expect(result).toBeInstanceOf(Array)
     expect(result?.[0]).toHaveProperty('type', 'Feature')
     expect(result?.[0]).toHaveProperty('properties')
@@ -68,17 +68,17 @@ describe('getCities', () => {
   })
 
   it('filters results by postal code', async() => {
-    const result1 = await getCities('Caen')
+    const result1 = await geocodeCities('Caen')
     expect(result1).toBeInstanceOf(Array)
     expect(result1?.length).toBeGreaterThan(0)
 
-    const result2 = await getCities('Paris')
+    const result2 = await geocodeCities('Paris')
     expect(result2).toBeInstanceOf(Array)
     expect(result2).toHaveProperty('length', 0)
   })
 
   it('limits results to 5', async() => {
-    const result = await getCities('Caen')
+    const result = await geocodeCities('Caen')
     expect(result).toBeInstanceOf(Array)
     expect(result?.length).toBeLessThanOrEqual(5)
   })

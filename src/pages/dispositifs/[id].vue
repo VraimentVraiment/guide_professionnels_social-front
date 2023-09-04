@@ -7,7 +7,7 @@ definePageMeta({
   ],
 })
 
-const content = await queryContent('/pages/dispositifs[id]').findOne() as unknown as {
+const content = await queryContent('/pages/dispositif').findOne() as unknown as {
   downloadFilesLabel: string
   defaultFilename: string
   lastUpdateLabel: string
