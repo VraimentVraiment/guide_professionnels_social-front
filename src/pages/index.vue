@@ -89,7 +89,6 @@ stepOne()
             >
               <DsfrTile2
                 :title="name"
-                download
                 horizontal
                 to=""
                 :img-src="useGetDirectusFileLink(pictogramme)"

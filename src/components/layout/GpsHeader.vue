@@ -1,9 +1,6 @@
 <script setup lang="ts">
 
-const headerContent = await queryContent('/components/header').findOne()
-const mainNavContent = await queryContent('/components/main-nav').findOne()
-
-const isAuthenticated = await useIsAuthenticated()
+const content = await queryContent('/components/header').findOne()
 
 const quickLinks = computed(() => {
   return []
@@ -11,7 +8,7 @@ const quickLinks = computed(() => {
   /**
    * @todo Add quick links when 'account' page is set up
    */
-  // return headerContent.props.quickLinks
+  // return content.props.quickLinks
   //   ?.filter((quickLink: {
   //   to: string
   //   label: string
@@ -22,29 +19,6 @@ const quickLinks = computed(() => {
   //   })
 })
 
-const contentNavItems = computed(() => {
-  return mainNavContent.props.navItems
-    ?.filter((navItem: {
-      to: string
-      text: string
-      public?: boolean
-    }) => {
-      return isAuthenticated.value || navItem.public
-    })
-})
-
-/**
- * @todo issue here, this should be fetched again on route change
- */
-const directusNavItems = await useFetchMainNav()
-
-const navItems = computed(() => {
-  return [
-    ...contentNavItems.value,
-    ...directusNavItems,
-  ]
-})
-
 </script>
 
 <template>
@@ -53,16 +27,13 @@ const navItems = computed(() => {
       'gps-header',
       'noprint'
     ]"
-    :logo-text="headerContent.props.logoText"
-    :service-title="headerContent.props.serviceTitle"
-    :service-description="headerContent.props.serviceDescription"
+    :logo-text="content.props.logoText"
+    :service-title="content.props.serviceTitle"
+    :service-description="content.props.serviceDescription"
     :quick-links="quickLinks"
   >
     <ClientOnly>
-      <DsfrNavigation
-        v-if="navItems.length > 0"
-        :nav-items="navItems"
-      />
+      <GpsMainNav />
     </ClientOnly>
   </DsfrHeader>
 </template>
