@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-const content = await queryContent('/layout').findOne()
+const headerContent = await queryContent('/components/header').findOne()
+const mainNavContent = await queryContent('/components/main-nav').findOne()
 
 const isAuthenticated = await useIsAuthenticated()
 
@@ -10,7 +11,7 @@ const quickLinks = computed(() => {
   /**
    * @todo Add quick links when 'account' page is set up
    */
-  // return content.headerProps.quickLinks
+  // return headerContent.props.quickLinks
   //   ?.filter((quickLink: {
   //   to: string
   //   label: string
@@ -22,7 +23,7 @@ const quickLinks = computed(() => {
 })
 
 const contentNavItems = computed(() => {
-  return content.mainNavProps.navItems
+  return mainNavContent.props.navItems
     ?.filter((navItem: {
       to: string
       text: string
@@ -52,9 +53,9 @@ const navItems = computed(() => {
       'gps-header',
       'noprint'
     ]"
-    :logo-text="content.headerProps.logoText"
-    :service-title="content.headerProps.serviceTitle"
-    :service-description="content.headerProps.serviceDescription"
+    :logo-text="headerContent.props.logoText"
+    :service-title="headerContent.props.serviceTitle"
+    :service-description="headerContent.props.serviceDescription"
     :quick-links="quickLinks"
   >
     <ClientOnly>

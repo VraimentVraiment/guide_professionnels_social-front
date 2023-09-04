@@ -16,7 +16,7 @@ const hasMapLoaded = ref(false)
 const { breakpoints } = useDsfrBreakpoints()
 const isSmallScreen = breakpoints.smaller('MD')
 
-const content = await queryContent('/dispositifs').findOne()
+const content = await queryContent('/pages/dispositifs').findOne()
 
 const postStore = useDispositifPostStore()
 onMounted(() => {

@@ -20,7 +20,7 @@ const {
   typesRootNode,
 } = storeToRefs(useGpsSelectedThematiqueStore())
 
-const content = await queryContent('/home').findOne()
+const content = await queryContent('/pages/home').findOne()
 const alertModel = useDsfrAlertModel(content.messages)
 
 alertModel.show('info')
@@ -87,8 +87,9 @@ stepOne()
                 'fr-col-sm-6'
               ]"
             >
-              <DsfrTile
+              <DsfrTile2
                 :title="name"
+                download
                 horizontal
                 to=""
                 :img-src="useGetDirectusFileLink(pictogramme)"

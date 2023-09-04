@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
-const logoPath = '/boussole_v3.svg'
-
-const content = await queryContent('/layout').findOne()
+const content = await queryContent('/components/gps-site-banner').findOne()
 
 </script>
 
@@ -20,7 +18,7 @@ const content = await queryContent('/layout').findOne()
       ]"
     >
       <img
-        :src="logoPath"
+        :src="content.logoPath"
         alt="Logo GPS"
       >
     </div>
@@ -38,7 +36,7 @@ const content = await queryContent('/layout').findOne()
         ]"
       >
         <span
-          v-for="line, i in content.bannerProps.title"
+          v-for="line, i in content.props.title"
           :key="i"
           :class="[
             'gps-banner__title__line'
@@ -53,7 +51,7 @@ const content = await queryContent('/layout').findOne()
           'fr-text--lg'
         ]"
       >
-        {{ content.bannerProps.baseline }}
+        {{ content.props.baseline }}
       </p>
     </div>
   </div>

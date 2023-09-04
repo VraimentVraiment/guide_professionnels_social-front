@@ -11,7 +11,7 @@ const rolesIds = {
 }
 const { createNotification } = useDirectusNotifications()
 
-const content = await queryContent('/signal-modal').findOne()
+const content = await queryContent('/components/signal-modal').findOne()
 
 const messageObject = ref()
 const messageContent = ref('')

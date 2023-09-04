@@ -1,4 +1,4 @@
-options:
+geoportalConfig:
   apiKey: cartes,essentiels
   center:
     x: -0.3596

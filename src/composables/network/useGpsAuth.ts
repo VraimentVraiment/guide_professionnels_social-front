@@ -6,7 +6,7 @@ export async function useGpsAuth() {
   const isError = ref(false)
   const rememberMe = ref(false)
 
-  const content = await queryContent('login').findOne()
+  const content = await queryContent('/components/login').findOne()
 
   const email = useDsfrField({
     props: content.emailField,

@@ -1,7 +1,7 @@
 export async function useFetchNuxtPageContent(
   routeName: string,
 ): Promise<GpsPage | null> {
-  const pages = await queryContent('/pages').findOne()
+  const pagesMeta = await queryContent('/meta').findOne()
 
-  return pages?.[routeName] ?? null
+  return pagesMeta?.[routeName] ?? null
 }

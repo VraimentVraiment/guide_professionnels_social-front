@@ -6,7 +6,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['map-loaded'])
 
-const { options: GEOPORTAL_CONFIG } = await queryContent('/geoportal-config').findOne()
+const { geoportalConfig } = await queryContent('/components/gps-map').findOne()
 
 const searchStore = useSearchStore()
 
@@ -20,7 +20,7 @@ const markers = computed(() => {
           }
           return searchStore.selectedCityList?.includes(gpsAddress.address?.value?.properties?.city)
         })
-        ?.map(geojsonAddressToMarkerOptions(post, GEOPORTAL_CONFIG.center.projection))
+        ?.map(geojsonAddressToMarkerOptions(post, geoportalConfig.center.projection))
     })
     .filter(Boolean)
 })
@@ -32,7 +32,7 @@ if (process.client) {
 
 function loadMap(Gp: any) {
   const gpMap = Gp.Map.load('map', {
-    ...GEOPORTAL_CONFIG,
+    ...geoportalConfig,
     layersOptions: {
       'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2': {},
     },

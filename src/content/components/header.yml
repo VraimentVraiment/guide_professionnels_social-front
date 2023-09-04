@@ -1,0 +1,10 @@
+props:
+  serviceTitle: 'Guide des Professionnels du Social'
+  serviceDescription: 'dans le département du Calvados'
+  logoText:
+    - 'Prefet'
+    - 'du Calvados'
+  quickLinks:
+    - label: 'Mon espace'
+      to: '/monespace'
+      icon: 'ri-user-line'
