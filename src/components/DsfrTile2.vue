@@ -6,6 +6,7 @@ export type DsfrTileProps = {
   title?: string
   imgSrc?: string
   description?: string
+  details?: string
   disabled?: boolean
   horizontal?: boolean
   vertical?: 'md' | 'lg'
@@ -24,7 +25,7 @@ const props = withDefaults(defineProps<DsfrTileProps>(), {
   title: 'Titre de la tuile',
   imgSrc: undefined,
   description: undefined,
-  horizontal: false,
+  details: undefined,
   vertical: undefined,
   to: '#',
   titleTag: 'h3',
@@ -82,6 +83,12 @@ const isExternalLink = computed(() => {
         >
           {{ description }}
         </p>
+        <p
+          v-if="details"
+          class="fr-tile__detail"
+        >
+          {{ details }}
+        </p>
       </div>
     </div>
     <div class="fr-tile__header">
@@ -91,7 +98,7 @@ const isExternalLink = computed(() => {
       >
         <img
           :src="imgSrc"
-          class="fr-responsive-img"
+          class="fr-artwork"
           alt=""
         >
       <!-- L'alternative de l'image (attribut alt) doit à priori rester vide car l'image est illustrative et ne doit pas être restituée aux technologies d’assistance. Vous pouvez toutefois remplir l'alternative si vous estimer qu'elle apporte une information essentielle à la compréhension du contenu non présente dans le texte -->
