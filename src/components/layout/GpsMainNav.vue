@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const content = await queryContent('/components/main-nav').findOne()
 
 const isAuthenticated = await useIsAuthenticated()
@@ -31,6 +32,7 @@ const navItems = computed(() => {
     ...directusNavItems.value,
   ]
 })
+
 </script>
 
 <template>
