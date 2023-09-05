@@ -102,17 +102,16 @@ export function useDirectusFilters(
           }
         }
 
-        const idsIntersection = ids.some(ids => ids.length === 0)
+        const idsIntersection = ids
+          .some(ids => ids.length === 0)
           ? []
           : Array.from(intersection(...ids))
 
-        if (ids.length) {
-          addFilterCondition({
-            id: {
-              _in: idsIntersection,
-            },
-          })
-        }
+        addFilterCondition({
+          id: {
+            _in: idsIntersection,
+          },
+        })
 
         if (collectionModel.filterStatus) {
           addFilterCondition({

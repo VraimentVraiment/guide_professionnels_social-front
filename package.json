@@ -27,6 +27,7 @@
     "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
     "html2pdf.js": "^0.10.1",
+    "js-yaml": "^4.1.0",
     "nuxt": "^3.7.0",
     "nuxt-directus": "^5.5.0",
     "oh-vue-icons": "1.0.0-rc3",

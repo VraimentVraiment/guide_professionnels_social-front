@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia'
 definePageMeta({
   layout: 'default',
   middleware: [
-    'collections-models',
     'fichesdispositif',
   ],
 })
@@ -38,7 +37,13 @@ const stepTwo = (id: number) => {
   })
 
   postStore.fetchCollection('gps_typesdispositif')
-  alertModel.setStep(1)
+  if (
+    postStore.filtersCollections.find(c => c.collectionName === 'gps_typesdispositif')?.items.length === 0
+  ) {
+    navigateTo('/dispositifs')
+  } else {
+    alertModel.setStep(1)
+  }
 }
 
 stepOne()

@@ -4,7 +4,12 @@ import { useElementBounding } from '@vueuse/core'
 definePageMeta({
   layout: 'default',
   middleware: [
-    'collections-models',
+    function() {
+      const { selectedThematique } = useGpsSelectedThematiqueStore()
+      if (!selectedThematique) {
+        return navigateTo('/')
+      }
+    },
     'fichesdispositif',
   ],
 })

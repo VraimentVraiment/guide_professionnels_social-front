@@ -4,7 +4,6 @@ import { computedAsync } from '@vueuse/core'
 definePageMeta({
   layout: 'default',
   middleware: [
-    'collections-models',
     'fichestechniques',
   ],
 })

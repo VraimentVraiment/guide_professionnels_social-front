@@ -38,6 +38,9 @@ dependencies:
   html2pdf.js:
     specifier: ^0.10.1
     version: 0.10.1
+  js-yaml:
+    specifier: ^4.1.0
+    version: 4.1.0
   nuxt:
     specifier: ^3.7.0
     version: 3.7.0(eslint@8.48.0)(sass@1.66.1)(stylelint@15.10.3)(typescript@5.2.2)
@@ -2067,6 +2070,7 @@ packages:
 
   /@types/raf@3.4.0:
     resolution: {integrity: sha512-taW5/WYqo36N7V39oYyHP9Ipfd5pNFvGTIQsNGj86xV88YQ7GnI30/yMfKDF7Zgin0m3e+ikX88FvImnK4RjGw==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -2223,38 +2227,38 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: false
 
-  /@unhead/dom@1.5.1:
-    resolution: {integrity: sha512-q3DEVTWJMSOAXo1Ft8PtVB+oyyoqJxYK6RdEonq921tRkLM4ES4zaDNacGbhdMnqHgiozr/bD+92kcRUHyf6YA==}
+  /@unhead/dom@1.5.2:
+    resolution: {integrity: sha512-lEDxqFSGb3Ye1TD7Kr3kRsMOSv5R2ldJ/uYh2mRFungYfv3TjOUfxvGgMs2vRjatPDpV4IUWr3E1BASayN8CnA==}
     dependencies:
-      '@unhead/schema': 1.5.1
-      '@unhead/shared': 1.5.1
+      '@unhead/schema': 1.5.2
+      '@unhead/shared': 1.5.2
 
-  /@unhead/schema@1.5.1:
-    resolution: {integrity: sha512-ENlc5U2C8gjrmM+sQb+lcnaQFRb6v39bo8Wltg5hvQd22y9Ch9DxlpLGVkGauK7Z+bftajIUdfFAEcK2/DdA7w==}
+  /@unhead/schema@1.5.2:
+    resolution: {integrity: sha512-7nmcN332yuXzWPzzlqD/F/wOXTaIKn3cRaPxTkU+eJLNGmAsQ9i5p4P5x9AgduZD/NGbJG/h+wM+/cB0psMiKQ==}
     dependencies:
       hookable: 5.5.3
       zhead: 2.0.10
 
-  /@unhead/shared@1.5.1:
-    resolution: {integrity: sha512-F+dHZlvwnzD7+m5Fc2tC9tcO3h86D41jPcvac9buZDk4jk740/kVqCOrx3CTDzO1Z6BhGCSGjg6VFn9fozj5OQ==}
+  /@unhead/shared@1.5.2:
+    resolution: {integrity: sha512-gHjquSnyJ9SOV20zxGffZP0t9mkBAHTGgFhUl9HB8FrL9tp4Jovjc01O0jn/NRNaBICsQBxDryj5lpuTHFIM9g==}
     dependencies:
-      '@unhead/schema': 1.5.1
+      '@unhead/schema': 1.5.2
 
-  /@unhead/ssr@1.5.1:
-    resolution: {integrity: sha512-TPWDYhF8F9LR7X5K5ehgP+ug+ROUotCDec6FwXj3x0JkKztlD7tXE+MepViseP9jYPsH2R0FILGJfO9CoxkoEA==}
+  /@unhead/ssr@1.5.2:
+    resolution: {integrity: sha512-wse2uOg2Fh+MM9unoM0T1Q/dYwmaNdUWzR4ovnMKvQ6K7HpzCJaETHLzbS5g/TXLRIFd7eA3mTQCnp0iPoaoYw==}
     dependencies:
-      '@unhead/schema': 1.5.1
-      '@unhead/shared': 1.5.1
+      '@unhead/schema': 1.5.2
+      '@unhead/shared': 1.5.2
 
-  /@unhead/vue@1.5.1(vue@3.3.4):
-    resolution: {integrity: sha512-6L1sH4N2RzDLmR+UlgcvxQGYeZhWmRaCVw6y7PuaR1b1xtBFVdqJcumBkJc3fhuoasp1AWdnd6qX7A1kGx/jFA==}
+  /@unhead/vue@1.5.2(vue@3.3.4):
+    resolution: {integrity: sha512-DkKJJfNmiwkq41PiNmPcONVdNN1wRp8KTHCCOnOBt1nAdhIAj83ykIdpkLGLseJTzy4C2efiR1lips/42ZsNTg==}
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/schema': 1.5.1
-      '@unhead/shared': 1.5.1
+      '@unhead/schema': 1.5.2
+      '@unhead/shared': 1.5.2
       hookable: 5.5.3
-      unhead: 1.5.1
+      unhead: 1.5.2
       vue: 3.3.4
 
   /@vercel/nft@0.23.1:
@@ -2505,10 +2509,10 @@ packages:
     peerDependencies:
       vue: '>=2.7 || >=3'
     dependencies:
-      '@unhead/dom': 1.5.1
-      '@unhead/schema': 1.5.1
-      '@unhead/ssr': 1.5.1
-      '@unhead/vue': 1.5.1(vue@3.3.4)
+      '@unhead/dom': 1.5.2
+      '@unhead/schema': 1.5.2
+      '@unhead/ssr': 1.5.2
+      '@unhead/vue': 1.5.2(vue@3.3.4)
       vue: 3.3.4
     dev: false
 
@@ -4534,6 +4538,7 @@ packages:
   /esm@3.2.25:
     resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -7503,9 +7508,9 @@ packages:
       '@nuxt/telemetry': 2.4.1
       '@nuxt/ui-templates': 1.3.1
       '@nuxt/vite-builder': 3.7.0(eslint@8.48.0)(sass@1.66.1)(stylelint@15.10.3)(typescript@5.2.2)(vue@3.3.4)
-      '@unhead/dom': 1.5.1
-      '@unhead/ssr': 1.5.1
-      '@unhead/vue': 1.5.1(vue@3.3.4)
+      '@unhead/dom': 1.5.2
+      '@unhead/ssr': 1.5.2
+      '@unhead/vue': 1.5.2(vue@3.3.4)
       '@vue/shared': 3.3.4
       acorn: 8.10.0
       c12: 1.4.2
@@ -7944,6 +7949,7 @@ packages:
 
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -8454,6 +8460,7 @@ packages:
 
   /raf@3.4.1:
     resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
+    requiresBuild: true
     dependencies:
       performance-now: 2.1.0
     dev: false
@@ -8608,6 +8615,7 @@ packages:
 
   /regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -8790,6 +8798,7 @@ packages:
   /rgbcolor@1.0.1:
     resolution: {integrity: sha512-9aZLIrhRaD97sgVhtJOW6ckOEh6/GnvQtdVNfdZ6s67+3/XwLS9lBcQYzEEhYVeUowN7pRzMLsyGhK2i/xvWbw==}
     engines: {node: '>= 0.8.15'}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -9204,6 +9213,7 @@ packages:
   /stackblur-canvas@2.6.0:
     resolution: {integrity: sha512-8S1aIA+UoF6erJYnglGPug6MaHYGo1Ot7h5fuXx4fUPvcvQfcdw2o/ppCse63+eZf8PPidSu4v1JnmEVtEDnpg==}
     engines: {node: '>=0.1.14'}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -9526,6 +9536,7 @@ packages:
   /svg-pathdata@6.0.3:
     resolution: {integrity: sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==}
     engines: {node: '>=12.0.0'}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -9878,12 +9889,12 @@ packages:
       node-fetch-native: 1.4.0
       pathe: 1.1.1
 
-  /unhead@1.5.1:
-    resolution: {integrity: sha512-C3o3KXfKR7lg3hCQ0lmnPdRjy4c6wbOkBhJR/iXEYZWftgKZmWXIocZIFZOSYJebnYxUI97pSIp0CdwW/esaXQ==}
+  /unhead@1.5.2:
+    resolution: {integrity: sha512-KLsz9MCMEhVEeaI4YsoALnr4xk6k+xZ2JW9xjJxsae6AvHNTZQzRbavuPRQ3tIw2hIHoGetyPKiYjFteORNQMg==}
     dependencies:
-      '@unhead/dom': 1.5.1
-      '@unhead/schema': 1.5.1
-      '@unhead/shared': 1.5.1
+      '@unhead/dom': 1.5.2
+      '@unhead/schema': 1.5.2
+      '@unhead/shared': 1.5.2
       hookable: 5.5.3
 
   /unicode-emoji-modifier-base@1.0.0:

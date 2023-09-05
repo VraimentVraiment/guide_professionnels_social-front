@@ -2,9 +2,7 @@
 
 definePageMeta({
   layout: 'default',
-  middleware: [
-    'collections-models',
-  ],
+  middleware: [],
 })
 
 const content = await queryContent('/pages/dispositif').findOne() as unknown as {

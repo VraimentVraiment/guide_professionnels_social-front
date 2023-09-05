@@ -4,7 +4,7 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   if (process.server) { return }
 
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     useIsAuthenticated()
       .then((isAuthenticated) => {
         if (
@@ -18,9 +18,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
           ))
         }
 
-        if (
-          !isAuthenticated.value
-        ) {
+        if (!isAuthenticated.value) {
           const pageName = to.params?.slug?.[0] ?? to.name as string
           let slug = to.params?.slug
           if (!slug) {

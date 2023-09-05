@@ -35,6 +35,7 @@ export function useFetchCollection<PostType extends Post>(
         return
       }
     }
+
     const existingCollection = collections.value
       .find((c) => {
         return (
@@ -43,16 +44,20 @@ export function useFetchCollection<PostType extends Post>(
         )
       })
 
-    const items = (
-      await useFetchDirectusItems<CollectionItem<PostType>>({
-        collectionName,
-        params: Object.assign(params, {
-          filter: getDirectusFilter(directusFilters, collectionName),
-          fields: getFields(collectionName),
-        }),
-      })
-    )
-      ?.map(getInitialItem<PostType>(collectionType, relationModel)) as ItemsCollection['items']
+    const directusFilter = getDirectusFilter(directusFilters, collectionName)
+
+    const items = directusFilter === false
+      ? []
+      : (
+        await useFetchDirectusItems<CollectionItem<PostType>>({
+          collectionName,
+          params: Object.assign(params, {
+            filter: directusFilter,
+            fields: getFields(collectionName),
+          }),
+        })
+      )
+        ?.map(getInitialItem<PostType>(collectionType, relationModel)) as ItemsCollection['items']
 
     if (!existingCollection) {
       collections.value.push(getInitialCollection<PostType>(collectionName, collectionType, items, relationModel))

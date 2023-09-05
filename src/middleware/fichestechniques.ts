@@ -3,21 +3,23 @@ export default defineNuxtRouteMiddleware(() => {
     return
   }
 
-  const postStore = useFicheTechniquePostStore()
+  return new Promise<void>((resolve) => {
+    const postStore = useFicheTechniquePostStore()
+    const promises = []
 
-  return new Promise((resolve) => {
     if (!postStore.postsCollectionName) {
       postStore.setPostCollection('gps_fichestechniques')
-      Promise.allSettled([
-        postStore.fetchCollection('gps_fichestechniques'),
-        postStore.fetchCollection('gps_thematiques'),
-      ]).then(() => {
-        postStore.watchPostFiltering()
-        resolve()
-      })
-    } else {
+    }
+    if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_fichestechniques')) {
+      promises.push(postStore.fetchCollection('gps_fichestechniques'))
+    }
+    if (!postStore.collections.some(({ collectionName }) => collectionName === 'gps_thematiques')) {
+      promises.push(postStore.fetchCollection('gps_thematiques'))
+    }
+
+    Promise.allSettled(promises).then(() => {
       postStore.watchPostFiltering()
       resolve()
-    }
+    })
   })
 })

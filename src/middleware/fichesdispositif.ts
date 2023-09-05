@@ -1,20 +1,12 @@
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(() => {
   if (process.server) {
     return
   }
 
-  const selectedThematiqueStore = useGpsSelectedThematiqueStore()
-  if (
-    to.path === '/dispositifs' &&
-    !selectedThematiqueStore.selectedThematique
-  ) {
-    return navigateTo('/')
-  }
-
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
+    const postStore = useDispositifPostStore()
     const promises = []
 
-    const postStore = useDispositifPostStore()
     if (!postStore.postsCollectionName) {
       postStore.setPostCollection('gps_fichesdispositif')
     }
@@ -26,6 +18,8 @@ export default defineNuxtRouteMiddleware((to) => {
     }
 
     Promise.allSettled(promises)
-      .then(() => resolve())
+      .then(() => {
+        resolve()
+      })
   })
 })

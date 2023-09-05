@@ -6,12 +6,7 @@ export const useCollectionsModelsStore = defineStore('collectionsModels', useDef
 })
 
 function useDefineCollectionsModelsStore() {
-  const collectionsModels = ref<CollectionModel[]>([])
-
-  const fetch = async() => {
-    const content = await queryContent('/collections').findOne()
-    collectionsModels.value = content.collections
-  }
+  const collectionsModels = useRuntimeConfig().public.directusCollectionsSchema.collections
 
   const getCollectionModelByName = (
     collectionName: string | null,
@@ -20,7 +15,7 @@ function useDefineCollectionsModelsStore() {
       return null
     }
 
-    return collectionsModels.value
+    return collectionsModels
       ?.find((collectionModel) => {
         return collectionModel.collectionName === collectionName
       }) ?? null
@@ -56,7 +51,7 @@ function useDefineCollectionsModelsStore() {
     collectionName: string,
     type?: CollectionType,
   ): CollectionModel[] | null => {
-    return collectionsModels.value
+    return collectionsModels
       ?.filter((collectionModel) => {
         const isType = (
           !type ||
