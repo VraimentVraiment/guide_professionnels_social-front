@@ -14,7 +14,7 @@ export function useDirectusFilters(
   relationGroups: ComputedRef<RelationGroups>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
-    const { collectionsModels } = useCollectionsModelsStore()
+    const { collectionsModels } = useCollectionsModels()
 
     return collectionsModels
       .filter((collectionModel) => {
@@ -65,7 +65,7 @@ export function useDirectusFilters(
             addFilterCondition({
               [relationModel.field as string]: {
                 _in: collectionCheckedItems
-                  .map((item: FilterItemNode) => item.id),
+                  .map((item: GpsFilterItemNode) => item.id),
               },
             })
           }

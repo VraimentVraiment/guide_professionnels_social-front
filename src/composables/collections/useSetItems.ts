@@ -1,6 +1,6 @@
 type CheckItemProps = {
   collection: FiltersCollection,
-  item: FilterItemNode,
+  item: GpsFilterItemNode,
   value: boolean,
   avoid?: number[],
   isAltKeyPressed?: boolean,
@@ -14,7 +14,7 @@ export function useSetItem(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
-  const { getRelationModel } = useCollectionsModelsStore()
+  const { getRelationModel } = useCollectionsModels()
 
   function setItem({
     collectionName,
@@ -64,7 +64,7 @@ export function useSetItem(
   }: {
     collection: FiltersCollection,
     relationModel: CollectionRelationModel | null,
-    item: FilterItemNode,
+    item: GpsFilterItemNode,
     value: boolean,
     avoid: number[],
     isAltKeyPressed?: boolean,

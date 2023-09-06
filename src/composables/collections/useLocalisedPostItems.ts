@@ -1,7 +1,7 @@
 /**
  * Returns a list of posts filtered by the selected cities
  */
-export function useLocalisedPostItems<PostType extends LocalizedPost>(
+export function useLocalisedPostItems<PostType extends GpsLocalizedPost>(
   postsCollection: Ref<PostsCollection<PostType>>,
 ) {
   const searchStore = useSearchStore()

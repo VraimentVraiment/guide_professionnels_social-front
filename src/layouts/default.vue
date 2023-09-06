@@ -1,19 +1,35 @@
 <script setup lang="ts">
 
-const pageContent = useFetchPageContent()
+const publicRuntimeConfig = useRuntimeConfig().public
+const {
+  siteTitle,
+  titleSeparator,
+} = publicRuntimeConfig
+
+const { getMetaTitle } = useGetPageContent()
+
+useHead({
+  title: getMetaTitle,
+  titleTemplate: (pageTitle) => {
+    return [
+      pageTitle,
+      siteTitle,
+    ]
+      .filter(Boolean)
+      .join(` ${titleSeparator} `)
+  },
+})
 
 </script>
 
 <template>
-  <div>
-    <GpsHead
-      :title="pageContent?.metatitle ?? ''"
-      :description="pageContent?.metadescription ?? ''"
-    />
+  <Html lang="fr">
+    <Head />
     <GpsHeader />
     <GpsMain>
       <slot />
     </GpsMain>
     <GpsFooter />
-  </div>
+  </Html>
 </template>
+./useGetPageContent

@@ -1,33 +1,12 @@
 login:
-  title: 'Connexion'
-  metatitle: 'Connexion | Guide des Professionnels du Social'
+  title: Connexion
 index:
-  title: 'Accueil'
-  metatitle: 'Accueil | Guide des Professionnels du Social dans le département du Calvados'
-apropos:
-  title: 'À propos'
-  metatitle: 'À propos | Guide des Professionnels du Social'
+  title: Accueil
 dispositifs:
-  title: 'Trouver un dispositif'
-  metatitle: 'Dispositifs | Guide des Professionnels du Social'
+  title: Dispositifs
 fichestechniques:
-  title: 'Fiches techniques'
-  metatitle: 'Fiches techniques | Guide des Professionnels du Social'
-dispositif[id]:
-  title: dispositif.name
-  metatitle: dispositif.name + ' | Guide des Professionnels du Social'
-mentions-legales:
-  title: 'Mentions légales'
-  metatitle: 'Mentions légales | Guide des Professionnels du Social'
-donnees-personnelles:
-  title: 'Données personnelles'
-  metatitle: 'Données personnelles | Guide des Professionnels du Social'
-cookies:
-  title: 'Cookies'
-  metatitle: 'Cookies | Guide des Professionnels du Social'
-accessibilite:
-  title: 'Accessibilité'
-  metatitle: 'Accessibilité | Guide des Professionnels du Social'
+  title: Fiches techniques
 monespace:
-  title: 'Mon espace'
-  metatitle: 'Mon espace | Guide des Professionnels du Social'
+  title: Mon espace
+'404':
+  title: Erreur 404

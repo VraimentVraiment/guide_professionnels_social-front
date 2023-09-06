@@ -84,7 +84,10 @@ const maxHeight = computed(() => {
 </script>
 
 <template>
-  <GpsGrid show-title>
+  <GpsGrid>
+    <template #top-left>
+      <GpsPageTitle />
+    </template>
     <template #top-right>
       <GpsSearchModule />
     </template>
@@ -94,7 +97,7 @@ const maxHeight = computed(() => {
           'gps-sidebar',
         ]"
       >
-        <FilterSideBar
+        <GpsFilterSideBar
           id="dispositifs-filtersidebar"
           ref="el"
           :post-store="postStore"

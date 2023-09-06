@@ -7,7 +7,7 @@ export function useWatchPostFiltering(
   filtersCollections: Ref<FiltersCollection[]>,
   fetchCollection: (collectionName: string) => Promise<void>,
 ) {
-  const { getDependentCollectionsModels } = useCollectionsModelsStore()
+  const { getDependentCollectionsModels } = useCollectionsModels()
 
   const watchPostFiltering = () => {
     for (const filtersCollection of filtersCollections.value) {

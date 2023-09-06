@@ -4,7 +4,7 @@
 export function getInitialFilterItemNode(
   item: DirectusFilterItem,
   relationModel: CollectionRelationModel,
-): FilterItemNode {
+): GpsFilterItemNode {
   return {
     ...item,
     checked: false,
@@ -18,7 +18,7 @@ export function getInitialFilterItemNode(
  */
 export function getRootFilterItemNode(
   relationModel: CollectionRelationModel,
-): FilterItemNode {
+): GpsFilterItemNode {
   return {
     id: 0,
     parent_id: null,

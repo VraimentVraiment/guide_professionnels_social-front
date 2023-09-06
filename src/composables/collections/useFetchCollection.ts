@@ -1,12 +1,10 @@
-import {
-  type DirectusQueryParams,
-} from 'nuxt-directus/dist/runtime/types'
+import { type DirectusQueryParams } from 'nuxt-directus/dist/runtime/types'
 
 /**
  * Return a function that will fetch a collection from Directus,
  * based on the collection type (posts, filters, relations).
  */
-export function useFetchCollection<PostType extends Post>(
+export function useFetchCollection<PostType extends GpsPost>(
   postsCollectionName: Ref<string | null>,
   collections: Ref<ItemsCollection[]>,
   directusFilters: ComputedRef<CollectionDirectusFilter[]>,
@@ -16,7 +14,7 @@ export function useFetchCollection<PostType extends Post>(
     getManyToManyRelationsModels,
     getCollectionModelByName,
     getFields,
-  } = useCollectionsModelsStore()
+  } = useCollectionsModels()
 
   async function fetchCollection(
     collectionName: string,
@@ -108,13 +106,13 @@ export function useFetchCollection<PostType extends Post>(
   return fetchCollection
 }
 
-function getInitialItem<PostType extends Post>(
+function getInitialItem<PostType extends GpsPost>(
   type: CollectionType,
   relationModel?: CollectionRelationModel,
 ): (d: CollectionItem<PostType>) => ItemsCollection['items'][0] {
   switch (type) {
     case 'posts':
-      return item => item as unknown as Post
+      return item => item as unknown as GpsPost
     case 'relations':
       return item => item as unknown as DirectusRelationItem
     case 'taxonomy':
@@ -122,7 +120,7 @@ function getInitialItem<PostType extends Post>(
   }
 }
 
-function getInitialCollection<PostType extends Post>(
+function getInitialCollection<PostType extends GpsPost>(
   collectionName: string,
   type: CollectionType,
   items: ItemsCollection['items'],
@@ -162,13 +160,13 @@ export function updateCollection(
 ): void {
   switch (type) {
     case 'taxonomy': {
-      const existingItemsChecked = (collection.items as FilterItemNode[])
+      const existingItemsChecked = (collection.items as GpsFilterItemNode[])
         .filter(item => item.checked)
         .map(item => item.id)
 
       collection.items = items
 
-      for (const item of collection.items as FilterItemNode[]) {
+      for (const item of collection.items as GpsFilterItemNode[]) {
         if (
           (existingItemsChecked as number[]).includes(item.id) &&
           !item.checked

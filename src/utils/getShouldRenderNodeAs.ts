@@ -1,14 +1,14 @@
 import { type HierarchyNode } from 'd3-hierarchy'
 
 export const getShouldRenderNodeAs = (
-  props: FilterNodeProps,
+  props: GpsFilterNodeProps,
 ): {
   [key: string]: () => boolean
 } => {
   const {
     node,
   } = props as {
-    node: HierarchyNode<FilterItemNode>,
+    node: HierarchyNode<GpsFilterItemNode>,
   }
 
   const checkbox = () => {

@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-/**
- * @todo Render some parts of main on the server
- * Right know it causes issues with the global auth middleware
- * and the rendered layout
- */
+
 </script>
 
 <template>
@@ -12,9 +8,7 @@
       'fr-container'
     ]"
   >
-    <!-- <ClientOnly> -->
     <slot />
-    <!-- </ClientOnly> -->
   </main>
 </template>
 

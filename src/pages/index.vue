@@ -29,17 +29,16 @@ const stepOne = () => {
   alertModel.setStep(0)
 }
 
-const stepTwo = (id: number) => {
+const stepTwo = async(id: number) => {
   postStore.setItem({
     collectionName: 'gps_thematiques',
     id,
     value: true,
   })
 
-  postStore.fetchCollection('gps_typesdispositif')
-  if (
-    postStore.filtersCollections.find(c => c.collectionName === 'gps_typesdispositif')?.items.length === 0
-  ) {
+  await postStore.fetchCollection('gps_typesdispositif')
+
+  if (!typesRootNode.value?.children) {
     navigateTo('/dispositifs')
   } else {
     alertModel.setStep(1)
@@ -51,7 +50,12 @@ stepOne()
 </script>
 
 <template>
-  <GpsGrid show-title>
+  <GpsGrid
+    v-show="thematiquesItems?.length"
+  >
+    <template #top-left>
+      <GpsPageTitle />
+    </template>
     <template #top-right>
       <GpsSearchModule />
     </template>

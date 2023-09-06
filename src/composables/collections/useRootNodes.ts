@@ -6,7 +6,7 @@ export function useRootNodes(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
-  const { getRelationModel } = useCollectionsModelsStore()
+  const { getRelationModel } = useCollectionsModels()
 
   const rootNodes = computed(() => {
     return filtersCollections.value
@@ -20,7 +20,7 @@ export function useRootNodes(
           item.parent_id ??= 0
         })
 
-        return stratify<FilterItemNode>(
+        return stratify<GpsFilterItemNode>(
           collection.items,
           item => item.id?.toString() ?? null,
           item => item.parent_id?.toString() ?? null,

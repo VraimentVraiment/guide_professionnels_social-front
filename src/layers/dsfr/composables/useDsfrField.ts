@@ -9,6 +9,22 @@ type DsfrFieldProps = {
   }
 }
 
+export type DsfrFieldModel = {
+  value: Ref<string>
+  isError: Ref<boolean>
+  isValid: Ref<boolean>
+  props: {
+    label?: string
+    placeholder?: string
+    hint?: string
+    autocomplete?: string
+  }
+  errorMessage: ComputedRef<string | undefined>
+  validMessage: ComputedRef<string | undefined>
+  validate: () => void
+  reset: () => void
+}
+
 /**
  * A model for the DSFR field.
  */
@@ -18,7 +34,7 @@ export function useDsfrField({
 }: {
   props: DsfrFieldProps,
   isValidCondition?: (value: string) => boolean
-}): FieldModel {
+}): DsfrFieldModel {
   const value = ref('')
   const isError = ref(false)
   const isValid = ref(false)

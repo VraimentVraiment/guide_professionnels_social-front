@@ -109,7 +109,7 @@ const {
           icon-right
           @click="() => resetCollection(collectionName)"
         />
-        <FilterNode
+        <GpsFilterNode
           :post-store="postStore"
           :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
           is-root-node

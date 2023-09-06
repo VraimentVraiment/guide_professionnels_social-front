@@ -27,10 +27,11 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      siteTitle: 'GPS14',
+      titleSeparator: '|',
       directus: {
         url: 'http://0.0.0.0:8055',
       },
-
       directusCollectionsSchema: yaml.load(fs.readFileSync('src/content/collections.yml', 'utf8')),
     },
   },

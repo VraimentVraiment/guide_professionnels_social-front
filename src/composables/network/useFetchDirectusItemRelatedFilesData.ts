@@ -27,7 +27,7 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
   file?: DirectusFile
   meta?: Record<string, any>
 }[]> {
-  const { getCollectionFilesModel } = useCollectionsModelsStore()
+  const { getCollectionFilesModel } = useCollectionsModels()
   const model = getCollectionFilesModel(collectionName as string, field)
 
   if (
@@ -95,7 +95,7 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
 async function getRelatedIds<T extends { id: number }>(
   item: T,
   field: string,
-  model: RelatedFilesModel,
+  model: CollectionRelatedFilesModel,
 ): Promise<{
   ids: { id: string }[]
   filesMeta?: Record<string, any>[]
@@ -177,7 +177,7 @@ async function getRelatedIds<T extends { id: number }>(
             ],
           },
         })
-      )
+      ) ?? []
 
       if (!filesMeta.length) {
         break

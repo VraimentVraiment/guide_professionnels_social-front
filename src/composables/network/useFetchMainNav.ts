@@ -1,3 +1,15 @@
+import { type RouteLocationRaw } from 'vue-router'
+
+type DsfrNavigationMenuLinkProps = {
+  text: string
+  to: RouteLocationRaw
+};
+
+type DsfrNavItem = DsfrNavigationMenuLinkProps | {
+  title: string
+  links: DsfrNavigationMenuLinkProps[]
+}
+
 export async function useFetchMainNav(): Promise<DsfrNavItem[]> {
   if (process.server) { return [] }
 

@@ -49,18 +49,23 @@ const getCardProps = (
 </script>
 
 <template>
-  <GpsGrid show-title>
+  <GpsGrid>
+    <template #top-left>
+      <GpsPageTitle />
+    </template>
     <template #bottom-left>
-      <FilterSideBar
-        id="fichestechniques-filtersidebar"
-        :class="[
-          'fichestechniques-filtersidebar'
-        ]"
-        :post-store="postStore"
-        make-unselectable
-        :open-details="['gps_thematiques']"
-        max-height="100vh"
-      />
+      <ClientOnly>
+        <GpsFilterSideBar
+          id="fichestechniques-filtersidebar"
+          :class="[
+            'fichestechniques-filtersidebar'
+          ]"
+          :post-store="postStore"
+          make-unselectable
+          :open-details="['gps_thematiques']"
+          max-height="100vh"
+        />
+      </ClientOnly>
     </template>
     <template #bottom-right>
       <ClientOnly>

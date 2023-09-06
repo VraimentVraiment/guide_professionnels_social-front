@@ -1,27 +1,13 @@
-import {
-  type DirectusQueryParams,
-} from 'nuxt-directus/dist/runtime/types'
-
-import {
-  type RouteLocationRaw
-} from 'vue-router'
-
 declare global {
 
-  export type DsfrNavigationMenuLinkProps = {
-    text: string
-    to: RouteLocationRaw
-  };
-
-  export type DsfrNavItem = DsfrNavigationMenuLinkProps | {
-    title: string
-    links: DsfrNavigationMenuLinkProps[]
-  }
+  /*
+   * GPS Pages
+   */
 
   export type GpsPage = {
     title: string,
     slug: string,
-    status: PageStatus
+    status: GpsPageStatus
     metatitle?: string
     metadescription?: string
     content?: string
@@ -40,61 +26,45 @@ declare global {
     }
   }[]
 
-
-  export type FetchDirectusItemsParams = {
-    collectionName: string
-    params?: DirectusQueryParams
-  }
-
-  export type FetchDirectusItemParams = {
-    collectionName: string
-    id: number
-  }
-
   /*
-   *
-   * GPS14 Posts
-   *
+   * GPS Posts
    */
 
-  export type PostStatus = 'published' | 'draft' | 'archived'
+  export type GpsPostStatus = 'published' | 'draft' | 'archived'
 
-  export type PageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
+  export type GpsPageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
 
-  export type RichTextKey = 'public_eligible' | 'cadre_de_vie' | 'missions' | 'demande_dinformation' | 'demarche_a_suivre'
-
-  export interface Post {
+  export interface GpsPost {
+    id: number
     date_created: string
     date_updated: string
-    id: number
     name: string
     slug: string
     sort: number | null
-    status: PostStatus
-    // addresses?: GpsAddress[]
+    status: GpsPostStatus
   }
 
-  export interface LocalizedPost extends Post {
+  export interface GpsLocalizedPost extends GpsPost {
     addresses?: GpsAddress[]
   }
 
-  export interface DispositifPost extends LocalizedPost {
-    [key: RichTextKey]: string
-    caracteristiques_dispositif: number[][]
+  export interface DispositifPost extends GpsLocalizedPost {
+    [key: string]: string
+    thematique: number[]
     type_dispositif: number
+    caracteristiques_dispositif: number[]
     images: number[]
     download_files: number[]
   }
 
-  export interface FicheTechniquePost extends Post {
+  export interface FicheTechniquePost extends GpsPost {
     media: string
+    thematique: number[]
     type_dispositif: number
   }
 
   /*
-   *
-   * Filters
-   *
+   * Gps collection models
    */
 
   export type CollectionType = 'posts' | 'taxonomy' | 'relations'
@@ -113,8 +83,8 @@ declare global {
     type: CollectionType
     relations?: CollectionRelationModel[]
     fields?: string[]
-    relatedFiles: RelatedFilesModel[]
-    filterStatus?: PostStatus[]
+    relatedFiles: CollectionRelatedFilesModel[]
+    filterStatus?: GpsPostStatus[]
     richTextFields?: {
       label: string
       key: string
@@ -133,7 +103,7 @@ declare global {
     targetKey?: string
   }
 
-  export type RelatedFilesModel = {
+  export type CollectionRelatedFilesModel = {
     type: RelatedFilesModelType
     field: string
     relationCollectionName: string
@@ -144,19 +114,11 @@ declare global {
     fileIdField?: string
   }
 
-  export type DirectusRelationItem = {
-    id: number
-    [key: string]: number
-  }
+  /*
+   * Gps collections
+   */
 
-  export type DirectusFilter = Record<string, Record<string, unkown>>
-
-  export type CollectionDirectusFilter = {
-    collectionName: string,
-    filter: DirectusFilter
-  }
-
-  export type FilterItem = {
+  export type GpsFilterItem = {
     id: number
     name: string
     parent_id: number | null
@@ -164,29 +126,34 @@ declare global {
     pictogramme?: string
   }
 
-  export type FilterNodeProps = {
-    node: HierarchyNode<FilterItemNode> | null
-    postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
-    isRootNode?: boolean
-    dataCombination?: 'and' | 'or' | 'unique'
-    parentName?: string
-  }
-
-  export interface DirectusFilterItem extends FilterItem {
+  export interface DirectusFilterItem extends GpsFilterItem {
     children: number[];
     sort: number;
   }
 
-  export interface FilterItemNode extends FilterItem {
+  export interface GpsFilterItemNode extends GpsFilterItem {
     collectionName: string
     userSelection: UserSelection
     open?: boolean;
     checked?: boolean;
   }
 
-  export type CollectionItem<PostType extends Post> = PostType | DirectusFilterItem | DirectusRelationItem
+  export type GpsFilterNodeProps = {
+    node: HierarchyNode<GpsFilterItemNode> | null
+    postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
+    isRootNode?: boolean
+    dataCombination?: 'and' | 'or' | 'unique'
+    parentName?: string
+  }
 
-  export type PostsCollection<PostType extends Post> = {
+  export type DirectusRelationItem = {
+    id: number
+    [key: string]: number
+  }
+
+  export type CollectionItem<PostType extends GpsPost> = PostType | DirectusFilterItem | DirectusRelationItem
+
+  export type PostsCollection<PostType extends GpsPost> = {
     collectionName: string,
     label?: string
     items: PostType[]
@@ -196,7 +163,7 @@ declare global {
   export type FiltersCollection = {
     collectionName: string;
     label?: string
-    items: FilterItemNode[]
+    items: GpsFilterItemNode[]
     type?: 'taxonomy'
   }
 
@@ -214,6 +181,11 @@ declare global {
     sourceKey: string;
     groups: Record<string, number | number[]>[];
   }[]
+
+  export type CollectionDirectusFilter = {
+    collectionName: string,
+    filter: Record<string, Record<string, unkown>>
+  }
 
   /*
    *
@@ -298,30 +270,7 @@ declare global {
   }
 
   /*
-   *
-   * Auth
-   *
-   */
-  export type FieldModel = {
-    value: Ref<string>
-    isError: Ref<boolean>
-    isValid: Ref<boolean>
-    props: {
-      label?: string
-      placeholder?: string
-      hint?: string
-      autocomplete?: string
-    }
-    errorMessage: ComputedRef<string | undefined>
-    validMessage: ComputedRef<string | undefined>
-    validate: () => void
-    reset: () => void
-  }
-
-  /*
-   *
    * Misc
-   *
    */
 
   export type Accessor<T, U> = (item: T) => U

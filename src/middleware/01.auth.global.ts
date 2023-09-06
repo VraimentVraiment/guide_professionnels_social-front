@@ -15,7 +15,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
             from.path === '/login'
               ? '/'
               : from.path,
-          ))
+          ) as void)
         }
 
         if (!isAuthenticated.value) {
@@ -31,7 +31,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
           useIsPublicPage(pageName as string)
             .then((isPublicRoute) => {
               if (!isPublicRoute) {
-                resolve(navigateTo('/login'))
+                resolve(navigateTo('/login') as void)
               } else {
                 resolve()
               }

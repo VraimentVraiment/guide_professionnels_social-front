@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 const props = defineProps<{
-  collection: LocalizedPost[]
+  collection: GpsLocalizedPost[]
 }>()
 
 const emit = defineEmits(['map-loaded'])

@@ -15,7 +15,7 @@ const content = await queryContent('/pages/dispositif').findOne() as unknown as 
   }
 }
 
-const { getCollectionModelByName } = useCollectionsModelsStore()
+const { getCollectionModelByName } = useCollectionsModels()
 const model = getCollectionModelByName('gps_fichesdispositif')
 
 /**
@@ -38,17 +38,25 @@ if (post === null) {
   navigateTo('/404')
 }
 
-const imagesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
-  collectionName: 'gps_fichesdispositif',
-  item: post as DispositifPost,
-  field: 'images',
+useHead({
+  title: post?.name,
 })
 
-const importantFilesData = await useFetchDirectusItemRelatedFiles<DispositifPost>({
-  collectionName: 'gps_fichesdispositif',
-  item: post as DispositifPost,
-  field: 'download_file',
-  getMeta: ['type', 'filesize'],
+const { data: imagesData } = useAsyncData(() => {
+  return useFetchDirectusItemRelatedFiles<DispositifPost>({
+    collectionName: 'gps_fichesdispositif',
+    item: post as DispositifPost,
+    field: 'images',
+  })
+})
+
+const { data: importantFilesData } = useAsyncData(() => {
+  return useFetchDirectusItemRelatedFiles<DispositifPost>({
+    collectionName: 'gps_fichesdispositif',
+    item: post as DispositifPost,
+    field: 'download_file',
+    getMeta: ['type', 'filesize'],
+  })
 })
 
 const print = () => {

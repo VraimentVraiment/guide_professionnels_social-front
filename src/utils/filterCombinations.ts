@@ -39,7 +39,7 @@ export function getIdsMatchingRelatedCollection(
   filtersCollection: FiltersCollection,
   relationsCollection: RelationsCollection,
   relationModel: CollectionRelationModel,
-  checkedItems: FilterItemNode[],
+  checkedItems: GpsFilterItemNode[],
   relationGroups: RelationGroups,
 ) {
   switch (relationModel.userSelection) {
@@ -59,7 +59,7 @@ export function getIdsMatchingRelatedCollection(
   }
 
   function getSiblingGroupMatchingIds(
-    [parent_id, siblingsItems]: [number | null, FilterItemNode[]],
+    [parent_id, siblingsItems]: [number | null, GpsFilterItemNode[]],
   ): number[] {
     const parentItem = filtersCollection.items
       .find((item) => {

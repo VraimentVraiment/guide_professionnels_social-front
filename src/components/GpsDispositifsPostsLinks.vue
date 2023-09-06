@@ -3,7 +3,7 @@
 import { type HierarchyNode } from 'd3-hierarchy'
 
 defineProps<{
-  rootNode: HierarchyNode<FilterItemNode>,
+  rootNode: HierarchyNode<GpsFilterItemNode>,
 }>()
 
 const openDetails = useCollectionObserver<Number>()

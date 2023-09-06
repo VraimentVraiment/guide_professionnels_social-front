@@ -1,7 +1,7 @@
 /**
  * A composable that will be used in pinia to define the store for a certain post type.
  */
-export const useDefinePostStore = <PostType extends Post>() => {
+export const useDefinePostStore = <PostType extends GpsPost>() => {
   const {
     postsCollectionName,
     postsCollection,

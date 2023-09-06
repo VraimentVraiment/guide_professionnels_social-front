@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="PostType extends Post">
+<script setup lang="ts" generic="PostType extends GpsPost">
 
 defineProps<{
   collection: PostType[]

@@ -1,12 +1,8 @@
 /**
- * Defines a pinia store for managing our app collections' models,
+ * A composable to manage our app collections' models,
  */
-export const useCollectionsModelsStore = defineStore('collectionsModels', useDefineCollectionsModelsStore, {
-  persist: PERSISTANCE_CONFIG.COLLECTIONS_MODELS,
-})
-
-function useDefineCollectionsModelsStore() {
-  const collectionsModels = useRuntimeConfig().public.directusCollectionsSchema.collections
+export function useCollectionsModels() {
+  const collectionsModels = useRuntimeConfig().public.directusCollectionsSchema.collections as CollectionModel[]
 
   const getCollectionModelByName = (
     collectionName: string | null,
@@ -80,7 +76,7 @@ function useDefineCollectionsModelsStore() {
   const getCollectionFilesModel = (
     collectionName: string,
     field: string,
-  ): RelatedFilesModel | null => {
+  ): CollectionRelatedFilesModel | null => {
     const collectionModel = getCollectionModelByName(collectionName)
 
     const relatedFileModel = collectionModel

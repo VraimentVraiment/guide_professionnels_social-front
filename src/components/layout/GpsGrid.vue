@@ -1,11 +1,5 @@
 <script setup lang="ts">
 
-defineProps<{
-  showTitle: boolean,
-}>()
-
-const content = useFetchPageContent()
-
 </script>
 
 <template>
@@ -21,10 +15,6 @@ const content = useFetchPageContent()
         'fr-col-md-4',
       ]"
     >
-      <h1 v-if="showTitle && content?.title">
-        {{ content.title }}
-      </h1>
-
       <slot name="top-left" />
     </div>
     <div
@@ -57,10 +47,6 @@ const content = useFetchPageContent()
 </template>
 
 <style scoped>
-
-h1 {
-  margin-bottom: 0;
-}
 
 .fr-grid-row > div {
   position: relative;

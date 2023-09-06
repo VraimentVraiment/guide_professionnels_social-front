@@ -7,40 +7,40 @@ describe('getShouldRenderNodeAs', () => {
     const props1 = {
       isRootNode: false,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props2 = {
       isRootNode: true,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const node1 = {
       data: {
         userSelection: 'all-nodes',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 0,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node2 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 0,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node3 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node4 = {
       data: {
         userSelection: 'all-nodes',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const result1 = getShouldRenderNodeAs({ ...props1, node: node1 }).checkbox()
     const result2 = getShouldRenderNodeAs({ ...props1, node: node2 }).checkbox()
@@ -59,38 +59,38 @@ describe('getShouldRenderNodeAs', () => {
     const props1 = {
       isRootNode: false,
       dataCombination: 'unique',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props2 = {
       isRootNode: true,
       dataCombination: 'unique',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props3 = {
       isRootNode: false,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const node1 = {
       data: {
         userSelection: 'single-node',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 0,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node2 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 0,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node3 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const result1 = getShouldRenderNodeAs({ ...props1, node: node1 }).radio()
     const result2 = getShouldRenderNodeAs({ ...props1, node: node2 }).radio()
@@ -109,33 +109,33 @@ describe('getShouldRenderNodeAs', () => {
     const props1 = {
       isRootNode: false,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props2 = {
       isRootNode: true,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const node1 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node2 = {
       data: {
         userSelection: 'all-nodes',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const node3 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
-    } as HierarchyNode<FilterItemNode>
+    } as HierarchyNode<GpsFilterItemNode>
 
     const result1 = getShouldRenderNodeAs({ ...props1, node: node1 }).title()
     const result2 = getShouldRenderNodeAs({ ...props1, node: node2 }).title()
@@ -152,44 +152,44 @@ describe('getShouldRenderNodeAs', () => {
     const props1 = {
       isRootNode: false,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props2 = {
       isRootNode: true,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const node1 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node2 = {
       data: {
         userSelection: 'all-nodes',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node3 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node4 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
       children: [],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const result1 = getShouldRenderNodeAs({ ...props1, node: node1 }).accordionAndChildren()
     const result2 = getShouldRenderNodeAs({ ...props1, node: node2 }).accordionAndChildren()
@@ -208,44 +208,44 @@ describe('getShouldRenderNodeAs', () => {
     const props1 = {
       isRootNode: false,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const props2 = {
       isRootNode: true,
       dataCombination: 'and',
-    } as FilterNodeProps
+    } as GpsFilterNodeProps
 
     const node1 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node2 = {
       data: {
         userSelection: 'all-nodes',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node3 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 1,
       children: ['a', 'b', 'c'],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const node4 = {
       data: {
         userSelection: 'leaves-only',
-      } as FilterItemNode,
+      } as GpsFilterItemNode,
       height: 2,
       children: [],
-    } as unknown as HierarchyNode<FilterItemNode>
+    } as unknown as HierarchyNode<GpsFilterItemNode>
 
     const result1 = getShouldRenderNodeAs({ ...props1, node: node1 }).childrenInContainer()
     const result2 = getShouldRenderNodeAs({ ...props1, node: node2 }).childrenInContainer()

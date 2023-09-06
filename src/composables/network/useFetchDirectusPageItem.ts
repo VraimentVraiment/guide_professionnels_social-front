@@ -1,6 +1,6 @@
 type PageItemQueryParams = {
   pageName: string
-  status: PageStatus[]
+  status: GpsPageStatus[]
   fields?: string[]
 }
 

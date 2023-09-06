@@ -1,7 +1,7 @@
 export const getDirectusFilter = (
   directusFilters: CollectionDirectusFilter[] | ComputedRef<CollectionDirectusFilter[]>,
   collectionName: string,
-): DirectusFilter | false => {
+): CollectionDirectusFilter['filter'] | false => {
   const directusFilter = unref(directusFilters)
     ?.find((filter) => {
       return filter.collectionName === collectionName
@@ -17,11 +17,11 @@ export const getDirectusFilter = (
  * @todo more conditions to check if the filter is empty
  */
 export const isEmptyFilter = (
-  directusFilter: DirectusFilter,
+  directusFilter: CollectionDirectusFilter['filter'],
 ): boolean => {
   return directusFilter
     ?._and
-    ?.some((f) => {
+    ?.some((f: Record<string, any>) => {
       return f
         ?.id
         ?._in

@@ -2,18 +2,18 @@
 
 import { useMagicKeys } from '@vueuse/core'
 
-type FilterNodeProps = {
-  node: HierarchyNode<FilterItemNode> | null
+type GpsFilterNodeProps = {
+  node: HierarchyNode<GpsFilterItemNode> | null
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   isRootNode?: boolean
   dataCombination?: 'and' | 'or' | 'unique'
   parentName?: string
 }
 
-const props = defineProps<FilterNodeProps>()
+const props = defineProps<GpsFilterNodeProps>()
 
 const setItem = (
-  item: FilterItemNode | undefined,
+  item: GpsFilterItemNode | undefined,
   checked: boolean,
 ): void => {
   if (!item) { return }
@@ -26,7 +26,7 @@ const setItem = (
 }
 
 const shouldRenderNodeAs = props.node?.data
-  ? getShouldRenderNodeAs(props as FilterNodeProps)
+  ? getShouldRenderNodeAs(props)
   : null
 
 const { current: currentKeysPressed } = useMagicKeys()
@@ -42,24 +42,23 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
       :label="node.data.name"
       :value="node.data.id"
       :model-value="node.data.id"
-      small
       :checked="node.data.checked"
+      small
       @update:model-value="() => setItem(node?.data, true)"
     />
     <DsfrCheckbox
       v-else-if="shouldRenderNodeAs?.checkbox()"
-      :id="node.data.id.toString()"
-      :name="node.data.name"
-      :label="node.data.name"
-      small
       :class="[
         'gps-filters-sidebar__checkbox',
         { 'all-nodes__checkbox': node.data.userSelection === 'all-nodes' },
         { 'leaves-only__checkbox': node.data.userSelection === 'leaves-only' },
         { 'is-checked': node.data.checked }
       ]"
-      :data-node-depth="node.depth"
+      :name="node.data.collectionName"
+      :label="node.data.name"
       :model-value="node.data.checked"
+      small
+      :data-node-depth="node.depth"
       @update:model-value="(checked: boolean) => setItem(node?.data, checked)"
     />
     <h5 v-else-if="shouldRenderNodeAs?.title()">
@@ -71,7 +70,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
       :data-combination="node.data.combination"
       :summary-tag="'h6'"
     >
-      <FilterNode
+      <GpsFilterNode
         v-for="childNode in node.children"
         :key="childNode.data.id"
         :node="childNode"
@@ -94,7 +93,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
         `filter-node__children__${node.data.userSelection}`
       ]"
     >
-      <FilterNode
+      <GpsFilterNode
         v-for="childNode in node.children"
         :key="childNode.data.id"
         :node="childNode"

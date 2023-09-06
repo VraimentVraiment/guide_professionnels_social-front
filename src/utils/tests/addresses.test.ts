@@ -15,7 +15,7 @@ describe('joinAddresses', () => {
 
 describe('geojsonAddressToMarkerOptions', () => {
   it('returns null for an address with no coordinates', () => {
-    const post = { id: '1', title: 'Test Post' } as unknown as LocalizedPost
+    const post = { id: '1', title: 'Test GpsPost' } as unknown as GpsLocalizedPost
     const projection = 'EPSG:3857'
     const gpsAddress = { address: { value: { geometry: {} } } } as GpsAddress
 
@@ -25,8 +25,8 @@ describe('geojsonAddressToMarkerOptions', () => {
   it('returns a GpMarkerOptions object with the correct properties', () => {
     const post = {
       id: '1',
-      name: 'Test Post',
-    } as unknown as LocalizedPost
+      name: 'Test GpsPost',
+    } as unknown as GpsLocalizedPost
     const projection = 'EPSG:3857'
     const gpsAddress = {
       address: {
