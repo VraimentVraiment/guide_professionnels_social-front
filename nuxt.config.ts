@@ -57,16 +57,12 @@ export default defineNuxtConfig({
     },
   ],
 
-  ignore: [
-    '**/*.test.*',
-    '**/*.spec.*',
-    '**/*.cy.*',
-  ],
-
   imports: {
+
     dirs: [
       'composables/**',
     ],
+
     presets: [
       {
         from: 'd3-hierarchy',
@@ -76,5 +72,12 @@ export default defineNuxtConfig({
         type: true,
       },
     ],
+
   },
+
+  ignore: [
+    '**/*.test.*',
+    '**/*.spec.*',
+    '**/*.cy.*',
+  ],
 })

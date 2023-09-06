@@ -3,10 +3,11 @@ login:
 index:
   title: Accueil
 dispositifs:
-  title: Dispositifs
+  title: Trouver un dispositif
 fichestechniques:
   title: Fiches techniques
 monespace:
   title: Mon espace
 '404':
-  title: Erreur 404
+  metatitle: Erreur 404
+  title: Page non trouvée

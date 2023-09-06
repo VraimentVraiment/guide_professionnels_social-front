@@ -3,9 +3,11 @@ import { defineVitestConfig } from 'nuxt-vitest/config'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineVitestConfig({
+
   test: {
     root: './src/tests',
   },
+
   plugins: [
     AutoImport({
       imports: [
@@ -14,6 +16,7 @@ export default defineVitestConfig({
       dts: './tests-auto-imports.d.ts',
     }),
   ],
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

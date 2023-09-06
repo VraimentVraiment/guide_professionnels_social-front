@@ -1,11 +1,7 @@
-import { computedAsync } from '@vueuse/core'
-
 export function useGetPageContent() {
   const route = useRoute()
 
-  const nuxtContentPageContent = computedAsync(async() => {
-    return await queryContent('/meta').findOne()
-  }, null)
+  const nuxtContentPageContent = useFetchNuxtContentPageContent()
 
   const directusPageContent = useFetchPageDirectusContent(route, ['title', 'metatitle', 'metadescription'])
 
@@ -18,6 +14,7 @@ export function useGetPageContent() {
       directusPageContent.value?.title ??
       null
   }
+
   const getTitle = (): string | null => {
     return route.meta?.title as string | undefined ??
       nuxtContentPageContent.value?.[route.name as string]?.title ??
