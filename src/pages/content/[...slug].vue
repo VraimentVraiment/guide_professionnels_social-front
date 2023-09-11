@@ -14,6 +14,7 @@ definePageMeta({
     let directusPageContent = useState(key)
 
     if (!directusPageContent.value) {
+      console.log(`page ${slug} has no content stored in state, fetching if from directus`)
       const content = await useFetchDirectusPageItem({
         pageName: slug as string,
         status: ['published-public', 'published-private'],

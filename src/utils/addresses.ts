@@ -3,7 +3,7 @@ export function joinAddresses(
 ): string {
   const join = gpsAddresses
     ?.map((gpsAddress) => {
-      return gpsAddress.address.text
+      return gpsAddress?.address?.text
     })
     ?.join(', ')
 
