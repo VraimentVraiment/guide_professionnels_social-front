@@ -14,6 +14,7 @@ const {
 </script>
 
 <template>
+  <GpsPageTitle />
   <div
     :class="[
       'gps-auth__form-container',
@@ -36,8 +37,8 @@ const {
           v-bind="email.props"
           v-model="email.value.value"
           type="email"
-          :error-message="email.errorMessage.value"
-          :valid-message="email.validMessage.value"
+          :error-message="email.errorMessage?.value"
+          :valid-message="email.validMessage?.value"
           aria-required="true"
           label-visible
           @input="() => {
@@ -49,8 +50,8 @@ const {
           v-bind="password.props"
           v-model="password.value.value"
           type="password"
-          :error-message="password.errorMessage.value"
-          :valid-message="password.validMessage.value"
+          :error-message="password.errorMessage?.value"
+          :valid-message="password.validMessage?.value"
           aria-required="true"
           label-visible
           autocomplete="current-password"
@@ -76,7 +77,7 @@ const {
             label: submitButtonModel.label,
             icon: 'ri-arrow-right-line',
             iconRight: true,
-            disabled: submitButtonModel.disabled.value,
+            disabled: submitButtonModel.disabled?.value,
             onClick: submit
           },
         /**

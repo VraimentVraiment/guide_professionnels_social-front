@@ -43,8 +43,7 @@ export function stratify<T>(
         id &&
         circularReferences.find(crId => crId === id)
       ) {
-        // eslint-disable-next-line no-console
-        console.warn('Circular reference detected with item:', item)
+        warn('Circular reference detected with item:', item)
         /**
          * If the item is part of a circular reference, make it a child of the root item.
          * This might be improved by returning another id, according to the circular reference shape.

@@ -3,6 +3,7 @@
  */
 
 import fs from 'fs'
+import path from 'path'
 import yaml from 'js-yaml'
 
 export default defineNuxtConfig({
@@ -93,4 +94,16 @@ export default defineNuxtConfig({
     '**/*.spec.*',
     '**/*.cy.*',
   ],
+
+  hooks: {
+    /**
+     * Here we override the main component to use for the app when running tests.
+     * @see https://github.com/danielroe/nuxt-vitest/issues/295
+     */
+    'app:resolve': (app) => {
+      if (String(process.env?.TEST) === 'true') {
+        app.mainComponent = path.resolve(__dirname, './src/test-app.vue')
+      }
+    },
+  },
 })
