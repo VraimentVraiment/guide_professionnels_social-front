@@ -125,7 +125,11 @@ const {
           </ul>
         </template>
       </header>
-      <article>
+      <article
+        :class="[
+          'fr-mt-12v'
+        ]"
+      >
         <template
           v-for="{ key, label } in model?.richTextFields"
           :key="key"
@@ -150,7 +154,8 @@ const {
           <hr
             v-if="post?.[key as keyof DispositifPost]"
             :class="[
-              'fr-hr noprint'
+              'fr-hr',
+              'noprint'
             ]"
           >
         </template>
@@ -222,7 +227,6 @@ const {
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/';
 
 section.gps-post__content {
   @media print {
@@ -236,19 +240,17 @@ section.gps-post__content {
     @media screen {
       padding: 1.5rem;
 
-      @include sm {
+      @include dsfr.sm {
         padding: 2rem;
       }
 
-      @include md {
+      @include dsfr.md {
         padding: 3rem;
       }
     }
   }
 
   article {
-    margin-top: 3rem;
-
     .gps-post__images {
       img {
         width: 100%;
@@ -303,9 +305,4 @@ ul.addresses-list {
     display: none;
   }
 }
-
-// .important-files {
-//   max-height: 60vh;
-//   overflow-y: auto;
-// }
 </style>

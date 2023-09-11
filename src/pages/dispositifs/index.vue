@@ -110,9 +110,10 @@ const maxHeight = computed(() => {
           :style="{
             maxHeight,
           }"
-          :class="[{
-            isListSelected
-          }]"
+          :class="[
+            'fr-pt-md-6v',
+            { 'is-list-selected': isListSelected }
+          ]"
         />
       </div>
     </template>
@@ -182,7 +183,6 @@ const maxHeight = computed(() => {
 </template>
 
 <style lang="scss">
-@import "@/styles/";
 
 .gps-sidebar {
   position: relative;
@@ -192,10 +192,7 @@ const maxHeight = computed(() => {
     overflow-y: auto;
     width: 100%;
     top: 2.75rem;
-    padding-top: 1.5rem;
     position: relative;
-
-    // position: absolute;
     border-bottom: 1px solid var(--border-default-grey);
     display: none;
 
@@ -211,8 +208,8 @@ const maxHeight = computed(() => {
       box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
     }
 
-    @include md {
-      &:not(.isListSelected) {
+    @include dsfr.md {
+      &:not(.is-list-selected) {
         display: block;
 
         &::after {
@@ -221,7 +218,7 @@ const maxHeight = computed(() => {
       }
     }
 
-    &.isListSelected {
+    &.is-list-selected {
       display: none;
     }
 
@@ -234,7 +231,7 @@ const maxHeight = computed(() => {
 .gps-dispositifs-tabs {
   margin-top: 3rem;
 
-  @include md {
+  @include dsfr.md {
     margin-top: 0;
   }
 }

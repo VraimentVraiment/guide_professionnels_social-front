@@ -13,17 +13,16 @@
 </template>
 
 <style lang="scss">
-@import '@/styles/';
 
 main.fr-container {
   min-height: 80vh;
   padding: 3rem 1rem;
 
-  @include md {
+  @include dsfr.md {
     padding: 4rem 2rem;
   }
 
-  @include lg {
+  @include dsfr.lg {
     padding: 6rem 2rem;
   }
 }

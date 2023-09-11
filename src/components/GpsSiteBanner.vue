@@ -59,16 +59,15 @@ const content = await queryContent('/components/gps-site-banner').findOne()
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/';
 
 .gps-banner {
-  @include sm {
+  @include dsfr.sm {
     display: flex;
     align-items: center;
   }
 
   .gps-banner__logo {
-    @include sm {
+    @include dsfr.sm {
       display: flex;
       justify-content: center;
       align-items: center;

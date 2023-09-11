@@ -67,7 +67,6 @@ const {
 </template>
 
 <style lang="scss">
-@import "@/styles/";
 
 .gps-dispositifs-tabs {
   transition: none;

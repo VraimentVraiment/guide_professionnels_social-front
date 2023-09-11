@@ -47,8 +47,21 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '@/styles/index.scss',
+    '@/styles/global.scss',
   ],
+
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: [
+            '@use "@/layers/dsfr/styles/" as dsfr;',
+            '@use "@/styles/abstracts" as gps;',
+          ].join('\n'),
+        },
+      },
+    },
+  },
 
   components: [
     {

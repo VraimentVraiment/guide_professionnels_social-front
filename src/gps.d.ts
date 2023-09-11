@@ -5,6 +5,7 @@ declare global {
    */
 
   export type GpsPage = {
+    id: number,
     title: string,
     slug: string,
     status: GpsPageStatus

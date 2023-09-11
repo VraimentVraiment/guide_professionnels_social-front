@@ -1,10 +1,9 @@
 <script setup lang="ts">
 
-const publicRuntimeConfig = useRuntimeConfig().public
 const {
   siteTitle,
   titleSeparator,
-} = publicRuntimeConfig
+} = useAppConfig()
 
 const { getMetaTitle } = useGetPageContent()
 
@@ -24,12 +23,10 @@ useHead({
 
 <template>
   <Html lang="fr">
-    <Head />
     <GpsHeader />
     <GpsMain>
-      <slot />
+      <NuxtPage />
     </GpsMain>
     <GpsFooter />
   </Html>
 </template>
-./useGetPageContent

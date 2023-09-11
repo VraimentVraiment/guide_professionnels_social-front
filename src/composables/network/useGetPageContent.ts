@@ -3,7 +3,7 @@ export function useGetPageContent() {
 
   const nuxtContentPageContent = useFetchNuxtContentPageContent()
 
-  const directusPageContent = useFetchPageDirectusContent(route, ['title', 'metatitle', 'metadescription'])
+  const directusPageContent = useComputedDirectusPageContent(route)
 
   const getMetaTitle = (): string | null => {
     return route.meta?.metatitle as string | undefined ??

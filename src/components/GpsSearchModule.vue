@@ -135,7 +135,6 @@ const {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/";
 
 .gps-search {
   position: relative;
@@ -172,11 +171,11 @@ const {
     h6 {
       max-width: 60%;
 
-      @include sm {
+      @include dsfr.sm {
         max-width: 80%;
       }
 
-      @include md {
+      @include dsfr.md {
         max-width: 90%;
       }
     }

@@ -1,25 +1,29 @@
 import { computedAsync } from '@vueuse/core'
 import { type RouteLocationNormalized } from 'vue-router'
 
-export function useFetchPageDirectusContent(
-  route: RouteLocationNormalized,
+export async function useFetchPageDirectusContent(
+  slug: string | undefined,
   fields: string[],
 ) {
-  const pageContent = computedAsync(async() => {
-    const slug = route.params?.slug?.[0]
-    if (!slug) { return null }
+  if (!slug) { return null }
 
-    const directusPageContent = await useFetchDirectusPageItem({
-      pageName: slug as string,
-      status: ['published-public', 'published-private'],
-      fields,
-      // fields: ['title', 'slug', 'metatitle', 'metadescription', 'content'],
-    })
-
-    if (!directusPageContent) { return null }
-
-    return directusPageContent
+  const directusPageContent = await useFetchDirectusPageItem({
+    pageName: slug as string,
+    status: ['published-public', 'published-private'],
+    fields,
   })
 
-  return pageContent
+  return directusPageContent ?? null
+}
+
+export function useComputedDirectusPageContent(
+  route: RouteLocationNormalized,
+): Ref<GpsPage | null> {
+  return computedAsync(() => {
+    const slug = route.params?.slug?.[0] as string | undefined
+
+    if (!slug) { return null }
+
+    return useFetchPageDirectusContent(slug, ['title', 'metatitle', 'metadescription'])
+  }, null)
 }

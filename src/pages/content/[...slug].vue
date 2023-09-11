@@ -2,9 +2,34 @@
 
 definePageMeta({
   layout: 'default',
+  validate: async(route) => {
+    const slug = route.params?.slug?.[0]
+
+    if (!slug) {
+      return false
+    }
+
+    const key = `page-content-${String(route.name)}-${route.params?.slug?.[0]}`
+
+    let directusPageContent = useState(key)
+
+    if (!directusPageContent.value) {
+      const content = await useFetchDirectusPageItem({
+        pageName: slug as string,
+        status: ['published-public', 'published-private'],
+        fields: ['title', 'metatitle', 'metadescription', 'content'],
+      })
+
+      directusPageContent = useState(key, () => content)
+    }
+
+    return Boolean(directusPageContent.value)
+  },
 })
 
-const pageContent = useFetchPageDirectusContent(useRoute(), ['title', 'content'])
+const route = useRoute()
+const key = `page-content-${String(route.name)}-${route.params?.slug?.[0]}`
+const pageContent = useState(key)
 
 </script>
 
