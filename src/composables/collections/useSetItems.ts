@@ -70,7 +70,8 @@ export function useSetItem(
     isAltKeyPressed?: boolean,
   }) {
     if (
-      relationModel?.userSelection === 'single-node') {
+      relationModel?.userSelection === 'single-node'
+    ) {
       collection.items
         .filter(i => i.id !== item.id)
         .forEach((i) => {

@@ -3,14 +3,14 @@ import { computedAsync } from '@vueuse/core'
 
 definePageMeta({
   layout: 'default',
-  middleware: [
-    'fichestechniques',
-  ],
 })
 
 const postStore = useFicheTechniquePostStore()
-const FILE_FIELD = 'media'
+if (!postStore.postsCollectionName) {
+  postStore.setPostCollection('gps_fichestechniques')
+}
 
+const FILE_FIELD = 'media'
 const fetchRelatedFiles = (item: FicheTechniquePost) => {
   return useFetchDirectusItemRelatedFiles<FicheTechniquePost>({
     collectionName: 'gps_fichestechniques',
@@ -49,43 +49,11 @@ const getCardProps = (
 </script>
 
 <template>
-  <GpsGrid>
-    <template #top-left>
-      <GpsPageTitle />
-    </template>
-    <template #bottom-left>
-      <ClientOnly>
-        <GpsFilterSideBar
-          id="fichestechniques-filtersidebar"
-          :class="[
-            'fichestechniques-filtersidebar'
-          ]"
-          :post-store="postStore"
-          make-unselectable
-          :open-details="['gps_thematiques']"
-          max-height="100vh"
-        />
-      </ClientOnly>
-    </template>
-    <template #bottom-right>
-      <ClientOnly>
-        <GpsPostCardGrid
-          v-if="postStore.postsCollection?.items?.length"
-          :class="[
-            'fichestechniques-postcard-grid'
-          ]"
-          :collection="postStore.postsCollection?.items"
-          :wrap-cards="true"
-          :get-card-props="getCardProps"
-          type="file"
-        />
-      </ClientOnly>
-    </template>
-  </GpsGrid>
+  <GpsPostsIndex
+    id="fichestechniques"
+    :post-store="postStore"
+    :open-details="['gps_thematiques']"
+    :get-card-props="getCardProps"
+    :card-type="'file'"
+  />
 </template>
-
-<style scoped lang="scss">
-.fichestechniques-filtersidebar {
-  left: 0;
-}
-</style>

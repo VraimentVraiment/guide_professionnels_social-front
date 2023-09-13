@@ -1,11 +1,11 @@
 props:
-  licenceText: 'Sauf mention contraire, tous les contenus de ce site sont sous'
-  licenceTo: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md'
-  licenceName: 'etalab-2.0'
-  a11yCompliance: 'Partiellement conforme'
+  licenceText: Sauf mention contraire, tous les contenus de ce site sont sous licence
+  licenceTo: https://github.com/etalab/licence-ouverte/blob/master/LO.md
+  licenceName: etalab-2.0
+  a11yCompliance: Partiellement conforme
   logoText:
-    - 'Prefet'
-    - 'du Calvados'
+    - Prefet
+    - du Calvados
   legalLink: /content/mentions-legales
   personalDataLink: /content/donnees-personnelles
   cookiesLink: /content/cookies
@@ -18,9 +18,6 @@ props:
     Le design de ce site est conçu avec le système de design de l’État.
   homeLink: /
   operatorImgSrc: /logo-FR-kit-com.png
-  operatorLinkText: 'Préfecture du Calvados'
-  operatorTo: '/'
-  operatorImgAlt: 'Logos de la Préfecture du Calvados et du gouvernement français.'
-  operatorImgStyle:
-    maxWidth: '21.5rem !important'
-    padding: '0 0 0 1rem'
+  operatorLinkText: Préfecture du Calvados
+  operatorTo: /
+  operatorImgAlt: Logos de la Préfecture du Calvados et du gouvernement français.

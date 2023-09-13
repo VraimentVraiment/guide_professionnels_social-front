@@ -4,9 +4,6 @@ import { storeToRefs } from 'pinia'
 
 definePageMeta({
   layout: 'default',
-  middleware: [
-    'fichesdispositif',
-  ],
 })
 
 const postStore = useDispositifPostStore()
@@ -21,6 +18,11 @@ const {
 
 const content = await queryContent('/pages/home').findOne()
 const alertModel = useDsfrAlertModel(content.messages)
+
+if (!postStore.postsCollectionName) {
+  postStore.setPostCollection('gps_fichesdispositif')
+}
+await postStore.fetchInitialCollections()
 
 alertModel.show('info')
 

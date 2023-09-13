@@ -33,7 +33,6 @@ export function useDirectusFilters(
           collectionName: collectionModel?.collectionName as string,
           filter: {},
         }
-
         if (!collectionModel?.relations) {
           return filter
         }
@@ -102,16 +101,18 @@ export function useDirectusFilters(
           }
         }
 
-        const idsIntersection = ids
-          .some(ids => ids.length === 0)
-          ? []
-          : Array.from(intersection(...ids))
+        if (ids.length) {
+          const idsIntersection = ids
+            .some(ids => ids.length === 0)
+            ? []
+            : Array.from(intersection(...ids))
 
-        addFilterCondition({
-          id: {
-            _in: idsIntersection,
-          },
-        })
+          addFilterCondition({
+            id: {
+              _in: idsIntersection,
+            },
+          })
+        }
 
         if (collectionModel.filterStatus) {
           addFilterCondition({

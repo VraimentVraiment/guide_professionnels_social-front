@@ -14,7 +14,6 @@ const {
 </script>
 
 <template>
-  <GpsPageTitle />
   <div
     :class="[
       'gps-auth__form-container',

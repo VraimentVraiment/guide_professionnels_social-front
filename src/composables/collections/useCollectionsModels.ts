@@ -70,7 +70,7 @@ export function useCollectionsModels() {
     collectionName: string,
   ): string[] | null => {
     return getCollectionModelByName(collectionName)
-      ?.fields ?? null
+      ?.thumbnailFields ?? null
   }
 
   const getCollectionFilesModel = (

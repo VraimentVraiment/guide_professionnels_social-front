@@ -13,11 +13,13 @@ export const useDefinePostStore = <PostType extends GpsPost>() => {
 
   const rootNodes = useRootNodes(postsCollectionName, filtersCollections)
   const checkedItems = useGetCheckedItems(filtersCollections)
+  const resetableCheckedItems = useResetableCheckedItems(postsCollectionName, checkedItems)
   const relationGroups = useRelationGroups(relationsCollections)
   const directusFilters = useDirectusFilters(postsCollectionName, filtersCollections, checkedItems, relationsCollections, relationGroups)
   const localisedPostItems = useLocalisedPostItems<PostType>(postsCollection)
 
   const fetchCollection = useFetchCollection<PostType>(postsCollectionName, collections, directusFilters)
+  const fetchInitialCollections = useFetchInitialCollections(postsCollectionName, filtersCollections, fetchCollection)
   const setItem = useSetItem(postsCollectionName, filtersCollections)
   const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
 
@@ -29,11 +31,13 @@ export const useDefinePostStore = <PostType extends GpsPost>() => {
     relationsCollections,
     rootNodes,
     checkedItems,
+    resetableCheckedItems,
     directusFilters,
     relationGroups,
     localisedPostItems,
     setPostCollection,
     fetchCollection,
+    fetchInitialCollections,
     setItem,
     watchPostFiltering,
   }

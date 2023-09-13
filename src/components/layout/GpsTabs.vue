@@ -2,11 +2,6 @@
 
 defineEmits(['select-tab'])
 
-type TabTitle = {
-  title: string,
-  icon: string,
-}
-
 withDefaults(defineProps<{
   tabListName: string
   tabTitles: TabTitle[]
@@ -68,7 +63,7 @@ const {
 
 <style lang="scss">
 
-.gps-dispositifs-tabs {
+.gps-posts-tabs {
   transition: none;
   box-shadow: none;
   border-bottom: solid 1px var(--border-default-grey);

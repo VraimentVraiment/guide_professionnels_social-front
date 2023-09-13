@@ -1,18 +1,12 @@
 <script setup lang="ts" generic="PostType extends GpsPost">
 
+import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
+
 defineProps<{
   collection: PostType[]
   wrapCards: boolean
   type: 'link' | 'file'
-  getCardProps:(item: PostType) => {
-    title: string
-    link?: string
-    description?: string
-    format?: string
-    size?: string
-    href?: string
-    block?: boolean
-  }
+  getCardProps:(item: PostType) => typeof DsfrCard | typeof DsfrFileDownload
 }>()
 
 const { breakpoints } = useDsfrBreakpoints()

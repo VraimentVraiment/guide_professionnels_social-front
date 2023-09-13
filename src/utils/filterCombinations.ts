@@ -56,6 +56,15 @@ export function getIdsMatchingRelatedCollection(
       const siblingGroupsMatchingIds = Array.from(siblingsGroups, getSiblingGroupMatchingIds)
       return Array.from(intersection(...siblingGroupsMatchingIds))
     }
+
+    case 'all-nodes': {
+      return getMatchingIds(
+        checkedItems.map(i => i.id),
+        relationsCollection,
+        'or',
+        relationGroups,
+      )
+    }
   }
 
   function getSiblingGroupMatchingIds(

@@ -83,7 +83,7 @@ declare global {
     collectionName: string
     type: CollectionType
     relations?: CollectionRelationModel[]
-    fields?: string[]
+    thumbnailFields?: string[]
     relatedFiles: CollectionRelatedFilesModel[]
     filterStatus?: GpsPostStatus[]
     richTextFields?: {
@@ -95,6 +95,7 @@ declare global {
   export type CollectionRelationModel = {
     label: string
     relationType: RelationType
+    mandatory?: boolean
     userSelection?: UserSelection
     field?: string
     sourceCollectionName: string
@@ -273,6 +274,12 @@ declare global {
   /*
    * Misc
    */
+
+  export type TabTitle = {
+    title: string,
+    icon: string,
+    type: string,
+  }
 
   export type Accessor<T, U> = (item: T) => U
 }

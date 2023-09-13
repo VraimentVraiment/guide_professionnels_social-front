@@ -5,9 +5,7 @@ export const getShouldRenderNodeAs = (
 ): {
   [key: string]: () => boolean
 } => {
-  const {
-    node,
-  } = props as {
+  const { node } = props as {
     node: HierarchyNode<GpsFilterItemNode>,
   }
 

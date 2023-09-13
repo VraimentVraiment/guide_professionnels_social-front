@@ -1,10 +1,12 @@
 collections:
+
   - label: Thématiques
+    type: taxonomy
     collectionName: gps_thematiques
-    type: taxonomy
+
   - label: Types de dispositif
-    collectionName: gps_typesdispositif
     type: taxonomy
+    collectionName: gps_typesdispositif
     relations:
       - label: Thématiques
         relationType: many-to-many
@@ -14,9 +16,10 @@ collections:
         relationCollectionName: gps_typesdispositif_gps_thematiques
         sourceKey: gps_typesdispositif_id
         targetKey: gps_thematiques_id
+
   - label: Caractéristiques
-    collectionName: gps_caracteristiquesdispositif
     type: taxonomy
+    collectionName: gps_caracteristiquesdispositif
     relations:
       - label: Thématiques
         relationType: many-to-many
@@ -26,12 +29,13 @@ collections:
         relationCollectionName: gps_caracteristiquesdispositif_gps_thematiques
         sourceKey: gps_caracteristiquesdispositif_id
         targetKey: gps_thematiques_id
+
   - label: Fiches dispositif
-    collectionName: gps_fichesdispositif
     type: posts
+    collectionName: gps_fichesdispositif
     filterStatus:
       - published
-    fields:
+    thumbnailFields:
       - id
       - name
       - addresses
@@ -65,6 +69,7 @@ collections:
     relations:
       - label: Thématiques
         userSelection: single-node
+        mandatory: true
         relationType: many-to-many
         sourceCollectionName: gps_fichesdispositif
         targetCollectionName: gps_thematiques
@@ -84,6 +89,7 @@ collections:
         relationCollectionName: gps_fichesdispositif_gps_caracteristiquesdispositif
         sourceKey: gps_fichesdispositif_id
         targetKey: gps_caracteristiquesdispositif_id
+
   - label: Fiches techniques
     type: posts
     collectionName: gps_fichestechniques
@@ -91,7 +97,7 @@ collections:
       - published
     relations:
       - label: Thématiques
-        userSelection: single-node
+        userSelection: all-nodes
         relationType: many-to-many
         sourceCollectionName: gps_fichestechniques
         targetCollectionName: gps_thematiques
