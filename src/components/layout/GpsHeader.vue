@@ -15,14 +15,15 @@ const quickLinks = computed(() => {
   //   icon?: boolean
   //   public?: boolean
   // }) => {
-  //     return isAuthenticated.value || quickLink.public
+  //     return true
+  //     // return isAuthenticated.value || quickLink.public
   //   })
 })
 
 </script>
 
 <template>
-  <DsfrHeader
+  <DsfrHeader2
     :class="[
       'gps-header',
       'noprint'
@@ -32,8 +33,8 @@ const quickLinks = computed(() => {
     :service-description="content.props.serviceDescription"
     :quick-links="quickLinks"
   >
-    <ClientOnly>
-      <GpsMainNav />
-    </ClientOnly>
-  </DsfrHeader>
+    <template #mainnav="{ hidemodal }">
+      <GpsMainNav @route-change="hidemodal" />
+    </template>
+  </DsfrHeader2>
 </template>

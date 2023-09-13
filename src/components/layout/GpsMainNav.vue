@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+const emit = defineEmits(['route-change'])
+
 const content = await queryContent('/components/main-nav').findOne()
 
 const isAuthenticated = await useIsAuthenticated()
@@ -13,6 +15,10 @@ const contentNavItems = computed(() => {
     }) => {
       return isAuthenticated.value || navItem.public
     })
+})
+
+watch(() => useRoute().fullPath, () => {
+  emit('route-change')
 })
 
 /**
@@ -32,7 +38,6 @@ const navItems = computed(() => {
     ...directusNavItems.value,
   ]
 })
-
 </script>
 
 <template>

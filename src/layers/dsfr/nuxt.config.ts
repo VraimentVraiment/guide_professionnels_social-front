@@ -21,10 +21,9 @@ export default defineNuxtConfig({
   //   head: {
   //     script: [
   //       {
-  //         src: '/dist/analytics/analytics.module.js',
+  //         // src: '@gouvfr/dsfr/dist/analytics/analytics.module.js',
   //       },
   //     ],
   //   },
   // },
-
 })
