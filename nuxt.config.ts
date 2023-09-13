@@ -9,6 +9,17 @@ import yaml from 'js-yaml'
 export default defineNuxtConfig({
   srcDir: 'src/',
 
+  site: {
+    url: 'https://gps.qualif.gouv.fr',
+  },
+  sitemap: {
+    urls: [
+      'content/accesibilite',
+      'content/mentions-legales',
+      'content/politique-de-confidentialite',
+      'content/donnees-personnelles',
+    ],
+  },
   devtools: {
     enabled: true,
   },
@@ -23,6 +34,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-directus',
+    'nuxt-simple-sitemap',
     'nuxt-vitest',
   ],
 

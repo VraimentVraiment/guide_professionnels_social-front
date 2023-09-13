@@ -19,7 +19,7 @@ const getCardProps = (
 ) => {
   return {
     title: postItem.name,
-    description: joinAddresses(postItem.addresses),
+    description: getTextExtract(joinAddresses(postItem.addresses)),
     link: `/dispositifs/${postItem.id}`,
   }
 }

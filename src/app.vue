@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+const content = await queryContent('/components/skip-links').findOne()
+
 const {
   siteTitle,
   titleSeparator,
@@ -23,10 +25,13 @@ useHead({
 
 <template>
   <Html lang="fr">
-    <GpsHeader />
-    <GpsMain>
+    <DsfrSkipLinks
+      :links="content.links"
+    />
+    <GpsHeader id="site-header" />
+    <GpsMain id="site-main">
       <NuxtPage />
     </GpsMain>
-    <GpsFooter />
+    <GpsFooter id="site-footer" />
   </Html>
 </template>

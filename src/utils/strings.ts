@@ -51,3 +51,16 @@ export const formatBytes = (
 
   return `${value} ${unit}`
 }
+
+/**
+ * Given a string and a limit length, return an extract of the string if it is longer than the limit.
+ * If the string is shorter than the limit, return the string.
+ */
+export function getTextExtract(
+  text: string,
+  limit = 100,
+): string {
+  if (text.length <= limit) { return text }
+
+  return `${text.substring(0, limit)}...`
+}

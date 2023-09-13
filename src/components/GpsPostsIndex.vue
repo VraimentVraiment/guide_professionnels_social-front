@@ -84,7 +84,6 @@ const tabTitles = content.tabTitles
         ]"
       >
         <GpsFilterSideBar
-          :id="`${id}-filtersidebar`"
           ref="el"
           :post-store="postStore"
           :make-unselectable="isPostsTabSelected"
@@ -93,11 +92,12 @@ const tabTitles = content.tabTitles
           :checked-items-observer="checkedItemsObserver"
         />
         <div
-          :id="`${id}-sidebar`"
+          :id="`${id}-sidebar__posts`"
           :style="{
             maxHeight,
           }"
           :class="[
+            'gps-sidebar__posts',
             'fr-pt-md-6v',
             { 'is-posts-tab-selected': isPostsTabSelected }
           ]"
@@ -117,7 +117,7 @@ const tabTitles = content.tabTitles
         <template #tab-0>
           <Teleport
             v-if="mounted"
-            :to="`#${id}-sidebar`"
+            :to="`#${id}-sidebar__posts`"
             :disabled="isPostsTabSelected || isSmallScreen"
           >
             <div v-if="showResetMessage">
@@ -172,12 +172,12 @@ const tabTitles = content.tabTitles
   </GpsGrid>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .gps-sidebar {
   position: relative;
   margin-top: 4px;
 
-  #dispositifs-sidebar {
+  .gps-sidebar__posts {
     overflow-y: auto;
     width: 100%;
     top: 2.75rem;
@@ -214,14 +214,6 @@ const tabTitles = content.tabTitles
     >*:not(:last-child) {
       margin-bottom: 1rem;
     }
-  }
-}
-
-.gps-posts-tabs {
-  margin-top: 3rem;
-
-  @include dsfr.md {
-    margin-top: 0;
   }
 }
 </style>

@@ -34,7 +34,10 @@ const quickLinks = computed(() => {
     :quick-links="quickLinks"
   >
     <template #mainnav="{ hidemodal }">
-      <GpsMainNav @route-change="hidemodal" />
+      <GpsMainNav
+        id="site-menu"
+        @route-change="hidemodal"
+      />
     </template>
   </DsfrHeader2>
 </template>

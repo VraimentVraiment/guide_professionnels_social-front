@@ -14,6 +14,14 @@ const {
 </script>
 
 <template>
+  <DsfrAlert
+    v-show="alertModel.display.value"
+    v-bind="alertModel.props.value"
+    small
+    :class="[
+      'fr-mb-6v',
+    ]"
+  />
   <div
     :class="[
       'gps-auth__form-container',
@@ -27,11 +35,6 @@ const {
           'gps-auth__error': isError
         }]"
       >
-        <DsfrAlert
-          v-show="alertModel.display.value"
-          v-bind="alertModel.props.value"
-          small
-        />
         <DsfrInputGroup
           v-bind="email.props"
           v-model="email.value.value"
