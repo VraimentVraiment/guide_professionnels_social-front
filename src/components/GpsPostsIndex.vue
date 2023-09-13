@@ -33,12 +33,9 @@ onMounted(() => {
 
 const searchStore = props.doUseSearchStore ? useSearchStore() : null
 const { resetableCheckedItems } = storeToRefs(props.postStore)
-const {
-  resetAll,
-  hasCheckedItems,
-} = useCheckedItemsObserver(resetableCheckedItems)
+const checkedItemsObserver = useCheckedItemsObserver(resetableCheckedItems)
 const reset = () => {
-  resetAll()
+  checkedItemsObserver.resetAll()
   searchStore?.reset()
 }
 
@@ -46,7 +43,7 @@ const showResetMessage = computed(() => {
   return (
     props.postStore.localisedPostItems?.length < content.resetMessageThreshold &&
     (
-      hasCheckedItems.value ||
+      checkedItemsObserver.hasCheckedItems.value ||
       (
         props.doUseSearchStore &&
         searchStore?.selectedCityList?.length
@@ -93,6 +90,7 @@ const tabTitles = content.tabTitles
           :make-unselectable="isPostsTabSelected"
           :open-details="openDetails"
           :max-height="maxHeight"
+          :checked-items-observer="checkedItemsObserver"
         />
         <div
           :id="`${id}-sidebar`"

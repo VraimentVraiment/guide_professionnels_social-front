@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   maxHeight: string
   openDetails: string[] | null
   id: string
+  checkedItemsObserver: ReturnType<typeof useCheckedItemsObserver>
 }>(), {
   makeUnselectable: false,
   maxHeight: 'none',
@@ -25,15 +26,6 @@ const isSelectable = computed(() => {
 })
 
 const content = await queryContent('/components/gps-filter-sidebar').findOne()
-const {
-  resetCollection,
-  hasCollectionCheckedItems,
-} = useCheckedItemsObserver(computed(() => {
-  return props.postStore.checkedItems
-    ?.filter((collectionCheckedItems) => {
-      return collectionCheckedItems.collectionName !== 'gps_thematiques'
-    })
-}))
 
 </script>
 
@@ -86,35 +78,40 @@ const {
         maxHeight: maxHeight,
       }"
     >
-      <GpsDetailsAccordion
+      <template
         v-for="{ collectionName, label } in postStore.filtersCollections"
         :key="collectionName"
-        :class="[
-          'filter-group'
-        ]"
-        :label="label"
-        :summary-tag="'h2'"
-        :open="openDetails?.includes(collectionName)"
       >
-        <DsfrButton
-          v-show="hasCollectionCheckedItems(collectionName)"
+        <GpsDetailsAccordion
+          v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
           :class="[
-            'gps-filters-sidebar__reset-button',
+            'filter-group'
           ]"
-          :label="content.resetLabel"
-          tertiary
-          no-outline
-          size="small"
-          :icon="'ri-close-circle-line'"
-          icon-right
-          @click="() => resetCollection(collectionName)"
-        />
-        <GpsFilterNode
-          :post-store="postStore"
-          :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
-          is-root-node
-        />
-      </GpsDetailsAccordion>
+          :label="label"
+          :summary-tag="'h2'"
+          :open="openDetails?.includes(collectionName)"
+          :has-checked-items="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+        >
+          <DsfrButton
+            v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+            :class="[
+              'gps-filters-sidebar__reset-button',
+            ]"
+            :label="content.resetLabel"
+            tertiary
+            no-outline
+            size="small"
+            :icon="'ri-close-circle-line'"
+            icon-right
+            @click="() => checkedItemsObserver.resetCollection(collectionName)"
+          />
+          <GpsFilterNode
+            :post-store="postStore"
+            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+            is-root-node
+          />
+        </GpsDetailsAccordion>
+      </template>
     </div>
   </div>
 </template>

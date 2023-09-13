@@ -4,6 +4,7 @@ withDefaults(defineProps<{
   label: string,
   summaryTag: string,
   open?: boolean,
+  hasCheckedItems?: boolean
 }>(), {
   label: '',
   summaryTag: 'span',
@@ -21,7 +22,8 @@ withDefaults(defineProps<{
   >
     <summary
       :class="[
-        'gps-details__summary'
+        'gps-details__summary',
+        {'has-checked-items': hasCheckedItems}
       ]"
     >
       <component
@@ -81,6 +83,22 @@ details.gps-details {
 
     &:active {
       background-color: var(--background-default-grey-active);
+    }
+
+    position: relative;
+
+    &.has-checked-items{
+      &::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--text-active-blue-france);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -3px;
+      }
     }
 
     .gps-details__summary__label {
