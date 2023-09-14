@@ -29,6 +29,7 @@ useHead({
       :links="content.links"
     />
     <GpsHeader id="site-header" />
+    <DsfrScheme />
     <GpsMain id="site-main">
       <NuxtPage />
     </GpsMain>

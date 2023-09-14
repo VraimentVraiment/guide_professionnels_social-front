@@ -2,22 +2,21 @@
 
 const content = await queryContent('/components/header').findOne()
 
-const quickLinks = computed(() => {
-  return []
+const isAuthenticated = await useIsAuthenticated()
 
+const quickLinks = computed(() => {
   /**
    * @todo Add quick links when 'account' page is set up
    */
-  // return content.props.quickLinks
-  //   ?.filter((quickLink: {
-  //   to: string
-  //   label: string
-  //   icon?: boolean
-  //   public?: boolean
-  // }) => {
-  //     return true
-  //     // return isAuthenticated.value || quickLink.public
-  //   })
+  return content.props.quickLinks
+    ?.filter((quickLink: {
+    to: string
+    label: string
+    icon?: boolean
+    public?: boolean
+  }) => {
+      return isAuthenticated.value || quickLink.public
+    })
 })
 
 </script>

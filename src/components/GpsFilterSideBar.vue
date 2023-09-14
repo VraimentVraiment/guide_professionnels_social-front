@@ -118,7 +118,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
 
 <style scoped lang="scss">
 .gps-filters-sidebar {
-  background-color: white;
+  background-color: var(--background-default-grey);
   border: solid 1px var(--border-default-grey);
   border-top: solid 2px var(--text-active-blue-france);
   padding-bottom: 3px;
@@ -131,6 +131,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
     font-size: 1rem;
     font-weight: 700;
     padding: 0.45rem 1rem;
+    background-color: var(--background-default-grey);
     color: var(--text-active-blue-france);
     cursor: initial;
 
@@ -147,6 +148,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
   .gps-filters-sidebar__content {
     padding: 0 1rem .5rem;
     overflow-y: auto;
+    background-color: var(--background-default-grey);
   }
 
   &.is-selectable {

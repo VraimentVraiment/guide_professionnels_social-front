@@ -15,13 +15,21 @@ const content = await queryContent('/components/gps-site-banner').findOne()
       :class="[
         'gps-banner__logo',
         'fr-col-3',
-        'fr-col-sm-4'
+        'fr-col-sm-4',
+        'darkable',
       ]"
     >
       <img
         :src="content.logoPath"
         alt="Logo GPS"
       >
+      <v-icon
+        :class="[
+          'gps-details__icon',
+        ]"
+        :name="'site-logo'"
+        aria-hidden="true"
+      />
     </div>
     <div
       :class="[
@@ -59,7 +67,6 @@ const content = await queryContent('/components/gps-site-banner').findOne()
 </template>
 
 <style scoped lang="scss">
-
 .gps-banner {
   @include dsfr.sm {
     display: flex;

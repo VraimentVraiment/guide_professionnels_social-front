@@ -256,7 +256,7 @@ defineEmits<{
           </div>
         </div>
         <div
-          v-if="isWithSlotNav"
+          v-if="isWithSlotNav && !modalOpened"
           class="fr-hidden fr-unhidden-lg"
         >
           <slot
