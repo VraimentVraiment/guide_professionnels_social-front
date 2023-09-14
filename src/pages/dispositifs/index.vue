@@ -32,8 +32,8 @@ const getCardProps = (
     :post-store="postStore"
     do-use-search-store
     do-use-map
-    :open-details="['gps_caracteristiquesdispositif']"
     :get-card-props="getCardProps"
+    :open-details="['gps_caracteristiquesdispositif']"
     :card-type="'link'"
   />
 </template>

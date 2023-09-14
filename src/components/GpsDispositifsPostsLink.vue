@@ -8,6 +8,12 @@ defineProps<{
 
 const postStore = useDispositifPostStore()
 
+const setItem = (id: number) => postStore.setItem({
+  collectionName: 'gps_typesdispositif',
+  id,
+  value: true,
+})
+
 </script>
 
 <template>
@@ -19,11 +25,7 @@ const postStore = useDispositifPostStore()
       'fr-link',
     ]"
     :to="`/dispositifs`"
-    @click="() => postStore.setItem({
-      collectionName: 'gps_typesdispositif',
-      id,
-      value: true,
-    })"
+    @click="() => setItem(id)"
   >
     {{ name }}
     <v-icon

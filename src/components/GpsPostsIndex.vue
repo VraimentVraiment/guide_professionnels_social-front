@@ -30,10 +30,15 @@ onMounted(() => {
   }
   props.postStore.watchPostFiltering()
 })
+const {
+  resetableCheckedItems,
+  localisedPostItems: postsItems,
+} = storeToRefs(props.postStore)
+
+const checkedItemsObserver = useCheckedItemsObserver(resetableCheckedItems)
 
 const searchStore = props.doUseSearchStore ? useSearchStore() : null
-const { resetableCheckedItems } = storeToRefs(props.postStore)
-const checkedItemsObserver = useCheckedItemsObserver(resetableCheckedItems)
+
 const reset = () => {
   checkedItemsObserver.resetAll()
   searchStore?.reset()
@@ -41,7 +46,7 @@ const reset = () => {
 
 const showResetMessage = computed(() => {
   return (
-    props.postStore.localisedPostItems?.length < content.resetMessageThreshold &&
+    postsItems.value?.length < content.resetMessageThreshold &&
     (
       checkedItemsObserver.hasCheckedItems.value ||
       (
@@ -67,6 +72,7 @@ const tabTitles = content.tabTitles
   .filter((item: TabTitle) => {
     return props.doUseMap || item.type !== 'map'
   })
+
 </script>
 
 <template>
@@ -80,10 +86,11 @@ const tabTitles = content.tabTitles
     <template #bottom-left>
       <div
         :class="[
-          'gps-sidebar',
+          'gps-posts__sidebar',
         ]"
       >
         <GpsFilterSideBar
+          :id="`${id}-posts__sidebar__filters`"
           ref="el"
           :post-store="postStore"
           :make-unselectable="isPostsTabSelected"
@@ -92,12 +99,12 @@ const tabTitles = content.tabTitles
           :checked-items-observer="checkedItemsObserver"
         />
         <div
-          :id="`${id}-sidebar__posts`"
+          :id="`${id}-posts__sidebar__posts`"
           :style="{
             maxHeight,
           }"
           :class="[
-            'gps-sidebar__posts',
+            'gps-posts__sidebar__posts',
             'fr-pt-md-6v',
             { 'is-posts-tab-selected': isPostsTabSelected }
           ]"
@@ -107,9 +114,9 @@ const tabTitles = content.tabTitles
     <template #bottom-right>
       <GpsTabs
         :class="[
-          'gps-posts-tabs'
+          'gps-posts__tabs'
         ]"
-        :tab-list-name="'test'"
+        :tab-list-name="content.tabListName"
         :tab-titles="tabTitles"
         :max-height="maxHeight"
         @select-tab="(index: number) => isPostsTabSelected = index === 0"
@@ -117,55 +124,64 @@ const tabTitles = content.tabTitles
         <template #tab-0>
           <Teleport
             v-if="mounted"
-            :to="`#${id}-sidebar__posts`"
+            :to="`#${id}-posts__sidebar__posts`"
             :disabled="isPostsTabSelected || isSmallScreen"
           >
-            <div v-if="showResetMessage">
-              <DsfrAlert
-                :description="content.resetMessage"
-                :type="'info'"
-                small
-              />
-              <DsfrButton
-                :class="'fr-mt-2w fr-mb-3w'"
-                :label="content.resetLabel"
-                secondary
-                :icon="'ri-close-circle-line'"
-                icon-right
-                @click="reset"
-              />
+            <div
+              :class="[
+                'gps-posts__posts-container',
+              ]"
+            >
+              <div v-if="showResetMessage">
+                <DsfrAlert
+                  :description="content.resetMessage"
+                  :type="'info'"
+                  small
+                />
+                <DsfrButton
+                  :class="[
+                    'fr-mt-2w',
+                    'fr-mb-3w'
+                  ]"
+                  :label="content.resetLabel"
+                  :icon="'ri-close-circle-line'"
+                  secondary
+                  icon-right
+                  @click="reset"
+                />
+              </div>
+              <template v-if="postsItems?.length > 0">
+                <p
+                  v-if="!showResetMessage"
+                  :class="[
+                    'fr-mb-3w'
+                  ]"
+                >
+                  {{ postsItems.length }} résultats
+                </p>
+                <GpsPostCardGrid
+                  :collection="postsItems"
+                  :wrap-cards="isPostsTabSelected"
+                  :get-card-props="getCardProps"
+                  :type="cardType"
+                />
+              </template>
+              <template v-else>
+                <p>
+                  {{ content.emptyMessage }}
+                </p>
+              </template>
             </div>
-            <template v-if="postStore.localisedPostItems?.length > 0">
-              <p
-                v-if="!showResetMessage"
-                class="fr-mb-3w"
-              >
-                {{ postStore.localisedPostItems.length }} résultats
-              </p>
-              <GpsPostCardGrid
-                :collection="postStore.localisedPostItems"
-                :wrap-cards="isPostsTabSelected"
-                :get-card-props="getCardProps"
-                :type="cardType"
-              />
-            </template>
-            <template v-else>
-              <p>
-                {{ content.emptyMessage }}
-              </p>
-            </template>
           </Teleport>
         </template>
         <template
-          v-if="doUseMap"
+          v-if="doUseMap && (!isPostsTabSelected || hasMapLoaded)"
           #tab-1
         >
-          <template v-if="!isPostsTabSelected || hasMapLoaded">
-            <GpsMap
-              :collection="postStore.localisedPostItems"
-              @map-loaded="() => hasMapLoaded = true"
-            />
-          </template>
+          <GpsMap
+            :collection="postsItems"
+            @map-loaded="() => hasMapLoaded = true"
+          />
         </template>
       </GpsTabs>
     </template>
@@ -173,11 +189,11 @@ const tabTitles = content.tabTitles
 </template>
 
 <style scoped lang="scss">
-.gps-sidebar {
-  position: relative;
-  margin-top: 4px;
 
-  .gps-sidebar__posts {
+.gps-posts__sidebar {
+  position: relative;
+
+  .gps-posts__sidebar__posts {
     overflow-y: auto;
     width: 100%;
     top: 2.75rem;
@@ -216,4 +232,11 @@ const tabTitles = content.tabTitles
     }
   }
 }
+
+.gps-posts__posts-container {
+  padding: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
 </style>

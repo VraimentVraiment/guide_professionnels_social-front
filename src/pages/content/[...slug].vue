@@ -4,7 +4,6 @@ definePageMeta({
   layout: 'default',
   validate: async(route) => {
     const slug = route.params?.slug?.[0]
-
     if (!slug) {
       return false
     }
@@ -14,10 +13,15 @@ definePageMeta({
     let directusPageContent = useState(key)
 
     if (!directusPageContent.value) {
-      console.log(`page ${slug} has no content stored in state, fetching if from directus`)
+      const isAuthenticated = await useIsAuthenticated()
+      const status = (
+        isAuthenticated.value
+          ? ['published-public', 'published-private']
+          : ['published-public']
+        )as GpsPageStatus[]
       const content = await useFetchDirectusPageItem({
         pageName: slug as string,
-        status: ['published-public', 'published-private'],
+        status,
         fields: ['title', 'metatitle', 'metadescription', 'content'],
       })
 

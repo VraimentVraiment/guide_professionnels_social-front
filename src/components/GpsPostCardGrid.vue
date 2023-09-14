@@ -18,7 +18,6 @@ const isCol4 = breakpoints?.greater('MD')
 <template>
   <div
     :class="[
-      'gps-card-grid',
       'fr-container-fluid',
     ]"
   >
@@ -45,32 +44,3 @@ const isCol4 = breakpoints?.greater('MD')
     </div>
   </div>
 </template>
-
-<style lang="scss">
-.gps-card-grid {
-  padding: 1px;
-  overflow: hidden;
-
-  .fr-card__title {
-    margin: 0 !important;
-  }
-
-  .fr-card__img {
-    display: none !important;
-  }
-
-  .fr-card__detail {
-    display: none !important;
-  }
-
-  .fr-card__body {
-    padding: 0 1.5rem;
-
-    .fr-card__title {
-      font-size: 1.2rem;
-      line-height: 1.5;
-      margin-top: 1.5rem;
-    }
-  }
-}
-</style>

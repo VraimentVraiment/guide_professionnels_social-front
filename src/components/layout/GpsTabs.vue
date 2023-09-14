@@ -33,6 +33,9 @@ const {
 
 <template>
   <DsfrTabs
+    :class="[
+      'gps-tabs'
+    ]"
     :tab-list-name="tabListName"
     :tab-titles="tabTitles.map(getTabData)"
     :selected-tab-index="index"
@@ -46,7 +49,7 @@ const {
       v-for="i in tabTitles.length"
       :key="i"
       :class="[
-        'gps-tab-content'
+        'gps-tab__content'
       ]"
       :panel-id="`tab-content-${i - 1}`"
       :tab-id="`tab-${i - 1}`"
@@ -63,9 +66,7 @@ const {
 
 <style lang="scss">
 
-.gps-posts-tabs {
-  transition: none;
-  box-shadow: none;
+.gps-tabs {
   border-bottom: solid 1px var(--border-default-grey);
 
   &::before {
@@ -84,6 +85,11 @@ const {
     box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
   }
 
+  .gps-tab__content {
+    margin-top: 4px;
+    overflow-y: auto;
+  }
+
   .fr-tabs__tab {
     --background-default-grey: var(--background-alt-grey);
     --background-default-grey-active: var(--background-alt-grey);
@@ -96,10 +102,6 @@ const {
   .fr-tabs__panel {
     padding: 1.5rem 0 0;
   }
-}
 
-.gps-tab-content {
-  margin-top: 2px;
-  overflow-y: auto;
 }
 </style>

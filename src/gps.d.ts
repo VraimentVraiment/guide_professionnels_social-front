@@ -1,3 +1,5 @@
+import { type RouteLocationRaw } from 'vue-router'
+
 declare global {
 
   /*
@@ -26,6 +28,17 @@ declare global {
       pages: GpsPage[]
     }
   }[]
+
+
+type DsfrNavigationMenuLinkProps = {
+  text: string
+  to: RouteLocationRaw
+};
+
+type DsfrNavItem = DsfrNavigationMenuLinkProps | {
+  title: string
+  links: DsfrNavigationMenuLinkProps[]
+}
 
   /*
    * GPS Posts

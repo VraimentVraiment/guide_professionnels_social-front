@@ -1,18 +1,6 @@
-import { type RouteLocationRaw } from 'vue-router'
-
-type DsfrNavigationMenuLinkProps = {
-  text: string
-  to: RouteLocationRaw
-};
-
-type DsfrNavItem = DsfrNavigationMenuLinkProps | {
-  title: string
-  links: DsfrNavigationMenuLinkProps[]
-}
-
-export async function useFetchMainNav(): Promise<DsfrNavItem[]> {
-  if (process.server) { return [] }
-
+export async function useFetchMainNav(
+  isAuthenticated: boolean,
+): Promise<DsfrNavItem[]> {
   const { navigation_menu: navigationMenu } = (
     await useFetchDirectusItems<GpsSiteNavMenu>({
       collectionName: 'gps_site',
@@ -31,8 +19,6 @@ export async function useFetchMainNav(): Promise<DsfrNavItem[]> {
     })) as unknown as {
     navigation_menu: GpsSiteNavMenu
   } // 'gps_site' collection is defined as a singleton in directus, we can safely cast to GpsSiteNavMenu
-
-  const isAuthenticated = await useIsAuthenticated()
 
   const navItems = navigationMenu
     .map(({ collection: collectionName, item }) => {
@@ -90,7 +76,7 @@ export async function useFetchMainNav(): Promise<DsfrNavItem[]> {
   function filterPageStatus(
     page: GpsPage,
   ) {
-    if (isAuthenticated.value) {
+    if (isAuthenticated) {
       return (
         page.status === 'published-private' ||
         page.status === 'published-public'

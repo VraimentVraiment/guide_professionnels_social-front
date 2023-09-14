@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { computedAsync } from '@vueuse/core'
 
 definePageMeta({
@@ -24,7 +25,8 @@ const filesData = computedAsync(async() => {
   const files = await Promise.all(
     postStore.postsCollection
       ?.items
-      ?.map(fetchRelatedFiles))
+      ?.map(fetchRelatedFiles),
+  )
 
   return files.flat()
 }, [])
