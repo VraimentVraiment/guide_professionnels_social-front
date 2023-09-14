@@ -5,7 +5,6 @@ const preferences = reactive({
   theme: undefined,
   scheme: undefined,
 })
-
 onMounted(() => {
   const { theme, scheme, setScheme } = useScheme()
   preferences.theme = theme.value
@@ -20,3 +19,7 @@ onMounted(() => {
  */
 
 </script>
+
+<template>
+  <div />
+</template>
