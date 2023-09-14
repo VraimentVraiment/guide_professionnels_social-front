@@ -1,10 +1,6 @@
 <!-- eslint-disable camelcase -->
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'default',
-})
-
 const result = await fetch('http://localhost:3000/sitemap.xml')
 const xml = await result.text()
 

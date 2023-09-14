@@ -18,7 +18,7 @@ definePageMeta({
         isAuthenticated.value
           ? ['published-public', 'published-private']
           : ['published-public']
-        )as GpsPageStatus[]
+        ) as GpsPageStatus[]
       const content = await useFetchDirectusPageItem({
         pageName: slug as string,
         status,

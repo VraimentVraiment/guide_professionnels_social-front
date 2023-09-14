@@ -2,10 +2,6 @@
 
 import { computedAsync } from '@vueuse/core'
 
-definePageMeta({
-  layout: 'default',
-})
-
 const postStore = useFicheTechniquePostStore()
 if (!postStore.postsCollectionName) {
   postStore.setPostCollection('gps_fichestechniques')

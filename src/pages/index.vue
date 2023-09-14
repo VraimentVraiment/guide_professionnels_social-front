@@ -2,10 +2,6 @@
 
 import { storeToRefs } from 'pinia'
 
-definePageMeta({
-  layout: 'default',
-})
-
 const postStore = useDispositifPostStore()
 const { checkedItems } = storeToRefs(postStore)
 const { resetAll: resetAllCheckedItems } = useCheckedItemsObserver(checkedItems)
@@ -26,10 +22,14 @@ await postStore.fetchInitialCollections()
 
 alertModel.show('info')
 
+const router = useRouter()
+
 const stepOne = () => {
   resetAllCheckedItems()
   alertModel.setStep(0)
 }
+
+const lastStep = () => navigateTo('/dispositifs')
 
 const stepTwo = async(id: number) => {
   postStore.setItem({
@@ -40,21 +40,33 @@ const stepTwo = async(id: number) => {
 
   await postStore.fetchCollection('gps_typesdispositif')
 
-  if (!typesRootNode.value?.children) {
-    navigateTo('/dispositifs')
-  } else {
+  if (typesRootNode.value?.children?.length) {
     alertModel.setStep(1)
+    router.push({
+      query: {
+        thematique: id,
+      },
+    })
+  } else {
+    lastStep()
   }
 }
 
-stepOne()
+watch(() => router.currentRoute.value.query, (query) => {
+  if (!query?.thematique) {
+    stepOne()
+  } else {
+    const id = parseInt(router.currentRoute.value.query.thematique as string, 10)
+    stepTwo(id)
+  }
+}, {
+  immediate: true,
+})
 
 </script>
 
 <template>
-  <GpsGrid
-    v-show="thematiquesItems?.length"
-  >
+  <GpsGrid v-show="thematiquesItems?.length">
     <template #top-left>
       <GpsPageTitle />
     </template>
@@ -78,7 +90,6 @@ stepOne()
     </template>
     <template #bottom-right>
       <div
-        v-if="!selectedThematique"
         :class="[
           'fr-container--fluid'
         ]"
@@ -86,39 +97,32 @@ stepOne()
         <div
           :class="[
             'fr-grid-row',
-            'fr-grid-row--gutters',
+            {'fr-grid-row--gutters': !selectedThematique}
           ]"
+          :style="{
+            padding: '4px'
+          }"
         >
-          <div
-            v-for="{ id, name, pictogramme } in thematiquesItems"
-            :key="id"
-            :class="[
-              'fr-col-12',
-              'fr-col-sm-6'
-            ]"
-          >
-            <DsfrTile2
-              :title="name"
-              horizontal
-              to=""
-              :img-src="useGetDirectusFileLink(pictogramme)"
-              title-tag="h2"
-              @click.prevent="() => stepTwo(id)"
-            />
-          </div>
-        </div>
-      </div>
-      <template v-else>
-        <div
-          :class="[
-            'fr-container--fluid'
-          ]"
-        >
-          <div
-            :class="[
-              'fr-grid-row'
-            ]"
-          >
+          <template v-if="!selectedThematique">
+            <div
+              v-for="{ id, name, pictogramme } in thematiquesItems"
+              :key="id"
+              :class="[
+                'fr-col-12',
+                'fr-col-sm-6'
+              ]"
+            >
+              <DsfrTile2
+                :title="name"
+                horizontal
+                to=""
+                :img-src="useGetDirectusFileLink(pictogramme)"
+                title-tag="h2"
+                @click.prevent="() => stepTwo(id)"
+              />
+            </div>
+          </template>
+          <template v-else>
             <h2
               :class="[
                 'fr-col-12',
@@ -138,14 +142,14 @@ stepOne()
                   label: content.backLinkLabel,
                   tertiary: true,
                   icon: 'ri-arrow-left-line',
-                  onClick: stepOne,
+                  onClick: () => router.push('/'),
                 },
                 {
                   label: content.allTypesLabel,
                   tertiary: true,
                   iconRight: true,
                   icon: 'ri-arrow-right-line',
-                  onClick: () => navigateTo('/dispositifs'),
+                  onClick: lastStep,
                 },
               ]"
             />
@@ -157,9 +161,9 @@ stepOne()
               ]"
               :root-node="typesRootNode"
             />
-          </div>
+          </template>
         </div>
-      </template>
+      </div>
     </template>
   </GpsGrid>
 </template>

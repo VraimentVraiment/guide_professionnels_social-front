@@ -1,10 +1,5 @@
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'default',
-  middleware: [],
-})
-
 const content = await queryContent('/pages/dispositif').findOne() as unknown as {
   downloadFilesLabel: string
   defaultFilename: string

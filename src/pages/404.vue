@@ -1,9 +1,5 @@
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'default',
-})
-
 const content = await queryContent('/pages/404').findOne()
 
 </script>

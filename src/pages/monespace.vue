@@ -1,10 +1,6 @@
 <!-- eslint-disable camelcase -->
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'default',
-})
-
 const credentials = useDirectusUser()
 
 const {
