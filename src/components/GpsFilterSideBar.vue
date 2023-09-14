@@ -119,7 +119,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
 <style scoped lang="scss">
 .gps-filters-sidebar {
   background-color: white;
-  border: none;
+  border: solid 1px var(--border-default-grey);
   border-top: solid 2px var(--text-active-blue-france);
   padding-bottom: 3px;
 
