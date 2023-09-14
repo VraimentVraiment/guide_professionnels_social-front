@@ -20,16 +20,18 @@ if (!postStore.postsCollectionName) {
 }
 await postStore.fetchInitialCollections()
 
-alertModel.show('info')
-
 const router = useRouter()
+
+alertModel.show('info')
 
 const stepOne = () => {
   resetAllCheckedItems()
   alertModel.setStep(0)
 }
 
-const lastStep = () => navigateTo('/dispositifs')
+const lastStep = () => {
+  navigateTo('/dispositifs')
+}
 
 const stepTwo = async(id: number) => {
   postStore.setItem({
@@ -53,10 +55,13 @@ const stepTwo = async(id: number) => {
 }
 
 watch(() => router.currentRoute.value.query, (query) => {
-  if (!query?.thematique) {
+  if (
+    router.currentRoute.value.path === '/' &&
+    !query?.thematique
+  ) {
     stepOne()
-  } else {
-    const id = parseInt(router.currentRoute.value.query.thematique as string, 10)
+  } else if (query.thematique) {
+    const id = parseInt(query.thematique as string, 10)
     stepTwo(id)
   }
 }, {
@@ -97,7 +102,7 @@ watch(() => router.currentRoute.value.query, (query) => {
         <div
           :class="[
             'fr-grid-row',
-            {'fr-grid-row--gutters': !selectedThematique}
+            { 'fr-grid-row--gutters': !selectedThematique }
           ]"
           :style="{
             padding: '4px'
