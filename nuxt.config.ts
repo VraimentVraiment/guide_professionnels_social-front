@@ -7,10 +7,6 @@ import path from 'path'
 export default defineNuxtConfig({
   srcDir: 'src/',
 
-  site: {
-    url: 'https://gps.qualif.gouv.fr',
-  },
-
   sitemap: {
     urls: [
       'content/apropos',
@@ -45,9 +41,14 @@ export default defineNuxtConfig({
       siteTitle: 'GPS14',
       titleSeparator: '|',
       directus: {
-        url: 'http://0.0.0.0:8055',
+        url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
+        // url: 'http://0.0.0.0:8055',
       },
     },
+  },
+
+  site: {
+    url: 'https://gps.qualif.gouv.fr',
   },
 
   pinia: {

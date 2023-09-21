@@ -15,7 +15,7 @@ watch(() => route.fullPath, () => {
   emit('route-change')
 })
 
-const isAuthenticated = await useIsAuthenticated()
+const isAuthenticated = useIsAuthenticated()
 
 const directusNavItems = computedAsync(async() => {
   return await useFetchMainNav(isAuthenticated.value)

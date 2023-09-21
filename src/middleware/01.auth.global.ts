@@ -3,8 +3,18 @@ import { RouteLocationNormalized } from 'vue-router'
 /**
  * Auth middleware
  */
-export default defineNuxtRouteMiddleware(async(to, from) => {
-  const isAuthenticated = await useIsAuthenticated()
+export default defineNuxtRouteMiddleware((to, from) => {
+  const isAuthenticated = useIsAuthenticated()
+
+  if (
+    !isAuthenticated.value &&
+    process.client
+  ) {
+    const isPublicRoute = useIsPublicRoute(to)
+    if (!isPublicRoute) {
+      return navigateTo('/login')
+    }
+  }
 
   if (isAuthenticated.value) {
     if (
@@ -15,11 +25,6 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
           ? '/'
           : from.path,
       )
-    }
-  } else {
-    const isPublicRoute = useIsPublicRoute(to)
-    if (!isPublicRoute) {
-      return navigateTo('/login')
     }
   }
 })

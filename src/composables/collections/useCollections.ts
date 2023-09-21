@@ -8,7 +8,6 @@ export const useCollections = <PostType extends GpsPost>() => {
   const setPostCollection = (
     collectionName: string,
   ): void => {
-    console.log('setPostCollection :', collectionName)
     postsCollectionName.value = collectionName
   }
 

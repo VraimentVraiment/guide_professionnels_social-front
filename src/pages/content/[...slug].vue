@@ -13,7 +13,7 @@ definePageMeta({
     let directusPageContent = useState(key)
 
     if (!directusPageContent.value) {
-      const isAuthenticated = await useIsAuthenticated()
+      const isAuthenticated = useIsAuthenticated()
       const status = (
         isAuthenticated.value
           ? ['published-public', 'published-private']

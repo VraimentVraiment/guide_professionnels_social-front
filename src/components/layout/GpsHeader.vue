@@ -2,7 +2,7 @@
 
 const content = await queryContent('/components/header').findOne()
 
-const isAuthenticated = await useIsAuthenticated()
+const isAuthenticated = useIsAuthenticated()
 
 const quickLinks = computed(() => {
   /**
