@@ -14,7 +14,7 @@ export function useSetItem(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
-  const { getRelationModel } = useCollectionsModels()
+  const { getRelationModel } = useModelsStore()
 
   function setItem({
     collectionName,

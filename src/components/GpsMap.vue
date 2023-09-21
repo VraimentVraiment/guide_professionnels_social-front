@@ -79,7 +79,16 @@ function loadMap(Gp: any) {
   padding: 1rem 1.5rem !important;
   box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
   border-radius: 0 !important;
+  background-color: var(--background-default-grey) !important;
   border: solid 1px var(--border-default-grey) !important;
+
+  input {
+    background-color: var(--background-default-grey) !important;
+  }
+
+  h6, p {
+    color: var(--text-title-grey) !important;
+  }
 }
 
 .ol-selectable {

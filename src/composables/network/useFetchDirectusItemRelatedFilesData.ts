@@ -27,7 +27,7 @@ export async function useFetchDirectusItemRelatedFiles<T extends { id: number }>
   file?: DirectusFile
   meta?: Record<string, any>
 }[]> {
-  const { getCollectionFilesModel } = useCollectionsModels()
+  const { getCollectionFilesModel } = useModelsStore()
   const model = getCollectionFilesModel(collectionName as string, field)
 
   if (

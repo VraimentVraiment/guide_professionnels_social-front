@@ -40,7 +40,7 @@ const getCardProps = (
     format: formatFileFormat(fileData?.file?.type ?? null),
     size: formatBytes(fileData?.file?.filesize ?? null),
     href: `${useGetDirectusFileLink(item[FILE_FIELD], { download: true })}`,
-    block: true,
+    // block: true,
   }
 }
 

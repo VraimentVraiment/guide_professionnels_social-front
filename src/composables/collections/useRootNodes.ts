@@ -6,7 +6,7 @@ export function useRootNodes(
   postsCollectionName: Ref<string | null>,
   filtersCollections: Ref<FiltersCollection[]>,
 ) {
-  const { getRelationModel } = useCollectionsModels()
+  const { getRelationModel } = useModelsStore()
 
   const rootNodes = computed(() => {
     return filtersCollections.value

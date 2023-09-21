@@ -19,6 +19,12 @@ Le backend, basé sur [Directus](https://docs.directus.io/) est disponible sous 
 npm install
 ```
 
+En cas d'erreur au moment de l'installation des dépendances :
+
+```bash
+npm install --legacy-peer-deps
+```
+
 ## Lancer nuxt en mode développement
 
 Démarre le serveur sur `http://localhost:3000`·:

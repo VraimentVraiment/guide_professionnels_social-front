@@ -2,9 +2,7 @@
  * @see https://nuxt.com/docs/getting-started/configuration
  */
 
-import fs from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
 
 export default defineNuxtConfig({
   srcDir: 'src/',
@@ -12,15 +10,19 @@ export default defineNuxtConfig({
   site: {
     url: 'https://gps.qualif.gouv.fr',
   },
+
   sitemap: {
     urls: [
-      'content/accesibilite',
+      'content/apropos',
+      'content/contact',
+      'content/accessibilite',
       'content/mentions-legales',
-      'content/politique-de-confidentialite',
+      'content/cookies',
       'content/donnees-personnelles',
     ],
   },
   devtools: {
+    // enabled: process.env.NODE_ENV === 'development',
     enabled: true,
   },
 
@@ -45,7 +47,6 @@ export default defineNuxtConfig({
       directus: {
         url: 'http://0.0.0.0:8055',
       },
-      directusCollectionsSchema: yaml.load(fs.readFileSync('src/content/collections.yml', 'utf8')),
     },
   },
 

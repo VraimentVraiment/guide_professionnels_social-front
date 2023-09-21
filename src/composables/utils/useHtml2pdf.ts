@@ -19,7 +19,7 @@ export async function useHtml2pdf(
 
   const isGeneratingDownload = ref(false)
 
-  const download = (filename: string) => {
+  const download = async(filename: string) => {
     const printOptions = {
       ...PRINT_OPTIONS,
       filename: `${slugify(filename)}.pdf`,
@@ -30,10 +30,9 @@ export async function useHtml2pdf(
 
     isGeneratingDownload.value = true
 
-    html2pdf.default(content, printOptions)
-      .then(function() {
-        isGeneratingDownload.value = false
-      })
+    await html2pdf.default(content, printOptions)
+
+    isGeneratingDownload.value = false
   }
 
   return {

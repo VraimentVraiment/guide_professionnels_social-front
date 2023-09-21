@@ -4,7 +4,7 @@ export function useFetchInitialCollections(
   fetchCollection: (collectionName: string) => void,
 ) {
   const fetchInitialCollections = () => {
-    const { getCollectionModelByName } = useCollectionsModels()
+    const { getCollectionModelByName } = useModelsStore()
     const collectionModel = getCollectionModelByName(postsCollectionName.value as string)
 
     const relationsCollectionsNames = collectionModel?.relations

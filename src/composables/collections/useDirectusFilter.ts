@@ -14,10 +14,10 @@ export function useDirectusFilters(
   relationGroups: ComputedRef<RelationGroups>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
-    const { collectionsModels } = useCollectionsModels()
+    const { collectionsModels } = useModelsStore()
 
     return collectionsModels
-      .filter((collectionModel) => {
+      ?.filter((collectionModel) => {
         return (
           postsCollectionName.value === collectionModel.collectionName ||
           filtersCollections.value

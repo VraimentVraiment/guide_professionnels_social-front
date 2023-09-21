@@ -117,7 +117,7 @@ watch(() => router.currentRoute.value.query, (query) => {
                 'fr-col-sm-6'
               ]"
             >
-              <DsfrTile2
+              <DsfrTile
                 :title="name"
                 horizontal
                 to=""

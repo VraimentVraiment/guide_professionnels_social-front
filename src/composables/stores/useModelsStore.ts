@@ -1,8 +1,15 @@
-/**
- * A composable to manage our app collections' models,
- */
-export function useCollectionsModels() {
-  const collectionsModels = useRuntimeConfig().public.directusCollectionsSchema.collections as CollectionModel[]
+export const useModelsStore = defineStore('models', useDefineModelsStore, {
+  persist: PERSISTANCE_CONFIG.MODELS_STORE,
+})
+
+function useDefineModelsStore() {
+  const collectionsModels = ref<CollectionModel[] | null>(null)
+
+  const load = async() => {
+    collectionsModels.value = (
+      await queryContent('collections-models').findOne()
+    ).collections as unknown as CollectionModel[]
+  }
 
   const getCollectionModelByName = (
     collectionName: string | null,
@@ -11,7 +18,7 @@ export function useCollectionsModels() {
       return null
     }
 
-    return collectionsModels
+    return collectionsModels.value
       ?.find((collectionModel) => {
         return collectionModel.collectionName === collectionName
       }) ?? null
@@ -47,7 +54,7 @@ export function useCollectionsModels() {
     collectionName: string,
     type?: CollectionType,
   ): CollectionModel[] | null => {
-    return collectionsModels
+    return collectionsModels.value
       ?.filter((collectionModel) => {
         const isType = (
           !type ||
@@ -91,7 +98,7 @@ export function useCollectionsModels() {
   return {
     collectionsModels,
     getCollectionFilesModel,
-    fetch,
+    load,
     getRelationModel,
     getRelationsModels,
     getCollectionModelByName,

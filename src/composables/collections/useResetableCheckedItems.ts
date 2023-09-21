@@ -2,7 +2,7 @@ export function useResetableCheckedItems(
   postsCollectionName: Ref<string | null>,
   checkedItems: Ref<FiltersCollection[]>,
 ) {
-  const { getRelationModel } = useCollectionsModels()
+  const { getRelationModel } = useModelsStore()
 
   const resetableCheckedItems = computed(() => {
     return checkedItems.value

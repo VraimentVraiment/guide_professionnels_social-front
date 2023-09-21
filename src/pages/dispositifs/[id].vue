@@ -10,7 +10,7 @@ const content = await queryContent('/pages/dispositif').findOne() as unknown as 
   }
 }
 
-const { getCollectionModelByName } = useCollectionsModels()
+const { getCollectionModelByName } = useModelsStore()
 const model = getCollectionModelByName('gps_fichesdispositif')
 
 /**
@@ -54,16 +54,20 @@ const { data: importantFilesData } = useAsyncData(() => {
   })
 })
 
-const print = () => {
-  window.print()
-}
-
 const {
   download,
   isGeneratingDownload,
 } = await useHtml2pdf('.gps-post__content', {
   avoid: '.gps-rich-text-container',
 })
+
+const downloadPost = () => {
+  useWithLightScheme(() => download(post?.name ?? content.defaultFilename))
+}
+
+const printPost = () => {
+  useWithLightScheme(window.print)
+}
 
 </script>
 
@@ -185,7 +189,7 @@ const {
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => download(post?.name ?? content.defaultFilename)"
+          @click="() => downloadPost(post?.name ?? content.defaultFilename)"
         />
         <DsfrButton
           class="fr-mt-4v"
@@ -193,7 +197,7 @@ const {
           icon="ri-printer-line"
           icon-right
           secondary
-          @click="() => print()"
+          @click="() => printPost()"
         />
         <h3
           v-if="importantFilesData?.length"
@@ -222,7 +226,6 @@ const {
 </template>
 
 <style scoped lang="scss">
-
 section.gps-post__content {
   @media print {
     padding: 3rem;

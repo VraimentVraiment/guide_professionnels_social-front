@@ -14,7 +14,7 @@ export function useFetchCollection<PostType extends GpsPost>(
     getManyToManyRelationsModels,
     getCollectionModelByName,
     getFields,
-  } = useCollectionsModels()
+  } = useModelsStore()
 
   async function fetchCollection(
     collectionName: string,

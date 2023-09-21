@@ -22,7 +22,7 @@ const quickLinks = computed(() => {
 </script>
 
 <template>
-  <DsfrHeader2
+  <DsfrHeader
     :class="[
       'gps-header',
       'noprint'
@@ -38,5 +38,5 @@ const quickLinks = computed(() => {
         @route-change="hidemodal"
       />
     </template>
-  </DsfrHeader2>
+  </DsfrHeader>
 </template>

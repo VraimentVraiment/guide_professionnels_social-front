@@ -6,8 +6,8 @@ props:
     - du Calvados
   # quickLinks:
     # - label: Paramètres d'affichage
-    #   to: /monespace
+    #   to: /mon-espace
     #   icon: fr-icon-theme-fill
     # - label: 'Mon espace'
-    #   to: '/monespace'
+    #   to: '/mon-espace'
     #   icon: 'ri-user-line'
