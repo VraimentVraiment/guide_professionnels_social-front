@@ -21,6 +21,17 @@ useHead({
   },
 })
 
+useGpsScheme()
+
+const {
+  collectionsModels,
+  load: loadModels,
+} = useModelsStore()
+
+if (!collectionsModels) {
+  await loadModels()
+}
+
 </script>
 
 <template>
@@ -29,7 +40,6 @@ useHead({
       :links="content.links"
     />
     <GpsHeader id="site-header" />
-    <DsfrScheme />
     <GpsMain id="site-main">
       <NuxtPage />
     </GpsMain>
