@@ -7,14 +7,12 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
   if (process.server) {
     return
   }
-  const isAuthenticated = Boolean(useIsAuthenticated().value)
 
-  // if (!isAuthenticated) {
-  // if (process.server) {
-  // const { fetchUser } = useDirectusAuth()
-  // isAuthenticated = Boolean((await fetchUser()).value)
-  // }
-  // }
+  let isAuthenticated = Boolean(useIsAuthenticated().value)
+  if (!isAuthenticated) {
+    const { fetchUser } = useDirectusAuth()
+    isAuthenticated = Boolean((await fetchUser()).value)
+  }
 
   if (!isAuthenticated) {
     const isPublicRoute = useIsPublicRoute(to)
@@ -24,9 +22,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
   }
 
   if (isAuthenticated) {
-    if (
-      to.path === '/login'
-    ) {
+    if (to.path === '/login') {
       return navigateTo(
         from.path === '/login'
           ? '/'
