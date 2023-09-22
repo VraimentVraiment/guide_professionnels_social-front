@@ -18,11 +18,20 @@ const fetchRelatedFiles = (item: FicheTechniquePost) => {
 }
 
 const filesData = computedAsync(async() => {
-  const files = await Promise.all(
-    postStore.postsCollection
-      ?.items
-      ?.map(fetchRelatedFiles),
+  const files = (
+    await Promise.allSettled(
+      postStore.postsCollection
+        ?.items
+        ?.map(fetchRelatedFiles),
+    )
   )
+    .map((result) => {
+      if (result.status === 'fulfilled') {
+        return result.value
+      }
+      return null
+    })
+    .filter(Boolean)
 
   return files.flat()
 }, [])
