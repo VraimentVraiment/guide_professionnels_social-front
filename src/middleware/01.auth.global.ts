@@ -6,12 +6,12 @@ import { RouteLocationNormalized } from 'vue-router'
 export default defineNuxtRouteMiddleware(async(to, from) => {
   let isAuthenticated = Boolean(useIsAuthenticated().value)
 
-  if (!isAuthenticated) {
-    if (process.server) {
-      const { fetchUser } = useDirectusAuth()
-      isAuthenticated = Boolean((await fetchUser()).value)
-    }
+  // if (!isAuthenticated) {
+  if (process.server) {
+    const { fetchUser } = useDirectusAuth()
+    isAuthenticated = Boolean((await fetchUser()).value)
   }
+  // }
 
   if (!isAuthenticated) {
     const isPublicRoute = useIsPublicRoute(to)

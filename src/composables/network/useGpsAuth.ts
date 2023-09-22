@@ -50,7 +50,9 @@ export async function useGpsAuth() {
       password: password.value.value,
     }).then(() => {
       alertModel.show('success')
-      reloadNuxtApp()
+      reloadNuxtApp({
+        path: '/',
+      })
       if (rememberMe.value) {
         /**
          * @todo Implement remember me
