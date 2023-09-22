@@ -4,27 +4,23 @@ import { RouteLocationNormalized } from 'vue-router'
  * Auth middleware
  */
 export default defineNuxtRouteMiddleware(async(to, from) => {
-  const isAuthenticated = useIsAuthenticated()
-  const { fetchUser } = useDirectusAuth()
+  let isAuthenticated = Boolean(useIsAuthenticated().value)
 
-  if (!isAuthenticated.value) {
+  if (!isAuthenticated) {
     if (process.server) {
-      const fetchedUser = Boolean((await fetchUser()).value)
-      if (!fetchedUser) {
-        const isPublicRoute = useIsPublicRoute(to)
-        if (!isPublicRoute) {
-          return navigateTo('/login')
-        }
-      }
-    } else {
-      const isPublicRoute = useIsPublicRoute(to)
-      if (!isPublicRoute) {
-        return navigateTo('/login')
-      }
+      const { fetchUser } = useDirectusAuth()
+      isAuthenticated = Boolean((await fetchUser()).value)
     }
   }
 
-  if (isAuthenticated.value) {
+  if (!isAuthenticated) {
+    const isPublicRoute = useIsPublicRoute(to)
+    if (!isPublicRoute) {
+      return navigateTo('/login')
+    }
+  }
+
+  if (isAuthenticated) {
     if (
       to.path === '/login'
     ) {
