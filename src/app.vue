@@ -41,7 +41,9 @@ if (!collectionsModels) {
     />
     <GpsHeader id="site-header" />
     <GpsMain id="site-main">
-      <NuxtPage />
+      <ClientOnly>
+        <NuxtPage />
+      </ClientOnly>
     </GpsMain>
     <GpsFooter id="site-footer" />
   </Html>

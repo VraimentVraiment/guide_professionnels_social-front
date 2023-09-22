@@ -4,12 +4,15 @@ import { RouteLocationNormalized } from 'vue-router'
  * Auth middleware
  */
 export default defineNuxtRouteMiddleware(async(to, from) => {
-  let isAuthenticated = Boolean(useIsAuthenticated().value)
+  if (process.server) {
+    return
+  }
+  const isAuthenticated = Boolean(useIsAuthenticated().value)
 
   // if (!isAuthenticated) {
   // if (process.server) {
-  const { fetchUser } = useDirectusAuth()
-  isAuthenticated = Boolean((await fetchUser()).value)
+  // const { fetchUser } = useDirectusAuth()
+  // isAuthenticated = Boolean((await fetchUser()).value)
   // }
   // }
 
