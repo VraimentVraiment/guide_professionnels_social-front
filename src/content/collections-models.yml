@@ -69,6 +69,7 @@ collections:
     relations:
       - label: Thématiques
         userSelection: single-node
+        order: 1
         mandatory: true
         relationType: many-to-many
         sourceCollectionName: gps_fichesdispositif
@@ -77,11 +78,13 @@ collections:
         sourceKey: gps_fichesdispositif_id
         targetKey: gps_thematiques_id
       - label: Types de dispositif
+        order: 2
         relationType: many-to-one
         targetCollectionName: gps_typesdispositif
         userSelection: all-nodes
         field: gps_typesdispositif_id
       - label: Caractéristiques
+        order: 3
         userSelection: leaves-only
         relationType: many-to-many
         sourceCollectionName: gps_fichesdispositif

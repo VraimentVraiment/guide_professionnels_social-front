@@ -116,6 +116,7 @@ type DsfrNavItem = DsfrNavigationMenuLinkProps | {
     relationCollectionName?: string
     sourceKey?: string
     targetKey?: string
+    order?: number
   }
 
   export type CollectionRelatedFilesModel = {

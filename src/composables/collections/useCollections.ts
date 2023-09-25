@@ -20,11 +20,19 @@ export const useCollections = <PostType extends GpsPost>() => {
       }) as PostsCollection<PostType>
   })
 
+  const { getRelationOrder } = useModelsStore()
   const filtersCollections = computed(() => {
-    return collections.value
-      .filter((c) => {
-        return c.type === 'taxonomy'
-      }) as FiltersCollection[]
+    return (
+      collections.value
+        .filter((c) => {
+          return c.type === 'taxonomy'
+        }) as FiltersCollection[])
+      ?.sort((a, b) => {
+        return (
+          getRelationOrder(postsCollectionName.value, a.collectionName) -
+          getRelationOrder(postsCollectionName.value, b.collectionName)
+        )
+      })
   })
 
   const relationsCollections = computed(() => {

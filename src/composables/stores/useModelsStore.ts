@@ -41,6 +41,14 @@ function useDefineModelsStore() {
       }) ?? null
   }
 
+  const getRelationOrder = (
+    collectionName: string | null,
+    relationCollectionName: string,
+  ): number => {
+    return getRelationModel(collectionName, relationCollectionName)
+      ?.order ?? 0
+  }
+
   const getManyToManyRelationsModels = (
     collectionName: string,
   ): CollectionRelationModel[] | null => {
@@ -101,6 +109,7 @@ function useDefineModelsStore() {
     load,
     getRelationModel,
     getRelationsModels,
+    getRelationOrder,
     getCollectionModelByName,
     getManyToManyRelationsModels,
     getDependentCollectionsModels,
