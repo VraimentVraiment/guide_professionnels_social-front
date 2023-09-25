@@ -63,10 +63,11 @@ details.gps-details {
 
   summary.gps-details__summary {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: space-between;
+    list-style: none;
     padding: .5rem 1rem .5rem .5rem;
-    list-style-type: none;
 
     &::marker {
       content: "";
@@ -84,8 +85,6 @@ details.gps-details {
     &:active {
       background-color: var(--background-default-grey-active);
     }
-
-    position: relative;
 
     &.has-checked-items{
       &::after {
