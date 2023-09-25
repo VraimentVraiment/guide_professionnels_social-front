@@ -8,11 +8,14 @@ defineProps<{
 
 const postStore = useDispositifPostStore()
 
-const setItem = (id: number) => postStore.setItem({
-  collectionName: 'gps_typesdispositif',
-  id,
-  value: true,
-})
+const setItem = (id: number) => {
+  console.log('click setItem', id)
+  postStore.setItem({
+    collectionName: 'gps_typesdispositif',
+    id,
+    value: true,
+  })
+}
 
 </script>
 
@@ -20,8 +23,8 @@ const setItem = (id: number) => postStore.setItem({
   <NuxtLink
     :class="[
       'gps-link',
-      {'gps-link__MD': size === 'MD'},
-      {'gps-link__SM': size === 'SM'},
+      { 'gps-link__MD': size === 'MD' },
+      { 'gps-link__SM': size === 'SM' },
       'fr-link',
     ]"
     :to="`/dispositifs`"

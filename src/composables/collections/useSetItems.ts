@@ -42,6 +42,7 @@ export function useSetItem(
     if (avoid.includes(item.id)) { return } // avoid infinite loop when circular relations
 
     avoid.push(item.id)
+
     const relationModel = getRelationModel(postsCollectionName.value, collectionName)
     setItemCheckSideEffects({
       item,
@@ -151,7 +152,7 @@ export function useSetItem(
     if (
       !parent || (
         parent?.id &&
-        avoid.includes(parent.id)
+        avoid?.includes(parent.id)
       )
     ) { return }
 
@@ -182,8 +183,9 @@ export function useSetItem(
       parent &&
       siblings?.length
     ) {
-      const allSiblingsUnchecked = siblings
-        .every(sibling => !sibling.checked)
+      const allSiblingsUnchecked = item.checked === false &&
+        siblings
+          .every(sibling => !sibling.checked)
 
       if (
         allSiblingsUnchecked &&
