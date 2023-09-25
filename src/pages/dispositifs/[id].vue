@@ -146,8 +146,7 @@ const printPost = () => {
                 `gps-rich-text__${key}`
               ]"
             >
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div v-html="post[key as keyof DispositifPost] as string" />
+              <div v-dompurify-html="post[key as keyof DispositifPost] ?? ''" />
             </div>
           </div>
           <hr

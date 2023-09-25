@@ -1,40 +1,29 @@
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'default',
-  validate: async(route) => {
-    const slug = route.params?.slug?.[0]
-    if (!slug) {
-      return false
-    }
+const route = useRoute()
 
-    const key = `page-content-${String(route.name)}-${route.params?.slug?.[0]}`
+const slug = route.params?.slug?.[0]
+if (!slug) {
+  navigateTo('/404')
+}
 
-    let directusPageContent = useState(key)
+const isAuthenticated = useIsAuthenticated()
 
-    if (!directusPageContent.value) {
-      const isAuthenticated = useIsAuthenticated()
-      const status = (
-        isAuthenticated.value
-          ? ['published-public', 'published-private']
-          : ['published-public']
-        ) as GpsPageStatus[]
-      const content = await useFetchDirectusPageItem({
-        pageName: slug as string,
-        status,
-        fields: ['title', 'metatitle', 'metadescription', 'content'],
-      })
+const status = (
+  isAuthenticated.value
+    ? ['published-public', 'published-private']
+    : ['published-public']
+) as GpsPageStatus[]
 
-      directusPageContent = useState(key, () => content)
-    }
-
-    return Boolean(directusPageContent.value)
-  },
+const pageContent = await useFetchDirectusPageItem({
+  pageName: slug as string,
+  status,
+  fields: ['title', 'metatitle', 'metadescription', 'content'],
 })
 
-const route = useRoute()
-const key = `page-content-${String(route.name)}-${route.params?.slug?.[0]}`
-const pageContent = useState(key)
+if (!pageContent) {
+  navigateTo('/404')
+}
 
 </script>
 
@@ -43,7 +32,6 @@ const pageContent = useState(key)
     <h1 v-if="pageContent?.title">
       {{ pageContent.title }}
     </h1>
-    <!-- eslint-disable-next-line vue/no-v-html vue/max-attributes-per-line-->
-    <div v-if="pageContent?.content" v-html="pageContent?.content" />
+    <div v-dompurify-html="pageContent?.content ?? ''" />
   </div>
 </template>

@@ -32,7 +32,8 @@
     "nuxt-directus": "^5.5.0",
     "oh-vue-icons": "1.0.0-rc3",
     "pinia": "^2.1.6",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "vue-dompurify-html": "^4.1.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.8.3",
