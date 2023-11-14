@@ -68,6 +68,7 @@ const downloadPost = () => {
 const printPost = () => {
   useWithLightScheme(window.print)
 }
+const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.name}"]`
 
 </script>
 
@@ -188,7 +189,7 @@ const printPost = () => {
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => downloadPost(post?.name ?? content.defaultFilename)"
+          @click="() => downloadPost()"
         />
         <DsfrButton
           class="fr-mt-4v"
@@ -198,7 +199,10 @@ const printPost = () => {
           secondary
           @click="() => printPost()"
         />
-        <GpsSignalModal v-if="doUseSignalModal" />
+        <GpsSignalModal
+          v-if="doUseSignalModal"
+          :get-message-content="(content: string) => `[${notificationMessagePrefix}] : ${content}`"
+        />
 
         <h3
           v-if="importantFilesData?.length"
