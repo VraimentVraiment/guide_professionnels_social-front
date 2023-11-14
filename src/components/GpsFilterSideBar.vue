@@ -92,8 +92,8 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
             :class="[
               'filter-group'
             ]"
-            :open="openDetails?.includes(collectionName)"
-            :has-checked-items="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+            :start-open="openDetails?.includes(collectionName)"
+            :has-active-content="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
           >
             <template #summary>
               <legend

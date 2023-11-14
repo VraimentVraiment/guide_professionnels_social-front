@@ -1,36 +1,40 @@
 <script setup lang="ts">
 
-withDefaults(defineProps<{
-  open?: boolean,
-  hasCheckedItems?: boolean
+const props = withDefaults(defineProps<{
+  startOpen?: boolean,
+  hasActiveContent?: boolean
 }>(), {
-  open: false,
+  startOpen: false,
 })
+
+const isOpen = ref(props.startOpen)
 
 </script>
 
 <template>
   <details
     :class="[
-      'gps-details'
+      'gps-details',
     ]"
-    :open="open"
+    :open="isOpen"
   >
-    <summary
+    <GpsFlexSummary
       :class="[
         'gps-details__summary',
-        { 'has-checked-items': hasCheckedItems }
+        { 'has-active-content': hasActiveContent }
       ]"
+      @click.prevent="() => isOpen = !isOpen"
     >
       <slot name="summary" />
       <v-icon
         :class="[
           'gps-details__icon',
+          { 'open': isOpen }
         ]"
         :name="'ri-arrow-left-s-line'"
         aria-hidden="true"
       />
-    </summary>
+    </GpsFlexSummary>
     <div
       :class="[
         'gps-details__content'
@@ -46,22 +50,9 @@ details.gps-details {
   padding: .5rem 0;
   cursor: initial;
 
-  summary.gps-details__summary {
-    display: flex;
+  .gps-details__summary {
     position: relative;
-    align-items: center;
-    justify-content: space-between;
-    list-style: none;
     padding: .5rem 1rem .5rem .5rem;
-
-    &::marker {
-      content: "";
-      display: none;
-    }
-
-    &::-webkit-details-marker {
-      display: none;
-    }
 
     &:hover {
       background-color: var(--background-default-grey-hover);
@@ -71,29 +62,27 @@ details.gps-details {
       background-color: var(--background-default-grey-active);
     }
 
-    &.has-checked-items {
-      &::after {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 3px;
-        background: var(--text-active-blue-france);
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: -3px;
-      }
-    }
-
     .gps-details__icon {
       display: block;
-      transform: rotate(270deg);
       transition: transform .3s ease-in-out;
+      transform: rotate(270deg);
+
+      &.open {
+        transform: rotate(90deg);
+      }
     }
   }
 
-  &[open]>summary.gps-details__summary>.gps-details__icon {
-    transform: rotate(90deg);
+  .has-active-content::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--text-active-blue-france);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -3px;
   }
 
   >.gps-details__content {
