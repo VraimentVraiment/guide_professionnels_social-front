@@ -1,0 +1,18 @@
+@import 'abstracts';
+@import 'utilities/';
+@import 'animations/';
+
+body {
+  background-color: $background-color !important;
+}
+
+html[data-fr-theme="dark"] {
+  .fr-tile__pictogram,
+  .gps-fr-pictogram-darkfilter {
+    filter: contrast(0.5) brightness(1.7);
+  }
+
+  input {
+    color-scheme: dark;
+  }
+}

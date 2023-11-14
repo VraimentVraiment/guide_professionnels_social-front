@@ -1,0 +1,11 @@
+@media print {
+  :root {
+    font-size: 12px;
+  }
+
+  .noprint {
+    visibility: hidden;
+    display: none;
+  }
+}
+

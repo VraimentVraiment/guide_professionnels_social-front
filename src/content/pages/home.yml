@@ -1,0 +1,10 @@
+backLinkLabel: 'Sélectionner une autre thématique'
+allTypesLabel: 'Tous les types de dispositifs'
+messages:
+  info:
+    -
+      title: 'Étape 1 : Thématiques'
+      description: 'Sélectionnez une thématique au sein de laquelle vous souhaitez explorer les dispositifs.'
+    -
+      title: 'Étape 2 : Types de dispositifs'
+      description: 'Sélectionnez un type de dispositif que vous souhaitez explorer. Cliquez sur “+” pour accéder à des types de dispositifs plus précis.'

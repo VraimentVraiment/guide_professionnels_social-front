@@ -1,0 +1,15 @@
+login:
+  title: Connexion
+index:
+  title: Accueil
+dispositifs:
+  title: Trouver un dispositif
+fichestechniques:
+  title: Fiches techniques
+mon-espace:
+  title: Mon espace
+'404':
+  metatitle: Erreur 404
+  title: Page non trouvée
+plan-du-site:
+  title: Plan du site

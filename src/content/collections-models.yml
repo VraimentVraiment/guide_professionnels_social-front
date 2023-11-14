@@ -1,0 +1,112 @@
+collections:
+
+  - label: Thématiques
+    type: taxonomy
+    collectionName: gps_thematiques
+
+  - label: Types de dispositif
+    type: taxonomy
+    collectionName: gps_typesdispositif
+    relations:
+      - label: Thématiques
+        relationType: many-to-many
+        userSelection: single-node
+        sourceCollectionName: gps_typesdispositif
+        targetCollectionName: gps_thematiques
+        relationCollectionName: gps_typesdispositif_gps_thematiques
+        sourceKey: gps_typesdispositif_id
+        targetKey: gps_thematiques_id
+
+  - label: Caractéristiques
+    type: taxonomy
+    collectionName: gps_caracteristiquesdispositif
+    relations:
+      - label: Thématiques
+        relationType: many-to-many
+        userSelection: single-node
+        sourceCollectionName: gps_caracteristiquesdispositif
+        targetCollectionName: gps_thematiques
+        relationCollectionName: gps_caracteristiquesdispositif_gps_thematiques
+        sourceKey: gps_caracteristiquesdispositif_id
+        targetKey: gps_thematiques_id
+
+  - label: Fiches dispositif
+    type: posts
+    collectionName: gps_fichesdispositif
+    filterStatus:
+      - published
+    thumbnailFields:
+      - id
+      - name
+      - addresses
+    richTextFields:
+      - key: public_eligible
+        label: Public éligible
+      - key: cadre_de_vie
+        label: Cadre de vie
+      - key: missions
+        label: Missions
+      - key: demande_dinformation
+        label: Demande d'information
+      - key: demarche_a_suivre
+        label: Démarche à suivre
+    relatedFiles:
+      - field: images
+        type: files
+        relationCollectionName: gps_fichesdispositif_directus_files
+        targetKey: directus_files_id
+      - field: download_file
+        type: many-to-many
+        sourceKey: gps_fichesdispositif_id
+        targetKey: gps_download_files_id
+        targetCollectionName: gps_download_files
+        relationCollectionName: gps_fichesdispositif_gps_download_files
+        fileIdField: file
+        metaFields:
+          - title
+          - description
+          - block
+    relations:
+      - label: Thématiques
+        userSelection: single-node
+        order: 1
+        mandatory: true
+        relationType: many-to-many
+        sourceCollectionName: gps_fichesdispositif
+        targetCollectionName: gps_thematiques
+        relationCollectionName: gps_fichesdispositif_gps_thematiques
+        sourceKey: gps_fichesdispositif_id
+        targetKey: gps_thematiques_id
+      - label: Types de dispositif
+        order: 2
+        relationType: many-to-one
+        targetCollectionName: gps_typesdispositif
+        userSelection: all-nodes
+        field: gps_typesdispositif_id
+      - label: Caractéristiques
+        order: 3
+        userSelection: leaves-only
+        relationType: many-to-many
+        sourceCollectionName: gps_fichesdispositif
+        targetCollectionName: gps_caracteristiquesdispositif
+        relationCollectionName: gps_fichesdispositif_gps_caracteristiquesdispositif
+        sourceKey: gps_fichesdispositif_id
+        targetKey: gps_caracteristiquesdispositif_id
+
+  - label: Fiches techniques
+    type: posts
+    collectionName: gps_fichestechniques
+    filterStatus:
+      - published
+    relations:
+      - label: Thématiques
+        userSelection: all-nodes
+        relationType: many-to-many
+        sourceCollectionName: gps_fichestechniques
+        targetCollectionName: gps_thematiques
+        relationCollectionName: gps_fichestechniques_gps_thematiques
+        sourceKey: gps_fichestechniques_id
+        targetKey: gps_thematiques_id
+    relatedFiles:
+      - field: media
+        type: file

@@ -1,0 +1,12 @@
+resetMessageThreshold: 3
+resetLabel: Réinitialiser les filtres
+resetMessage: Cette recherche a produit peu de résultats. Vous pouvez réinitialiser les filtres pour élargir la recherche.
+emptyMessage: Aucun élément ne correspond à votre recherche.
+tabListName: Liste d'onglets
+tabTitles:
+  - title: Liste
+    type: posts
+    icon: ri-menu-2-fill
+  - title: Carte
+    type: map
+    icon: ri-road-map-fill

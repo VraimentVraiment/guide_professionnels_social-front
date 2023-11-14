@@ -1,0 +1,10 @@
+geoportalConfig:
+  apiKey: cartes,essentiels
+  center:
+    x: -0.323
+    y: 49.142
+    projection: CRS:84
+  zoom: 9
+  # controlsOptions:
+  #   search:
+  #     maximised: true

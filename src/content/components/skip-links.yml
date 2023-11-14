@@ -1,0 +1,7 @@
+links:
+  - text: Menu
+    id: site-header
+  - text: Contenu
+    id: site-main
+  - text: Pied de page
+    id: site-footer

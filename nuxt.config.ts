@@ -2,32 +2,122 @@
  * @see https://nuxt.com/docs/getting-started/configuration
  */
 
+import path from 'path'
+
 export default defineNuxtConfig({
-  srcDir: 'client/',
+  srcDir: 'src/',
+
+  sitemap: {
+    urls: [
+      'content/apropos',
+      'content/contact',
+      'content/accessibilite',
+      'content/mentions-legales',
+      'content/cookies',
+      'content/donnees-personnelles',
+    ],
+  },
+  devtools: {
+    // enabled: process.env.NODE_ENV === 'development',
+    enabled: true,
+  },
+
+  extends: [
+    './src/layers/dsfr',
+  ],
+
   modules: [
     '@nuxt/content',
+    '@nuxt/devtools',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
     'nuxt-directus',
+    'nuxt-simple-sitemap',
+    'nuxt-vitest',
   ],
+
+  runtimeConfig: {
+    public: {
+      siteTitle: 'GPS14',
+      titleSeparator: '|',
+      directus: {
+        url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
+        // url: 'http://0.0.0.0:8055',
+      },
+    },
+  },
+
+  site: {
+    url: 'https://gps.qualif.gouv.fr',
+  },
+
+  pinia: {
+    autoImports: [
+      'defineStore',
+    ],
+  },
+
+  piniaPersistedstate: {
+    storage: 'sessionStorage',
+  },
+
   css: [
-    '@gouvfr/dsfr/dist/core/core.main.min.css', // Le CSS du DSFR
-    '@gouvfr/dsfr/dist/component/component.main.min.css', // Styles de tous les composants du DSFR
-    '@gouvfr/dsfr/dist/utility/utility.main.min.css', // Classes utilitaires: les composants de VueDsfr en ont besoin
-    '@gouvminint/vue-dsfr/styles', // Les styles propres aux composants de VueDsfr
-    
-    // '@gouvfr/dsfr/dist/scheme/scheme.min.css', // Facultatif: Si les thèmes sont utilisés (thème sombre, thème en bernes)
-    // '@gouvfr/dsfr/dist/utility/icons/icons.min.css', // Facultatif: Si des icônes sont utilisées avec les classes "fr-icon-..."
+    '@/styles/global.scss',
   ],
+
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: [
+            '@use "@/layers/dsfr/styles/" as dsfr;',
+            '@use "@/styles/abstracts" as gps;',
+          ].join('\n'),
+        },
+      },
+    },
+  },
+
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
+  imports: {
+
+    dirs: [
+      'composables/**',
+    ],
+
+    presets: [
+      {
+        from: 'd3-hierarchy',
+        imports: [
+          'HierarchyNode',
+        ],
+        type: true,
+      },
+    ],
+
+  },
+
   ignore: [
     '**/*.test.*',
     '**/*.spec.*',
     '**/*.cy.*',
   ],
-  directus: {
-    url: 'http://0.0.0.0:8055',
-  },
-  runtimeConfig: {
-    public: {
-      apiUrl: 'http://0.0.0.0:8055',
+
+  hooks: {
+    /**
+     * Here we override the main component to use for the app when running tests.
+     * @see https://github.com/danielroe/nuxt-vitest/issues/295
+     */
+    'app:resolve': (app) => {
+      if (String(process.env?.TEST) === 'true') {
+        app.mainComponent = path.resolve(__dirname, './src/test-app.vue')
+      }
     },
   },
 })

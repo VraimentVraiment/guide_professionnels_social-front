@@ -1,0 +1,6 @@
+props:
+  navItems:
+    - to: '/dispositifs'
+      text: 'Dispositifs'
+    - to: '/fichestechniques'
+      text: 'Fiches techniques'

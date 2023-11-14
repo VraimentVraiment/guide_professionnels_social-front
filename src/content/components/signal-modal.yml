@@ -1,0 +1,16 @@
+sendButtonLabel: Envoyer
+signalButtonLabel: Suggérer une modification ou signaler une erreur
+modalTitle: Suggérer une modification ou signaler une erreur
+messageContentProps:
+  maxLength: 1000
+  minLength: 10
+  label: Message
+  placeholder: Votre message
+  errorMessage: Le message doit contenir entre 10 et 1000 caractères
+messageObjectProps:
+  label: Objet du message
+  list:
+    - Je souhaite signaler une erreur
+    - Je souhaite suggérer une modification du contenu
+    - Je souhaite signaler un problème technique
+    - Je souhaite signaler un problème de confidentialité / données personnelles
