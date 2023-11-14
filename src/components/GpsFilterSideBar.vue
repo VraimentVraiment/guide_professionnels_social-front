@@ -1,271 +1,151 @@
 <script setup lang="ts">
 
-const props = withDefaults(defineProps<{
+defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
-  makeUnselectable: boolean
-  maxHeight: string
-  openDetails: string[] | null
-  id: string
   checkedItemsObserver: ReturnType<typeof useCheckedItemsObserver>
-}>(), {
-  makeUnselectable: false,
-  maxHeight: 'none',
-  openDetails: null,
-})
-
-const isOpen = ref(false)
-
-const { breakpoints } = useDsfrBreakpoints()
-const isSmallScreen = breakpoints.smaller('MD')
-
-const isSelectable = computed(() => {
-  return (
-    !props.makeUnselectable ||
-    isSmallScreen.value
-  )
-})
+  doUseSearchStore?: boolean
+  maxHeight?: string
+}>()
 
 const content = await queryContent('/components/gps-filter-sidebar').findOne()
+
+const expandedId = ref<string | undefined>()
+const expand = (event: string | undefined): any => {
+  expandedId.value = event
+}
+
+const {
+  selectedCityList,
+} = storeToRefs(useLocationSearchStore())
 
 </script>
 
 <template>
-  <div
-    :id="id"
-    :class="[
-      'gps-filters-sidebar',
-      { 'open': isOpen },
-      { 'is-small-screen': isSmallScreen },
-      { 'is-selectable': isSelectable },
-    ]"
-  >
-    <button
+  <div>
+    <DsfrSideMenu
+      :heading-title="'Filtrer les résultats'"
+      :button-label="'Filtrer les résultats'"
       :class="[
-        'gps-filters-sidebar__header'
-      ]"
-      :aria-expanded="isSelectable ? isOpen : undefined"
-      :aria-controls="isSelectable ? `${id}-content` : undefined"
-      :aria-disabled="!isSelectable"
-      :disabled="!isSelectable"
-      @click="() => {
-        if (isSelectable) {
-          isOpen = !isOpen
-        }
-      }"
-    >
-      <span>
-        <v-icon
-          name="ri-equalizer-fill"
-          aria-hidden="true"
-        />
-        {{ content.headerLabel }}
-      </span>
-      <v-icon
-        v-show="isSelectable"
-        :class="[
-          'gps-filters-sidebar__header__icon',
-        ]"
-        :name="isOpen ? 'ri-close-line' : 'ri-arrow-left-s-line'"
-        aria-hidden="true"
-      />
-    </button>
-    <div
-      :id="`${id}-content`"
-      :class="[
-        'gps-filters-sidebar__content'
+        'gps-filters-sidebar',
       ]"
       :style="{
-        maxHeight: maxHeight,
+        maxHeight,
       }"
     >
-      <template
-        v-for="{ collectionName, label } in postStore.filtersCollections"
-        :key="collectionName"
-      >
-        <GpsDetailsAccordion
-          v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
-          :class="[
-            'filter-group'
-          ]"
-          :label="label"
-          :summary-tag="'h2'"
-          :open="openDetails?.includes(collectionName)"
-          :has-checked-items="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
-        >
-          <DsfrButton
-            v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+      <slot name="before-content" />
+      <DsfrAccordionsGroup>
+        <li v-if="doUseSearchStore">
+          <DsfrAccordion
+            :expanded-id="expandedId"
+            :title="'Communes'"
             :class="[
-              'gps-filters-sidebar__reset-button',
+              { 'has-active-content': selectedCityList?.length }
             ]"
-            :label="content.resetLabel"
-            tertiary
-            no-outline
-            size="small"
-            :icon="'ri-close-circle-line'"
-            icon-right
-            @click="() => checkedItemsObserver.resetCollection(collectionName)"
-          />
-          <GpsFilterNode
-            :post-store="postStore"
-            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
-            is-root-node
-          />
-        </GpsDetailsAccordion>
-      </template>
-    </div>
+            @expand="expand"
+          >
+            <div
+              :class="[
+                'fr-py-2w'
+              ]"
+            >
+              <GpsLocationSearchBar />
+            </div>
+          </DsfrAccordion>
+        </li>
+        <template
+          v-for="{ collectionName, label } in postStore.filtersCollections"
+          :key="collectionName"
+        >
+          <li
+            v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
+            :id="collectionName"
+          >
+            <DsfrAccordion
+              :expanded-id="expandedId"
+              :title="label"
+              :class="[
+                { 'has-active-content': postStore.checkedItems
+                  ?.find(item => item?.collectionName === collectionName)
+                  ?.items
+                  ?.some(item => item?.checked) ?? false
+                }
+              ]"
+              @expand="expand"
+            >
+              <div
+                :class="[
+                  'fr-py-2w'
+                ]"
+              >
+                <DsfrButton
+                  v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+                  :class="[
+                    'fr-mb-2v',
+                  ]"
+                  :label="content.resetLabel"
+                  tertiary
+                  no-outline
+                  size="small"
+                  :icon="'ri-close-circle-line'"
+                  icon-right
+                  @click="() => checkedItemsObserver.resetCollection(collectionName)"
+                />
+                <GpsFilterNode
+                  :post-store="postStore"
+                  :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+                  is-root-node
+                />
+              </div>
+            </DsfrAccordion>
+          </li>
+        </template>
+      </DsfrAccordionsGroup>
+    </DsfrSideMenu>
   </div>
 </template>
 
 <style scoped lang="scss">
-.gps-filters-sidebar {
-  background-color: var(--background-default-grey);
-  border: solid 1px var(--border-default-grey);
-  border-top: solid 2px var(--text-active-blue-france);
-  padding-bottom: 3px;
 
-  .gps-filters-sidebar__header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.45rem 1rem;
-    background-color: var(--background-default-grey);
-    color: var(--text-active-blue-france);
-    cursor: initial;
+:deep(.fr-sidemenu) {
+  padding: 0;
 
-    .gps-filters-sidebar__header__icon {
-      transform: rotate(0deg) scale(1.2);
-      transition: transform .2s ease-in-out;
-    }
+  // max-height: 80vh;
+  overflow-y: auto;
+  filter: drop-shadow(var(--overlap-shadow));
 
-    >span svg {
-      margin-right: 0.5rem;
+  .fr-sidemenu__inner {
+    background: white;
+
+    @include dsfr.md {
+      padding-left: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
     }
   }
+}
 
-  .gps-filters-sidebar__content {
-    padding: 0 1rem .5rem;
-    overflow-y: auto;
-    background-color: var(--background-default-grey);
+:deep(.fr-sidemenu__title) {
+  display: none;
+
+  @include dsfr.md {
+    display: block;
   }
+}
 
-  &.is-selectable {
-    border-color: var(--background-action-low-blue-france);
-    border-top-color: var(--background-action-low-blue-france);
-    padding-bottom: 0;
+:deep(.has-active-content) {
+  &>.fr-accordion__title {
+    position: relative;
 
-    &:hover {
-      border-color: var(--background-action-low-blue-france-hover);
-      border-top-color: var(--background-action-low-blue-france-hover);
-    }
-
-    &:active {
-      border-color: var(--background-action-low-blue-france-active);
-      border-top-color: var(--background-action-low-blue-france-active);
-    }
-
-    .gps-filters-sidebar__header {
-      cursor: pointer;
-      background-color: var(--background-action-low-blue-france);
-      color: var(--text-action-high-grey);
-
-      &:hover {
-        background-color: var(--background-action-low-blue-france-hover);
-      }
-
-      &:active {
-        background-color: var(--background-action-low-blue-france-active);
-      }
-    }
-
-    .gps-filters-sidebar__content {
-      display: none;
-    }
-
-    &.is-selectable {
+    &::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--text-active-blue-france);
       position: absolute;
-      z-index: 10;
-      width: 100%;
-
-      &.open {
-        box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
-      }
-
-      .gps-filters-sidebar__content {
-        background: var(--background-default-grey);
-      }
-    }
-
-    &.open {
-      border-color: var(--border-default-grey);
-      border-top-color: var(--text-active-blue-france);
-
-      .gps-filters-sidebar__header {
-        background-color: var(--background-default-grey);
-        color: var(--text-active-blue-france);
-
-        &:hover {
-          background-color: var(--background-default-grey-hover);
-        }
-
-        &:active {
-          background-color: var(--background-default-grey-active);
-        }
-
-        .gps-filters-sidebar__header__icon {
-          transform: rotate(-90deg) scale(1.2);
-        }
-      }
-
-      .gps-filters-sidebar__content {
-        display: block;
-      }
-    }
-  }
-}
-
-.gps-filters-sidebar__reset-button {
-  transform: translate(-0.5rem, -0.5rem);
-}
-</style>
-
-<style lang="scss">
-.gps-filters-sidebar {
-  h2 {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1;
-  }
-
-  h5 {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: .5rem;
-
-    &:first-child {
-      margin-top: .25rem;
-    }
-
-    &:not(:first-child) {
-      margin-top: 1rem;
-    }
-  }
-
-  h6 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .fr-checkbox-group,
-  .fr-radio-group {
-    margin-bottom: .75rem;
-
-    label {
-      font-size: 1em;
+      top: 50%;
+      transform: translateY(-50%);
+      left: .25rem;
     }
   }
 }

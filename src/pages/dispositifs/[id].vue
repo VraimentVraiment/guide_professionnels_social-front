@@ -13,26 +13,14 @@ const content = await queryContent('/pages/dispositif').findOne() as unknown as 
 const { getCollectionModelByName } = useModelsStore()
 const model = getCollectionModelByName('gps_fichesdispositif')
 
-/**
- * @todo Use signal error modal when directus fix this :
- * - Not being able to send notification to everyone assigned to a role,
- *   which should be working according to this tutorial :
- *   @see https://learndirectus.com/how-to-send-a-notification/
- * - Notification not opening in backend UI
- */
-const doUseSignalModal = false
-
 const id = parseInt(useRoute().params.id as string, 10)
-
 const post = await useFetchDirectusItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
 })
-
 if (post === null) {
   navigateTo('/404')
 }
-
 useHead({
   title: post?.name,
 })
@@ -68,6 +56,8 @@ const downloadPost = () => {
 const printPost = () => {
   useWithLightScheme(window.print)
 }
+
+const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.name}"]`
 
 </script>
 
@@ -166,7 +156,7 @@ const printPost = () => {
           <img
             v-for="{ id: imgId } in imagesData"
             :key="imgId"
-            :src="useGetDirectusFileLink(imgId)"
+            :src="useGetDirectusFileLink(imgId) ?? ''"
             alt=""
           >
         </div>
@@ -188,7 +178,7 @@ const printPost = () => {
           secondary
           icon="ri-file-download-line"
           icon-right
-          @click="() => downloadPost(post?.name ?? content.defaultFilename)"
+          @click="() => downloadPost()"
         />
         <DsfrButton
           class="fr-mt-4v"
@@ -198,9 +188,13 @@ const printPost = () => {
           secondary
           @click="() => printPost()"
         />
+        <GpsSignalModal
+          :get-message-content="(content: string) => `${notificationMessagePrefix} : ${content}`"
+        />
+
         <h3
           v-if="importantFilesData?.length"
-          class="fr-mt-8v fr-mb-0"
+          class="fr-mt-8v fr-mb-4v"
         >
           {{ content.downloadFilesLabel }}
         </h3>
@@ -214,11 +208,9 @@ const printPost = () => {
             :description="meta?.description"
             :format="formatFileFormat(file?.type as string)"
             :size="formatBytes(file?.filesize as number)"
-            :href="`${useGetDirectusFileLink(fileId, { download: true })}`"
+            :href="useGetDirectusFileLink(fileId, { download: true }) ?? ''"
           />
         </div>
-
-        <GpsSignalModal v-if="doUseSignalModal" />
       </div>
     </section>
   </div>

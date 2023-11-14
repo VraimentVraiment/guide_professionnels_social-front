@@ -2,7 +2,6 @@ type DsfrFieldProps = {
   label: string
   placeholder: string
   hint: string
-  autocomplete?: string
   messages: {
     error: string
     valid: string
@@ -17,7 +16,6 @@ export type DsfrFieldModel = {
     label?: string
     placeholder?: string
     hint?: string
-    autocomplete?: string
   }
   errorMessage: ComputedRef<string | undefined>
   validMessage: ComputedRef<string | undefined>
@@ -30,10 +28,16 @@ export type DsfrFieldModel = {
  */
 export function useDsfrField({
   props,
+  showValid = false,
+  showError = false,
   isValidCondition,
+  isErrorCondition,
 }: {
   props: DsfrFieldProps,
+  showValid?: boolean | Ref<boolean>,
+  showError?: boolean | Ref<boolean>,
   isValidCondition?: (value: string) => boolean
+  isErrorCondition?: (value: string) => boolean
 }): DsfrFieldModel {
   const value = ref('')
   const isError = ref(false)
@@ -41,15 +45,8 @@ export function useDsfrField({
 
   const validate = () => {
     nextTick(() => {
-      const isValidValue = isValidCondition?.(value.value) ?? null
-      if (isValidValue === null) { return }
-      if (isValidValue) {
-        isError.value = false
-        isValid.value = true
-      } else {
-        isError.value = true
-        isValid.value = false
-      }
+      isError.value = isErrorCondition?.(value.value) ?? false
+      isValid.value = isValidCondition?.(value.value) ?? false
     })
   }
 
@@ -63,17 +60,20 @@ export function useDsfrField({
     value,
     isError,
     isValid,
-    props: {
-      label: props.label,
-      placeholder: props.placeholder,
-      hint: props.hint,
-      autocomplete: props.autocomplete,
-    },
+    props,
     errorMessage: computed(() => {
-      return (isError.value && props.messages.error) || undefined
+      return (
+        isError.value &&
+        unref(showError) &&
+        unref(props.messages.error)
+      ) || undefined
     }),
     validMessage: computed(() => {
-      return (isValid.value && props.messages.valid) || undefined
+      return (
+        isValid.value &&
+        unref(showValid) &&
+        props.messages.valid
+      ) || undefined
     }),
     validate,
     reset,

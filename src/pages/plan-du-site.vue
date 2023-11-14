@@ -10,18 +10,19 @@ const LABEL_MAP = {
   '/apropos': 'À propos',
   dispositifs: 'Dispositifs',
   fichestechniques: 'Fiches techniques',
-  login: 'Connexion',
-  monespace: 'Mon espace',
+  auth: 'Connexion',
+  'mon-espace': 'Mon espace',
   apropos: 'À propos',
   contact: 'Contact',
-  plandusite: 'Plan du site',
+  'plan-du-site': 'Plan du site',
   accessibilite: 'Accessibilité',
   'donnees-personnelles': 'Données personnelles',
   'mentions-legales': 'Mentions légales',
   cookies: 'Gestion des cookies',
+  'parametres-affichage': 'Paramètres d\'affichage',
 }
 
-const result = await fetch('http://localhost:3000/sitemap.xml')
+const result = await fetch('/sitemap.xml')
 const xml = await result.text()
 
 const getPages = () => {
@@ -39,9 +40,10 @@ const getPages = () => {
   return pages
 }
 
-function formatLabel(loc: string) {
+function formatLabel(loc: string | null) {
+  if (!loc) { return '' }
   const split = loc.split('/')
-  const label = split[split.length - 1]
+  const label = split[split.length - 1] as keyof typeof LABEL_MAP
   return LABEL_MAP[label] || label
 }
 

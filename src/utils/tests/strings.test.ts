@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('isStringValidEmail', () => {
   it('returns true for a valid email address', () => {
     expect(isStringValidEmail('test@example.com')).toBe(true)

@@ -1,21 +1,15 @@
 <script setup lang="ts">
 
-import {
-  type DirectusNotificationObject,
-} from 'nuxt-directus/dist/runtime/types'
-
-const rolesIds = {
-  admin: 'bf383d1c-33e1-4b93-bf10-d5d179489b0c',
-  superAdmin: '236ca5a2-d117-470a-abdf-f905bd2d208d',
-  author: '445cf830-f3b7-4abe-b9c7-a0cf9ba7c6d5',
-}
-const { createNotification } = useDirectusNotifications()
+const props = withDefaults(defineProps<{
+  getMessageContent:(content: string) => string
+}>(), {
+  getMessageContent: (content: string) => content,
+})
 
 const content = await queryContent('/components/signal-modal').findOne()
 
-const messageObject = ref()
+const messageObject = ref(null)
 const messageContent = ref('')
-const isModalOpen = ref(false)
 
 const isValidMessage = computed(() => {
   return (
@@ -26,21 +20,30 @@ const isValidMessage = computed(() => {
   )
 })
 
-const open = () => {
-  isModalOpen.value = true
-}
+const recipientIds = await useGetNotificationRecipientIds()
+const { createNotification } = useDirectusNotifications()
 
-const close = () => {
-  isModalOpen.value = false
-}
+const {
+  isOpen: isModalOpen,
+  open,
+  close,
+} = useModalModel('signal')
 
-const send = () => {
-  const notification: DirectusNotificationObject = {
-    recipient: rolesIds.admin,
-    subject: messageObject.value,
-    message: messageContent.value,
+const sendNotification = () => {
+  if (!recipientIds?.length) {
+    return
   }
-  createNotification({ notification })
+  Promise.allSettled(
+    recipientIds?.map((id) => {
+      return createNotification({
+        notification: {
+          recipient: id,
+          subject: messageObject.value as unknown as string,
+          message: props.getMessageContent(messageContent.value),
+        },
+      })
+    }),
+  )
     .then(() => {
       messageObject.value = null
       messageContent.value = ''
@@ -66,12 +69,21 @@ const send = () => {
     icon="ri-alarm-warning-line"
     :opened="isModalOpen"
     @close="() => close()"
+    :actions="[
+      {
+        label: content.sendButtonLabel,
+        icon: 'ri-send-plane-line',
+        iconRight: true,
+        disabled: !messageObject || messageContent.length === 0 || !isValidMessage,
+        onClick: () => sendNotification(),
+      }
+    ]"
   >
     <DsfrSelect
       v-model="messageObject"
       :label="content.messageObjectProps.label"
       :options="content.messageObjectProps.list"
-      :required="true"
+      required
     />
     <DsfrInputGroup
       v-model="messageContent"
@@ -79,15 +91,8 @@ const send = () => {
       :placeholder="content.messageContentProps.placeholder"
       is-textarea
       label-visible
-      :required="true"
+      required
       :error-message="!isValidMessage ? content.messageContentProps.errorMessage : null"
-    />
-    <DsfrButton
-      :label="content.sendButtonLabel"
-      icon="ri-send-plane-line"
-      icon-right
-      :disabled="!messageObject || messageContent.length === 0 || !isValidMessage"
-      @click="() => send()"
     />
   </DsfrModal>
 </template>

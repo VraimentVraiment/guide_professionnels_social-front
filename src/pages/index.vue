@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import { storeToRefs } from 'pinia'
-
 const postStore = useDispositifPostStore()
 const { checkedItems } = storeToRefs(postStore)
 const { resetAll: resetAllCheckedItems } = useCheckedItemsObserver(checkedItems)
@@ -68,17 +66,19 @@ watch(() => router.currentRoute.value.query, (query) => {
   immediate: true,
 })
 
+const { preferences } = useGpsSchemeStore()
+const getTileImgSrc = (item: any) => {
+  return preferences.theme === 'dark'
+    ? (useGetDirectusFileLink(item.pictogramme_dark) ?? useGetDirectusFileLink(item.pictogramme))
+    : useGetDirectusFileLink(item.pictogramme)
+}
+
 </script>
 
 <template>
   <GpsGrid v-show="thematiquesItems?.length">
-    <template #top-left>
+    <template #left>
       <GpsPageTitle />
-    </template>
-    <template #top-right>
-      <GpsSearchModule />
-    </template>
-    <template #bottom-left>
       <div class="fr-container--fluid">
         <div class="fr-grid-row">
           <DsfrAlert
@@ -93,7 +93,7 @@ watch(() => router.currentRoute.value.query, (query) => {
         </div>
       </div>
     </template>
-    <template #bottom-right>
+    <template #right>
       <div
         :class="[
           'fr-container--fluid'
@@ -110,20 +110,20 @@ watch(() => router.currentRoute.value.query, (query) => {
         >
           <template v-if="!selectedThematique">
             <div
-              v-for="{ id, name, pictogramme } in thematiquesItems"
-              :key="id"
+              v-for="item in thematiquesItems"
+              :key="item.id"
               :class="[
                 'fr-col-12',
                 'fr-col-sm-6'
               ]"
             >
               <DsfrTile
-                :title="name"
+                :title="item.name"
                 horizontal
-                to=""
-                :img-src="useGetDirectusFileLink(pictogramme)"
+                :to="'#'"
+                :img-src="getTileImgSrc(item) ?? ''"
                 title-tag="h2"
-                @click.prevent="() => stepTwo(id)"
+                @click.prevent="() => stepTwo(item.id)"
               />
             </div>
           </template>

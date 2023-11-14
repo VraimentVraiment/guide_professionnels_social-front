@@ -33,6 +33,7 @@ collections:
   - label: Fiches dispositif
     type: posts
     collectionName: gps_fichesdispositif
+    limit: 30
     filterStatus:
       - published
     thumbnailFields:
@@ -96,6 +97,7 @@ collections:
   - label: Fiches techniques
     type: posts
     collectionName: gps_fichestechniques
+    limit: 40
     filterStatus:
       - published
     relations:

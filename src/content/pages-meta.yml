@@ -1,4 +1,4 @@
-login:
+auth:
   title: Connexion
 index:
   title: Accueil
@@ -13,3 +13,5 @@ mon-espace:
   title: Page non trouvée
 plan-du-site:
   title: Plan du site
+parametres-affichage:
+  title: Paramètres d'affichage

@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('getDirectusFilter', () => {
   it('returns an empty object when given an empty array of directusFilters', () => {
     const directusFilters: CollectionDirectusFilter[] = []

@@ -48,7 +48,7 @@ const getCardProps = (
     title: item.name,
     format: formatFileFormat(fileData?.file?.type ?? null),
     size: formatBytes(fileData?.file?.filesize ?? null),
-    href: `${useGetDirectusFileLink(item[FILE_FIELD], { download: true })}`,
+    href: useGetDirectusFileLink(item[FILE_FIELD], { download: true }) ?? '',
     // block: true,
   }
 }
@@ -57,9 +57,7 @@ const getCardProps = (
 
 <template>
   <GpsPostsIndex
-    id="fichestechniques"
     :post-store="postStore"
-    :open-details="['gps_thematiques']"
     :get-card-props="getCardProps"
     :card-type="'file'"
   />

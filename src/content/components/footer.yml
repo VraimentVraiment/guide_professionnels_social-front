@@ -1,26 +1,13 @@
-props:
-  licenceText: Sauf mention contraire, tous les contenus de ce site sont sous licence
-  licenceTo: https://github.com/etalab/licence-ouverte/blob/master/LO.md
-  licenceName: etalab-2.0
-  a11yCompliance: Partiellement conforme
-  logoText:
-    - Prefet
-    - du Calvados
-  legalLink: /content/mentions-legales
-  personalDataLink: /content/donnees-personnelles
-  cookiesLink: /content/cookies
-  a11yComplianceLink: /content/accessibilite
-  afterMandatoryLinks:
-    - label: Plan du site
-      to: /plan-du-site
-  descText: |
-    Le Guide des Professionnels du Social dans le département du Calvados
-    est une plateforme portée par la préfecture du Calvados.
-    Ce projet est lauréat de l'Appel à défis pour une action publique co-construite avec les usagers et les agents,
-    porté par la Direction interministérielle de la fonction publique (DITP) et financé dans le cadre de France Relance.
-    Le design de ce site est conçu avec le système de design de l’État.
-  homeLink: /
-  operatorImgSrc: /logo-FR-kit-com.png
-  operatorLinkText: Préfecture du Calvados
-  operatorTo: /
-  operatorImgAlt: Logos de la Préfecture du Calvados et du gouvernement français.
+homeLink: /
+legalLink: /content/mentions-legales
+personalDataLink: /content/donnees-personnelles
+cookiesLink: /content/cookies
+a11yComplianceLink: /content/accessibilite
+afterMandatoryLinks:
+  - label: Plan du site
+    to: /plan-du-site
+    public: false
+  # - label: Paramètres d'affichage
+  #   to: /parametres-affichage
+  #   icon: ri-contrast-2-line
+  #   public: true

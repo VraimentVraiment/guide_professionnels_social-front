@@ -1,5 +1,7 @@
 import { type RouteLocationRaw } from 'vue-router'
 
+import { type HierarchyNode } from 'd3-hierarchy'
+
 declare global {
 
   /*
@@ -29,16 +31,22 @@ declare global {
     }
   }[]
 
+  export type GpsQuickLink = {
+    to: string
+    label: string
+    icon?: boolean
+    public?: boolean
+  }
 
-type DsfrNavigationMenuLinkProps = {
-  text: string
-  to: RouteLocationRaw
-};
+  type DsfrNavigationMenuLinkProps = {
+    text: string
+    to: RouteLocationRaw
+  };
 
-type DsfrNavItem = DsfrNavigationMenuLinkProps | {
-  title: string
-  links: DsfrNavigationMenuLinkProps[]
-}
+  type DsfrNavItem = DsfrNavigationMenuLinkProps | {
+    title: string
+    links: DsfrNavigationMenuLinkProps[]
+  }
 
   /*
    * GPS Posts
@@ -98,6 +106,7 @@ type DsfrNavItem = DsfrNavigationMenuLinkProps | {
     relations?: CollectionRelationModel[]
     thumbnailFields?: string[]
     relatedFiles: CollectionRelatedFilesModel[]
+    limit?: number
     filterStatus?: GpsPostStatus[]
     richTextFields?: {
       label: string
@@ -174,6 +183,7 @@ type DsfrNavItem = DsfrNavigationMenuLinkProps | {
     label?: string
     items: PostType[]
     type: 'posts'
+    itemsCount?: number
   }
 
   export type FiltersCollection = {

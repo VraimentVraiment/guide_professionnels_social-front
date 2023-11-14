@@ -1,6 +1,25 @@
 <script setup lang="ts">
 
-const content = await queryContent('/components/gps-site-banner').findOne()
+const { preferences } = useGpsSchemeStore()
+
+const {
+  serviceTitleMultiline,
+  serviceDescription,
+  logoPathLight,
+  logoDarkPath,
+} = appConfigPatch as unknown as Required<{
+// } = useAppConfig() as unknown as Required<{
+  serviceTitleMultiline: string
+  logoPathLight: string,
+  logoDarkPath: string,
+  serviceDescription: string
+}>
+
+const logoPath = computed(() => {
+  return preferences.theme === 'dark'
+    ? logoDarkPath
+    : logoPathLight
+})
 
 </script>
 
@@ -16,11 +35,11 @@ const content = await queryContent('/components/gps-site-banner').findOne()
         'gps-banner__logo',
         'fr-col-3',
         'fr-col-sm-4',
-        'gps-fr-pictogram-darkfilter',
       ]"
     >
       <img
-        :src="content.logoPath"
+        v-if="logoPath"
+        :src="logoPath"
         alt="Logo GPS"
       >
     </div>
@@ -38,7 +57,7 @@ const content = await queryContent('/components/gps-site-banner').findOne()
         ]"
       >
         <span
-          v-for="line, i in content.title"
+          v-for="line, i in serviceTitleMultiline ?? []"
           :key="i"
           :class="[
             'gps-banner__title__line'
@@ -53,7 +72,7 @@ const content = await queryContent('/components/gps-site-banner').findOne()
           'fr-text--lg'
         ]"
       >
-        {{ content.baseline }}
+        {{ serviceDescription }}
       </p>
     </div>
   </div>

@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('useCollectionObserver', () => {
   it('should initialize with an empty collection', () => {
     const { collection } = useCollectionObserver<number>()

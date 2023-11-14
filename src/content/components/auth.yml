@@ -1,0 +1,65 @@
+fieldSet:
+  legend:
+    login: Connectez-vous pour accéder à la plateforme
+    resetEmail: Saisissez votre adresse email
+    resetPassword: Choisissez votre nouveau mot de passe
+  hint:
+    resetPassword: Il doit contenir au moins 8 caractères
+    resetEmail: Un email vous sera envoyé pour réinitialiser votre mot de passe
+emailField:
+  label: Email
+  placeholder: Email
+  messages:
+    error: Email invalide
+    valid: Email valide
+passwordField:
+  label: Mot de passe
+  placeholder: Mot de passe
+  messages:
+    error: Le mot de passe doit contenir au moins 8 caractères
+    valid: Mot de passe valide
+repeatPasswordField:
+  label: Confirmer le mot de passe
+  placeholder: Confirmer le mot de passe
+  messages:
+    error: Les mots de passe ne correspondent pas
+    valid: Les mots de passe correspondent
+loginButton:
+  label: Se connecter
+forgotPasswordButton:
+  label: Mot de passe oublié ?
+resetPasswordRequestButton:
+  label: Envoyer un mail de réinitialisation
+resetPasswordButton:
+  label: Changer de mot de passe
+messages:
+  error:
+    login:
+      title: Erreur
+      description: Le nom d'utilisateur et/ou le mot de passe sont incorrect
+    resetPassword:
+      title: Erreur
+      description: Une erreur est survenue lors de la réinitialisation du mot de passe
+    resetEmail:
+      title: Erreur
+      description: Une erreur est survenue lors de l'envoi de l'email de réinitialisation du mot de passe
+  success:
+    login:
+      title: Succès
+      description: Connexion réussie
+    resetEmail:
+      title: Email envoyé
+      description: Un email vous a été envoyé pour réinitialiser votre mot de passe
+    resetPassword:
+      title: Mot de passe réinitialisé
+      description: Votre mot de passe a été réinitialisé, vous pouvez vous connecter
+  info:
+    login:
+      title: Information
+      description: Connexion en cours
+    resetEmail:
+      title: Information
+      description: Envoi de l'email en cours
+    resetPassword:
+      title: Information
+      description: Réinitialisation du mot de passe en cours

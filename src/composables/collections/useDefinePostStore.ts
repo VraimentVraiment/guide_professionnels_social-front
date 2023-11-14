@@ -22,6 +22,7 @@ export const useDefinePostStore = <PostType extends GpsPost>() => {
   const fetchInitialCollections = useFetchInitialCollections(postsCollectionName, filtersCollections, fetchCollection)
   const setItem = useSetItem(postsCollectionName, filtersCollections)
   const watchPostFiltering = useWatchPostFiltering(postsCollectionName, filtersCollections, fetchCollection)
+  const { pagination, updatePagination } = usePostsPagination<PostType>(postsCollectionName, postsCollection, fetchCollection)
 
   return {
     postsCollectionName,
@@ -35,6 +36,8 @@ export const useDefinePostStore = <PostType extends GpsPost>() => {
     directusFilters,
     relationGroups,
     localisedPostItems,
+    pagination,
+    updatePagination,
     setPostCollection,
     fetchCollection,
     fetchInitialCollections,

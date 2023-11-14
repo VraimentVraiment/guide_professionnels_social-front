@@ -1,6 +1,7 @@
 // @vitest-environment nuxt
 
 import { mockNuxtImport, renderSuspended } from 'nuxt-vitest/utils'
+import { expect } from 'vitest'
 import { GpsPageTitle } from '#components'
 
 mockNuxtImport('useGetPageContent', () => {

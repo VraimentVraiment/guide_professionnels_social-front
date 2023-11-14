@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('useScaleLinear', () => {
   it('should create a linear scale with the given domain and range', () => {
     const value = ref(75)

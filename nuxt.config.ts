@@ -18,8 +18,7 @@ export default defineNuxtConfig({
     ],
   },
   devtools: {
-    // enabled: process.env.NODE_ENV === 'development',
-    enabled: true,
+    enabled: process.env.NODE_ENV === 'development',
   },
 
   extends: [
@@ -38,23 +37,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteTitle: 'GPS14',
-      titleSeparator: '|',
+      site: {
+        url: 'http://localhost:3000',
+      },
       directus: {
-        url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
-        // url: 'http://0.0.0.0:8055',
+        url: 'http://0.0.0.0:8055',
       },
     },
-  },
-
-  site: {
-    url: 'https://gps.qualif.gouv.fr',
-  },
-
-  pinia: {
-    autoImports: [
-      'defineStore',
-    ],
   },
 
   piniaPersistedstate: {
@@ -86,21 +75,9 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-
     dirs: [
       'composables/**',
     ],
-
-    presets: [
-      {
-        from: 'd3-hierarchy',
-        imports: [
-          'HierarchyNode',
-        ],
-        type: true,
-      },
-    ],
-
   },
 
   ignore: [

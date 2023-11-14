@@ -1,4 +1,4 @@
-import { RouteLocationNormalized } from 'vue-router'
+import { type RouteLocationNormalized } from 'vue-router'
 
 /**
  * Auth middleware
@@ -6,6 +6,14 @@ import { RouteLocationNormalized } from 'vue-router'
 export default defineNuxtRouteMiddleware(async(to, from) => {
   if (process.server) {
     return
+  }
+
+  if (to.query.logout) {
+    const {
+      logout: directusLogout,
+    } = useDirectusAuth()
+    await directusLogout()
+    navigateTo('/')
   }
 
   let isAuthenticated = Boolean(useIsAuthenticated().value)
@@ -17,18 +25,21 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
   if (!isAuthenticated) {
     const isPublicRoute = useIsPublicRoute(to)
     if (!isPublicRoute) {
-      return navigateTo('/login')
+      return navigateTo('/auth')
     }
   }
 
-  if (isAuthenticated) {
-    if (to.path === '/login') {
-      return navigateTo(
-        from.path === '/login'
-          ? '/'
-          : from.path,
-      )
-    }
+  if (
+    isAuthenticated &&
+    to.path === '/auth' &&
+    !to.query.request_password_reset &&
+    !to.query.reset_password
+  ) {
+    return navigateTo(
+      from.path === '/auth'
+        ? '/'
+        : from.path,
+    )
   }
 })
 
@@ -39,12 +50,12 @@ export function useIsPublicRoute(
   route: RouteLocationNormalized,
 ): boolean {
   const DEFAULT_PUBLIC_PAGES = [
-    'login',
+    'auth',
     '404',
+    'parametres-affichage',
     /**
      * The following pages are public by default, but can be made private individually
      * by setting their status to "published-private" in Directus.
-     * this status will be checked in validate middleware in the page itself
      */
     'content-slug',
   ]

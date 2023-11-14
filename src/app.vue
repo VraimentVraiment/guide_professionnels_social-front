@@ -5,7 +5,8 @@ const content = await queryContent('/components/skip-links').findOne()
 const {
   siteTitle,
   titleSeparator,
-} = useAppConfig()
+} = appConfigPatch
+// } = useAppConfig()
 
 const { getMetaTitle } = useGetPageContent()
 
@@ -21,7 +22,7 @@ useHead({
   },
 })
 
-useGpsScheme()
+useGpsSchemeStore()
 
 const {
   collectionsModels,
@@ -36,9 +37,7 @@ if (!collectionsModels) {
 
 <template>
   <Html lang="fr">
-    <DsfrSkipLinks
-      :links="content.links"
-    />
+    <DsfrSkipLinks :links="content.links" />
     <GpsHeader id="site-header" />
     <GpsMain id="site-main">
       <ClientOnly>

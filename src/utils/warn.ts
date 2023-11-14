@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 export function warn(
-  message: string,
+  ...messages: unknown[]
 ): void {
   const allowWarn = true
 
@@ -12,5 +12,5 @@ export function warn(
     return
   }
 
-  console.warn(`[gps14] ${message}`)
+  console.warn('[gps14]', messages)
 }

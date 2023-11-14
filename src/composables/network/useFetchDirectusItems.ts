@@ -7,10 +7,15 @@ export async function useFetchDirectusItems<T>({
 }: FetchDirectusItemsParams): Promise<T[]> {
   const { getItems } = useDirectusItems()
 
-  const items = await getItems<T>({
-    collection: collectionName,
-    params,
-  })
+  try {
+    const items = await getItems<T>({
+      collection: collectionName,
+      params,
+    })
 
-  return items ?? []
+    return items ?? []
+  } catch (e) {
+    warn(e)
+    return []
+  }
 }

@@ -1,35 +1,70 @@
 <script setup lang="ts">
 
-const content = await queryContent('/components/footer').findOne()
+const isAuthenticated = useIsAuthenticated()
 
-// const test = await useFetchDirectusItems({
-//   collectionName: 'gps_site',
-//   params: {
-//     fields: [
-//       'a11y_compliance',
-//       'desc_text',
-//       'licence_name',
-//       'licence_text',
-//       'licence_to',
-//       'logo_text',
-//       'operator_img_alt',
-//       'operator_link_text',
-//       'operator_to',
-//     ],
-//   },
-// })
+const contentProps = await queryContent('/components/footer').findOne()
 
-// const props = Object.assign({}, content.props, {
-//   a11yCompliance: test?.a11y_compliance ?? content.props.a11yCompliance,
-//   descText: test?.desc_text ?? content.props.descText,
-//   licenceName: test?.licence_name ?? content.props.licenceName,
-//   licenceText: test?.licence_text ?? content.props.licenceText,
-//   licenceTo: test?.licence_to ?? content.props.licenceTo,
-//   logoText: test?.logo_text?.split('\n') ?? content.props.logoText,
-//   operatorImgAlt: test?.operator_img_alt ?? content.props.operatorImgAlt,
-//   operatorLinkText: test?.operator_link_text ?? content.props.operatorLinkText,
-//   operatorTo: test?.operator_to ?? content.props.operatorTo,
-// })
+const appConfig = appConfigPatch as unknown as Required<{
+// const appConfig = useAppConfig() as unknown as Required<{
+  logoText: string
+}>
+
+const directusProps = await useFetchDirectusItems({
+  collectionName: 'gps_site_footer',
+}) as unknown as {
+  licence_text: string
+  licence_to: string
+  licence_name: string
+  a11y_compliance: string
+  desc_text: string
+  operator_img_alt: string
+  operator_link_text: string
+  operator_to: string
+  operator_img_src: string
+  operator_img_src_dark: string
+}
+
+const footerProps = {
+  licenceText: directusProps?.licence_text ?? '',
+  licenceTo: directusProps?.licence_to ?? '#',
+  licenceName: directusProps?.licence_name ?? '',
+  a11yCompliance: directusProps?.a11y_compliance ?? '',
+  descText: directusProps?.desc_text ?? '',
+  operatorImgAlt: directusProps?.operator_img_alt ?? '',
+  operatorLinkText: directusProps?.operator_link_text ?? '',
+  operatorTo: directusProps?.operator_to ?? '',
+
+  logoText: appConfig.logoText,
+
+  homeLink: contentProps?.homeLink ?? '',
+  legalLink: contentProps?.legalLink ?? '',
+  personalDataLink: contentProps?.personalDataLink ?? '',
+  cookiesLink: contentProps?.cookiesLink ?? '',
+  a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
+}
+
+const { preferences } = useGpsSchemeStore()
+
+const operatorImgSrc = computed(() => {
+  const directusOperatorImgSrc = preferences.theme === 'dark'
+    ? directusProps?.operator_img_src_dark
+    : directusProps?.operator_img_src
+
+  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ?? ''
+})
+
+const afterMandatoryLinks = computed(() => {
+  return contentProps?.afterMandatoryLinks
+    ?.filter((link: {
+      public: boolean
+      label: string
+      to: string
+    }) => {
+      return isAuthenticated.value || link.public
+    }) ?? []
+})
+
+const { someModalOpen } = useSomeModalOpen()
 
 </script>
 
@@ -37,12 +72,33 @@ const content = await queryContent('/components/footer').findOne()
   <DsfrFooter
     :class="[
       'gps-footer',
-      'noprint'
+      'noprint',
+      { 'has-modal-ontop': someModalOpen },
     ]"
-    v-bind="content.props"
+    v-bind="{
+      operatorImgSrc,
+      afterMandatoryLinks,
+      ...footerProps
+    }"
   />
-  <!-- v-bind="props" -->
 </template>
+
+<style scoped>
+.gps-footer {
+  background: var(--background-default-grey);
+
+  /**
+    * When some modal is open, we need to set the footer z-index to -1
+    * to avoid the modal to be hidden by the footer
+    * We cannot set z-index to -1 everywhere because it would prevent some
+    * links in the footer from beeing clicked
+   */
+  &.has-modal-ontop {
+    position: relative;
+    z-index: -1;
+  }
+}
+</style>
 
 <style>
 /*
@@ -51,11 +107,5 @@ const content = await queryContent('/components/footer').findOne()
  */
 .gps-footer .fr-footer__logo {
   max-width: 21.5rem !important;
-}
-</style>
-
-<style scoped>
-.gps-footer {
-  background: var(--background-default-grey);
 }
 </style>

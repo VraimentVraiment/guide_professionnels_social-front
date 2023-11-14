@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('useNumberObserver', () => {
   it('should initialize with a default value of 0', () => {
     const { number } = useNumberObserver()

@@ -25,7 +25,11 @@ const openDetails = useCollectionObserver<Number>()
       ]"
       @click.prevent
     >
-      <summary>
+      <GpsFlexSummary
+        :class="[
+          'gps-details__summary',
+        ]"
+      >
         <GpsDispositifsPostsLink
           :id="node.data.id"
           :name="node.data.name"
@@ -37,10 +41,10 @@ const openDetails = useCollectionObserver<Number>()
           primary
           icon-only
           size="small"
-          :icon="!openDetails.has(node.data.id) ? 'ri-add-line' : 'ri-subtract-line'"
+          :icon="openDetails.has(node.data.id) ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
           @click="() => openDetails.toggle(node.data.id)"
         />
-      </summary>
+      </GpsFlexSummary>
       <div
         v-if="node?.children?.length"
         :class="[
@@ -67,25 +71,8 @@ const openDetails = useCollectionObserver<Number>()
 }
 
 details.gps-links-group {
-  +details.gps-links-group {
-    margin-top: 1.5rem;
-  }
-
-  summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .gps-details__summary {
     cursor: default;
-    list-style: none;
-
-    &::marker {
-      content: "";
-      display: none;
-    }
-
-    &::-webkit-details-marker {
-      display: none;
-    }
 
     button {
       padding: .065rem .5rem;
@@ -97,6 +84,10 @@ details.gps-links-group {
     padding-right: 5rem;
     display: flex;
     flex-direction: column;
+  }
+
+  +details.gps-links-group {
+    margin-top: 1.5rem;
   }
 }
 </style>

@@ -19,10 +19,15 @@ export async function useFetchDirectusItem<T>({
 }: FetchDirectusItemParams): Promise<T | null> {
   const { getItemById } = useDirectusItems()
 
-  const item = await getItemById<T>({
-    collection: collectionName,
-    id: id.toString(),
-  })
+  try {
+    const item = await getItemById<T>({
+      collection: collectionName,
+      id: id.toString(),
+    })
 
-  return item ?? null
+    return item ?? null
+  } catch (e) {
+    warn(e)
+    return null
+  }
 }
