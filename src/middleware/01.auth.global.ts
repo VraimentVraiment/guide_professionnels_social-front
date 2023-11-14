@@ -29,17 +29,17 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     }
   }
 
-  if (isAuthenticated) {
-    if (
-      to.path === '/auth' &&
-      !to.query.request_password_reset
-    ) {
-      return navigateTo(
-        from.path === '/auth'
-          ? '/'
-          : from.path,
-      )
-    }
+  if (
+    isAuthenticated &&
+    to.path === '/auth' &&
+    !to.query.request_password_reset &&
+    !to.query.reset_password
+  ) {
+    return navigateTo(
+      from.path === '/auth'
+        ? '/'
+        : from.path,
+    )
   }
 })
 
