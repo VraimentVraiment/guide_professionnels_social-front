@@ -52,5 +52,7 @@ const footerProps = {
 <style scoped>
 .gps-footer {
   background: var(--background-default-grey);
+  position: relative;
+  z-index: -1;
 }
 </style>

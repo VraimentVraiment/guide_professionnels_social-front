@@ -201,7 +201,7 @@ const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.
         />
         <GpsSignalModal
           v-if="doUseSignalModal"
-          :get-message-content="(content: string) => `[${notificationMessagePrefix}] : ${content}`"
+          :get-message-content="(content: string) => `${notificationMessagePrefix} : ${content}`"
         />
 
         <h3
