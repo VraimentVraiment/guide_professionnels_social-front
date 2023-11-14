@@ -1,8 +1,3 @@
-/**
- * @todo find a way to get the admin roles ids from the directus api.
- * Right now we are hardcoding it.
- */
-
 type DirectusRole = {
   users: string[]
   app_access: boolean
