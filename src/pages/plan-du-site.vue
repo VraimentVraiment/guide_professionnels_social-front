@@ -10,7 +10,7 @@ const LABEL_MAP = {
   '/apropos': 'À propos',
   dispositifs: 'Dispositifs',
   fichestechniques: 'Fiches techniques',
-  login: 'Connexion',
+  auth: 'Connexion',
   'mon-espace': 'Mon espace',
   apropos: 'À propos',
   contact: 'Contact',

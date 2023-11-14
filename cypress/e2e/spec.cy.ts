@@ -3,9 +3,9 @@ describe('Before auth spec', () => {
     cy.visit('http://localhost:3000/')
   })
 
-  it('Redirects unauthorized users to login', () => {
+  it('Redirects unauthorized users to auth page', () => {
     cy.visit('http://localhost:3000/dispositifs')
-    cy.url().should('include', '/login')
+    cy.url().should('include', '/auth')
   })
 
   it('Can login', () => {
@@ -18,8 +18,8 @@ describe('After auth spec', () => {
     cy.login()
   })
 
-  it('Redirects authorized users from "/login" to "/"', () => {
-    cy.visit('http://localhost:3000/login')
+  it('Redirects authorized users from "/auth" to "/"', () => {
+    cy.visit('http://localhost:3000/auth')
     cy.url().should('match', /\/$/)
   })
 

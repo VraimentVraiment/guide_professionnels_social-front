@@ -36,8 +36,8 @@ export function useDsfrField({
   isErrorCondition,
 }: {
   props: DsfrFieldProps,
-  showValid?: boolean,
-  showError?: boolean,
+  showValid?: boolean | Ref<boolean>,
+  showError?: boolean | Ref<boolean>,
   isValidCondition?: (value: string) => boolean
   isErrorCondition?: (value: string) => boolean
 }): DsfrFieldModel {
@@ -71,14 +71,14 @@ export function useDsfrField({
     errorMessage: computed(() => {
       return (
         isError.value &&
-        showError &&
+        unref(showError) &&
         props.messages.error
       ) || undefined
     }),
     validMessage: computed(() => {
       return (
         isValid.value &&
-        showValid &&
+        unref(showValid) &&
         props.messages.valid
       ) || undefined
     }),

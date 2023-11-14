@@ -30,7 +30,7 @@ Cypress.session.clearAllSavedSessions()
 
 Cypress.Commands.add('login', () => {
   cy.session('login', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/auth')
     cy.get('form input[type="email"]').type('admin@gps.fr')
     cy.get('form input[type="password"]').type('password')
     cy.get('form button').click()

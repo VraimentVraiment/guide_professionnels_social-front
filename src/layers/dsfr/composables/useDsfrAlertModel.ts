@@ -14,7 +14,7 @@ type DsfrAlertModel = {
   }>
   show: (type: DsfrAlertType) => void
   reset: () => void
-  setStep: (newStep: number) => void
+  setStep: (newStep: number | string) => void
 }
 
 /**
@@ -22,10 +22,10 @@ type DsfrAlertModel = {
  * @see https://vue-dsfr.netlify.app/?path=/docs/composants-dsfralert--docs
  */
 export function useDsfrAlertModel(
-  strings: Record<DsfrAlertType, DsfrAlertContent | DsfrAlertContent[]>,
+  strings: Record<DsfrAlertType, DsfrAlertContent | DsfrAlertContent[] | Record<string, DsfrAlertContent>>,
 ): DsfrAlertModel {
   const display = ref(false)
-  const step = ref(0)
+  const step = ref<string | number | null>(null)
   const messageType = ref<DsfrAlertType>()
 
   const props = computed(() => {
@@ -34,9 +34,18 @@ export function useDsfrAlertModel(
     if (!type) {
       return { description: '' }
     }
-    const content = Array.isArray(strings[type])
-      ? (strings[type] as DsfrAlertContent[])[step.value]
-      : strings[type] as DsfrAlertContent
+
+    const isArray = Array.isArray(strings[type])
+    const isObject = !isArray && typeof strings[type] === 'object'
+
+    if (isArray && typeof step.value !== 'number') {
+      step.value = 0
+    }
+    const content = isArray
+      ? (strings[type] as DsfrAlertContent[])[step.value as number]
+      : isObject
+        ? (strings[type] as Record<string, DsfrAlertContent>)[step.value as string]
+        : strings[type] as DsfrAlertContent
 
     return {
       type: messageType.value,
@@ -58,7 +67,7 @@ export function useDsfrAlertModel(
   }
 
   const setStep = (
-    newStep: number,
+    newStep: number | string,
   ): void => {
     step.value = newStep
   }

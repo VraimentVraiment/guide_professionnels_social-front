@@ -45,7 +45,6 @@ mockNuxtImport('useGpsAuth', () => {
           description: 'test description',
         },
       },
-      // setRememberMe,
       submit: () => {},
       isError: false,
     }
