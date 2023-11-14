@@ -8,6 +8,14 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     return
   }
 
+  if (to.query.logout) {
+    const {
+      logout: directusLogout,
+    } = useDirectusAuth()
+    await directusLogout()
+    navigateTo('/')
+  }
+
   let isAuthenticated = Boolean(useIsAuthenticated().value)
   if (!isAuthenticated) {
     const { fetchUser } = useDirectusAuth()
@@ -22,7 +30,10 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
   }
 
   if (isAuthenticated) {
-    if (to.path === '/auth') {
+    if (
+      to.path === '/auth' &&
+      !to.query.request_password_reset
+    ) {
       return navigateTo(
         from.path === '/auth'
           ? '/'

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import type { DsfrButtonProps } from '@gouvminint/vue-dsfr/types/components/DsfrButton/DsfrButton.vue'
+
 const content = await queryContent('/components/auth').findOne()
 
 const { url: siteUrl } = useSiteConfig()
@@ -14,16 +16,22 @@ const alertModel = useDsfrAlertModel(content.messages)
 
 const route = useRoute()
 
-const isResetPasswordRequest = ref(false)
+const isResetPasswordRequest = computed(() => {
+  return route.query.request_password_reset === 'true'
+})
 
 const isResetPassword = computed(() => {
-  return Boolean(route.query.reset_password === 'true' && route.query.token)
+  return Boolean(
+    route.query.reset_password === 'true' &&
+    route.query.token,
+  )
 })
 
 const isError = ref(false)
 
 const emailField = useDsfrField({
   props: content.emailField,
+  showError: true,
   isValidCondition: (value) => {
     return isStringValidEmail(value)
   },
@@ -102,15 +110,18 @@ async function submitPasswordResetRequest() {
     const email = emailField.value.value
     alertModel.setStep('resetEmail')
     alertModel.show('info')
+    const params = new URLSearchParams()
+    params.set('mail', email)
+    params.set('reset_password', 'true')
     await requestPasswordReset({
       email,
-      reset_url: `${siteUrl}/auth?reset_password=true&mail=${email}`,
+      reset_url: `${siteUrl}/auth?${params.toString()}`,
     })
     alertModel.show('success')
   } catch {
     alertModel.show('error')
   } finally {
-    isResetPasswordRequest.value = false
+    navigateTo('/auth')
   }
 }
 
@@ -136,9 +147,80 @@ async function submitPasswordReset() {
   } finally {
     passwordField.reset()
     repeatPasswordField.reset()
-    navigateTo(`/auth?mail=${route.query.mail}`)
+    const params = new URLSearchParams()
+    params.set('mail', route.query.mail as string)
+    navigateTo(`/auth?${params.toString()}`)
   }
 }
+
+const loginButtonProps = computed(() => {
+  return {
+    type: 'button',
+    label: content.loginButton.label,
+    icon: 'ri-arrow-right-line',
+    iconRight: true,
+    disabled: (
+      !emailField.isValid.value ||
+      !passwordField.isValid.value
+    ),
+    onClick: submitLogin,
+  }
+})
+
+const forgotPasswordButtonProps = {
+  label: content.forgotPasswordButton.label,
+  icon: 'ri-question-line',
+  iconRight: true,
+  type: 'button',
+  tertiary: true,
+  noOutline: true,
+  onClick: () => {
+    alertModel.reset()
+    const params = new URLSearchParams()
+    params.set('request_password_reset', 'true')
+    if (emailField.isValid.value) {
+      params.set('mail', emailField.value.value)
+    }
+    navigateTo(`/auth?${params.toString()}`)
+  },
+}
+
+const resetPasswordRequestButtonProps = computed(() => {
+  return {
+    label: content.resetPasswordRequestButton.label,
+    icon: 'ri-arrow-right-line',
+    iconRight: true,
+    type: 'button',
+    disabled: !emailField.isValid.value,
+    onClick: submitPasswordResetRequest,
+  }
+})
+
+const resetPasswordButtonProps = computed(() => {
+  return {
+    label: content.resetPasswordButton.label,
+    icon: 'ri-arrow-right-line',
+    iconRight: true,
+    type: 'button',
+    disabled: !passwordField.isValid.value || !repeatPasswordField.isValid.value,
+    onClick: submitPasswordReset,
+  }
+})
+
+const authButtons = computed(() => {
+  const buttons: DsfrButtonProps[] = []
+  if (!isResetPassword.value && !isResetPasswordRequest.value) {
+    buttons.push(loginButtonProps.value)
+    buttons.push(forgotPasswordButtonProps)
+  }
+  if (isResetPasswordRequest.value) {
+    buttons.push(resetPasswordRequestButtonProps.value)
+  }
+  if (isResetPassword.value) {
+    buttons.push(resetPasswordButtonProps.value)
+  }
+  return buttons
+})
 
 const fieldSetLegend = computed(() => {
   if (isResetPassword.value) {
@@ -189,10 +271,11 @@ const fieldSetHint = computed(() => {
           v-if="!isResetPassword"
           v-bind="emailField.props"
           v-model="emailField.value.value"
-          type="email"
           :error-message="emailField.errorMessage?.value"
           :valid-message="emailField.validMessage?.value"
+          type="email"
           aria-required="true"
+          autocomplete="email"
           label-visible
           @input="() => {
             emailField.validate()
@@ -204,12 +287,12 @@ const fieldSetHint = computed(() => {
           v-if="!isResetPasswordRequest"
           v-bind="passwordField.props"
           v-model="passwordField.value.value"
-          type="password"
           :error-message="passwordField.errorMessage?.value"
           :valid-message="passwordField.validMessage?.value"
+          type="password"
           aria-required="true"
-          label-visible
           autocomplete="current-password"
+          label-visible
           @input="() => {
             passwordField.validate()
             alertModel.reset()
@@ -220,12 +303,12 @@ const fieldSetHint = computed(() => {
           v-if="isResetPassword"
           v-bind="repeatPasswordField.props"
           v-model="repeatPasswordField.value.value"
-          type="password"
           :error-message="repeatPasswordField.errorMessage?.value"
           :valid-message="repeatPasswordField.validMessage?.value"
+          type="password"
           aria-required="true"
-          label-visible
           autocomplete="current-password"
+          label-visible
           @input="() => {
             repeatPasswordField.validate()
             alertModel.reset()
@@ -237,49 +320,7 @@ const fieldSetHint = computed(() => {
         :class="[
           'fr-mt-2v'
         ]"
-        :buttons="[
-          !isResetPassword && !isResetPasswordRequest && {
-            type: 'button',
-            label: content.loginButton.label,
-            icon: 'ri-arrow-right-line',
-            iconRight: true,
-            disabled: (
-              !emailField.isValid.value ||
-              !passwordField.isValid.value
-            ),
-            onClick: submitLogin
-          },
-          !isResetPassword && !isResetPasswordRequest && {
-            label: content.forgotPasswordButton.label,
-            icon: 'ri-question-line',
-            iconRight: true,
-            type: 'button',
-            tertiary: true,
-            noOutline: true,
-            onClick: () => {
-              alertModel.reset()
-              isResetPasswordRequest = true
-            }
-          },
-          isResetPasswordRequest && {
-            label: content.resetPasswordRequestButton.label,
-            icon: 'ri-arrow-right-line',
-            iconRight: true,
-            type: 'button',
-            disabled: !emailField.isValid.value,
-            onClick: submitPasswordResetRequest
-          },
-          isResetPassword && {
-            label: content.resetPasswordButton.label,
-            icon: 'ri-arrow-right-line',
-            iconRight: true,
-            type: 'button',
-            disabled: !passwordField.isValid.value || !repeatPasswordField.isValid.value,
-            onClick: submitPasswordReset
-          }
-        ]
-          .filter(Boolean)
-        "
+        :buttons="authButtons"
       />
     </form>
   </div>

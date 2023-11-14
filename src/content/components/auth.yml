@@ -9,8 +9,6 @@ fieldSet:
 emailField:
   label: Email
   placeholder: Email
-  # hint: Veuillez saisir une adresse email valide
-  autocomplete: email
   messages:
     error: Email invalide
     valid: Email valide

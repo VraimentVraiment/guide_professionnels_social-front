@@ -8,6 +8,8 @@ import {
   RiCloseCircleLine,
   RiSendPlaneLine,
   RiLogoutBoxLine,
+  RiContrast2Line,
+  RiEditLine,
 } from 'oh-vue-icons/icons/ri/index'
 
 const icons = [
@@ -18,8 +20,9 @@ const icons = [
   RiCloseCircleLine,
   RiSendPlaneLine,
   RiLogoutBoxLine,
+  RiContrast2Line,
+  RiEditLine,
 ]
-
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueDsfr, { icons })

@@ -4,10 +4,16 @@ props:
   logoText:
     - Prefet
     - du Calvados
-  # quickLinks:
-    # - label: Paramètres d'affichage
-    #   to: /mon-espace
-    #   icon: fr-icon-theme-fill
-    # - label: 'Mon espace'
-    #   to: '/mon-espace'
-    #   icon: 'ri-user-line'
+  quickLinks:
+    - label: Affichage
+      to: /mon-espace
+      icon: ri-contrast-2-line
+      public: true
+    - label: 'Mon espace'
+      to: '/mon-espace'
+      icon: 'ri-user-line'
+      public: false
+    - label: 'Déconnexion'
+      to: '/?logout=true'
+      icon: 'ri-logout-box-line'
+      public: false

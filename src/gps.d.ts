@@ -29,16 +29,22 @@ declare global {
     }
   }[]
 
+  export type GpsQuickLink = {
+    to: string
+    label: string
+    icon?: boolean
+    public?: boolean
+  }
 
-type DsfrNavigationMenuLinkProps = {
-  text: string
-  to: RouteLocationRaw
-};
+  type DsfrNavigationMenuLinkProps = {
+    text: string
+    to: RouteLocationRaw
+  };
 
-type DsfrNavItem = DsfrNavigationMenuLinkProps | {
-  title: string
-  links: DsfrNavigationMenuLinkProps[]
-}
+  type DsfrNavItem = DsfrNavigationMenuLinkProps | {
+    title: string
+    links: DsfrNavigationMenuLinkProps[]
+  }
 
   /*
    * GPS Posts

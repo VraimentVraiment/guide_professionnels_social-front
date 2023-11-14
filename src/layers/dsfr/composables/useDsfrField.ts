@@ -2,7 +2,6 @@ type DsfrFieldProps = {
   label: string
   placeholder: string
   hint: string
-  autocomplete?: string
   messages: {
     error: string
     valid: string
@@ -17,7 +16,6 @@ export type DsfrFieldModel = {
     label?: string
     placeholder?: string
     hint?: string
-    autocomplete?: string
   }
   errorMessage: ComputedRef<string | undefined>
   validMessage: ComputedRef<string | undefined>
@@ -62,12 +60,7 @@ export function useDsfrField({
     value,
     isError,
     isValid,
-    props: {
-      label: props.label,
-      placeholder: props.placeholder,
-      hint: props.hint,
-      autocomplete: props.autocomplete,
-    },
+    props,
     errorMessage: computed(() => {
       return (
         isError.value &&
