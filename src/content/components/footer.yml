@@ -20,7 +20,8 @@ props:
     porté par la Direction interministérielle de la fonction publique (DITP) et financé dans le cadre de France Relance.
     Le design de ce site est conçu avec le système de design de l’État.
   homeLink: /
-  operatorImgSrc: /logo-FR-kit-com.png
+  operatorImgSrc: /etiquette-FR-kit-com.png
+  # operatorImgSrcDark: /etiquette-FR-kit-com_dark.png
   operatorLinkText: Préfecture du Calvados
   operatorTo: /
-  operatorImgAlt: Logos de la Préfecture du Calvados et du gouvernement français.
+  operatorImgAlt: Logo de France Relance

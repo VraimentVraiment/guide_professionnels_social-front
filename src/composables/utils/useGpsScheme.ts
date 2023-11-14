@@ -24,4 +24,8 @@ export function useGpsScheme() {
     watchEffect(() => { preferences.theme = theme.value })
     watchEffect(() => preferences.scheme && setScheme(preferences.scheme))
   })
+
+  return {
+    preferences,
+  }
 }

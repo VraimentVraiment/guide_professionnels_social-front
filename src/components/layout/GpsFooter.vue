@@ -15,7 +15,6 @@ const footerProps = {
   a11yCompliance: directusProps?.a11y_compliance ?? contentProps?.a11yCompliance ?? '',
   descText: directusProps?.desc_text ?? contentProps?.descText ?? '',
   logoText: directusProps?.logo_text?.split('\n') ?? contentProps?.logoText ?? '',
-  operatorImgSrc: useGetDirectusFileLink(directusProps?.operator_img_src, {isPublic: true}) ?? contentProps?.operatorImgSrc ?? '',
   operatorImgAlt: directusProps?.operator_img_alt ?? contentProps?.operatorImgAlt ?? '',
   operatorLinkText: directusProps?.operator_link_text ?? contentProps?.operatorLinkText ?? '',
   operatorTo: directusProps?.operator_to ?? contentProps?.operatorTo ?? '',
@@ -28,16 +27,29 @@ const footerProps = {
   afterMandatoryLinks: contentProps?.afterMandatoryLinks ?? '',
 }
 
+const { preferences } = useGpsScheme()
+const operatorImgSrc = computed(() => {
+
+  const directusOperatorImgSrc = preferences.theme === 'dark'
+    ? directusProps?.operator_img_src_dark
+    : directusProps?.operator_img_src
+
+  const contentOperatorImgSrc = preferences.theme === 'dark'
+    ? contentProps?.operatorImgSrcDark
+    : contentProps?.operatorImgSrc
+
+  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true })
+    ?? contentOperatorImgSrc
+    ?? ''
+})
+
 </script>
 
 <template>
-  <DsfrFooter
-    :class="[
-      'gps-footer',
-      'noprint'
-    ]"
-    v-bind="footerProps"
-  />
+  <DsfrFooter :class="[
+    'gps-footer',
+    'noprint'
+  ]" v-bind="{ operatorImgSrc, ...footerProps }" />
 </template>
 
 <style>

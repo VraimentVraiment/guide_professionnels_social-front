@@ -2,6 +2,13 @@
 
 const content = await queryContent('/components/gps-site-banner').findOne()
 
+const { preferences } = useGpsScheme()
+const logoPath = computed(() => {
+  return preferences.theme === 'dark'
+  ? content.logoDarkPath
+  : content.logoPath
+})
+
 </script>
 
 <template>
@@ -16,11 +23,10 @@ const content = await queryContent('/components/gps-site-banner').findOne()
         'gps-banner__logo',
         'fr-col-3',
         'fr-col-sm-4',
-        'gps-fr-pictogram-darkfilter',
       ]"
     >
       <img
-        :src="content.logoPath"
+        :src="logoPath"
         alt="Logo GPS"
       >
     </div>

@@ -1,13 +1,13 @@
 <svg width="80px" height="80px" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
  	<style>
 		.fr-artwork-major {
-			fill: #000091;
+			fill: #8585f6;
 		}
-		.fr-artwork-minor {
+    .fr-artwork-minor {
 			fill: #E1000F;
 		}
     .fr-artwork-decorative {
-			fill: #ECECFF;
+			fill: #21213f;
 		}
 	</style>
   <g class="fr-artwork-decorative" id="artwork-decorative">
