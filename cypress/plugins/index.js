@@ -1,6 +1,7 @@
 // https://docs.cypress.io/guides/guides/plugins-guide.html
 
 // For component testing 1/2
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { startDevServer } = require('@cypress/vite-dev-server')
 
 module.exports = (on, config) => {
