@@ -20,7 +20,7 @@ const model = getCollectionModelByName('gps_fichesdispositif')
  *   @see https://learndirectus.com/how-to-send-a-notification/
  * - Notification not opening in backend UI
  */
-const doUseSignalModal = false
+const doUseSignalModal = true
 
 const id = parseInt(useRoute().params.id as string, 10)
 
@@ -198,9 +198,11 @@ const printPost = () => {
           secondary
           @click="() => printPost()"
         />
+        <GpsSignalModal v-if="doUseSignalModal" />
+
         <h3
           v-if="importantFilesData?.length"
-          class="fr-mt-8v fr-mb-0"
+          class="fr-mt-8v fr-mb-4v"
         >
           {{ content.downloadFilesLabel }}
         </h3>
@@ -217,8 +219,6 @@ const printPost = () => {
             :href="`${useGetDirectusFileLink(fileId, { download: true })}`"
           />
         </div>
-
-        <GpsSignalModal v-if="doUseSignalModal" />
       </div>
     </section>
   </div>

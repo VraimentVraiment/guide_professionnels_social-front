@@ -1,15 +1,46 @@
 <script setup lang="ts">
 
 import {
-  type DirectusNotificationObject,
+  type DirectusUser,
 } from 'nuxt-directus/dist/runtime/types'
 
 const rolesIds = {
   admin: 'bf383d1c-33e1-4b93-bf10-d5d179489b0c',
   superAdmin: '236ca5a2-d117-470a-abdf-f905bd2d208d',
-  author: '445cf830-f3b7-4abe-b9c7-a0cf9ba7c6d5',
 }
+
+const { getUsers } = useDirectusUsers()
+const adminUsers = await getUsers({
+  params: {
+    fields: ['id'],
+    filter: {
+      role: {
+        _in: [
+          rolesIds.admin,
+          rolesIds.superAdmin,
+        ],
+      },
+    },
+  },
+}) as DirectusUser[]
+
 const { createNotification } = useDirectusNotifications()
+function sendNotification() {
+  return Promise.allSettled(
+    adminUsers?.map((user) => {
+      if (!user?.id) {
+        return Promise.resolve()
+      }
+      return createNotification({
+        notification: {
+          recipient: user.id,
+          subject: messageObject.value,
+          message: messageContent.value,
+        },
+      })
+    }),
+  )
+}
 
 const content = await queryContent('/components/signal-modal').findOne()
 
@@ -35,12 +66,7 @@ const close = () => {
 }
 
 const send = () => {
-  const notification: DirectusNotificationObject = {
-    recipient: rolesIds.admin,
-    subject: messageObject.value,
-    message: messageContent.value,
-  }
-  createNotification({ notification })
+  sendNotification()
     .then(() => {
       messageObject.value = null
       messageContent.value = ''
