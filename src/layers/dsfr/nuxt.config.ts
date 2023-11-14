@@ -11,6 +11,7 @@ export default defineNuxtConfig({
      * Importing icons.min.css causes Maximum call stack exceeded with current configuration
      */
     // '@gouvfr/dsfr/dist/utility/icons/icons.min.css', // Facultatif: Si des icônes sont utilisées avec les classes "fr-icon-..."
+    '~/layers/dsfr/styles/dsfr-icons-patch.scss',
   ],
 
   /**
