@@ -34,6 +34,8 @@ const shouldRenderNodeAs = props.node?.data
 const { current: currentKeysPressed } = useMagicKeys()
 const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
 
+const expandedId = ref<string | undefined>()
+
 </script>
 
 <template>
@@ -71,21 +73,22 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
     >
       {{ node.data.name }}
     </legend>
-    <GpsDetailsAccordion
+    <DsfrAccordion
       v-else-if="shouldRenderNodeAs?.accordionAndChildren()"
-      :data-combination="node.data.combination"
-      :has-active-content="node.children?.some((child: HierarchyNode<GpsFilterItemNode>) => child.data.checked)"
+      :expanded-id="expandedId"
+      @expand="event => expandedId = event"
     >
-      <template #summary>
+      <template #title>
         <legend
           :class="[
-            'gps-parent-legend'
+            'gps-parent-legend',
+            {'has-active-content': node.children?.some((child: HierarchyNode<GpsFilterItemNode>) => child.data.checked)}
           ]"
         >
           {{ node.data.name }}
         </legend>
       </template>
-      <template #content>
+      <template #default>
         <div
           :class="[
             'filter-node__children',
@@ -103,7 +106,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
           />
         </div>
       </template>
-    </GpsDetailsAccordion>
+    </DsfrAccordion>
     <div
       v-if="shouldRenderNodeAs?.childrenInContainer()"
       v-show="(
@@ -137,15 +140,29 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
     margin-left: .5rem;
     margin-top: .75rem;
   }
+}
 
-  & .filter-node__children__leaves-only {
-    &[data-node-height="1"] {
-      margin-left: 0.5rem;
-      padding-left: 0.75rem;
-      border-left: solid 1px var(--border-default-grey);
-    }
+legend.gps-greatparent-legend {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: .75rem;
+
+  &:first-child {
+    margin-top: .5rem;
+  }
+
+  &:not(:first-child) {
+    margin-top: 2rem;
   }
 }
+
+legend.gps-parent-legend {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
 </style>
 
 <style lang="scss">
@@ -187,13 +204,13 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
   &.leaves-only__checkbox {
     .filter-node__children[data-node-height="3"] > & {
       padding: 0.5rem 1rem 0.5rem 0.5rem;
-      margin: 0;
+      margin-top: 0.5rem;
     }
 
     &.is-checked {
       &::before {
         position: absolute;
-        left: -1.25rem;
+        left: -1rem;
         text-align: right;
         font-size: .85rem;
         font-weight: 600;

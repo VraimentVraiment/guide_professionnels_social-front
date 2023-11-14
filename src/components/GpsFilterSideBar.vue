@@ -27,6 +27,11 @@ const isSelectable = computed(() => {
 
 const content = await queryContent('/components/gps-filter-sidebar').findOne()
 
+const expandedId = ref<string | undefined>(props.openDetails?.[0])
+
+const expand = (event: string) => {
+  expandedId.value = event
+}
 </script>
 
 <template>
@@ -87,24 +92,25 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
             'gps-filters-sidebar__fieldset',
           ]"
         >
-          <GpsDetailsAccordion
+          <DsfrAccordion
             v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
-            :class="[
-              'filter-group'
-            ]"
+            :id="collectionName"
+            :expanded-id="expandedId"
             :start-open="openDetails?.includes(collectionName)"
             :has-active-content="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+            @expand="expand"
           >
-            <template #summary>
+            <template #title>
               <legend
                 :class="[
-                  'gps-summary-legend'
+                  'gps-summary-legend',
+                  { 'has-active-content': checkedItemsObserver.hasCollectionCheckedItems(collectionName) }
                 ]"
               >
                 {{ label }}
               </legend>
             </template>
-            <template #content>
+            <template #default>
               <DsfrButton
                 v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
                 :class="[
@@ -124,7 +130,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
                 is-root-node
               />
             </template>
-          </GpsDetailsAccordion>
+          </DsfrAccordion>
         </fieldset>
       </template>
     </div>
@@ -163,16 +169,11 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
   .gps-filters-sidebar__content {
     padding: 0 1rem .5rem;
     overflow-y: auto;
-    background-color: var(--background-default-grey);
 
     fieldset.gps-filters-sidebar__fieldset {
       border: none;
       padding: 0;
       margin: 0;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid var(--border-default-grey);
-      }
     }
   }
 
@@ -264,27 +265,6 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
     line-height: 1;
   }
 
-  legend.gps-greatparent-legend {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: .5rem;
-
-    &:first-child {
-      margin-top: .25rem;
-    }
-
-    &:not(:first-child) {
-      margin-top: 1rem;
-    }
-  }
-
-  legend.gps-parent-legend {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
   .fr-checkbox-group,
   .fr-radio-group {
     margin-bottom: .75rem;
@@ -292,6 +272,24 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
     label {
       font-size: 1em;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.has-active-content {
+  position: relative;
+
+  &::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--text-active-blue-france);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -10px;
   }
 }
 </style>
