@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+const isAuthenticated = useIsAuthenticated()
+
 const contentProps = await queryContent('/components/footer').findOne()
 
 const directusProps = await useFetchDirectusItems({
@@ -34,7 +36,6 @@ const footerProps = {
   personalDataLink: contentProps?.personalDataLink ?? '',
   cookiesLink: contentProps?.cookiesLink ?? '',
   a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
-  afterMandatoryLinks: contentProps?.afterMandatoryLinks ?? '',
 }
 
 const { preferences } = useGpsSchemeStore()
@@ -45,6 +46,17 @@ const operatorImgSrc = computed(() => {
     : directusProps?.operator_img_src
 
   return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ?? ''
+})
+
+const afterMandatoryLinks = computed(() => {
+  return contentProps?.afterMandatoryLinks
+    ?.filter((link: {
+      public: boolean
+      label: string
+      to: string
+    }) => {
+      return isAuthenticated.value || link.public
+    }) ?? []
 })
 
 const { someModalOpen } = useSomeModalOpen()
@@ -58,7 +70,11 @@ const { someModalOpen } = useSomeModalOpen()
       'noprint',
       { 'has-modal-ontop': someModalOpen },
     ]"
-    v-bind="{ operatorImgSrc, ...footerProps }"
+    v-bind="{
+      operatorImgSrc,
+      afterMandatoryLinks,
+      ...footerProps
+    }"
   />
 </template>
 
