@@ -39,6 +39,7 @@ const bannerDescription = directusProps?.service_description ?? ''
       ]"
     >
       <img
+        v-if="logoPath"
         :src="logoPath"
         alt="Logo GPS"
       >

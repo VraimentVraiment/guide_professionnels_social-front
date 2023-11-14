@@ -185,6 +185,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
   &.leaves-only__checkbox {
     .filter-node__children[data-node-height="3"] > & {
       padding: 0.5rem 1rem 0.5rem 0.5rem;
+      margin: 0;
     }
 
     &.is-checked {

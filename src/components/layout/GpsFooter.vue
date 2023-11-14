@@ -20,7 +20,7 @@ const directusProps = await useFetchDirectusItems({
 
 const footerProps = {
   licenceText: directusProps?.licence_text ?? '',
-  licenceTo: directusProps?.licence_to ?? '',
+  licenceTo: directusProps?.licence_to ?? '#',
   licenceName: directusProps?.licence_name ?? '',
   a11yCompliance: directusProps?.a11y_compliance ?? '',
   descText: directusProps?.desc_text ?? '',
