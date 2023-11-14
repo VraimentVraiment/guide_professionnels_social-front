@@ -84,14 +84,22 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
         </legend>
       </template>
       <template #content>
-        <GpsFilterNode
-          v-for="childNode in node.children"
-          :key="childNode.data.id"
-          :node="childNode"
-          :post-store="props.postStore"
-          :data-combination="node.data?.combination ?? 'and'"
-          :parent-name="node.data.name"
-        />
+        <div
+          :class="[
+            'filter-node__children',
+            `filter-node__children__${node.data.userSelection}`
+          ]"
+          :data-node-height="node.height"
+        >
+          <GpsFilterNode
+            v-for="childNode in node.children"
+            :key="childNode.data.id"
+            :node="childNode"
+            :post-store="props.postStore"
+            :data-combination="node.data?.combination ?? 'and'"
+            :parent-name="node.data.name"
+          />
+        </div>
       </template>
     </GpsDetailsAccordion>
     <div
@@ -121,11 +129,19 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
 <style scoped lang="scss">
 .filter-node__children {
   & .filter-node__children__all-nodes {
+    border-left: 1px solid var(--border-default-grey);
     margin-bottom: 1.5rem;
     padding-left: .5rem;
     margin-left: .5rem;
     margin-top: .75rem;
-    border-left: 1px solid var(--border-default-grey);
+  }
+
+  & .filter-node__children__leaves-only {
+    &[data-node-height="1"] {
+      margin-left: 0.5rem;
+      padding-left: 0.75rem;
+      border-left: solid 1px var(--border-default-grey);
+    }
   }
 }
 </style>
@@ -167,6 +183,10 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
   }
 
   &.leaves-only__checkbox {
+    .filter-node__children[data-node-height="3"] > & {
+      padding: 0.5rem 1rem 0.5rem 0.5rem;
+    }
+
     &.is-checked {
       &::before {
         position: absolute;
