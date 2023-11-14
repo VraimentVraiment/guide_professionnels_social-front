@@ -4,22 +4,23 @@ const {
   props: contentProps,
 } = await queryContent('/components/footer').findOne()
 
-const directusProps = await useFetchDirectusItems({
-  collectionName: 'gps_site',
-  params: {
-    fields: [
-      'a11y_compliance',
-      'desc_text',
-      'licence_name',
-      'licence_text',
-      'licence_to',
-      'logo_text',
-      'operator_img_alt',
-      'operator_link_text',
-      'operator_to',
-    ],
-  },
-})
+const directusProps = {}
+//  await useFetchDirectusItems({
+//   collectionName: 'gps_site',
+//   params: {
+//     fields: [
+//       'a11y_compliance',
+//       'desc_text',
+//       'licence_name',
+//       'licence_text',
+//       'licence_to',
+//       'logo_text',
+//       'operator_img_alt',
+//       'operator_link_text',
+//       'operator_to',
+//     ],
+//   },
+// })
 
 const footerProps = {
   licenceText: directusProps?.licence_text ?? contentProps?.licenceText ?? '',
