@@ -4,27 +4,9 @@ const {
   props: contentProps,
 } = await queryContent('/components/footer').findOne()
 
-/**
- * @todo Fix: using useFetchDirectusItems creates a 500 error in production build only
- * Maybe because gps_site is also fetched in GpsMainNav ?
- */
-const directusProps = {}
-//  await useFetchDirectusItems({
-//   collectionName: 'gps_site',
-//   params: {
-//     fields: [
-//       'a11y_compliance',
-//       'desc_text',
-//       'licence_name',
-//       'licence_text',
-//       'licence_to',
-//       'logo_text',
-//       'operator_img_alt',
-//       'operator_link_text',
-//       'operator_to',
-//     ],
-//   },
-// })
+const directusProps = await useFetchDirectusItems({
+  collectionName: 'gps_site_footer',
+})
 
 const footerProps = {
   licenceText: directusProps?.licence_text ?? contentProps?.licenceText ?? '',
