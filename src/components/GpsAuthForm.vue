@@ -348,7 +348,7 @@ const showPasswords = ref(false)
 .gps-auth__form-container {
   background-color: var(--background-default-grey);
   border: solid 1px var(--border-default-grey);
-  box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%) !important;
+  filter: drop-shadow(var(--overlap-shadow));
 
   .gps-auth__error .fr-input-group {
     animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;

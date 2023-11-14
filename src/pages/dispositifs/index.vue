@@ -28,12 +28,10 @@ const getCardProps = (
 
 <template>
   <GpsPostsIndex
-    id="dispositifs"
     :post-store="postStore"
     do-use-search-store
     do-use-map
     :get-card-props="getCardProps"
-    :open-details="['gps_caracteristiquesdispositif']"
     :card-type="'link'"
   />
 </template>

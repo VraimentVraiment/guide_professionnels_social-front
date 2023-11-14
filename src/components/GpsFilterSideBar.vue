@@ -30,9 +30,7 @@ const {
     >
       <slot name="before-content" />
       <DsfrAccordionsGroup>
-        <li
-          v-if="doUseSearchStore"
-        >
+        <li v-if="doUseSearchStore">
           <DsfrAccordion
             :expanded-id="expandedId"
             :title="'Communes'"
@@ -98,9 +96,26 @@ const {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 
-.fr-sidemenu__title {
+:deep(.fr-sidemenu) {
+  padding: 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  filter: drop-shadow(var(--overlap-shadow));
+
+  .fr-sidemenu__inner {
+    background: white;
+
+    @include dsfr.md {
+      padding-left: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+:deep(.fr-sidemenu__title) {
   display: none;
 
   @include dsfr.md {
@@ -108,8 +123,8 @@ const {
   }
 }
 
-.has-active-content {
-  .fr-accordion__title {
+:deep(.has-active-content) {
+  &>.fr-accordion__title {
     position: relative;
 
     &::after {

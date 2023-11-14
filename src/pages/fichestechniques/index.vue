@@ -57,9 +57,7 @@ const getCardProps = (
 
 <template>
   <GpsPostsIndex
-    id="fichestechniques"
     :post-store="postStore"
-    :open-details="['gps_thematiques']"
     :get-card-props="getCardProps"
     :card-type="'file'"
   />

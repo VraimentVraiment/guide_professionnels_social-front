@@ -76,7 +76,7 @@ const updatePagination = (
 <template>
   <GpsPageTitle
     :class="[
-      'fr-mb-8w',
+      'fr-mb-4w',
     ]"
   />
   <GpsGrid>

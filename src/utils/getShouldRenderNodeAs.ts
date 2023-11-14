@@ -9,29 +9,6 @@ export const getShouldRenderNodeAs = (
     node: HierarchyNode<GpsFilterItemNode>,
   }
 
-  const checkbox = () => {
-    return !props.isRootNode && (
-      props.dataCombination !== 'unique' &&
-      (
-        node.data.userSelection === 'all-nodes' || (
-          node.data.userSelection === 'leaves-only' &&
-          node.height === 0
-        )
-      )
-    )
-  }
-
-  const radio = () => {
-    return !props.isRootNode && (
-      node.data.userSelection === 'single-node' ||
-      (
-        props.dataCombination === 'unique' &&
-        node.data.userSelection === 'leaves-only' &&
-        node.height === 0
-      )
-    )
-  }
-
   const title = () => {
     return (
       !props.isRootNode &&
@@ -51,13 +28,20 @@ export const getShouldRenderNodeAs = (
     )
   }
 
+  const singleCheckbox = () => {
+    return !props.isRootNode && (
+      node.data.userSelection === 'leaves-only' &&
+      node.height === 0 &&
+      node.depth === 1
+    )
+  }
+
   const childrenInContainer = () => {
     return Boolean(node.children?.length) && !accordionAndChildren()
   }
 
   return {
-    checkbox,
-    radio,
+    singleCheckbox,
     title,
     accordionAndChildren,
     childrenInContainer,

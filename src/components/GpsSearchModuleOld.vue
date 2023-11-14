@@ -162,7 +162,7 @@ const {
     padding: 1.5rem;
     background-color: var(--background-default-grey);
     border-radius: 0 0 4px 4px;
-    box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%);
+    filter: drop-shadow(var(--overlap-shadow));
     max-height: 350px;
     overflow-y: auto;
 
