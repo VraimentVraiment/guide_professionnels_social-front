@@ -15,7 +15,7 @@ export async function useFetchDirectusItems<T>({
 
     return items ?? []
   } catch (e) {
-    console.error(e)
+    warn(e)
     return []
   }
 }

@@ -9,7 +9,6 @@ defineProps<{
 const postStore = useDispositifPostStore()
 
 const setItem = (id: number) => {
-  console.log('click setItem', id)
   postStore.setItem({
     collectionName: 'gps_typesdispositif',
     id,
