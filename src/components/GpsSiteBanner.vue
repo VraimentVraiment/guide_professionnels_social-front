@@ -1,14 +1,26 @@
 <script setup lang="ts">
 
-const content = await queryContent('/components/gps-site-banner').findOne()
-
 const { preferences } = useGpsSchemeStore()
 
+const directusProps = await useFetchDirectusItems({
+  collectionName: 'gps_site_banner',
+}) as unknown as {
+  site_logo: string
+  site_logo_dark: string
+  service_title: string
+  service_description: string
+}
+
 const logoPath = computed(() => {
-  return preferences.theme === 'dark'
-    ? content.logoDarkPath
-    : content.logoPath
+  const operatorImgSrc = preferences.theme === 'dark'
+    ? directusProps?.site_logo_dark
+    : directusProps?.site_logo
+
+  return useGetDirectusFileLink(operatorImgSrc, { isPublic: true }) ?? ''
 })
+
+const bannerTitle = directusProps?.service_title?.split('\n') ?? ''
+const bannerDescription = directusProps?.service_description ?? ''
 
 </script>
 
@@ -45,7 +57,7 @@ const logoPath = computed(() => {
         ]"
       >
         <span
-          v-for="line, i in content.title"
+          v-for="line, i in bannerTitle"
           :key="i"
           :class="[
             'gps-banner__title__line'
@@ -60,7 +72,7 @@ const logoPath = computed(() => {
           'fr-text--lg'
         ]"
       >
-        {{ content.baseline }}
+        {{ bannerDescription }}
       </p>
     </div>
   </div>

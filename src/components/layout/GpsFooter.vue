@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
-const {
-  props: contentProps,
-} = await queryContent('/components/footer').findOne()
+const contentProps = await queryContent('/components/footer').findOne()
 
 const directusProps = await useFetchDirectusItems({
   collectionName: 'gps_site_footer',
@@ -21,15 +19,15 @@ const directusProps = await useFetchDirectusItems({
 }
 
 const footerProps = {
-  licenceText: directusProps?.licence_text ?? contentProps?.licenceText ?? '',
-  licenceTo: directusProps?.licence_to ?? contentProps?.licenceTo ?? '',
-  licenceName: directusProps?.licence_name ?? contentProps?.licenceName ?? '',
-  a11yCompliance: directusProps?.a11y_compliance ?? contentProps?.a11yCompliance ?? '',
-  descText: directusProps?.desc_text ?? contentProps?.descText ?? '',
-  logoText: directusProps?.logo_text?.split('\n') ?? contentProps?.logoText ?? '',
-  operatorImgAlt: directusProps?.operator_img_alt ?? contentProps?.operatorImgAlt ?? '',
-  operatorLinkText: directusProps?.operator_link_text ?? contentProps?.operatorLinkText ?? '',
-  operatorTo: directusProps?.operator_to ?? contentProps?.operatorTo ?? '',
+  licenceText: directusProps?.licence_text ?? '',
+  licenceTo: directusProps?.licence_to ?? '',
+  licenceName: directusProps?.licence_name ?? '',
+  a11yCompliance: directusProps?.a11y_compliance ?? '',
+  descText: directusProps?.desc_text ?? '',
+  logoText: directusProps?.logo_text?.split('\n') ?? '',
+  operatorImgAlt: directusProps?.operator_img_alt ?? '',
+  operatorLinkText: directusProps?.operator_link_text ?? '',
+  operatorTo: directusProps?.operator_to ?? '',
 
   homeLink: contentProps?.homeLink ?? '',
   legalLink: contentProps?.legalLink ?? '',
@@ -46,13 +44,7 @@ const operatorImgSrc = computed(() => {
     ? directusProps?.operator_img_src_dark
     : directusProps?.operator_img_src
 
-  const contentOperatorImgSrc = preferences.theme === 'dark'
-    ? contentProps?.operatorImgSrcDark
-    : contentProps?.operatorImgSrc
-
-  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ??
-    contentOperatorImgSrc ??
-    ''
+  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ?? ''
 })
 
 const { someModalOpen } = useSomeModalOpen()

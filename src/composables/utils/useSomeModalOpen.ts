@@ -1,5 +1,4 @@
 export function useSomeModalOpen() {
-
   const openModals = useState('openModals', () => <string[]>[])
 
   const add = (modalName: string) => {

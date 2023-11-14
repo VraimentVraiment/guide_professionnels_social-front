@@ -1,21 +1,15 @@
-props:
-  serviceTitle: Guide des Professionnels du Social
-  serviceDescription: dans le département du Calvados
-  logoText:
-    - Prefet
-    - du Calvados
-  quickLinks:
-    - label: Affichage
-      to: .
-      icon: ri-contrast-2-line
-      public: true
-      class: gps-scheme-selection
-    - label: Mon espace
-      to: /mon-espace
-      icon: ri-user-line
-      public: false
-    - label: Déconnexion
-      to: /?logout=true
-      icon: ri-logout-box-line
-      public: false
-      name: logout
+quickLinks:
+  - label: Affichage
+    to: .
+    icon: ri-contrast-2-line
+    public: true
+    class: gps-scheme-selection
+  - label: Mon espace
+    to: /mon-espace
+    icon: ri-user-line
+    public: false
+  - label: Déconnexion
+    to: /?logout=true
+    icon: ri-logout-box-line
+    public: false
+    name: logout
