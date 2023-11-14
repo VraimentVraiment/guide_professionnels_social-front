@@ -14,3 +14,7 @@ quickLinks:
     public: false
     icon: null
     class: fr-icon-logout-box-r-line
+searchBar:
+  label: Rechercher un dispositif
+  resultsLabel: Résultats dans la liste des fiches dispositifs
+  placeholder: Rechercher un dispositif

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { onClickOutside } from '@vueuse/core'
 
-const content = await queryContent('/components/gps-search-bar').findOne()
+const content = await queryContent('/components/gps-location-search-bar').findOne()
 
 const searchStore = useLocationSearchStore()
 
@@ -11,45 +10,39 @@ const {
   selectedCityList,
 } = storeToRefs(searchStore)
 
-const openModal = ref(false)
+const modalModel = useSimpleModal()
 
-const target = ref(null)
-
-onClickOutside(target, () => {
-  openModal.value = false
-})
+const isNoResults = ref(false)
 
 </script>
 
 <template>
   <div
     :class="[
-      'gps-search'
+      'gps-search',
+      {'no-results': isNoResults }
     ]"
   >
     <DsfrSearchBar
       v-model="query"
-      :class="[
-        'gps-search__bar',
-      ]"
-      :label="content.searchBarPlaceholder"
-      :button-text="content.searchButtonText"
-      :placeholder="content.searchBarPlaceholder"
+      :label="content.barPlaceholder"
+      :button-text="content.submitButtonText"
+      :placeholder="content.barPlaceholder"
       @search="async() => {
+        if (!query.length) {
+          return
+        }
         await searchStore.submit()
         if (queryCityList?.length > 0) {
-          openModal = true
+          modalModel.open()
+          isNoResults = false
+        } else {
+          isNoResults = true
         }
       }"
     />
-    <div
-      v-if="openModal"
-      ref="target"
-      :class="[
-        'gps-search__modal',
-        'fr-p-2w',
-        'fr-mb-2w',
-      ]"
+    <GpsSearchModal
+      :model="modalModel"
     >
       <div
         v-if="queryCityList.length"
@@ -63,7 +56,7 @@ onClickOutside(target, () => {
             'fr-mb-1w'
           ]"
         >
-          {{ content.cityResultsLabel }}
+          {{ content.resultsLabel }}
         </h6>
         <div
           :class="[
@@ -78,26 +71,12 @@ onClickOutside(target, () => {
             tag-name="button"
             @click="() => {
               searchStore.add(cityName)
-              openModal = false
+              modalModel.close()
             }"
           />
         </div>
       </div>
-
-      <DsfrButton
-        :class="[
-          'gps-search__close-button'
-        ]"
-        type="buttonType"
-        :label="'Fermer'"
-        tertiary
-        size="small"
-        icon="ri-close-line"
-        no-outline
-        icon-right
-        @click="() => openModal = false"
-      />
-    </div>
+    </GpsSearchModal>
     <div
       :class="[
         'gps-search__tags',
@@ -122,6 +101,10 @@ onClickOutside(target, () => {
 
 .gps-search {
   position: relative;
+
+  &.no-results {
+    animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
+  }
 
   .gps-search__tags {
     display: flex;

@@ -2,13 +2,10 @@
 
 defineEmits(['select-tab'])
 
-withDefaults(defineProps<{
+defineProps<{
   tabListName: string
   tabTitles: TabTitle[]
-  maxHeight: string
-}>(), {
-  maxHeight: 'none',
-})
+}>()
 
 const getTabData = (
   { title, icon }: TabTitle,
@@ -55,9 +52,6 @@ const {
       :tab-id="`tab-${i - 1}`"
       :selected="isSelected(i - 1)"
       :asc="index > prevIndex"
-      :style="{
-        maxHeight,
-      }"
     >
       <slot :name="`tab-${i - 1}`" />
     </DsfrTabContent>

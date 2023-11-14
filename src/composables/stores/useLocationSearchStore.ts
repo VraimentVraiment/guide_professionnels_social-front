@@ -25,7 +25,7 @@ function useDefineLocationSearchStore() {
   }
 
   const submit = async() => {
-    const content = queryContent('/components/gps-search-bar').findOne()
+    const content = queryContent('/components/gps-location-search-bar').findOne()
 
     const cities = await geocodeCities(query.value, (await content).apiOptions)
 

@@ -75,7 +75,7 @@ const getOptionsRecursive = (node: HierarchyNode<GpsFilterItemNode>) => {
   />
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 :deep(.fr-checkbox-group) {
   &>label {
     margin-left: 1.8em !important;

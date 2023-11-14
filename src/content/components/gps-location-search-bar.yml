@@ -1,0 +1,11 @@
+barPlaceholder: Rechercher une commune
+submitButtonText: Rechercher
+resultsLabel: 'Résultats :'
+apiOptions:
+  apiUrl: https://api-adresse.data.gouv.fr/search
+  basePostalCode: 14
+  queryParams:
+    lat: 49.1756
+    lon: -0.3596
+    limit: 5
+    type: municipality

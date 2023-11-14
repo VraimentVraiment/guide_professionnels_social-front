@@ -28,7 +28,7 @@ const geoportalConfig = {
   zoom: mapProps?.zoom_level ?? content.zoom,
 }
 
-const searchStore = useSearchStore()
+const searchStore = useLocationSearchStore()
 
 const markers = computed(() => {
   return props.collection

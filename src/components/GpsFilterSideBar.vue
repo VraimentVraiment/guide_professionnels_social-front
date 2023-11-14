@@ -4,7 +4,7 @@ defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   checkedItemsObserver: ReturnType<typeof useCheckedItemsObserver>
   doUseSearchStore?: boolean
-  maxHeight: string
+  maxHeight?: string
 }>()
 
 const content = await queryContent('/components/gps-filter-sidebar').findOne()
@@ -48,7 +48,7 @@ const {
                 'fr-py-2w'
               ]"
             >
-              <GpsSearchModule />
+              <GpsLocationSearchBar />
             </div>
           </DsfrAccordion>
         </li>
