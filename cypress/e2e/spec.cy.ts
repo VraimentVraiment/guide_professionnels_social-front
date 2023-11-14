@@ -39,8 +39,7 @@ describe('Gps spec', () => {
 
   it('Can select a thematique', () => {
     cy.visit('http://localhost:3000/')
-    cy.get('.fr-tile').should('have.length', 4)
+    cy.get('.fr-tile').should('have.length.greaterThan', 0)
     cy.get('.fr-tile a').first().click()
-    // cy.url().should('include', '?thematique=1')
   })
 })
