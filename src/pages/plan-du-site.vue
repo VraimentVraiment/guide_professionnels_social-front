@@ -19,6 +19,7 @@ const LABEL_MAP = {
   'donnees-personnelles': 'Données personnelles',
   'mentions-legales': 'Mentions légales',
   cookies: 'Gestion des cookies',
+  'parametres-affichage': 'Paramètres d\'affichage',
 }
 
 const result = await fetch('/sitemap.xml')

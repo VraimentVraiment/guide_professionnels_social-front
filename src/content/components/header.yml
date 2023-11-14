@@ -1,9 +1,8 @@
 quickLinks:
   - label: Affichage
-    to: .
+    to: /parametres-affichage
     icon: ri-contrast-2-line
     public: true
-    class: gps-scheme-selection
   - label: Mon espace
     to: /mon-espace
     icon: ri-user-line

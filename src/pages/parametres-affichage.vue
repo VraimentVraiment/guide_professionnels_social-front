@@ -1,23 +1,25 @@
 <script setup lang="ts">
 
-import { useEventListener } from '@vueuse/core'
-
 const content = await queryContent('/components/scheme-selection-modal').findOne()
 
-const {
-  isOpen: isModalOpen,
-  open,
-  close,
-} = useModalModel('scheme-selection')
+const router = useRouter()
 
 const { preferences } = useGpsSchemeStore()
 
+const {
+  isOpen: isModalOpen,
+  open: openModal,
+  close: closeModal,
+} = useModalModel('scheme-selection')
+
 onMounted(() => {
-  useEventListener(document.querySelector('.gps-scheme-selection'), 'click', (event: Event) => {
-    event.preventDefault()
-    open()
-  })
+  openModal()
 })
+
+const close = () => {
+  closeModal()
+  router.back()
+}
 
 </script>
 
