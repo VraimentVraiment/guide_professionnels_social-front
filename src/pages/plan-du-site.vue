@@ -40,9 +40,10 @@ const getPages = () => {
   return pages
 }
 
-function formatLabel(loc: string) {
+function formatLabel(loc: string | null) {
+  if (!loc) { return '' }
   const split = loc.split('/')
-  const label = split[split.length - 1]
+  const label = split[split.length - 1] as keyof typeof LABEL_MAP
   return LABEL_MAP[label] || label
 }
 

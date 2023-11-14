@@ -18,8 +18,7 @@ export default defineNuxtConfig({
     ],
   },
   devtools: {
-    // enabled: process.env.NODE_ENV === 'development',
-    enabled: true,
+    enabled: process.env.NODE_ENV === 'development',
   },
 
   extends: [
@@ -54,12 +53,6 @@ export default defineNuxtConfig({
     // url: 'https://gps.calvados.gouv.fr',
   },
 
-  pinia: {
-    autoImports: [
-      'defineStore',
-    ],
-  },
-
   piniaPersistedstate: {
     storage: 'sessionStorage',
   },
@@ -89,21 +82,9 @@ export default defineNuxtConfig({
   ],
 
   imports: {
-
     dirs: [
       'composables/**',
     ],
-
-    presets: [
-      {
-        from: 'd3-hierarchy',
-        imports: [
-          'HierarchyNode',
-        ],
-        type: true,
-      },
-    ],
-
   },
 
   ignore: [

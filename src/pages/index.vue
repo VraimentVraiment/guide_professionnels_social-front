@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import { storeToRefs } from 'pinia'
-
 const postStore = useDispositifPostStore()
 const { checkedItems } = storeToRefs(postStore)
 const { resetAll: resetAllCheckedItems } = useCheckedItemsObserver(checkedItems)

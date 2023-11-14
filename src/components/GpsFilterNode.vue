@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import { type HierarchyNode } from 'd3-hierarchy'
+
 import { useMagicKeys } from '@vueuse/core'
 
 type GpsFilterNodeProps = {

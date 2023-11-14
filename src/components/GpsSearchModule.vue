@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 
-import { storeToRefs } from 'pinia'
-
 const content = await queryContent('/components/gps-search-bar').findOne()
 
 const searchStore = useSearchStore()

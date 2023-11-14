@@ -2,7 +2,6 @@
 
 import { useElementBounding } from '@vueuse/core'
 import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
-import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>

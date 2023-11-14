@@ -1,5 +1,7 @@
 import { type RouteLocationRaw } from 'vue-router'
 
+import { type HierarchyNode } from 'd3-hierarchy'
+
 declare global {
 
   /*
