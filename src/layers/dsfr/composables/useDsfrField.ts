@@ -65,7 +65,7 @@ export function useDsfrField({
       return (
         isError.value &&
         unref(showError) &&
-        props.messages.error
+        unref(props.messages.error)
       ) || undefined
     }),
     validMessage: computed(() => {

@@ -29,11 +29,28 @@ const isResetPassword = computed(() => {
 
 const isError = ref(false)
 
+const isLoginRejected = ref(false)
+
+const { messages: emailMessages, ...emailProps } = content.emailField
+
 const emailField = useDsfrField({
-  props: content.emailField,
-  showError: true,
+  props: {
+    ...emailProps,
+    messages: {
+      ...emailMessages,
+      error: computed(() => {
+        return isLoginRejected.value ? content.messages.error.login.description : emailMessages.error
+      }),
+    },
+  },
+  showError: computed(() => {
+    return isLoginRejected.value
+  }),
   isValidCondition: (value) => {
     return isStringValidEmail(value)
+  },
+  isErrorCondition: () => {
+    return isLoginRejected.value
   },
 })
 
@@ -42,15 +59,27 @@ if (route.query.mail) {
   emailField.validate()
 }
 
+const { messages: passwordMessages, ...passwordProps } = content.passwordField
+
 const passwordField = useDsfrField({
-  props: content.passwordField,
+  props: {
+    ...passwordProps,
+    messages: {
+      ...passwordMessages,
+      error: computed(() => {
+        return isLoginRejected.value ? content.messages.error.login.description : passwordMessages.error
+      }),
+    },
+  },
   isValidCondition: (value) => {
     return value.length >= 8
   },
   isErrorCondition: (value) => {
-    return value.length < 8
+    return isLoginRejected.value || value.length < 8
   },
-  showError: isResetPassword,
+  showError: computed(() => {
+    return isLoginRejected.value || isResetPassword.value
+  }),
   showValid: isResetPassword,
 })
 
@@ -93,6 +122,9 @@ async function submitLogin() {
   } catch {
     isError.value = true
     alertModel.show('error')
+    isLoginRejected.value = true
+    passwordField.validate()
+    emailField.validate()
   } finally {
     passwordField.reset()
   }
@@ -264,8 +296,10 @@ const showPasswords = ref(false)
           autocomplete="email"
           label-visible
           @input="() => {
+            isLoginRejected = false
             emailField.validate()
             alertModel.reset()
+            isLoginRejected = false
           }"
           @keydown.enter="submitPasswordResetRequest"
         />
@@ -292,6 +326,7 @@ const showPasswords = ref(false)
           autocomplete="current-password"
           label-visible
           @input="() => {
+            isLoginRejected = false
             passwordField.validate()
             alertModel.reset()
           }"
