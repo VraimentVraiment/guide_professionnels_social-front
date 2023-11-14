@@ -3,7 +3,7 @@ export async function useFetchMainNav(
 ): Promise<DsfrNavItem[]> {
   const { navigation_menu: navigationMenu } = (
     await useFetchDirectusItems<GpsSiteNavMenu>({
-      collectionName: 'gps_site_main_navigation_menu',
+      collectionName: 'gps_site',
       params: {
         fields: [
           'navigation_menu.collection',
@@ -18,7 +18,7 @@ export async function useFetchMainNav(
       },
     })) as unknown as {
     navigation_menu: GpsSiteNavMenu
-  } // 'gps_site_main_navigation_menu' collection is defined as a singleton in directus, we can safely cast to GpsSiteNavMenu
+  } // 'gps_site' collection is defined as a singleton in directus, we can safely cast to GpsSiteNavMenu
 
   const navItems = navigationMenu
     .map(({ collection: collectionName, item }) => {
