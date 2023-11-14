@@ -93,9 +93,8 @@ const updatePagination = (
         <template #before-content>
           <DsfrTag
             aria-pressed
-            :label="`${postStore.postsCollection.itemsCount} résultats`"
+            :label="`${postStore.postsCollection?.itemsCount ?? 0} résultats`"
             :class="[
-              'gps-posts__pagination__nresults',
               'fr-mb-2w',
               'fr-mt-2w',
               'fr-mt-md-0',

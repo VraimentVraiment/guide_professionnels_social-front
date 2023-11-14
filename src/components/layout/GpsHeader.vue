@@ -139,6 +139,10 @@ const smallerThanLg = breakpoints.smaller('LG')
   max-height: 20rem;
   overflow: auto;
 
+  a {
+    --underline-img: linear-gradient(0deg,currentcolor,currentcolor) !important;
+  }
+
   li + li {
     margin-top: .75rem;
   }

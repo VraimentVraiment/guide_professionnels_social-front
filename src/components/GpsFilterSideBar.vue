@@ -64,7 +64,11 @@ const {
               :expanded-id="expandedId"
               :title="label"
               :class="[
-                { 'has-active-content': checkedItemsObserver.hasCollectionCheckedItems(collectionName) }
+                { 'has-active-content': postStore.checkedItems
+                  ?.find(item => item?.collectionName === collectionName)
+                  ?.items
+                  ?.some(item => item?.checked) ?? false
+                }
               ]"
               @expand="expand"
             >
