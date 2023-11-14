@@ -5,13 +5,30 @@ export const useGetDirectusFileLink = (
   fileId: string | null | undefined,
   {
     download = false,
+    isPublic = false,
   } = {},
-): string => {
+): string | null => {
   if (!fileId) {
-    return ''
+    return null
   }
   const directusUrl = useRuntimeConfig().public.directus.url
-  const { token } = useDirectusToken()
+  let url = `${directusUrl}/assets/${fileId}`
+  const params = new URLSearchParams()
 
-  return `${directusUrl}/assets/${fileId}?access_token=${token.value}${download ? '&download=true' : ''}`
+  if (!isPublic) {
+    const { token } = useDirectusToken()
+    if (token.value) {
+      params.append('access_token', token.value)
+    }
+  }
+
+  if (download) {
+    params.append('download', 'true')
+  }
+
+  if (params.size > 0) {
+    url += `?${params.toString()}`
+  }
+
+  return url
 }

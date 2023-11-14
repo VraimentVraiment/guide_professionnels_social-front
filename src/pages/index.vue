@@ -121,7 +121,7 @@ watch(() => router.currentRoute.value.query, (query) => {
                 :title="name"
                 horizontal
                 :to="'#'"
-                :img-src="useGetDirectusFileLink(pictogramme)"
+                :img-src="useGetDirectusFileLink(pictogramme) ?? ''"
                 title-tag="h2"
                 @click.prevent="() => stepTwo(id)"
               />

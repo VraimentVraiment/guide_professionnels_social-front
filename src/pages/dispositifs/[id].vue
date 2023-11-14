@@ -167,7 +167,7 @@ const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.
           <img
             v-for="{ id: imgId } in imagesData"
             :key="imgId"
-            :src="useGetDirectusFileLink(imgId)"
+            :src="useGetDirectusFileLink(imgId) ?? ''"
             alt=""
           >
         </div>
@@ -220,7 +220,7 @@ const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.
             :description="meta?.description"
             :format="formatFileFormat(file?.type as string)"
             :size="formatBytes(file?.filesize as number)"
-            :href="`${useGetDirectusFileLink(fileId, { download: true })}`"
+            :href="useGetDirectusFileLink(fileId, { download: true }) ?? ''"
           />
         </div>
       </div>
