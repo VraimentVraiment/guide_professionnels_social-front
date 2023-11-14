@@ -4,7 +4,7 @@
 export function useLocalisedPostItems<PostType extends GpsLocalizedPost>(
   postsCollection: Ref<PostsCollection<PostType>>,
 ) {
-  const searchStore = useSearchStore()
+  const searchStore = useLocationSearchStore()
 
   const localisedPostItems = computed(() => {
     const items = postsCollection?.value?.items || []

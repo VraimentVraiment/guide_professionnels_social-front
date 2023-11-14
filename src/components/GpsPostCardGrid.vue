@@ -4,14 +4,9 @@ import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
 
 defineProps<{
   collection: PostType[]
-  wrapCards: boolean
   type: 'link' | 'file'
   getCardProps:(item: PostType) => typeof DsfrCard | typeof DsfrFileDownload
 }>()
-
-const { breakpoints } = useDsfrBreakpoints()
-const isCol6 = breakpoints?.greater('SM')
-const isCol4 = breakpoints?.greater('MD')
 
 const container = ref<HTMLDivElement | null>(null)
 
@@ -43,8 +38,8 @@ defineExpose({
         :key="i"
         :class="[
           'fr-col-12',
-          { 'fr-col-sm-6': wrapCards && isCol6 },
-          { 'fr-col-lg-4': wrapCards && isCol4 },
+          'fr-col-sm-6',
+          'fr-col-lg-4',
         ]"
       >
         <component

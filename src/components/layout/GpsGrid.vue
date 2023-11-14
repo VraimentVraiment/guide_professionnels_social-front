@@ -11,29 +11,12 @@
   >
     <div
       :class="[
-        'fr-col-12',
-        'fr-col-md-4',
-      ]"
-    >
-      <slot name="top-left" />
-    </div>
-    <div
-      :class="[
-        'fr-mb-12v',
-        'fr-col-12',
-        'fr-col-md-8',
-      ]"
-    >
-      <slot name="top-right" />
-    </div>
-    <div
-      :class="[
         'fr-mb-12v',
         'fr-col-12',
         'fr-col-md-4',
       ]"
     >
-      <slot name="bottom-left" />
+      <slot name="left" />
     </div>
     <div
       :class="[
@@ -41,7 +24,7 @@
         'fr-col-md-8',
       ]"
     >
-      <slot name="bottom-right" />
+      <slot name="right" />
     </div>
   </div>
 </template>

@@ -1,26 +1,103 @@
 <script lang="ts" setup>
+import { onClickOutside } from '@vueuse/core'
 
 const content = await queryContent('/components/gps-search-bar').findOne()
 
-const searchStore = useSearchStore()
-searchStore.watchQuery()
+const searchStore = useLocationSearchStore()
 
 const {
   query,
   queryCityList,
   selectedCityList,
-  postItems,
-  openModal,
 } = storeToRefs(searchStore)
+
+const openModal = ref(false)
+
+const target = ref(null)
+
+onClickOutside(target, () => {
+  openModal.value = false
+})
 
 </script>
 
 <template>
   <div
     :class="[
-      'gps-search fr-mb-2v'
+      'gps-search'
     ]"
   >
+    <DsfrSearchBar
+      v-model="query"
+      :class="[
+        'gps-search__bar',
+      ]"
+      :label="content.searchBarPlaceholder"
+      :button-text="content.searchButtonText"
+      :placeholder="content.searchBarPlaceholder"
+      @search="async() => {
+        await searchStore.submit()
+        if (queryCityList?.length > 0) {
+          openModal = true
+        }
+      }"
+    />
+    <div
+      v-if="openModal"
+      ref="target"
+      :class="[
+        'gps-search__modal',
+        'fr-p-2w',
+        'fr-mb-2w',
+      ]"
+    >
+      <div
+        v-if="queryCityList.length"
+        :class="[
+          'gps-search__modal__tags',
+        ]"
+      >
+        <h6
+          :class="[
+            'fr-text--md',
+            'fr-mb-1w'
+          ]"
+        >
+          {{ content.cityResultsLabel }}
+        </h6>
+        <div
+          :class="[
+            'gps-search__tags',
+            { 'has-tags': queryCityList.length > 0 }
+          ]"
+        >
+          <DsfrTag
+            v-for="cityName in queryCityList"
+            :key="cityName"
+            :label="cityName"
+            tag-name="button"
+            @click="() => {
+              searchStore.add(cityName)
+              openModal = false
+            }"
+          />
+        </div>
+      </div>
+
+      <DsfrButton
+        :class="[
+          'gps-search__close-button'
+        ]"
+        type="buttonType"
+        :label="'Fermer'"
+        tertiary
+        size="small"
+        icon="ri-close-line"
+        no-outline
+        icon-right
+        @click="() => openModal = false"
+      />
+    </div>
     <div
       :class="[
         'gps-search__tags',
@@ -38,97 +115,6 @@ const {
         @click="() => searchStore.remove(cityName)"
       />
     </div>
-    <DsfrSearchBar
-      v-model="query"
-      :class="[
-        'gps-search__bar'
-      ]"
-      :label="content.searchBarPlaceholder"
-      :button-text="content.searchButtonText"
-      :placeholder="content.searchBarPlaceholder"
-      large
-      @search="searchStore.submit"
-    />
-    <div
-      :class="[
-        'gps-search__modal-wrapper'
-      ]"
-    >
-      <div
-        v-if="openModal"
-        :class="[
-          'gps-search__modal'
-        ]"
-      >
-        <div
-          v-if="queryCityList.length"
-          :class="[
-            'gps-search__modal__tags'
-          ]"
-        >
-          <h6>
-            {{ content.cityResultsLabel }}
-          </h6>
-          <div
-            :class="[
-              'gps-search__tags',
-              { 'has-tags': queryCityList.length > 0 }
-            ]"
-          >
-            <DsfrTag
-              v-for="cityName in queryCityList"
-              :key="cityName"
-              :label="cityName"
-              tag-name="button"
-              @click="() => searchStore.add(cityName)"
-            />
-          </div>
-        </div>
-        <div
-          v-if="postItems.length"
-          :class="[
-            'gps-search__modal__posts'
-          ]"
-        >
-          <h6>
-            {{ content.postsResultsLabel }}
-          </h6>
-          <ul>
-            <li
-              v-for="item in postItems"
-              :key="item.id"
-            >
-              <NuxtLink
-                :to="`/dispositifs/${item.id}`"
-                :class="[
-                  'fr-link',
-                ]"
-              >
-                {{ item.name }}
-                <v-icon
-                  :name="'ri-arrow-right-line'"
-                  aria-hidden="true"
-                />
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
-
-        <DsfrButton
-          :class="[
-            'gps-search__close-button'
-          ]"
-          type="buttonType"
-          :label="'Fermer'"
-          tertiary
-          size="small"
-          icon="ri-close-line"
-          no-outline
-          icon-right
-          @click="() => openModal = false"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -143,10 +129,6 @@ const {
     justify-items: space-between;
     width: 100%;
 
-    &.has-tags {
-      margin-bottom: .75rem;
-    }
-
     .fr-tag {
       margin: 0.5rem 0.5rem 0 0;
     }
@@ -154,59 +136,18 @@ const {
 
   .gps-search__modal {
     border: 1px solid var(--border-default-grey);
-    position: absolute;
-    top: calc(100% - 2px);
-    left: 0;
-    z-index: 1000;
-    width: 100%;
-    padding: 1.5rem;
+    position: relative;
     background-color: var(--background-default-grey);
-    border-radius: 0 0 4px 4px;
-    box-shadow: 0 6px 18px 0 rgb(0 0 18 / 16%);
-    max-height: 350px;
-    overflow-y: auto;
+    filter: drop-shadow(var(--overlap-shadow));
 
     h6 {
       max-width: 60%;
-
-      @include dsfr.sm {
-        max-width: 80%;
-      }
-
-      @include dsfr.md {
-        max-width: 90%;
-      }
     }
 
     .gps-search__close-button {
       position: absolute;
-      top: .5rem;
-      right: .5rem;
-    }
-
-    .gps-search__modal__tags {
-      margin-bottom: 2rem;
-
-      h6 {
-        margin-bottom: 0.5rem;
-      }
-
-    }
-
-    .gps-search__modal__posts {
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          margin-bottom: 0.5rem;
-        }
-      }
-    }
-
-    .gps-search__modal__tags+.gps-search__modal__posts {
-      margin-top: 2rem;
+      top: .25rem;
+      right: .25rem;
     }
   }
 }

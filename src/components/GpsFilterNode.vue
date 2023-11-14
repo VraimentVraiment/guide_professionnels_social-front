@@ -76,36 +76,52 @@ const expandedId = ref<string | undefined>()
     <DsfrAccordion
       v-else-if="shouldRenderNodeAs?.accordionAndChildren()"
       :expanded-id="expandedId"
+      :title="node.data.name"
       @expand="event => expandedId = event"
     >
-      <template #title>
-        <legend
-          :class="[
-            'gps-parent-legend',
-            {'has-active-content': node.children?.some((child: HierarchyNode<GpsFilterItemNode>) => child.data.checked)}
-          ]"
-        >
-          {{ node.data.name }}
-        </legend>
-      </template>
-      <template #default>
-        <div
-          :class="[
-            'filter-node__children',
-            `filter-node__children__${node.data.userSelection}`
-          ]"
-          :data-node-height="node.height"
-        >
-          <GpsFilterNode
-            v-for="childNode in node.children"
-            :key="childNode.data.id"
-            :node="childNode"
-            :post-store="props.postStore"
-            :data-combination="node.data?.combination ?? 'and'"
-            :parent-name="node.data.name"
-          />
-        </div>
-      </template>
+      <DsfrRadioButtonSet
+        v-if="node.data.combination === 'unique'"
+        :name="node.data.name"
+        small
+        :options="node.children
+          ?.map((child: HierarchyNode<GpsFilterItemNode>) => ({
+            label: child.data.name,
+            value: child.data.id.toString(),
+          })) ?? []"
+        :model-value="node.children
+          ?.find((child: HierarchyNode<GpsFilterItemNode>) => child.data?.checked)
+          ?.data.id.toString()
+          ?? ''"
+        @update:model-value="id => {
+          console.log('id :', id);
+          node?.children
+            ?.forEach((child: HierarchyNode<GpsFilterItemNode>) => {
+              setItem(child.data, child.data.id.toString() === id)
+            })
+        }"
+      />
+      <DsfrCheckboxSet
+        v-else
+        :name="node.data.name"
+        small
+        :options="node.children
+          ?.map((child: HierarchyNode<GpsFilterItemNode>) => ({
+            label: child.data.name,
+            id: child.data.id.toString(),
+            name: child.data.id.toString(),
+          })) ?? []"
+        :model-value="node.children
+          ?.filter((child: HierarchyNode<GpsFilterItemNode>) => child.data?.checked)
+          .map((child: HierarchyNode<GpsFilterItemNode>) => child.data.id.toString())
+          ?? []"
+        @update:model-value="ids => {
+          console.log(ids)
+          node?.children
+            ?.forEach((child: HierarchyNode<GpsFilterItemNode>) => {
+              setItem(child.data, ids.includes(child.data.id.toString()))
+            })
+        }"
+      />
     </DsfrAccordion>
     <div
       v-if="shouldRenderNodeAs?.childrenInContainer()"
@@ -204,7 +220,8 @@ legend.gps-parent-legend {
   &.leaves-only__checkbox {
     .filter-node__children[data-node-height="3"] > & {
       padding: 0.5rem 1rem 0.5rem 0.5rem;
-      margin-top: 0.5rem;
+
+      // margin-top: 0.5rem;
     }
 
     &.is-checked {

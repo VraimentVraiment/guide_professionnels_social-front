@@ -1,7 +1,7 @@
 searchBarPlaceholder: Rechercher une commune ou un dispositif
 searchButtonText: Rechercher
 postsResultsLabel: Résultats dans la liste des fiches dispositifs
-cityResultsLabel: Résultats dans la liste des communes
+cityResultsLabel: 'Résultats :'
 apiOptions:
   apiUrl: https://api-adresse.data.gouv.fr/search
   basePostalCode: 14

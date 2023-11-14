@@ -37,6 +37,8 @@ const { someModalOpen } = useSomeModalOpen()
     :service-title="serviceTitle"
     :service-description="serviceDescription"
     :quick-links="quickLinks"
+    show-search
+    search-label="Rechercher sur le site"
   >
     <template #mainnav="{ hidemodal }">
       <GpsMainNav

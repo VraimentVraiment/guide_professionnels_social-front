@@ -41,7 +41,7 @@ const openDetails = useCollectionObserver<Number>()
           primary
           icon-only
           size="small"
-          :icon="!openDetails.has(node.data.id) ? 'ri-add-line' : 'ri-subtract-line'"
+          :icon="openDetails.has(node.data.id) ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
           @click="() => openDetails.toggle(node.data.id)"
         />
       </GpsFlexSummary>

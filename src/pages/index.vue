@@ -77,13 +77,8 @@ const getTileImgSrc = (item: any) => {
 
 <template>
   <GpsGrid v-show="thematiquesItems?.length">
-    <template #top-left>
+    <template #left>
       <GpsPageTitle />
-    </template>
-    <template #top-right>
-      <GpsSearchModule />
-    </template>
-    <template #bottom-left>
       <div class="fr-container--fluid">
         <div class="fr-grid-row">
           <DsfrAlert
@@ -98,7 +93,7 @@ const getTileImgSrc = (item: any) => {
         </div>
       </div>
     </template>
-    <template #bottom-right>
+    <template #right>
       <div
         :class="[
           'fr-container--fluid'

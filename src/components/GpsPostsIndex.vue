@@ -1,32 +1,22 @@
 <script setup lang="ts" generic="PostType extends GpsPost">
 
-import { useElementBounding, useScroll } from '@vueuse/core'
 import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
 
 const props = defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   doUseSearchStore?: boolean
   doUseMap?: boolean
-  id: string
-  openDetails: string[]
   cardType: 'link' | 'file'
   getCardProps:(postItem: PostType) => typeof DsfrCard | typeof DsfrFileDownload
 }>()
 
-const isPostsTabSelected = ref(true)
-const mounted = ref(false)
-const hasMapLoaded = ref(false)
-
-const { breakpoints } = useDsfrBreakpoints()
-const isSmallScreen = breakpoints.smaller('MD')
-
 const content = await queryContent('/components/posts-index').findOne()
+
+const isPostsTabSelected = ref(true)
+const hasMapLoaded = ref(false)
 
 await props.postStore.fetchInitialCollections()
 onMounted(() => {
-  if (process.client) {
-    mounted.value = true
-  }
   props.postStore.watchPostFiltering()
 })
 const {
@@ -36,7 +26,7 @@ const {
 
 const checkedItemsObserver = useCheckedItemsObserver(resetableCheckedItems)
 
-const searchStore = props.doUseSearchStore ? useSearchStore() : null
+const searchStore = props.doUseSearchStore ? useLocationSearchStore() : null
 
 const reset = () => {
   checkedItemsObserver.resetAll()
@@ -56,8 +46,9 @@ const showResetMessage = computed(() => {
   )
 })
 
-const el = ref(null)
-const { top } = useElementBounding(el)
+const filterSideBar = ref(null)
+const { top } = { top: 0 }
+// const { top } = useElementBounding(filterSideBar) ?? { top: 0 }
 const maxHeight = computed(() => {
   const { result } = useScaleLinear({
     domain: [400, 0],
@@ -83,42 +74,34 @@ const updatePagination = (
 </script>
 
 <template>
+  <GpsPageTitle
+    :class="[
+      'fr-mb-8w',
+    ]"
+  />
   <GpsGrid>
-    <template #top-left>
-      <GpsPageTitle />
-    </template>
-    <template #top-right>
-      <GpsSearchModule v-if="doUseSearchStore" />
-    </template>
-    <template #bottom-left>
-      <div
-        :class="[
-          'gps-posts__sidebar',
-        ]"
+    <template #left>
+      <GpsFilterSideBar
+        ref="filterSideBar"
+        :post-store="postStore"
+        :checked-items-observer="checkedItemsObserver"
+        :do-use-search-store="doUseSearchStore"
       >
-        <GpsFilterSideBar
-          :id="`${id}-posts__sidebar__filters`"
-          ref="el"
-          :post-store="postStore"
-          :make-unselectable="isPostsTabSelected"
-          :open-details="openDetails"
-          :max-height="maxHeight"
-          :checked-items-observer="checkedItemsObserver"
-        />
-        <div
-          :id="`${id}-posts__sidebar__posts`"
-          :style="{
-            maxHeight,
-          }"
-          :class="[
-            'gps-posts__sidebar__posts',
-            'fr-pt-md-6v',
-            { 'is-posts-tab-selected': isPostsTabSelected }
-          ]"
-        />
-      </div>
+        <template #before-content>
+          <DsfrTag
+            aria-pressed
+            :label="`${postStore.postsCollection.itemsCount} résultats`"
+            :class="[
+              'gps-posts__pagination__nresults',
+              'fr-mb-2w',
+              'fr-mt-2w',
+              'fr-mt-md-0',
+            ]"
+          />
+        </template>
+      </GpsFilterSideBar>
     </template>
-    <template #bottom-right>
+    <template #right>
       <GpsTabs
         :class="[
           'gps-posts__tabs'
@@ -129,91 +112,76 @@ const updatePagination = (
         @select-tab="(index: number) => isPostsTabSelected = index === 0"
       >
         <template #tab-0>
-          <Teleport
-            v-if="mounted"
-            :to="`#${id}-posts__sidebar__posts`"
-            :disabled="isPostsTabSelected || isSmallScreen"
+          <div
+            :class="[
+              'gps-posts__posts-container',
+            ]"
           >
-            <div
-              :class="[
-                'gps-posts__posts-container',
-              ]"
-            >
-              <div v-if="showResetMessage">
-                <DsfrAlert
-                  :description="content.resetMessage"
-                  :type="'info'"
-                  small
-                />
-                <DsfrButton
+            <div v-if="showResetMessage">
+              <DsfrAlert
+                :description="content.resetMessage"
+                :type="'info'"
+                small
+              />
+              <DsfrButton
+                :class="[
+                  'fr-mt-2w',
+                  'fr-mb-3w'
+                ]"
+                :label="content.resetLabel"
+                :icon="'ri-close-circle-line'"
+                secondary
+                icon-right
+                @click="reset"
+              />
+            </div>
+            <template v-else-if="postStore.postsCollection.itemsCount">
+              <GpsPostCardGrid
+                ref="gpsPostsContainer"
+                :class="[
+                  'gps-posts__posts',
+                ]"
+                :style="{
+                  maxHeight,
+                }"
+                :collection="(postsItems as unknown as PostType[])"
+                :get-card-props="getCardProps"
+                :type="cardType"
+              />
+              <div
+                :class="[
+                  'gps-posts__pagination',
+                ]"
+              >
+                <DsfrPagination
+                  v-if="postStore.pagination.totalPages > 1"
                   :class="[
-                    'fr-mt-2w',
-                    'fr-mb-3w'
+                    'gps-posts__pagination__pagination',
                   ]"
-                  :label="content.resetLabel"
-                  :icon="'ri-close-circle-line'"
-                  secondary
-                  icon-right
-                  @click="reset"
+                  :pages="new Array(postStore.pagination.totalPages)
+                    .fill(null)
+                    .map((_, i) => {
+                      return {
+                        label: `${i + 1}`,
+                        href: `?page=${i + 1}`,
+                        title: `Page de résultat numéro ${i + 1}`,
+                      }
+                    })"
+                  :current-page="postStore.pagination.currentPage"
+                  :first-page-title="'Premiers résultats'"
+                  :last-page-title="'Derniers résultats'"
+                  :prev-page-title="isPostsTabSelected ? 'Précédents' : ''"
+                  :next-page-title="isPostsTabSelected ? 'Suivants' : ''"
+                  @update:current-page="updatePagination"
                 />
               </div>
-              <template v-else-if="postStore.postsCollection.itemsCount">
-                <div
-                  :class="[
-                    'gps-posts__pagination',
-                    { 'small': !isPostsTabSelected || isSmallScreen },
-                  ]"
-                >
-                  <DsfrTag
-                    :label="`${postStore.postsCollection.itemsCount} résultats`"
-                    :class="[
-                      'gps-posts__pagination__nresults',
-                    ]"
-                  />
-                  <DsfrPagination
-                    v-if="postStore.pagination.totalPages > 1"
-                    :class="[
-                      'gps-posts__pagination__pagination',
-                    ]"
-                    :pages="new Array(postStore.pagination.totalPages)
-                      .fill(null)
-                      .map((_, i) => {
-                        return {
-                          label: `${i + 1}`,
-                          href: `?page=${i + 1}`,
-                          title: `Page de résultat numéro ${i + 1}`,
-                        }
-                      })"
-                    :current-page="postStore.pagination.currentPage"
-                    :first-page-title="'Premiers résultats'"
-                    :last-page-title="'Derniers résultats'"
-                    :prev-page-title="isPostsTabSelected ? 'Précédents' : ''"
-                    :next-page-title="isPostsTabSelected ? 'Suivants' : ''"
-                    :trunc-limit="!isPostsTabSelected || isSmallScreen ? 1 : 3"
-                    @update:current-page="updatePagination"
-                  />
-                </div>
-                <GpsPostCardGrid
-                  ref="gpsPostsContainer"
-                  :class="[
-                    'gps-posts__posts',
-                  ]"
-                  :style="{
-                    maxHeight,
-                  }"
-                  :collection="postsItems"
-                  :wrap-cards="isPostsTabSelected"
-                  :get-card-props="getCardProps"
-                  :type="cardType"
-                />
-              </template>
-              <template v-else>
-                <p>
-                  {{ content.emptyMessage }}
-                </p>
-              </template>
-            </div>
-          </Teleport>
+            </template>
+            <template v-else>
+              <p>
+                {{ content.emptyMessage }}
+              </p>
+            </template>
+          </div>
         </template>
         <template
           v-if="doUseMap && (!isPostsTabSelected || hasMapLoaded)"
@@ -232,64 +200,10 @@ const updatePagination = (
 <style scoped lang="scss">
 .gps-posts__sidebar {
   position: relative;
-
-  .gps-posts__sidebar__posts {
-    overflow-y: auto;
-    width: 100%;
-    top: 2.75rem;
-    position: relative;
-    border-bottom: 1px solid var(--border-default-grey);
-    display: none;
-
-    &::after {
-      content: '';
-      display: none;
-      position: absolute;
-      z-index: 5;
-      height: 2px;
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      box-shadow: inset 0 2px 0 0 var(--background-alt-grey);
-    }
-
-    @include dsfr.md {
-      &:not(.is-posts-tab-selected) {
-        display: block;
-
-        &::after {
-          display: block;
-        }
-      }
-    }
-
-    &.is-posts-tab-selected {
-      display: none;
-    }
-
-    >*:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-  }
 }
 
-.gps-posts__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  border-bottom: 1px solid var(--border-disabled-grey);
-  padding-bottom: 1rem;
-  margin-bottom: 2px;
-
-  &.small {
-    flex-direction: column;
-
-    .gps-posts__pagination__nresults {
-      margin-bottom: 1rem;
-    }
-  }
-}
+// .gps-posts__pagination {
+// }
 
 .gps-posts__posts-container {
   padding: 4px;
