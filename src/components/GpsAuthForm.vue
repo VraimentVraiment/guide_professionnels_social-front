@@ -35,7 +35,7 @@ const {
           'gps-auth__error': isError
         }]"
       >
-        <DsfrInputGroup2
+        <DsfrInputGroup
           v-bind="email.props"
           v-model="email.value.value"
           type="email"
@@ -48,7 +48,7 @@ const {
             alertModel.reset()
           }"
         />
-        <DsfrInputGroup2
+        <DsfrInputGroup
           v-bind="password.props"
           v-model="password.value.value"
           type="password"
