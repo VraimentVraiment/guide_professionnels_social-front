@@ -7,6 +7,7 @@ import {
   RiAlarmWarningLine,
   RiCloseCircleLine,
   RiSendPlaneLine,
+  RiLogoutBoxLine,
 } from 'oh-vue-icons/icons/ri/index'
 
 const icons = [
@@ -16,7 +17,9 @@ const icons = [
   RiAlarmWarningLine,
   RiCloseCircleLine,
   RiSendPlaneLine,
+  RiLogoutBoxLine,
 ]
+
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueDsfr, { icons })

@@ -2,8 +2,9 @@
 
 const {
   fieldSet,
-  email,
-  password,
+  emailField,
+  passwordField,
+  repeatPassword,
   submitButtonModel,
   alertModel,
   // setRememberMe,
@@ -11,93 +12,104 @@ const {
   isError,
 } = await useGpsAuth()
 
+const EMAIL ='lucas@vraimentvraiment.com'
+
+const {
+  requestPasswordReset,
+  resetPassword
+} = useDirectusAuth();
+
+const { query } = useRoute()
+const isResetPassword = Boolean(query.reset_password === 'true' && query.token)
+console.log("isResetPassword :", isResetPassword);
+
 </script>
 
 <template>
-  <DsfrAlert
-    v-show="alertModel.display.value"
-    v-bind="alertModel.props.value"
-    small
-    :class="[
-      'fr-mb-6v',
-    ]"
-  />
-  <div
-    :class="[
-      'gps-auth__form-container',
-      'fr-p-4w',
-    ]"
-  >
+  <DsfrAlert v-show="alertModel.display.value" v-bind="alertModel.props.value" small :class="[
+    'fr-mb-6v',
+  ]" />
+  <div :class="[
+    'gps-auth__form-container',
+    'fr-p-4w',
+  ]">
     <form>
-      <DsfrFieldset
-        v-bind="fieldSet"
-        :class="[{
-          'gps-auth__error': isError
-        }]"
-      >
-        <DsfrInputGroup
-          v-bind="email.props"
-          v-model="email.value.value"
-          type="email"
-          :error-message="email.errorMessage?.value"
-          :valid-message="email.validMessage?.value"
-          aria-required="true"
-          label-visible
-          @input="() => {
-            email.validate()
+      <DsfrFieldset v-bind="fieldSet" :class="[{
+        'gps-auth__error': isError
+      }]">
+        <DsfrInputGroup v-bind="emailField.props" v-model="emailField.value.value" type="email"
+          :error-message="emailField.errorMessage?.value" :valid-message="emailField.validMessage?.value"
+          aria-required="true" label-visible @input="() => {
+            emailField.validate()
             alertModel.reset()
-          }"
-        />
-        <DsfrInputGroup
-          v-bind="password.props"
-          v-model="password.value.value"
-          type="password"
-          :error-message="password.errorMessage?.value"
-          :valid-message="password.validMessage?.value"
-          aria-required="true"
-          label-visible
-          autocomplete="current-password"
-          @input="() => {
-            password.validate()
+          }" />
+        <DsfrInputGroup v-bind="passwordField.props" v-model="passwordField.value.value" type="password"
+          :error-message="passwordField.errorMessage?.value" :valid-message="passwordField.validMessage?.value"
+          aria-required="true" label-visible autocomplete="current-password" @input="() => {
+            passwordField.validate()
             alertModel.reset()
-          }"
-          @keydown.enter="() => submit()"
-        />
+          }" @keydown.enter="() => submit()" />
+        <DsfrInputGroup v-bind="repeatPassword.props" v-model="repeatPassword.value.value" type="password"
+          :error-message="repeatPassword.errorMessage?.value" :valid-message="repeatPassword.validMessage?.value"
+          aria-required="true" label-visible autocomplete="current-password" @input="() => {
+            repeatPassword.validate()
+            alertModel.reset()
+          }" @keydown.enter="() => submit()" />
         <!-- <DsfrCheckbox
         name="rememberMe"
         label="Se souvenir de moi"
         @update:model-value="(value: boolean) => setRememberMe(value)"
       /> -->
       </DsfrFieldset>
-      <DsfrButtonGroup
-        :class="[
-          'fr-mt-2v'
-        ]"
-        :buttons="[
-          {
-            type: 'button',
-            label: submitButtonModel.label,
-            icon: 'ri-arrow-right-line',
-            iconRight: true,
-            disabled: submitButtonModel.disabled?.value,
-            onClick: submit
-          },
-        /**
-         * @todo Implement forgot password
-         */
-        // {
-        //   label: 'Mot de passe oublié ?',
-        //   icon: 'ri-question-line',
-        //   iconRight: true,
-        //   type: 'button',
-        //   secondary: true,
-        //   onClick: () => {
-        //     alertModel.reset()
-        //     $router.push('/forgot-password')
-        //   }
-        // }
-        ]"
-      />
+      <DsfrButtonGroup :class="[
+        'fr-mt-2v'
+      ]"
+      :buttons="[
+  !isResetPassword && {
+    type: 'button',
+    label: submitButtonModel.label,
+    icon: 'ri-arrow-right-line',
+    iconRight: true,
+    disabled: submitButtonModel.disabled?.value,
+    onClick: submit
+  },
+  /**
+   * @todo Implement forgot password
+   */
+    !isResetPassword && {
+    label: 'Mot de passe oublié',
+    icon: 'ri-question-line',
+    iconRight: true,
+    type: 'button',
+    tertiary: true,
+    noOutline: true,
+    onClick: () => {
+      alertModel.reset()
+      requestPasswordReset({
+        email: EMAIL,
+        reset_url: `http://localhost:3000/login?reset_password=true&mail=${EMAIL}`,
+      })
+    }
+  },
+  isResetPassword && {
+    label: 'Changer de mot de passe',
+    icon: 'ri-arrow-right-line',
+    iconRight: true,
+    type: 'button',
+    tertiary: true,
+    // noOutline: true,
+    onClick: async () => {
+      alertModel.reset()
+      try {
+        await resetPassword({ token: query.token, password: passwordField.value.value })
+      } catch {
+
+      }
+    }
+  }
+]
+  .filter(Boolean)
+  " />
     </form>
   </div>
 </template>

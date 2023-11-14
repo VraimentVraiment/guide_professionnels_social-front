@@ -8,23 +8,44 @@ export async function useGpsAuth() {
 
   const content = await queryContent('/components/login').findOne()
 
-  const email = useDsfrField({
+  const emailField = useDsfrField({
     props: content.emailField,
     isValidCondition: (value) => {
       return isStringValidEmail(value)
     },
+    // isErrorCondition: (value) => {
+    //   return !isStringValidEmail(value)
+    // }
   })
 
-  const password = useDsfrField({
+  const passwordField = useDsfrField({
     props: content.passwordField,
     isValidCondition: (value) => {
       return value.length >= 8
     },
+    // isErrorCondition: (value) => {
+    //   return value.length < 8
+    // }
+  })
+
+  const repeatPassword = useDsfrField({
+    props: content.repeatPasswordField,
+    isValidCondition: (value) => {
+      return value === passwordField.value.value
+    },
+    // isErrorCondition: (value) => {
+    //   return value !== passwordField.value.value
+    // }
   })
 
   const submitButtonModel = {
     label: content.loginButton.label,
-    disabled: computed(() => !email.isValid.value || !password.isValid.value),
+    disabled: computed(() => {
+      return (
+        !emailField.isValid.value ||
+        !passwordField.isValid.value
+      )
+    }),
   }
 
   const alertModel = useDsfrAlertModel(content.messages)
@@ -37,7 +58,7 @@ export async function useGpsAuth() {
       // resetPassword,
     } = useDirectusAuth()
 
-    if (!email.isValid.value || !password.isValid.value) {
+    if (!emailField.isValid.value || !passwordField.isValid.value) {
       return
     }
 
@@ -46,8 +67,8 @@ export async function useGpsAuth() {
     alertModel.show('info')
 
     directusLogin({
-      email: email.value.value,
-      password: password.value.value,
+      email: emailField.value.value,
+      password: passwordField.value.value,
     }).then(() => {
       alertModel.show('success')
       reloadNuxtApp({
@@ -62,8 +83,8 @@ export async function useGpsAuth() {
       .catch(() => {
         isError.value = true
         alertModel.show('error')
-        email.reset()
-        password.reset()
+        emailField.reset()
+        passwordField.reset()
       })
   }
 
@@ -75,8 +96,9 @@ export async function useGpsAuth() {
     isError,
     rememberMe,
     fieldSet: content.fieldSet,
-    email,
-    password,
+    emailField,
+    passwordField,
+    repeatPassword,
     submitButtonModel,
     alertModel,
     submit,

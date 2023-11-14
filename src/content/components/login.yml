@@ -14,8 +14,15 @@ passwordField:
   placeholder: Mot de passe
   # hint: Veuillez saisir un mot de passe valide
   messages:
-    error: Mot de passe invalide
+    error: Le mot de passe doit contenir au moins 8 caractères
     valid: Mot de passe valide
+repeatPasswordField:
+  label: Confirmer le mot de passe
+  placeholder: Confirmer le mot de passe
+  # hint: Veuillez saisir un mot de passe valide
+  messages:
+    error: Les mots de passe ne correspondent pas
+    valid: Les mots de passe correspondent
 loginButton:
   label: Se connecter
 messages:

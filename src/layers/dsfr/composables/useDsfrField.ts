@@ -30,10 +30,16 @@ export type DsfrFieldModel = {
  */
 export function useDsfrField({
   props,
+  showValid = false,
+  showError = false,
   isValidCondition,
+  isErrorCondition,
 }: {
   props: DsfrFieldProps,
+  showValid?: boolean,
+  showError?: boolean,
   isValidCondition?: (value: string) => boolean
+  isErrorCondition?: (value: string) => boolean
 }): DsfrFieldModel {
   const value = ref('')
   const isError = ref(false)
@@ -41,15 +47,8 @@ export function useDsfrField({
 
   const validate = () => {
     nextTick(() => {
-      const isValidValue = isValidCondition?.(value.value) ?? null
-      if (isValidValue === null) { return }
-      if (isValidValue) {
-        isError.value = false
-        isValid.value = true
-      } else {
-        isError.value = true
-        isValid.value = false
-      }
+      isError.value = isErrorCondition?.(value.value) ?? false
+      isValid.value = isValidCondition?.(value.value) ?? false
     })
   }
 
@@ -70,10 +69,18 @@ export function useDsfrField({
       autocomplete: props.autocomplete,
     },
     errorMessage: computed(() => {
-      return (isError.value && props.messages.error) || undefined
+      return (
+        isError.value &&
+        showError &&
+        props.messages.error
+      ) || undefined
     }),
     validMessage: computed(() => {
-      return (isValid.value && props.messages.valid) || undefined
+      return (
+        isValid.value &&
+        showValid &&
+        props.messages.valid
+      ) || undefined
     }),
     validate,
     reset,
