@@ -6,7 +6,27 @@ const props = defineProps<{
 
 const emit = defineEmits(['map-loaded'])
 
-const { geoportalConfig } = await queryContent('/components/gps-map').findOne()
+const content = await queryContent('/components/gps-map').findOne()
+
+const mapProps = await useFetchDirectusItems({
+  collectionName: 'gps_map',
+}) as unknown as {
+  center: {
+    type: string
+    coordinates: [number, number]
+  }
+  zoom_level: number
+}
+
+const geoportalConfig = {
+  apiKey: content.apiKey,
+  center: {
+    projection: content.center.projection,
+    x: mapProps?.center?.coordinates?.[0] ?? content.center.x,
+    y: mapProps?.center?.coordinates?.[1] ?? content.center.y,
+  },
+  zoom: mapProps?.zoom_level ?? content.zoom,
+}
 
 const searchStore = useSearchStore()
 
