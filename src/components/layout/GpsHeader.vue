@@ -21,7 +21,11 @@ const quickLinks = computed(() => {
 
 const { someModalOpen } = useSomeModalOpen()
 
-const logoText = directusProps?.logo_text?.split('\n') ?? ''
+const logoText = [
+  'Préfet du',
+  'Calvados',
+]
+// const logoText = directusProps?.logo_text?.split('\n') ?? ''
 const serviceTitle = directusProps?.service_title ?? ''
 const serviceDescription = directusProps?.service_description ?? ''
 

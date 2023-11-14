@@ -26,7 +26,7 @@ const footerProps = {
   licenceName: directusProps?.licence_name ?? '',
   a11yCompliance: directusProps?.a11y_compliance ?? '',
   descText: directusProps?.desc_text ?? '',
-  logoText: directusProps?.logo_text?.split('\n') ?? '',
+  // logoText: directusProps?.logo_text?.split('\n') ?? '',
   operatorImgAlt: directusProps?.operator_img_alt ?? '',
   operatorLinkText: directusProps?.operator_link_text ?? '',
   operatorTo: directusProps?.operator_to ?? '',
@@ -37,6 +37,11 @@ const footerProps = {
   cookiesLink: contentProps?.cookiesLink ?? '',
   a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
 }
+
+const logoText = [
+  'Préfet du',
+  'Calvados',
+]
 
 const { preferences } = useGpsSchemeStore()
 
@@ -73,6 +78,7 @@ const { someModalOpen } = useSomeModalOpen()
     v-bind="{
       operatorImgSrc,
       afterMandatoryLinks,
+      logoText,
       ...footerProps
     }"
   />
