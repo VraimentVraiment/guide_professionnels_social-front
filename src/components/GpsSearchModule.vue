@@ -153,7 +153,7 @@ const {
   }
 
   .gps-search__modal {
-    border: 2px solid var(--border-active-blue-france);
+    border: 1px solid var(--border-default-grey);
     position: absolute;
     top: calc(100% - 2px);
     left: 0;

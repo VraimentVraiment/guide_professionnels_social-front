@@ -1,0 +1,39 @@
+.fr-icon-theme-fill::before,
+.fr-icon-theme-fill::after {
+  -webkit-mask-image: url("../icons/fr--theme-fill.svg");
+  mask-image: url("../icons/fr--theme-fill.svg");
+}
+
+.fr-icon-user-line::before,
+.fr-icon-user-line::after {
+  -webkit-mask-image: url("../icons/user-line.svg");
+  mask-image: url("../icons/user-line.svg");
+}
+
+.fr-icon-logout-box-r-line::before,
+.fr-icon-logout-box-r-line::after {
+  -webkit-mask-image: url("../icons/logout-box-r-line.svg");
+  mask-image: url("../icons/logout-box-r-line.svg");
+}
+
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .fr-icon-theme-fill::before,
+  .fr-icon-theme-fill::after {
+    background-image: url("../icons/fr--theme-fill.svg");
+  }
+
+  .fr-icon-user-line::before,
+  .fr-icon-user-line::after {
+    background-image: url("../icons/user-line.svg");
+  }
+
+  .fr-icon-logout-box-r-line::before,
+  .fr-icon-logout-box-r-line::after {
+    background-image: url("../icons/logout-box-r-line.svg");
+  }
+}
+
+.fr-header .fr-btns-group:not(.fr-btns-group--sm):not(.fr-btns-group--lg):not([class^=fr-btns-group--icon-]):not([class*=" fr-btns-group--icon-"]) .fr-btn:before {
+  margin-right: 0.15rem !important;
+}

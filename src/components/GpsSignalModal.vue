@@ -69,6 +69,15 @@ const sendNotification = () => {
     icon="ri-alarm-warning-line"
     :opened="isModalOpen"
     @close="() => close()"
+    :actions="[
+      {
+        label: content.sendButtonLabel,
+        icon: 'ri-send-plane-line',
+        iconRight: true,
+        disabled: !messageObject || messageContent.length === 0 || !isValidMessage,
+        onClick: () => sendNotification(),
+      }
+    ]"
   >
     <DsfrSelect
       v-model="messageObject"
@@ -84,13 +93,6 @@ const sendNotification = () => {
       label-visible
       required
       :error-message="!isValidMessage ? content.messageContentProps.errorMessage : null"
-    />
-    <DsfrButton
-      :label="content.sendButtonLabel"
-      icon="ri-send-plane-line"
-      icon-right
-      :disabled="!messageObject || messageContent.length === 0 || !isValidMessage"
-      @click="() => sendNotification()"
     />
   </DsfrModal>
 </template>

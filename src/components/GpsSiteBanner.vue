@@ -2,25 +2,24 @@
 
 const { preferences } = useGpsSchemeStore()
 
-const directusProps = await useFetchDirectusItems({
-  collectionName: 'gps_site_banner',
-}) as unknown as {
-  site_logo: string
-  site_logo_dark: string
-  service_title: string
-  service_description: string
-}
+const {
+  serviceTitleMultiline,
+  serviceDescription,
+  logoPathLight,
+  logoDarkPath,
+} = appConfigPatch as unknown as Required<{
+// } = useAppConfig() as unknown as Required<{
+  serviceTitleMultiline: string
+  logoPathLight: string,
+  logoDarkPath: string,
+  serviceDescription: string
+}>
 
 const logoPath = computed(() => {
-  const operatorImgSrc = preferences.theme === 'dark'
-    ? directusProps?.site_logo_dark
-    : directusProps?.site_logo
-
-  return useGetDirectusFileLink(operatorImgSrc, { isPublic: true }) ?? ''
+  return preferences.theme === 'dark'
+    ? logoDarkPath
+    : logoPathLight
 })
-
-const bannerTitle = directusProps?.service_title?.split('\n') ?? ''
-const bannerDescription = directusProps?.service_description ?? ''
 
 </script>
 
@@ -58,7 +57,7 @@ const bannerDescription = directusProps?.service_description ?? ''
         ]"
       >
         <span
-          v-for="line, i in bannerTitle"
+          v-for="line, i in serviceTitleMultiline ?? []"
           :key="i"
           :class="[
             'gps-banner__title__line'
@@ -73,7 +72,7 @@ const bannerDescription = directusProps?.service_description ?? ''
           'fr-text--lg'
         ]"
       >
-        {{ bannerDescription }}
+        {{ serviceDescription }}
       </p>
     </div>
   </div>

@@ -1,14 +1,16 @@
 quickLinks:
   - label: Affichage
     to: /parametres-affichage
-    icon: ri-contrast-2-line
+    class: fr-icon-theme-fill
+    icon: null
     public: true
   - label: Mon espace
     to: /mon-espace
-    icon: ri-user-line
     public: false
+    class: fr-icon-user-line
+    icon: null
   - label: Déconnexion
     to: /?logout=true
-    icon: ri-logout-box-line
     public: false
-    name: logout
+    icon: null
+    class: fr-icon-logout-box-r-line

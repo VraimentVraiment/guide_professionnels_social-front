@@ -52,6 +52,7 @@ export function useIsPublicRoute(
   const DEFAULT_PUBLIC_PAGES = [
     'auth',
     '404',
+    'parametres-affichage',
     /**
      * The following pages are public by default, but can be made private individually
      * by setting their status to "published-private" in Directus.

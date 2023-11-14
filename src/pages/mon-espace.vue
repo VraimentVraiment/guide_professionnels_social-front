@@ -31,14 +31,7 @@ const updateUser = async() => {
   refresh()
   close()
 }
-throw createError({
-  statusCode: 500,
-  statusMessage: 'Page Not Found',
-  data: {
-    myCustomField: true,
-  },
-  fatal: true,
-})
+
 </script>
 
 <template>
@@ -67,7 +60,7 @@ throw createError({
           'fr-col-sm-6'
         ]"
       >
-        <h2>{{ content.personnalDataTitle }}</h2>
+        <h2>{{ content?.personnalDataTitle }}</h2>
         <DsfrButton
           class="fr-mb-8v"
           :label="content.modifyPersonnalData"

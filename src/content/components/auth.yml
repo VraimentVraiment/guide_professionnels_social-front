@@ -27,7 +27,7 @@ repeatPasswordField:
 loginButton:
   label: Se connecter
 forgotPasswordButton:
-  label: Mot de passe oublié
+  label: Mot de passe oublié ?
 resetPasswordRequestButton:
   label: Envoyer un mail de réinitialisation
 resetPasswordButton:

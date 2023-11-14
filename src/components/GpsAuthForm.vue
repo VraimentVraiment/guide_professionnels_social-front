@@ -168,25 +168,6 @@ const loginButtonProps = computed(() => {
   }
 })
 
-const forgotPasswordButtonProps = {
-  label: content.forgotPasswordButton.label,
-  icon: 'ri-question-line',
-  iconRight: true,
-  type: 'button',
-  name: 'forgot-password',
-  tertiary: true,
-  noOutline: true,
-  onClick: () => {
-    alertModel.reset()
-    const params = new URLSearchParams()
-    params.set('request_password_reset', 'true')
-    if (emailField.isValid.value) {
-      params.set('mail', emailField.value.value)
-    }
-    navigateTo(`/auth?${params.toString()}`)
-  },
-}
-
 const resetPasswordRequestButtonProps = computed(() => {
   return {
     label: content.resetPasswordRequestButton.label,
@@ -214,7 +195,6 @@ const authButtons = computed(() => {
   const buttons: DsfrButtonProps[] = []
   if (!isResetPassword.value && !isResetPasswordRequest.value) {
     buttons.push(loginButtonProps.value)
-    buttons.push(forgotPasswordButtonProps)
   }
   if (isResetPasswordRequest.value) {
     buttons.push(resetPasswordRequestButtonProps.value)
@@ -244,6 +224,8 @@ const fieldSetHint = computed(() => {
     return content.fieldSet?.hint?.login
   }
 })
+
+const showPasswords = ref(false)
 
 </script>
 
@@ -287,13 +269,24 @@ const fieldSetHint = computed(() => {
           }"
           @keydown.enter="submitPasswordResetRequest"
         />
+        <DsfrCheckbox
+          v-if="!isResetPasswordRequest"
+          :class="[
+            'gps-auth__show-password',
+          ]"
+          name="show-password"
+          label="Afficher"
+          small
+          :model-value="showPasswords"
+          @update:model-value="showPasswords = $event"
+        />
         <DsfrInputGroup
           v-if="!isResetPasswordRequest"
           v-bind="passwordField.props"
           v-model="passwordField.value.value"
           :error-message="passwordField.errorMessage?.value"
           :valid-message="passwordField.validMessage?.value"
-          type="password"
+          :type="showPasswords ? 'text' : 'password'"
           name="password"
           aria-required="true"
           autocomplete="current-password"
@@ -304,13 +297,32 @@ const fieldSetHint = computed(() => {
           }"
           @keydown.enter="submitLogin"
         />
+        <NuxtLink
+          v-if="!isResetPassword && !isResetPasswordRequest"
+          :to="{
+            name: 'auth',
+            query: {
+              request_password_reset: 'true',
+              mail: emailField.value.value,
+            },
+          }"
+          :class="[
+            'gps-auth__forgot-password',
+            'fr-link',
+          ]"
+          @click="() => {
+            alertModel.reset()
+          }"
+        >
+          {{ content.forgotPasswordButton.label }}
+        </NuxtLink>
         <DsfrInputGroup
           v-if="isResetPassword"
           v-bind="repeatPasswordField.props"
           v-model="repeatPasswordField.value.value"
           :error-message="repeatPasswordField.errorMessage?.value"
           :valid-message="repeatPasswordField.validMessage?.value"
-          type="password"
+          :type="showPasswords ? 'text' : 'password'"
           name="repeat-password"
           aria-required="true"
           autocomplete="current-password"
@@ -341,5 +353,11 @@ const fieldSetHint = computed(() => {
   .gps-auth__error .fr-input-group {
     animation: shake 0.6s cubic-bezier(.36, .07, .19, .97) both;
   }
+}
+
+.gps-auth__show-password {
+  position: absolute;
+  right: 1rem;
+  z-index: 10;
 }
 </style>
