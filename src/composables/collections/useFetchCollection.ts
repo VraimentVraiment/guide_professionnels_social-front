@@ -22,7 +22,8 @@ export function useFetchCollection<PostType extends GpsPost>(
     collectionType?: CollectionType,
     relationModel?: CollectionRelationModel,
   ): Promise<void> {
-    collectionType ??= getCollectionModelByName(collectionName)?.type
+    const collectionModel = getCollectionModelByName(collectionName)
+    collectionType ??= collectionModel?.type
     if (!collectionType) {
       return
     }
@@ -44,6 +45,10 @@ export function useFetchCollection<PostType extends GpsPost>(
 
     const directusFilter = getDirectusFilter(directusFilters, collectionName)
 
+    if (collectionModel?.limit !== undefined) {
+      params.limit = collectionModel.limit
+    }
+
     const items = directusFilter === false
       ? []
       : (
@@ -57,12 +62,34 @@ export function useFetchCollection<PostType extends GpsPost>(
       )
         ?.map(getInitialItem<PostType>(collectionType, relationModel)) as ItemsCollection['items']
 
+    const itemsCount = (
+      directusFilter === false ||
+      collectionType !== 'posts'
+    )
+      ? null
+      : (
+          await useAsyncData(async() => {
+            return (
+              await useFetchDirectusItems<CollectionItem<PostType>>({
+                collectionName,
+                params: Object.assign(params, {
+                  filter: directusFilter,
+                  aggregate: { count: '*' },
+                }),
+              })
+            )
+              ?.[0]?.count
+          })
+        )
+          ?.data
+          ?.value
+
     if (!existingCollection) {
-      collections.value.push(getInitialCollection<PostType>(collectionName, collectionType, items, relationModel))
+      collections.value.push(getInitialCollection<PostType>(collectionName, collectionType, items, relationModel, itemsCount))
     } else {
       const difference = useArrayDifference<ItemsCollection['items'][0]>(existingCollection.items, items, el => el.id)
       if (difference.hasChanges) {
-        updateCollection(existingCollection, items, collectionType)
+        updateCollection(existingCollection, items, collectionType, itemsCount)
       }
     }
 
@@ -93,7 +120,8 @@ export function useFetchCollection<PostType extends GpsPost>(
         })
         .map((relationModel) => {
           return fetchCollection(
-            relationModel.relationCollectionName as string, {
+            relationModel.relationCollectionName as string,
+            {
               limit: -1,
             },
             'relations',
@@ -125,6 +153,7 @@ function getInitialCollection<PostType extends GpsPost>(
   type: CollectionType,
   items: ItemsCollection['items'],
   relationModel?: CollectionRelationModel,
+  itemsCount?: number,
 ): ItemsCollection {
   switch (type) {
     case 'posts':
@@ -132,6 +161,7 @@ function getInitialCollection<PostType extends GpsPost>(
         collectionName,
         type: 'posts',
         items,
+        itemsCount,
       } as PostsCollection<PostType>
 
     case 'relations':
@@ -157,6 +187,7 @@ export function updateCollection(
   collection: ItemsCollection,
   items: ItemsCollection['items'],
   type: 'taxonomy' | 'posts' | 'relations',
+  itemsCount?: number,
 ): void {
   switch (type) {
     case 'taxonomy': {
@@ -180,6 +211,9 @@ export function updateCollection(
     case 'posts':
     case 'relations': {
       collection.items = items
+      if (itemsCount !== undefined) {
+        collection.itemsCount = itemsCount
+      }
       break
     }
   }

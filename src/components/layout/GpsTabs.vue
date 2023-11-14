@@ -56,7 +56,7 @@ const {
       :selected="isSelected(i - 1)"
       :asc="index > prevIndex"
       :style="{
-        maxHeight: maxHeight,
+        maxHeight,
       }"
     >
       <slot :name="`tab-${i - 1}`" />

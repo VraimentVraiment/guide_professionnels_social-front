@@ -106,6 +106,7 @@ declare global {
     relations?: CollectionRelationModel[]
     thumbnailFields?: string[]
     relatedFiles: CollectionRelatedFilesModel[]
+    limit?: number
     filterStatus?: GpsPostStatus[]
     richTextFields?: {
       label: string
@@ -182,6 +183,7 @@ declare global {
     label?: string
     items: PostType[]
     type: 'posts'
+    itemsCount?: number
   }
 
   export type FiltersCollection = {

@@ -149,16 +149,49 @@ const tabTitles = content.tabTitles
                   @click="reset"
                 />
               </div>
-              <template v-if="postsItems?.length > 0">
-                <p
-                  v-if="!showResetMessage"
+              <template v-else-if="postStore.postsCollection.itemsCount">
+                <div
                   :class="[
-                    'fr-mb-3w'
+                    'gps-posts__pagination',
+                    { 'small': !isPostsTabSelected || isSmallScreen },
                   ]"
                 >
-                  {{ postsItems.length }} résultats
-                </p>
+                  <DsfrTag
+                    :label="`${postStore.postsCollection.itemsCount} résultats`"
+                    :class="[
+                      'gps-posts__pagination__nresults',
+                    ]"
+                  />
+                  <DsfrPagination
+                    v-if="postStore.pagination.totalPages > 1"
+                    :class="[
+                      'gps-posts__pagination__pagination',
+                    ]"
+                    :pages="new Array(postStore.pagination.totalPages)
+                      .fill(null)
+                      .map((_, i) => {
+                        return {
+                          label: `${i + 1}`,
+                          href: `?page=${i + 1}`,
+                          title: `Page de résultat numéro ${i + 1}`,
+                        }
+                      })"
+                    :current-page="postStore.pagination.currentPage"
+                    :first-page-title="'Premiers résultats'"
+                    :last-page-title="'Derniers résultats'"
+                    :prev-page-title="isPostsTabSelected ? 'Précédents' : ''"
+                    :next-page-title="isPostsTabSelected ? 'Suivants' : ''"
+                    :trunc-limit="!isPostsTabSelected || isSmallScreen ? 1 : 3"
+                    @update:current-page="postStore.updatePagination"
+                  />
+                </div>
                 <GpsPostCardGrid
+                  :class="[
+                    'gps-posts__posts',
+                  ]"
+                  :style="{
+                    maxHeight,
+                  }"
                   :collection="postsItems"
                   :wrap-cards="isPostsTabSelected"
                   :get-card-props="getCardProps"
@@ -188,7 +221,6 @@ const tabTitles = content.tabTitles
 </template>
 
 <style scoped lang="scss">
-
 .gps-posts__sidebar {
   position: relative;
 
@@ -232,10 +264,37 @@ const tabTitles = content.tabTitles
   }
 }
 
+.gps-posts__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--border-disabled-grey);
+  padding-bottom: 1rem;
+  margin-bottom: 2px;
+
+  &.small {
+    flex-direction: column;
+
+    .gps-posts__pagination__nresults {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
 .gps-posts__posts-container {
   padding: 4px;
   overflow: hidden;
-  position: relative;
 }
 
+.gps-posts__posts {
+  padding-top: 1rem;
+  overflow: hidden auto;
+}
+</style>
+
+<style lang="scss">
+.gps-posts__pagination a.fr-pagination__link {
+  margin-bottom: 0 !important;
+}
 </style>
