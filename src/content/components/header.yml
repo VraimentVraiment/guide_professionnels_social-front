@@ -6,15 +6,16 @@ props:
     - du Calvados
   quickLinks:
     - label: Affichage
-      to: "."
+      to: .
       icon: ri-contrast-2-line
       public: true
-      class: "gps-scheme-selection"
-    - label: 'Mon espace'
-      to: '/mon-espace'
-      icon: 'ri-user-line'
+      class: gps-scheme-selection
+    - label: Mon espace
+      to: /mon-espace
+      icon: ri-user-line
       public: false
-    - label: 'Déconnexion'
-      to: '/?logout=true'
-      icon: 'ri-logout-box-line'
+    - label: Déconnexion
+      to: /?logout=true
+      icon: ri-logout-box-line
       public: false
+      name: logout

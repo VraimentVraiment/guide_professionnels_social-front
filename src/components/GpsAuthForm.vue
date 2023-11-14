@@ -158,6 +158,7 @@ const loginButtonProps = computed(() => {
     type: 'button',
     label: content.loginButton.label,
     icon: 'ri-arrow-right-line',
+    name: 'login',
     iconRight: true,
     disabled: (
       !emailField.isValid.value ||
@@ -172,6 +173,7 @@ const forgotPasswordButtonProps = {
   icon: 'ri-question-line',
   iconRight: true,
   type: 'button',
+  name: 'forgot-password',
   tertiary: true,
   noOutline: true,
   onClick: () => {
@@ -191,6 +193,7 @@ const resetPasswordRequestButtonProps = computed(() => {
     icon: 'ri-arrow-right-line',
     iconRight: true,
     type: 'button',
+    name: 'reset-password-request',
     disabled: !emailField.isValid.value,
     onClick: submitPasswordResetRequest,
   }
@@ -274,6 +277,7 @@ const fieldSetHint = computed(() => {
           :error-message="emailField.errorMessage?.value"
           :valid-message="emailField.validMessage?.value"
           type="email"
+          name="email"
           aria-required="true"
           autocomplete="email"
           label-visible
@@ -290,6 +294,7 @@ const fieldSetHint = computed(() => {
           :error-message="passwordField.errorMessage?.value"
           :valid-message="passwordField.validMessage?.value"
           type="password"
+          name="password"
           aria-required="true"
           autocomplete="current-password"
           label-visible
@@ -306,6 +311,7 @@ const fieldSetHint = computed(() => {
           :error-message="repeatPasswordField.errorMessage?.value"
           :valid-message="repeatPasswordField.validMessage?.value"
           type="password"
+          name="repeat-password"
           aria-required="true"
           autocomplete="current-password"
           label-visible

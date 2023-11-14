@@ -39,7 +39,8 @@ declare global {
 
 Cypress.Commands.add('login', () => {
   cy.visit('http://localhost:3000/auth')
-  cy.get('form input[type="email"]').type('admin@gps.fr')
-  cy.get('form input[type="password"]').type('password')
-  cy.get('form button').click()
+  cy.get('form input[name="email"]').type('admin@gps.fr')
+  cy.get('form input[name="password"]').type('password')
+  cy.get('form button[name="login"').click()
+  cy.url().should('match', /\/$/)
 })

@@ -23,12 +23,15 @@ describe('After auth spec', () => {
     cy.url().should('match', /\/$/)
   })
 
-  // it('Can logout', () => {
-  // })
-
   it('Can access to home if authenticated', () => {
     cy.visit('http://localhost:3000/')
     cy.get('h1').should('contain', 'Accueil')
+  })
+
+  it('Can logout', () => {
+    cy.visit('http://localhost:3000/')
+    cy.get('a[name="logout"]').click()
+    cy.url().should('include', '/auth')
   })
 })
 
@@ -41,5 +44,6 @@ describe('Gps spec', () => {
     cy.visit('http://localhost:3000/')
     cy.get('.fr-tile').should('have.length.greaterThan', 0)
     cy.get('.fr-tile a').first().click()
+    cy.url().should('match', /thematique=\d+/)
   })
 })
