@@ -61,23 +61,37 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
       :data-node-depth="node.depth"
       @update:model-value="(checked: boolean) => setItem(node?.data, checked)"
     />
-    <h5 v-else-if="shouldRenderNodeAs?.title()">
+    <legend
+      v-else-if="shouldRenderNodeAs?.title()"
+      :class="[
+        'gps-greatparent-legend'
+      ]"
+    >
       {{ node.data.name }}
-    </h5>
+    </legend>
     <GpsDetailsAccordion
       v-else-if="shouldRenderNodeAs?.accordionAndChildren()"
-      :label="node.data.name"
       :data-combination="node.data.combination"
-      :summary-tag="'h6'"
     >
-      <GpsFilterNode
-        v-for="childNode in node.children"
-        :key="childNode.data.id"
-        :node="childNode"
-        :post-store="props.postStore"
-        :data-combination="node.data?.combination ?? 'and'"
-        :parent-name="node.data.name"
-      />
+      <template #summary>
+        <legend
+          :class="[
+            'gps-parent-legend'
+          ]"
+        >
+          {{ node.data.name }}
+        </legend>
+      </template>
+      <template #content>
+        <GpsFilterNode
+          v-for="childNode in node.children"
+          :key="childNode.data.id"
+          :node="childNode"
+          :post-store="props.postStore"
+          :data-combination="node.data?.combination ?? 'and'"
+          :parent-name="node.data.name"
+        />
+      </template>
     </GpsDetailsAccordion>
     <div
       v-if="shouldRenderNodeAs?.childrenInContainer()"

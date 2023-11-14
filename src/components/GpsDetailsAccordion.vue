@@ -1,13 +1,9 @@
 <script setup lang="ts">
 
 withDefaults(defineProps<{
-  label: string,
-  summaryTag: string,
   open?: boolean,
   hasCheckedItems?: boolean
 }>(), {
-  label: '',
-  summaryTag: 'span',
   open: false,
 })
 
@@ -23,17 +19,10 @@ withDefaults(defineProps<{
     <summary
       :class="[
         'gps-details__summary',
-        {'has-checked-items': hasCheckedItems}
+        { 'has-checked-items': hasCheckedItems }
       ]"
     >
-      <component
-        :is="summaryTag"
-        :class="[
-          'gps-details__summary__label'
-        ]"
-      >
-        {{ label }}
-      </component>
+      <slot name="summary" />
       <v-icon
         :class="[
           'gps-details__icon',
@@ -47,7 +36,7 @@ withDefaults(defineProps<{
         'gps-details__content'
       ]"
     >
-      <slot />
+      <slot name="content" />
     </div>
   </details>
 </template>
@@ -56,10 +45,6 @@ withDefaults(defineProps<{
 details.gps-details {
   padding: .5rem 0;
   cursor: initial;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--border-default-grey);
-  }
 
   summary.gps-details__summary {
     display: flex;
@@ -86,7 +71,7 @@ details.gps-details {
       background-color: var(--background-default-grey-active);
     }
 
-    &.has-checked-items{
+    &.has-checked-items {
       &::after {
         content: '';
         width: 6px;
@@ -98,12 +83,6 @@ details.gps-details {
         transform: translateY(-50%);
         left: -3px;
       }
-    }
-
-    .gps-details__summary__label {
-      display: block;
-      margin: 0;
-      line-height: 1;
     }
 
     .gps-details__icon {

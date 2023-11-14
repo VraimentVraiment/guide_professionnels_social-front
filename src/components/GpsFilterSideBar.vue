@@ -82,35 +82,50 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
         v-for="{ collectionName, label } in postStore.filtersCollections"
         :key="collectionName"
       >
-        <GpsDetailsAccordion
-          v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
+        <fieldset
           :class="[
-            'filter-group'
+            'gps-filters-sidebar__fieldset',
           ]"
-          :label="label"
-          :summary-tag="'h2'"
-          :open="openDetails?.includes(collectionName)"
-          :has-checked-items="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
         >
-          <DsfrButton
-            v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+          <GpsDetailsAccordion
+            v-if="postStore.rootNodes.find(node => node?.data.name === collectionName)?.children"
             :class="[
-              'gps-filters-sidebar__reset-button',
+              'filter-group'
             ]"
-            :label="content.resetLabel"
-            tertiary
-            no-outline
-            size="small"
-            :icon="'ri-close-circle-line'"
-            icon-right
-            @click="() => checkedItemsObserver.resetCollection(collectionName)"
-          />
-          <GpsFilterNode
-            :post-store="postStore"
-            :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
-            is-root-node
-          />
-        </GpsDetailsAccordion>
+            :open="openDetails?.includes(collectionName)"
+            :has-checked-items="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+          >
+            <template #summary>
+              <legend
+                :class="[
+                  'gps-summary-legend'
+                ]"
+              >
+                {{ label }}
+              </legend>
+            </template>
+            <template #content>
+              <DsfrButton
+                v-show="checkedItemsObserver.hasCollectionCheckedItems(collectionName)"
+                :class="[
+                  'gps-filters-sidebar__reset-button',
+                ]"
+                :label="content.resetLabel"
+                tertiary
+                no-outline
+                size="small"
+                :icon="'ri-close-circle-line'"
+                icon-right
+                @click="() => checkedItemsObserver.resetCollection(collectionName)"
+              />
+              <GpsFilterNode
+                :post-store="postStore"
+                :node="postStore.rootNodes.find(node => node?.data.name === collectionName) ?? null"
+                is-root-node
+              />
+            </template>
+          </GpsDetailsAccordion>
+        </fieldset>
       </template>
     </div>
   </div>
@@ -149,6 +164,16 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
     padding: 0 1rem .5rem;
     overflow-y: auto;
     background-color: var(--background-default-grey);
+
+    fieldset.gps-filters-sidebar__fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--border-default-grey);
+      }
+    }
   }
 
   &.is-selectable {
@@ -233,13 +258,13 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
 
 <style lang="scss">
 .gps-filters-sidebar {
-  h2 {
+  legend.gps-summary-legend {
     font-size: 18px;
     font-weight: 700;
     line-height: 1;
   }
 
-  h5 {
+  legend.gps-greatparent-legend {
     font-size: 1rem;
     font-weight: 700;
     line-height: 1;
@@ -254,7 +279,7 @@ const content = await queryContent('/components/gps-filter-sidebar').findOne()
     }
   }
 
-  h6 {
+  legend.gps-parent-legend {
     margin: 0;
     font-size: 1rem;
     font-weight: 400;
