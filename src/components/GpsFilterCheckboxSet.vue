@@ -44,10 +44,6 @@ const emit = defineEmits(['update:node'])
 
   transform: translateX(.25rem);
 
-  &.fr-checkbox-group--sm input[type="checkbox"]+label::before {
-    margin-top: 0.25rem !important;
-  }
-
   input[type="checkbox"] {
     &+label::after {
       position: absolute;
@@ -69,4 +65,10 @@ const emit = defineEmits(['update:node'])
   }
 }
 
+</style>
+
+<style lang="scss">
+.fr-checkbox-group--sm input[type="checkbox"]+label::before {
+  margin-top: 0.25rem !important;
+}
 </style>

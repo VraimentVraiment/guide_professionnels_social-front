@@ -100,7 +100,7 @@ const {
   }
 
   .fr-tabs__panel {
-    padding: 1.5rem 0 0;
+    padding: 1rem 0 0;
   }
 
 }

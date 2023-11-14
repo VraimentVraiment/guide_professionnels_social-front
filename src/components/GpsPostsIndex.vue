@@ -2,6 +2,8 @@
 
 import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
 
+import { useElementBounding } from '@vueuse/core'
+
 const props = defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   doUseSearchStore?: boolean
@@ -47,12 +49,12 @@ const showResetMessage = computed(() => {
 })
 
 const filterSideBar = ref(null)
-const { top } = { top: 0 }
-// const { top } = useElementBounding(filterSideBar) ?? { top: 0 }
+// const { top } = { top: 0 }
+const { top } = useElementBounding(filterSideBar) ?? { top: 0 }
 const maxHeight = computed(() => {
   const { result } = useScaleLinear({
     domain: [400, 0],
-    range: [50, 80],
+    range: [40, 70],
     value: top,
   })
   return `${result.value}vh`
@@ -86,6 +88,7 @@ const updatePagination = (
         :post-store="postStore"
         :checked-items-observer="checkedItemsObserver"
         :do-use-search-store="doUseSearchStore"
+        :max-height="`calc(${maxHeight} + 4rem)`"
       >
         <template #before-content>
           <DsfrTag
@@ -108,7 +111,6 @@ const updatePagination = (
         ]"
         :tab-list-name="content.tabListName"
         :tab-titles="tabTitles"
-        :max-height="maxHeight"
         @select-tab="(index: number) => isPostsTabSelected = index === 0"
       >
         <template #tab-0>
@@ -116,6 +118,9 @@ const updatePagination = (
             :class="[
               'gps-posts__posts-container',
             ]"
+            :style="{
+              maxHeight,
+            }"
           >
             <div v-if="showResetMessage">
               <DsfrAlert
@@ -140,10 +145,8 @@ const updatePagination = (
                 ref="gpsPostsContainer"
                 :class="[
                   'gps-posts__posts',
+                  'fr-pb-3w',
                 ]"
-                :style="{
-                  maxHeight,
-                }"
                 :collection="(postsItems as unknown as PostType[])"
                 :get-card-props="getCardProps"
                 :type="cardType"
@@ -151,6 +154,8 @@ const updatePagination = (
               <div
                 :class="[
                   'gps-posts__pagination',
+                  'fr-mt-2w',
+                  'fr-mb-1w'
                 ]"
               >
                 <DsfrPagination
@@ -198,26 +203,35 @@ const updatePagination = (
 </template>
 
 <style scoped lang="scss">
-.gps-posts__sidebar {
-  position: relative;
-}
-
-// .gps-posts__pagination {
-// }
-
 .gps-posts__posts-container {
   padding: 4px;
-  overflow: hidden;
-}
+  display: flex;
+  flex-direction: column;
 
-.gps-posts__posts {
-  padding-top: 1rem;
-  overflow: hidden auto;
-}
-</style>
+  .gps-posts__posts {
+    overflow: hidden auto;
+  }
 
-<style lang="scss">
-.gps-posts__pagination a.fr-pagination__link {
-  margin-bottom: 0 !important;
+  .gps-posts__pagination {
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2rem;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        var(--background-alt-grey) 60%,
+        var(--background-alt-grey) 100%
+      );
+      transform: translateY(-100%);
+    }
+  }
 }
 </style>

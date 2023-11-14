@@ -12,6 +12,9 @@ const props = defineProps<{
   parentName?: string
 }>()
 
+const { current: currentKeysPressed } = useMagicKeys()
+const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
+
 const setItem = (
   item: GpsFilterItemNode | undefined,
   checked: boolean,
@@ -25,13 +28,6 @@ const setItem = (
   })
 }
 
-const shouldRenderNodeAs = props.node?.data
-  ? getShouldRenderNodeAs(props)
-  : null
-
-const { current: currentKeysPressed } = useMagicKeys()
-const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
-
 const expandedId = ref<string | undefined>()
 
 </script>
@@ -39,7 +35,11 @@ const expandedId = ref<string | undefined>()
 <template>
   <template v-if="node?.data">
     <h4
-      v-if="shouldRenderNodeAs?.title()"
+      v-if="(
+        !isRootNode &&
+        node.data.userSelection === 'leaves-only' &&
+        node.height === 2
+      )"
       :class="[
         'gps-accordion-group-legend',
         'fr-text--md',
@@ -48,7 +48,14 @@ const expandedId = ref<string | undefined>()
       {{ node.data.name }}
     </h4>
     <DsfrAccordion
-      v-if="shouldRenderNodeAs?.accordionAndChildren()"
+      v-if="(
+        !isRootNode &&
+        node.children?.length &&
+        (
+          node.data.userSelection === 'leaves-only' &&
+          node.height === 1
+        )
+      )"
       :class="[
         { 'has-active-content': node.children?.some(child => child.data.checked) }
       ]"
@@ -73,7 +80,13 @@ const expandedId = ref<string | undefined>()
       />
     </DsfrAccordion>
     <DsfrCheckboxSet
-      v-else-if="shouldRenderNodeAs?.singleCheckbox()"
+      v-else-if="(
+        !isRootNode && (
+          node.data.userSelection === 'leaves-only' &&
+          node.height === 0 &&
+          node.depth === 1
+        )
+      )"
       :name="node.data.name"
       small
       :options="[

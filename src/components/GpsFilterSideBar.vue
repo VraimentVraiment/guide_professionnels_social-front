@@ -4,6 +4,7 @@ defineProps<{
   postStore: ReturnType<typeof useDispositifPostStore | typeof useFicheTechniquePostStore>
   checkedItemsObserver: ReturnType<typeof useCheckedItemsObserver>
   doUseSearchStore?: boolean
+  maxHeight: string
 }>()
 
 const content = await queryContent('/components/gps-filter-sidebar').findOne()
@@ -27,6 +28,9 @@ const {
       :class="[
         'gps-filters-sidebar',
       ]"
+      :style="{
+        maxHeight,
+      }"
     >
       <slot name="before-content" />
       <DsfrAccordionsGroup>
@@ -100,7 +104,8 @@ const {
 
 :deep(.fr-sidemenu) {
   padding: 0;
-  max-height: 80vh;
+
+  // max-height: 80vh;
   overflow-y: auto;
   filter: drop-shadow(var(--overlap-shadow));
 
