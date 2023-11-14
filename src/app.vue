@@ -21,7 +21,7 @@ useHead({
   },
 })
 
-useGpsScheme()
+useGpsSchemeStore()
 
 const {
   collectionsModels,

@@ -10,7 +10,7 @@ const {
   close,
 } = useModalModel('scheme-selection')
 
-const { preferences } = useGpsScheme()
+const { preferences } = useGpsSchemeStore()
 
 onMounted(() => {
   useEventListener(document.querySelector('.gps-scheme-selection'), 'click', (event: Event) => {
@@ -36,11 +36,10 @@ onMounted(() => {
         { value: 'dark', label: content.darkOptionLabel },
         { value: 'system', label: content.systemOptionLabel, hint: content.systemOptionHint },
       ]"
-      :model-value="preferences.scheme ?? 'auto'"
+      :model-value="preferences.scheme ?? 'system'"
       @update:model-value="(event) => {
-        preferences.scheme = event as 'light' | 'dark' | 'auto'
+        preferences.scheme = event as 'light' | 'dark' | 'system'
         close()
-        // reloadNuxtApp()
       }"
     />
   </DsfrModal>

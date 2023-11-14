@@ -1,16 +1,24 @@
 <script setup lang="ts">
 
-defineProps<{
-  hasModalOntop?: boolean
-}>()
-
 const {
   props: contentProps,
 } = await queryContent('/components/footer').findOne()
 
 const directusProps = await useFetchDirectusItems({
   collectionName: 'gps_site_footer',
-})
+}) as unknown as {
+  licence_text: string
+  licence_to: string
+  licence_name: string
+  a11y_compliance: string
+  desc_text: string
+  logo_text: string
+  operator_img_alt: string
+  operator_link_text: string
+  operator_to: string
+  operator_img_src: string
+  operator_img_src_dark: string
+}
 
 const footerProps = {
   licenceText: directusProps?.licence_text ?? contentProps?.licenceText ?? '',
@@ -31,7 +39,7 @@ const footerProps = {
   afterMandatoryLinks: contentProps?.afterMandatoryLinks ?? '',
 }
 
-const { preferences } = useGpsScheme()
+const { preferences } = useGpsSchemeStore()
 
 const operatorImgSrc = computed(() => {
   const directusOperatorImgSrc = preferences.theme === 'dark'

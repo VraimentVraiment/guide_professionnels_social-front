@@ -68,7 +68,7 @@ watch(() => router.currentRoute.value.query, (query) => {
   immediate: true,
 })
 
-const { preferences } = useGpsScheme()
+const { preferences } = useGpsSchemeStore()
 const getTileImgSrc = (item: any) => {
   return preferences.theme === 'dark'
     ? (useGetDirectusFileLink(item.pictogramme_dark) ?? useGetDirectusFileLink(item.pictogramme))
