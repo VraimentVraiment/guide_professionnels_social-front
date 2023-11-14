@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="PostType extends GpsPost">
 
-import { useElementBounding } from '@vueuse/core'
+import { useElementBounding, useScroll } from '@vueuse/core'
 import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
 
 const props = defineProps<{
@@ -71,6 +71,14 @@ const tabTitles = content.tabTitles
   .filter((item: TabTitle) => {
     return props.doUseMap || item.type !== 'map'
   })
+
+const gpsPostsContainer = ref<HTMLDivElement & { scrollTop:() => void } | null>(null)
+const updatePagination = (
+  pageIndex: number,
+) => {
+  props.postStore.updatePagination(pageIndex)
+  gpsPostsContainer.value?.scrollTop()
+}
 
 </script>
 
@@ -182,10 +190,11 @@ const tabTitles = content.tabTitles
                     :prev-page-title="isPostsTabSelected ? 'Précédents' : ''"
                     :next-page-title="isPostsTabSelected ? 'Suivants' : ''"
                     :trunc-limit="!isPostsTabSelected || isSmallScreen ? 1 : 3"
-                    @update:current-page="postStore.updatePagination"
+                    @update:current-page="updatePagination"
                   />
                 </div>
                 <GpsPostCardGrid
+                  ref="gpsPostsContainer"
                   :class="[
                     'gps-posts__posts',
                   ]"

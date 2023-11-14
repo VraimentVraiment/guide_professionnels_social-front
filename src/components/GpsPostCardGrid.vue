@@ -13,10 +13,21 @@ const { breakpoints } = useDsfrBreakpoints()
 const isCol6 = breakpoints?.greater('SM')
 const isCol4 = breakpoints?.greater('MD')
 
+const container = ref<HTMLDivElement | null>(null)
+
+defineExpose({
+  scrollTop: () => {
+    if (container.value) {
+      container.value.scrollTop = 0
+    }
+  },
+})
+
 </script>
 
 <template>
   <div
+    ref="container"
     :class="[
       'fr-container-fluid',
     ]"
