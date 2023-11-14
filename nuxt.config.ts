@@ -41,8 +41,8 @@ export default defineNuxtConfig({
       siteTitle: 'GPS14',
       titleSeparator: '|',
       directus: {
-        url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
-        // url: 'http://0.0.0.0:8055',
+        // url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
+        url: 'http://0.0.0.0:8055',
       },
     },
   },
