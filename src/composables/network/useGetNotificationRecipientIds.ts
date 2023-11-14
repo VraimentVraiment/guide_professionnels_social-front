@@ -1,40 +1,28 @@
-import {
-  type DirectusUser,
-} from 'nuxt-directus/dist/runtime/types'
-
 /**
  * @todo find a way to get the admin roles ids from the directus api.
  * Right now we are hardcoding it.
  */
 
+type DirectusRole = {
+  users: string[]
+  app_access: boolean
+}
+
+const receiveCondition = (role: DirectusRole) => {
+  return role.app_access === true
+}
+
 export async function useGetNotificationRecipientIds(): Promise<string[]> {
-  // const rolesIds = {
-  //   admin: 'bf383d1c-33e1-4b93-bf10-d5d179489b0c',
-  //   superAdmin: '236ca5a2-d117-470a-abdf-f905bd2d208d',
-  // }
-  const roles = await useGetDirectusRoles()
-  const adminRolesIds = roles.value.data
-    .filter((role) => {
-      return [
-        'Admin',
-        'Super-admin',
-      ].includes(role?.name)
-    })
-    .map(role => role?.id)
+  const directusUrl = useRuntimeConfig().public.directus.url
+  const { token } = useDirectusToken()
 
-  const { getUsers } = useDirectusUsers()
-  const adminUsers = await getUsers({
-    params: {
-      fields: ['id'],
-      filter: {
-        role: {
-          _in: adminRolesIds,
-        },
-      },
-    },
-  }) as DirectusUser[]
+  const url = `${directusUrl}/roles?access_token=${token.value}`
 
-  return adminUsers
-    .map(user => user?.id)
-    .filter(Boolean) as string[]
+  const { data } = (await useFetch(url)) as {
+    data: Ref<{ data: DirectusRole[] }>
+  }
+
+  return data.value.data
+    .filter(receiveCondition)
+    .flatMap(role => role?.users)
 }

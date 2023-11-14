@@ -13,26 +13,14 @@ const content = await queryContent('/pages/dispositif').findOne() as unknown as 
 const { getCollectionModelByName } = useModelsStore()
 const model = getCollectionModelByName('gps_fichesdispositif')
 
-/**
- * @todo Use signal error modal when directus fix this :
- * - Not being able to send notification to everyone assigned to a role,
- *   which should be working according to this tutorial :
- *   @see https://learndirectus.com/how-to-send-a-notification/
- * - Notification not opening in backend UI
- */
-const doUseSignalModal = true
-
 const id = parseInt(useRoute().params.id as string, 10)
-
 const post = await useFetchDirectusItem<DispositifPost>({
   collectionName: 'gps_fichesdispositif',
   id,
 })
-
 if (post === null) {
   navigateTo('/404')
 }
-
 useHead({
   title: post?.name,
 })
@@ -68,6 +56,8 @@ const downloadPost = () => {
 const printPost = () => {
   useWithLightScheme(window.print)
 }
+
+console.log("useDirectusUser().value :", useDirectusUser().value);
 const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.name}"]`
 
 </script>
@@ -200,7 +190,6 @@ const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.
           @click="() => printPost()"
         />
         <GpsSignalModal
-          v-if="doUseSignalModal"
           :get-message-content="(content: string) => `${notificationMessagePrefix} : ${content}`"
         />
 

@@ -22,7 +22,6 @@ const isValidMessage = computed(() => {
 })
 
 const recipientIds = await useGetNotificationRecipientIds()
-
 const { createNotification } = useDirectusNotifications()
 
 const open = () => {

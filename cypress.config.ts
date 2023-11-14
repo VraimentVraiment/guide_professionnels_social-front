@@ -4,9 +4,9 @@ export default defineConfig({
   video: false,
 
   component: {
-    // setupNodeEvents (on, config) {},
     viewportHeight: 500,
     viewportWidth: 1000,
+    // setupNodeEvents (on, config) {},
     // specPattern: 'src/**/*.e2e.{js,ts}*',
 
     devServer: {
