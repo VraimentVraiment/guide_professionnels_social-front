@@ -57,7 +57,6 @@ const printPost = () => {
   useWithLightScheme(window.print)
 }
 
-console.log("useDirectusUser().value :", useDirectusUser().value);
 const notificationMessagePrefix = `[${useDirectusUser().value?.email}, "${post?.name}"]`
 
 </script>

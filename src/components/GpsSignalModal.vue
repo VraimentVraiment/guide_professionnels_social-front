@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const props = withDefaults(defineProps<{
-  getMessageContent:(content: string) => string
+  getMessageContent: (content: string) => string
 }>(), {
   getMessageContent: (content: string) => content,
 })
@@ -24,12 +24,19 @@ const isValidMessage = computed(() => {
 const recipientIds = await useGetNotificationRecipientIds()
 const { createNotification } = useDirectusNotifications()
 
+const {
+  add: addModal,
+  remove: removeModal,
+} = useSomeModalOpen()
+
 const open = () => {
   isModalOpen.value = true
+  addModal('signal')
 }
 
 const close = () => {
   isModalOpen.value = false
+  removeModal('signal')
 }
 
 const sendNotification = () => {
@@ -57,43 +64,16 @@ const sendNotification = () => {
 </script>
 
 <template>
-  <DsfrButton
-    :class="[
-      'fr-mt-8v'
-    ]"
-    icon="ri-alarm-warning-line"
-    icon-right
-    :label="content.signalButtonLabel"
-    secondary
-    @click="() => open()"
-  />
-  <DsfrModal
-    :title="content.modalTitle"
-    icon="ri-alarm-warning-line"
-    :opened="isModalOpen"
-    @close="() => close()"
-  >
-    <DsfrSelect
-      v-model="messageObject"
-      :label="content.messageObjectProps.label"
-      :options="content.messageObjectProps.list"
-      required
-    />
-    <DsfrInputGroup
-      v-model="messageContent"
-      :label="content.messageContentProps.label"
-      :placeholder="content.messageContentProps.placeholder"
-      is-textarea
-      label-visible
-      required
-      :error-message="!isValidMessage ? content.messageContentProps.errorMessage : null"
-    />
-    <DsfrButton
-      :label="content.sendButtonLabel"
-      icon="ri-send-plane-line"
-      icon-right
-      :disabled="!messageObject || messageContent.length === 0 || !isValidMessage"
-      @click="() => sendNotification()"
-    />
+  <DsfrButton :class="[
+    'fr-mt-8v'
+  ]" icon="ri-alarm-warning-line" icon-right :label="content.signalButtonLabel" secondary @click="() => open()" />
+  <DsfrModal :title="content.modalTitle" icon="ri-alarm-warning-line" :opened="isModalOpen" @close="() => close()">
+    <DsfrSelect v-model="messageObject" :label="content.messageObjectProps.label"
+      :options="content.messageObjectProps.list" required />
+    <DsfrInputGroup v-model="messageContent" :label="content.messageContentProps.label"
+      :placeholder="content.messageContentProps.placeholder" is-textarea label-visible required
+      :error-message="!isValidMessage ? content.messageContentProps.errorMessage : null" />
+    <DsfrButton :label="content.sendButtonLabel" icon="ri-send-plane-line" icon-right
+      :disabled="!messageObject || messageContent.length === 0 || !isValidMessage" @click="() => sendNotification()" />
   </DsfrModal>
 </template>

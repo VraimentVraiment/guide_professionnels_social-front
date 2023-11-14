@@ -36,15 +36,13 @@ if (!collectionsModels) {
 
 <template>
   <Html lang="fr">
-    <DsfrSkipLinks
-      :links="content.links"
-    />
-    <GpsHeader id="site-header" />
-    <GpsMain id="site-main">
-      <ClientOnly>
-        <NuxtPage />
-      </ClientOnly>
-    </GpsMain>
-    <GpsFooter id="site-footer" />
+  <DsfrSkipLinks :links="content.links" />
+  <GpsHeader id="site-header" />
+  <GpsMain id="site-main">
+    <ClientOnly>
+      <NuxtPage />
+    </ClientOnly>
+  </GpsMain>
+  <GpsFooter id="site-footer"/>
   </Html>
 </template>

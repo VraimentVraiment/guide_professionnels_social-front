@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+defineProps<{
+  hasModalOntop?: boolean
+}>()
+
 const {
   props: contentProps,
 } = await queryContent('/components/footer').findOne()
@@ -43,14 +47,34 @@ const operatorImgSrc = computed(() => {
     ?? ''
 })
 
+const { someModalOpen } = useSomeModalOpen()
+
 </script>
 
 <template>
   <DsfrFooter :class="[
     'gps-footer',
-    'noprint'
+    'noprint',
+    { 'has-modal-ontop': someModalOpen },
   ]" v-bind="{ operatorImgSrc, ...footerProps }" />
 </template>
+
+<style scoped>
+.gps-footer {
+  background: var(--background-default-grey);
+
+  /**
+    * When some modal is open, we need to set the footer z-index to -1
+    * to avoid the modal to be hidden by the footer
+    * We cannot set z-index to -1 everywhere because it would prevent some
+    * links in the footer from beeing clicked
+   */
+  &.has-modal-ontop {
+    position: relative;
+    z-index: -1;
+  }
+}
+</style>
 
 <style>
 /*
@@ -59,14 +83,5 @@ const operatorImgSrc = computed(() => {
  */
 .gps-footer .fr-footer__logo {
   max-width: 21.5rem !important;
-}
-</style>
-
-<style scoped>
-.gps-footer {
-  background: var(--background-default-grey);
-  position: relative;
-
-  /* z-index: -1; */
 }
 </style>
