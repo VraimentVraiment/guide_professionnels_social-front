@@ -4,7 +4,7 @@ import type { DsfrButtonProps } from '@gouvminint/vue-dsfr/types/components/Dsfr
 
 const content = await queryContent('/components/auth').findOne()
 
-const { url: siteUrl } = useSiteConfig()
+const { url: siteUrl } = useRuntimeConfig().public.site
 
 const {
   login,

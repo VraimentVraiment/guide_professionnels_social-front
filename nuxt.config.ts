@@ -37,14 +37,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      site: {
+        url: 'http://localhost:3000',
+      },
       directus: {
         url: 'http://0.0.0.0:8055',
       },
     },
-  },
-
-  site: {
-    url: 'http://localhost:3000',
   },
 
   piniaPersistedstate: {
