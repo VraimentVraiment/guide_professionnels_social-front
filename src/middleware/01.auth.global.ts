@@ -55,7 +55,6 @@ export function useIsPublicRoute(
     /**
      * The following pages are public by default, but can be made private individually
      * by setting their status to "published-private" in Directus.
-     * this status will be checked in validate middleware in the page itself
      */
     'content-slug',
   ]

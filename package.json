@@ -14,6 +14,7 @@
     "test": "vitest",
     "test:ct": "cypress open --e2e",
     "test:ct-ci": "cypress run --e2e",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "format": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "start:back": "npm run start --prefix ${BACKEND_PATH:-'~/guide_professionnels_social-back'}"

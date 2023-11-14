@@ -123,7 +123,7 @@ export function useDirectusFilters(
         }
 
         return filter
-      })
+      }) ?? []
   })
 
   return directusFilters

@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 describe('stratify', () => {
   it('should create a stratified tree from an array of items with parent-child relationships', () => {
     const items = [

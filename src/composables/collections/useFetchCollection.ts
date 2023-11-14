@@ -70,13 +70,15 @@ export function useFetchCollection<PostType extends GpsPost>(
       : (
           await useAsyncData(async() => {
             return (
-              await useFetchDirectusItems<CollectionItem<PostType>>({
-                collectionName,
-                params: Object.assign(params, {
-                  filter: directusFilter,
-                  aggregate: { count: '*' },
-                }),
-              })
+              await useFetchDirectusItems<
+              { count: number }
+            >({
+              collectionName,
+              params: Object.assign(params, {
+                filter: directusFilter,
+                aggregate: { count: '*' },
+              }),
+            })
             )
               ?.[0]?.count
           })
@@ -153,7 +155,7 @@ function getInitialCollection<PostType extends GpsPost>(
   type: CollectionType,
   items: ItemsCollection['items'],
   relationModel?: CollectionRelationModel,
-  itemsCount?: number,
+  itemsCount?: number | null,
 ): ItemsCollection {
   switch (type) {
     case 'posts':
@@ -187,7 +189,7 @@ export function updateCollection(
   collection: ItemsCollection,
   items: ItemsCollection['items'],
   type: 'taxonomy' | 'posts' | 'relations',
-  itemsCount?: number,
+  itemsCount?: number | null,
 ): void {
   switch (type) {
     case 'taxonomy': {

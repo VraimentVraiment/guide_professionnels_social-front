@@ -108,19 +108,19 @@ const updateUser = async() => {
         <h3 class="fr-text--xl fr-mb-2v">
           Adresse mail
         </h3>
-        <p>{{ user.email }}</p>
+        <p>{{ user?.email }}</p>
         <h3 class="fr-text--xl fr-mb-2v">
           {{ content.firstName }}
         </h3>
-        <p>{{ user.first_name ?? content.notCommunicated }}</p>
+        <p>{{ user?.first_name ?? content.notCommunicated }}</p>
         <h3 class="fr-text--xl fr-mb-2v">
           {{ content.lastName }}
         </h3>
-        <p>{{ user.last_name ?? content.notCommunicated }}</p>
+        <p>{{ user?.last_name ?? content.notCommunicated }}</p>
         <h3 class="fr-text--xl fr-mb-2v">
           {{ content.structure }}
         </h3>
-        <p>{{ user.structure ?? content.notCommunicated }}</p>
+        <p>{{ user?.structure ?? content.notCommunicated }}</p>
       </section>
       <section
         :class="[

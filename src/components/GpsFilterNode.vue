@@ -74,7 +74,7 @@ const isAltKeyPressed = computed(() => currentKeysPressed.has('alt'))
     <GpsDetailsAccordion
       v-else-if="shouldRenderNodeAs?.accordionAndChildren()"
       :data-combination="node.data.combination"
-      :has-active-content="node.children.some((child: HierarchyNode<GpsFilterItemNode>) => child.data.checked)"
+      :has-active-content="node.children?.some((child: HierarchyNode<GpsFilterItemNode>) => child.data.checked)"
     >
       <template #summary>
         <legend

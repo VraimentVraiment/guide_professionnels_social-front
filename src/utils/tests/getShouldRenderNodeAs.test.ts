@@ -1,3 +1,5 @@
+import { expect } from 'vitest'
+
 import {
   type HierarchyNode,
 } from 'd3-hierarchy'
