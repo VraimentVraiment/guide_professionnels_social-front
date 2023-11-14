@@ -1,0 +1,8 @@
+schemeSelectionTitle: Paramètres d'affichage
+schemeSelectionDescription: |
+  Choisissez un thème pour personnaliser l’apparence du site.
+
+lightOptionLabel: Thème clair
+darkOptionLabel: Thème sombre
+systemOptionLabel: Thème du système
+systemOptionHint: Utilise les paramètres de votre système

@@ -1,6 +1,6 @@
 export function useObjectDifference(
-  oldObj: Record<string, unknown>,
-  newObj: Record<string, unknown>,
+  oldObj: Record<string, unknown> | Ref<Record<string, unknown>>,
+  newObj: Record<string, unknown> | Ref<Record<string, unknown>>,
 ) {
   const unRefOldObj = unref(oldObj)
   const unRefNewObj = unref(newObj)

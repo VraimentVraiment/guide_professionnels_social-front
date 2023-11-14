@@ -6,9 +6,10 @@ props:
     - du Calvados
   quickLinks:
     - label: Affichage
-      to: /mon-espace
+      to: "."
       icon: ri-contrast-2-line
       public: true
+      class: "gps-scheme-selection"
     - label: 'Mon espace'
       to: '/mon-espace'
       icon: 'ri-user-line'

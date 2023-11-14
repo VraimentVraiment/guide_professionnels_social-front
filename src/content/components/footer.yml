@@ -13,6 +13,11 @@ props:
   afterMandatoryLinks:
     - label: Plan du site
       to: /plan-du-site
+    # - label: Paramètres d'affichage
+    #   to: "."
+    #   icon: ri-contrast-2-line
+    #   public: true
+    #   class: "gps-scheme-selection"
   descText: |
     Le Guide des Professionnels du Social dans le département du Calvados
     est une plateforme portée par la préfecture du Calvados.

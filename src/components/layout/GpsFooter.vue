@@ -32,8 +32,8 @@ const footerProps = {
 }
 
 const { preferences } = useGpsScheme()
-const operatorImgSrc = computed(() => {
 
+const operatorImgSrc = computed(() => {
   const directusOperatorImgSrc = preferences.theme === 'dark'
     ? directusProps?.operator_img_src_dark
     : directusProps?.operator_img_src
@@ -42,9 +42,9 @@ const operatorImgSrc = computed(() => {
     ? contentProps?.operatorImgSrcDark
     : contentProps?.operatorImgSrc
 
-  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true })
-    ?? contentOperatorImgSrc
-    ?? ''
+  return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ??
+    contentOperatorImgSrc ??
+    ''
 })
 
 const { someModalOpen } = useSomeModalOpen()
@@ -52,11 +52,14 @@ const { someModalOpen } = useSomeModalOpen()
 </script>
 
 <template>
-  <DsfrFooter :class="[
-    'gps-footer',
-    'noprint',
-    { 'has-modal-ontop': someModalOpen },
-  ]" v-bind="{ operatorImgSrc, ...footerProps }" />
+  <DsfrFooter
+    :class="[
+      'gps-footer',
+      'noprint',
+      { 'has-modal-ontop': someModalOpen },
+    ]"
+    v-bind="{ operatorImgSrc, ...footerProps }"
+  />
 </template>
 
 <style scoped>

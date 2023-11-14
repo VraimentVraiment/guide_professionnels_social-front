@@ -26,7 +26,7 @@ const goToResetPassword = () => {
 const updateUser = async() => {
   const token = useDirectusToken().token.value
   const url = useRuntimeConfig().public.directus.url
-  const payload = useObjectDifference(user, newUser)
+  const payload = useObjectDifference(user as Ref<Record<string, unknown>>, newUser)
   await useUpdateDirectusSelfUser(url, token, payload)
   refresh()
   close()

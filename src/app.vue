@@ -40,6 +40,7 @@ if (!collectionsModels) {
     <GpsHeader id="site-header" />
     <GpsMain id="site-main">
       <ClientOnly>
+        <GpsSchemeSelectionModal />
         <NuxtPage />
       </ClientOnly>
     </GpsMain>

@@ -3,10 +3,11 @@
 const content = await queryContent('/components/gps-site-banner').findOne()
 
 const { preferences } = useGpsScheme()
+
 const logoPath = computed(() => {
   return preferences.theme === 'dark'
-  ? content.logoDarkPath
-  : content.logoPath
+    ? content.logoDarkPath
+    : content.logoPath
 })
 
 </script>
