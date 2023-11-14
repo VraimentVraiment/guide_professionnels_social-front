@@ -120,7 +120,7 @@ watch(() => router.currentRoute.value.query, (query) => {
               <DsfrTile
                 :title="name"
                 horizontal
-                to=""
+                :to="'#'"
                 :img-src="useGetDirectusFileLink(pictogramme)"
                 title-tag="h2"
                 @click.prevent="() => stepTwo(id)"

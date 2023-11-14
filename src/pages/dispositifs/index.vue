@@ -20,6 +20,7 @@ const getCardProps = (
     title: postItem.name,
     description: getTextExtract(joinAddresses(postItem.addresses)),
     link: `/dispositifs/${postItem.id}`,
+    titleTag: 'h2',
   }
 }
 
