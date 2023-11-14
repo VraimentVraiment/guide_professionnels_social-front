@@ -21,7 +21,7 @@ const LABEL_MAP = {
   cookies: 'Gestion des cookies',
 }
 
-const result = await fetch('http://localhost:3000/sitemap.xml')
+const result = await fetch('/sitemap.xml')
 const xml = await result.text()
 
 const getPages = () => {
