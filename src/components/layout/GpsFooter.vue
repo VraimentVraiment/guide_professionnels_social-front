@@ -4,6 +4,11 @@ const isAuthenticated = useIsAuthenticated()
 
 const contentProps = await queryContent('/components/footer').findOne()
 
+const appConfig = appConfigPatch as unknown as Required<{
+// const appConfig = useAppConfig() as unknown as Required<{
+  logoText: string
+}>
+
 const directusProps = await useFetchDirectusItems({
   collectionName: 'gps_site_footer',
 }) as unknown as {
@@ -12,7 +17,6 @@ const directusProps = await useFetchDirectusItems({
   licence_name: string
   a11y_compliance: string
   desc_text: string
-  logo_text: string
   operator_img_alt: string
   operator_link_text: string
   operator_to: string
@@ -26,10 +30,11 @@ const footerProps = {
   licenceName: directusProps?.licence_name ?? '',
   a11yCompliance: directusProps?.a11y_compliance ?? '',
   descText: directusProps?.desc_text ?? '',
-  // logoText: directusProps?.logo_text?.split('\n') ?? '',
   operatorImgAlt: directusProps?.operator_img_alt ?? '',
   operatorLinkText: directusProps?.operator_link_text ?? '',
   operatorTo: directusProps?.operator_to ?? '',
+
+  logoText: appConfig.logoText,
 
   homeLink: contentProps?.homeLink ?? '',
   legalLink: contentProps?.legalLink ?? '',
@@ -37,11 +42,6 @@ const footerProps = {
   cookiesLink: contentProps?.cookiesLink ?? '',
   a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
 }
-
-const logoText = [
-  'Préfet du',
-  'Calvados',
-]
 
 const { preferences } = useGpsSchemeStore()
 
@@ -78,7 +78,6 @@ const { someModalOpen } = useSomeModalOpen()
     v-bind="{
       operatorImgSrc,
       afterMandatoryLinks,
-      logoText,
       ...footerProps
     }"
   />

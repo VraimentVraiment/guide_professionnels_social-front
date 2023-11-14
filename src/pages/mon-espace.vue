@@ -31,7 +31,14 @@ const updateUser = async() => {
   refresh()
   close()
 }
-
+throw createError({
+  statusCode: 500,
+  statusMessage: 'Page Not Found',
+  data: {
+    myCustomField: true,
+  },
+  fatal: true,
+})
 </script>
 
 <template>

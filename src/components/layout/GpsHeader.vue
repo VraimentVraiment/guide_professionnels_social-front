@@ -4,13 +4,16 @@ const content = await queryContent('/components/header').findOne()
 
 const isAuthenticated = useIsAuthenticated()
 
-const directusProps = await useFetchDirectusItems({
-  collectionName: 'gps_site_header',
-}) as unknown as {
-  service_title: string
-  service_description: string
-  logo_text: string
-}
+const {
+  serviceTitle,
+  serviceDescription,
+  logoText,
+} = appConfigPatch as unknown as Required<{
+// } = useAppConfig() as unknown as Required<{
+  serviceTitle: string
+  serviceDescription: string
+  logoText: string
+}>
 
 const quickLinks = computed(() => {
   return content.quickLinks
@@ -20,14 +23,6 @@ const quickLinks = computed(() => {
 })
 
 const { someModalOpen } = useSomeModalOpen()
-
-const logoText = [
-  'Préfet du',
-  'Calvados',
-]
-// const logoText = directusProps?.logo_text?.split('\n') ?? ''
-const serviceTitle = directusProps?.service_title ?? ''
-const serviceDescription = directusProps?.service_description ?? ''
 
 </script>
 

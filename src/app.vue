@@ -5,7 +5,8 @@ const content = await queryContent('/components/skip-links').findOne()
 const {
   siteTitle,
   titleSeparator,
-} = useAppConfig()
+} = appConfigPatch
+// } = useAppConfig()
 
 const { getMetaTitle } = useGetPageContent()
 

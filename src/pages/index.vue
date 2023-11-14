@@ -72,6 +72,7 @@ const getTileImgSrc = (item: any) => {
     ? (useGetDirectusFileLink(item.pictogramme_dark) ?? useGetDirectusFileLink(item.pictogramme))
     : useGetDirectusFileLink(item.pictogramme)
 }
+console.log('useAppConfig :', useAppConfig())
 
 </script>
 

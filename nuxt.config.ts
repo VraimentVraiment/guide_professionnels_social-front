@@ -37,20 +37,14 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteTitle: 'GPS14',
-      titleSeparator: '|',
       directus: {
         url: 'http://0.0.0.0:8055',
-        // url: 'https://www.qualif.admin.gps.calvados.gouv.fr',
-        // url: 'https://admin.gps.calvados.gouv.fr',
       },
     },
   },
 
   site: {
     url: 'http://localhost:3000',
-    // url: 'https://www.qualif.gps.calvados.gouv.fr',
-    // url: 'https://gps.calvados.gouv.fr',
   },
 
   piniaPersistedstate: {
