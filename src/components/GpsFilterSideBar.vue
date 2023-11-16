@@ -114,7 +114,7 @@ const {
   filter: drop-shadow(var(--overlap-shadow));
 
   .fr-sidemenu__inner {
-    background: white;
+    background: var(--background-default-grey);
 
     @include dsfr.md {
       padding-left: 1rem;
