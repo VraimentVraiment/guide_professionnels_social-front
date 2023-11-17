@@ -26,7 +26,7 @@ export const useGetDirectusFileLink = (
     params.append('download', 'true')
   }
 
-  if (params.size > 0) {
+  if ([...params].length) {
     url += `?${params.toString()}`
   }
 

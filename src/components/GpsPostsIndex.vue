@@ -49,12 +49,11 @@ const showResetMessage = computed(() => {
 })
 
 const filterSideBar = ref(null)
-// const { top } = { top: 0 }
 const { top } = useElementBounding(filterSideBar) ?? { top: 0 }
 const maxHeight = computed(() => {
   const { result } = useScaleLinear({
     domain: [400, 0],
-    range: [40, 70],
+    range: [55, 80],
     value: top,
   })
   return `${result.value}vh`
