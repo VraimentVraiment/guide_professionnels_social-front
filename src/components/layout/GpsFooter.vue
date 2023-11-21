@@ -4,10 +4,9 @@ const isAuthenticated = useIsAuthenticated()
 
 const contentProps = await queryContent('/components/footer').findOne()
 
-const appConfig = appConfigPatch as unknown as Required<{
-// const appConfig = useAppConfig() as unknown as Required<{
-  logoText: string
-}>
+const {
+  logoText,
+} = useAppConfig()
 
 const directusProps = await useFetchDirectusItems({
   collectionName: 'gps_site_footer',
@@ -34,7 +33,7 @@ const footerProps = {
   operatorLinkText: directusProps?.operator_link_text ?? '',
   operatorTo: directusProps?.operator_to ?? '',
 
-  logoText: appConfig.logoText,
+  logoText,
 
   homeLink: contentProps?.homeLink ?? '',
   legalLink: contentProps?.legalLink ?? '',

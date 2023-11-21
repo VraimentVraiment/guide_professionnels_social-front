@@ -7,13 +7,7 @@ const {
   serviceDescription,
   logoPathLight,
   logoDarkPath,
-} = appConfigPatch as unknown as Required<{
-// } = useAppConfig() as unknown as Required<{
-  serviceTitleMultiline: string
-  logoPathLight: string,
-  logoDarkPath: string,
-  serviceDescription: string
-}>
+} = useAppConfig()
 
 const logoPath = computed(() => {
   return preferences.theme === 'dark'

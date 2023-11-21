@@ -8,12 +8,7 @@ const {
   serviceTitle,
   serviceDescription,
   logoText,
-} = appConfigPatch as unknown as Required<{
-// } = useAppConfig() as unknown as Required<{
-  serviceTitle: string
-  serviceDescription: string
-  logoText: string
-}>
+} = useAppConfig()
 
 const quickLinks = computed(() => {
   return content.quickLinks
