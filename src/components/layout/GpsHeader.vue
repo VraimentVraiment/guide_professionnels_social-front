@@ -107,17 +107,7 @@ const smallerThanLg = breakpoints.smaller('LG')
 </template>
 
 <style scoped lang="scss">
-.gps-header:deep() {
-  @include dsfr.lg {
-    .fr-search-bar {
-      position: relative !important;
-    }
-  }
-
-  .gps-search__modal {
-    text-align: left;
-  }
-
+.gps-header {
   /**
     * When some modal is open, we need to set the footer z-index to -1
     * to avoid the modal to be hidden by the footer
@@ -127,6 +117,18 @@ const smallerThanLg = breakpoints.smaller('LG')
   &.has-modal-ontop {
     position: relative;
     z-index: -1;
+  }
+
+  &:deep() {
+    @include dsfr.lg {
+      .fr-search-bar {
+        position: relative !important;
+      }
+    }
+  }
+
+  .gps-search__modal {
+    text-align: left;
   }
 }
 
