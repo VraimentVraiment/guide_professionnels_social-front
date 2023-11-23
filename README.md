@@ -41,10 +41,4 @@ Génère le code de production de l’application :
 npm run build
 ```
 
-Prévisualisation du code de prod (nécessite un build préalable) :
-
-```bash
-npm run preview
-```
-
 Regarder ensuite la [documentation de Nuxt concernant le déploiement](https://nuxt.com/docs/getting-started/deployment).

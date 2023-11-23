@@ -10,7 +10,6 @@
     "start": "node .output/server/index.mjs",
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "preview": "nuxi preview",
     "test": "vitest",
     "test:ct": "cypress open --e2e",
     "test:ct-ci": "cypress run --e2e",
