@@ -1,6 +1,14 @@
 import { expect } from 'vitest'
 
 describe('stratify', () => {
+  type ItemType = {
+    id: string
+    parentId: string | null
+  }
+  const getId = (item: ItemType) => item.id
+  const getParentId = (item: ItemType) => item.parentId
+  const getRootFilterItem = () => ({ id: '0', parentId: null })
+
   it('should create a stratified tree from an array of items with parent-child relationships', () => {
     const items = [
       { id: '1', parentId: null },
@@ -12,11 +20,7 @@ describe('stratify', () => {
       { id: '7', parentId: '3' },
     ]
 
-    const getId = (item: any) => item.id
-    const getParentId = (item: any) => item.parentId
-    const getRootFilterItem = () => ({ id: '0', parentId: null })
-
-    const result = stratify(items, getId, getParentId, getRootFilterItem)
+    const result = stratify<ItemType>(items, getId, getParentId, getRootFilterItem)
 
     expect(result).toHaveProperty('id', '1')
     expect(result?.children).toHaveLength(2)
@@ -40,15 +44,11 @@ describe('stratify', () => {
       { id: '1', parentId: '2' },
     ]
 
-    const getId = (item: any) => item.id
-    const getParentId = (item: any) => item.parentId
-    const getRootFilterItem = () => ({ id: '0', parentId: null })
+    const result = stratify<ItemType>(items1, getId, getParentId, getRootFilterItem)
 
-    const result1 = stratify(items1, getId, getParentId, getRootFilterItem)
-
-    expect(result1).toHaveProperty('id', '0')
-    expect(result1?.children).toHaveLength(2)
-    expect(result1?.children?.[0]).toHaveProperty('id', '2')
-    expect(result1?.children?.[1]).toHaveProperty('id', '1')
+    expect(result).toHaveProperty('id', '0')
+    expect(result?.children).toHaveLength(2)
+    expect(result?.children?.[0]).toHaveProperty('id', '2')
+    expect(result?.children?.[1]).toHaveProperty('id', '1')
   })
 })

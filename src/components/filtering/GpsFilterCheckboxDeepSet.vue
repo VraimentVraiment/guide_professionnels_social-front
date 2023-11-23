@@ -51,6 +51,13 @@ const getOptionsRecursive = (
 
   return [...selfOptions, ...recursiveOptions]
 }
+type DsfrCheckboxChangeEvent = InputEvent & {
+  target: {
+    id: string,
+    checked: boolean
+  }
+}
+
 </script>
 
 <template>
@@ -66,8 +73,7 @@ const getOptionsRecursive = (
         return child.data.id.toString()
       })
       ?? []"
-
-    @change="(event) => {
+    @change="(event: DsfrCheckboxChangeEvent) => {
       const id = event.target?.id.split('--')[1]
       const child = node
         .descendants()

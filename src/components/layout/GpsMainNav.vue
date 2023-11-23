@@ -26,7 +26,7 @@ const contentNavItems = computed(() => {
     ?.filter((navItem: DsfrNavigationMenuLinkProps & { public?: boolean }) => {
       return isAuthenticated.value || navItem.public
     })
-})
+}) as ComputedRef<DsfrNavItem[]>
 
 const navItems = computed(() => {
   return [

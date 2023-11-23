@@ -1,7 +1,5 @@
 <script setup lang="ts" generic="PostType extends GpsPost">
 
-import { DsfrCard, DsfrFileDownload } from '@gouvminint/vue-dsfr'
-
 import { useElementBounding } from '@vueuse/core'
 
 const props = defineProps<{
@@ -9,7 +7,7 @@ const props = defineProps<{
   doUseSearchStore?: boolean
   doUseMap?: boolean
   cardType: 'link' | 'file'
-  getCardProps:(postItem: PostType) => typeof DsfrCard | typeof DsfrFileDownload
+  getCardProps:(postItem: PostType) => DsfrCardProps | DsfrFileDownloadProps
 }>()
 
 const content = await queryContent('/components/posts-index').findOne()
@@ -60,7 +58,7 @@ const maxHeight = computed(() => {
 })
 
 const tabTitles = content.tabTitles
-  .filter((item: TabTitle) => {
+  .filter((item: DsfrTabTitle & { type: string }) => {
     return props.doUseMap || item.type !== 'map'
   })
 
@@ -222,12 +220,10 @@ const updatePagination = (
       right: 0;
       top: 0;
       height: 2rem;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        var(--background-alt-grey) 60%,
-        var(--background-alt-grey) 100%
-      );
+      background: linear-gradient(to bottom,
+      transparent 0%,
+      var(--background-alt-grey) 60%,
+      var(--background-alt-grey) 100%);
       transform: translateY(-100%);
     }
   }

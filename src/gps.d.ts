@@ -2,7 +2,53 @@ import { type RouteLocationRaw } from 'vue-router'
 
 import { type HierarchyNode } from 'd3-hierarchy'
 
+import {
+  DsfrNavigationMenuLink,
+  DsfrNavigation,
+  DsfrNavigationMenu,
+  DsfrHeader,
+  DsfrTabs,
+  DsfrButton,
+  DsfrButtonGroup,
+  DsfrCards,
+  DsfrFileDownload
+} from '@gouvminint/vue-dsfr'
+
 declare global {
+
+  /*
+   * Utils
+   */
+
+  export type ArrayItemType<T> = T extends (infer U)[] ? U : never;
+
+  export type Accessor<T, U> = (item: T) => U
+
+  export type ComponentProps<T extends { new (...args: any[]): { $props: any } }> = InstanceType<T>['$props'];
+
+  /*
+   * DSFR
+   */
+
+  export type DsfrNavigationMenuLinkProps = ComponentProps<typeof DsfrNavigationMenuLink>
+
+  export type DsfrNavigationMenuProps = ComponentProps<typeof DsfrNavigationMenu>
+
+  export type DsfrNavigationProps = ComponentProps<typeof DsfrNavigation>
+  export type DsfrNavItem = ArrayItemType<DsfrNavigationProps['navItems']>
+
+  export type DsfrHeaderProps = ComponentProps<typeof DsfrHeader>
+  export type DsfrQuicklink = ArrayItemType<DsfrHeaderProps['quickLinks']>
+
+  export type DsfrButtonGroupProps = ComponentProps<typeof DsfrButtonGroup>
+  export type DsfrButtonsProps = ArrayItemType<DsfrButtonGroupProps['buttons']>
+
+  export type DsfrTabsProps = ComponentProps<typeof DsfrTabs>
+  export type DsfrTabTitle = ArrayItemType<DsfrTabsProps['tabTitles']>
+
+  export type DsfrCardProps = ComponentProps<typeof DsfrCards>
+  export type DsfrFileDownloadProps = ComponentProps<typeof DsfrFileDownload>
+
 
   /*
    * GPS Pages
@@ -23,38 +69,13 @@ declare global {
     pages: GpsPage[];
   }
 
-  export type GpsSiteNavMenu = {
-    collection: 'gps_pages' | 'gps_pages_groups',
-    item: GpsPage | {
-      name: string,
-      pages: GpsPage[]
-    }
-  }[]
-
-  export type GpsQuickLink = {
-    to: string
-    label: string
-    icon?: boolean
+  export type GpsQuickLink = DsfrQuicklink & {
     public?: boolean
   }
 
-  type DsfrNavigationMenuLinkProps = {
-    text: string
-    to: RouteLocationRaw
-  };
-
-  type DsfrNavItem = DsfrNavigationMenuLinkProps | {
-    title: string
-    links: DsfrNavigationMenuLinkProps[]
-  }
-
-  /*
-   * GPS Posts
-   */
+  export type GpsPageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
 
   export type GpsPostStatus = 'published' | 'draft' | 'archived'
-
-  export type GpsPageStatus = 'published-public' | 'published-private' | 'draft' | 'archived'
 
   export interface GpsPost {
     id: number
@@ -295,17 +316,6 @@ declare global {
     }
   }
 
-  /*
-   * Misc
-   */
-
-  export type TabTitle = {
-    title: string,
-    icon: string,
-    type: string,
-  }
-
-  export type Accessor<T, U> = (item: T) => U
 }
 
 export { }

@@ -4,11 +4,11 @@ defineEmits(['select-tab'])
 
 defineProps<{
   tabListName: string
-  tabTitles: TabTitle[]
+  tabTitles: DsfrTabTitle[]
 }>()
 
 const getTabData = (
-  { title, icon }: TabTitle,
+  { title, icon }: DsfrTabTitle,
   i: number,
 ) => {
   return {

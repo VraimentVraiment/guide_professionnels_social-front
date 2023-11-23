@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
 
 const content = await queryContent('/components/signal-modal').findOne()
 
-const messageObject = ref(null)
+const messageObject = ref<string | undefined>()
 const messageContent = ref('')
 
 const isValidMessage = computed(() => {
@@ -38,14 +38,14 @@ const sendNotification = () => {
       return createNotification({
         notification: {
           recipient: id,
-          subject: messageObject.value as unknown as string,
+          subject: messageObject.value as string,
           message: props.getMessageContent(messageContent.value),
         },
       })
     }),
   )
     .then(() => {
-      messageObject.value = null
+      messageObject.value = undefined
       messageContent.value = ''
       close()
     })
@@ -68,7 +68,6 @@ const sendNotification = () => {
     :title="content.modalTitle"
     icon="ri-alarm-warning-line"
     :opened="isModalOpen"
-    @close="() => close()"
     :actions="[
       {
         label: content.sendButtonLabel,
@@ -78,6 +77,7 @@ const sendNotification = () => {
         onClick: () => sendNotification(),
       }
     ]"
+    @close="() => close()"
   >
     <DsfrSelect
       v-model="messageObject"
