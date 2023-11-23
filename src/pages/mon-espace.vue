@@ -6,7 +6,7 @@ const { data: user, refresh } = await useAsyncData(async() => {
   return unref(await fetchUser())
 })
 
-const newUser = ref({ ...user.value })
+const newUser = ref({ ...user.value }) as Ref<Record<string, string | undefined>>
 
 const content = await queryContent('/pages/mon-espace').findOne()
 

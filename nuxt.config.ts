@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     ],
   },
   devtools: {
-    enabled: process.env.NODE_ENV === 'development',
+    enabled: process.env?.NODE_ENV === 'development',
   },
 
   extends: [
@@ -42,6 +42,13 @@ export default defineNuxtConfig({
       },
       directus: {
         url: 'http://0.0.0.0:8055',
+        autoRefresh: true,
+        onAutoRefreshFailure: String(process.env?.TEST) === 'true'
+          ? undefined
+          : () => {
+              warn('Failed to refresh Directus token')
+              navigateTo('/auth')
+            },
       },
     },
   },

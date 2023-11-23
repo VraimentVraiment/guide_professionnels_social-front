@@ -4,10 +4,9 @@ const isAuthenticated = useIsAuthenticated()
 
 const contentProps = await queryContent('/components/footer').findOne()
 
-const appConfig = appConfigPatch as unknown as Required<{
-// const appConfig = useAppConfig() as unknown as Required<{
-  logoText: string
-}>
+const {
+  logoText,
+} = useAppConfig()
 
 const directusProps = await useFetchDirectusItems({
   collectionName: 'gps_site_footer',
@@ -34,7 +33,7 @@ const footerProps = {
   operatorLinkText: directusProps?.operator_link_text ?? '',
   operatorTo: directusProps?.operator_to ?? '',
 
-  logoText: appConfig.logoText,
+  logoText,
 
   homeLink: contentProps?.homeLink ?? '',
   legalLink: contentProps?.legalLink ?? '',
@@ -83,7 +82,7 @@ const { someModalOpen } = useSomeModalOpen()
   />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .gps-footer {
   background: var(--background-default-grey);
 
@@ -97,15 +96,13 @@ const { someModalOpen } = useSomeModalOpen()
     position: relative;
     z-index: -1;
   }
-}
-</style>
 
-<style>
-/*
- * Fix logo size
- * 'operatorImgStyle' footer prop sometimes gets overriden by the default style
- */
-.gps-footer .fr-footer__logo {
-  max-width: 21.5rem !important;
+  /*
+   * Fix logo size
+   * 'operatorImgStyle' footer prop sometimes gets overriden by the default style
+   */
+  :deep(.fr-footer__logo) {
+    max-width: 21.5rem !important;
+  }
 }
 </style>

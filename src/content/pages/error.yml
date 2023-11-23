@@ -1,0 +1,5 @@
+returnHomeLabel: Retour à l'accueil
+404:
+  description: La page que vous cherchez n'existe pas.
+500:
+  description: Une erreur est survenue, veuillez prendre contact avec l'administrateur du site.

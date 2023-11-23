@@ -2,6 +2,10 @@ import {
   type DirectusFile,
 } from 'nuxt-directus/dist/runtime/types'
 
+type WithKey<K extends string | number | symbol | undefined> = K extends undefined ? never : {
+  [k in NonNullable<K>]: string
+}
+
 /**
  *
  * Given a collection name and an item id in that collection, fetches related files data from the Directus API.
@@ -116,9 +120,7 @@ async function getRelatedIds<T extends { id: number }>(
       if (!relationsIds?.length) {
         break
       }
-      const relations = await useFetchDirectusItems<{
-        [model.targetKey]: number
-      }>({
+      const relations = await useFetchDirectusItems<WithKey<typeof model.targetKey>>({
         collectionName: model.relationCollectionName,
         params: {
           filter: {
@@ -140,10 +142,17 @@ async function getRelatedIds<T extends { id: number }>(
     }
 
     case 'many-to-many': {
-      const relations = await useFetchDirectusItems<{
-        [model.sourceKey]: number
-        [model.targetKey]: number
-      }>(
+      if (
+        !model.sourceKey ||
+        !model.fileIdField ||
+        !model.targetCollectionName
+      ) {
+        break
+      }
+      const relations = await useFetchDirectusItems<
+        WithKey<typeof model.targetKey> &
+        WithKey<typeof model.sourceKey>
+      >(
         {
           collectionName: model.relationCollectionName,
           params: {
@@ -160,10 +169,7 @@ async function getRelatedIds<T extends { id: number }>(
       }
 
       const filesMeta = (
-        await useFetchDirectusItems<{
-          [model.fileIdField]: string
-          [key in model.metaFields]: string
-        }>({
+        await useFetchDirectusItems<WithKey<typeof model.fileIdField> & Record<string, string>>({
           collectionName: model.targetCollectionName,
           params: {
             filter: {
@@ -187,7 +193,7 @@ async function getRelatedIds<T extends { id: number }>(
         ids: filesMeta
           ?.map((fileMeta) => {
             return {
-              id: fileMeta[model.fileIdField],
+              id: fileMeta[model.fileIdField as string],
             }
           }),
         filesMeta,

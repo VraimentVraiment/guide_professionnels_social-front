@@ -5,7 +5,5 @@
   //   "./cypress.config.ts",
   //   "cypress",
   //   "**/*.cy.tsx",
-  //   "../dist",
-  //   "../.output"
-  // ]
+  // ] // this will override the extends from .nuxt/tsconfig.json
 }

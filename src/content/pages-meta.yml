@@ -8,9 +8,6 @@ fichestechniques:
   title: Fiches techniques
 mon-espace:
   title: Mon espace
-'404':
-  metatitle: Erreur 404
-  title: Page non trouvée
 plan-du-site:
   title: Plan du site
 parametres-affichage:

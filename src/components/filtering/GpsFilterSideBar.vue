@@ -108,8 +108,6 @@ const {
 
 :deep(.fr-sidemenu) {
   padding: 0;
-
-  // max-height: 80vh;
   overflow-y: auto;
   filter: drop-shadow(var(--overlap-shadow));
 

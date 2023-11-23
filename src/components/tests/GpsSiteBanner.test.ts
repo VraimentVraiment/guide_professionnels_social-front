@@ -1,20 +1,14 @@
 // @vitest-environment nuxt
 
 import { mockNuxtImport, renderSuspended } from 'nuxt-vitest/utils'
-import { expect } from 'vitest'
+import { expect, it, describe } from 'vitest'
 import { GpsSiteBanner } from '#components'
 
-mockNuxtImport('queryContent', () => {
-  return () => {
-    return {
-      findOne: () => {
-        return {
-          title: ['Welcome to', 'My Site'],
-          baseline: 'This is a test site',
-        }
-      },
-    }
-  }
+mockNuxtImport('useAppConfig', () => {
+  return () => ({
+    serviceTitleMultiline: ['Welcome to', 'My Site'],
+    serviceDescription: 'This is a test site',
+  })
 })
 
 describe('GpsSiteBanner', () => {
