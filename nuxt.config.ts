@@ -43,10 +43,12 @@ export default defineNuxtConfig({
       directus: {
         url: 'http://0.0.0.0:8055',
         autoRefresh: true,
-        onAutoRefreshFailure: () => {
-          warn('Failed to refresh Directus token')
-          navigateTo('/auth')
-        },
+        onAutoRefreshFailure: String(process.env?.TEST) === 'true'
+          ? undefined
+          : () => {
+              warn('Failed to refresh Directus token')
+              navigateTo('/auth')
+            },
       },
     },
   },
