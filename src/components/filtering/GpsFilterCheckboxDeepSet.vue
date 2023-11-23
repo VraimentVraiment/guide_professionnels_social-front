@@ -38,7 +38,13 @@ const getOptions = (node: HierarchyNode<GpsFilterItemNode>) => {
   }]
 }
 
-const getOptionsRecursive = (node: HierarchyNode<GpsFilterItemNode>) => {
+const getOptionsRecursive = (
+  node: HierarchyNode<GpsFilterItemNode>,
+): {
+  label: string
+  id: string
+  name: string
+}[] => {
   const selfOptions = getOptions(node)
   const recursiveOptions = node.children
     ?.flatMap(getOptionsRecursive) ?? []
@@ -69,7 +75,7 @@ const getOptionsRecursive = (node: HierarchyNode<GpsFilterItemNode>) => {
           return child.data.id.toString() === id
         }) ?? null
       if (child) {
-        emit('update:node', child.data, event.target.checked)
+        emit('update:node', child.data, event.target?.checked)
       }
     }"
   />
