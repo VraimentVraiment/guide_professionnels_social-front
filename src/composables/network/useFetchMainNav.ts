@@ -17,7 +17,7 @@ const GpsSiteNavMenuFields = [
   'navigation_menu.item:gps_pages_groups.pages.status',
 ]
 
-export async function useFetchMainNav(
+export async function useFetchDirectusNav(
   isAuthenticated: boolean,
 ): Promise<DsfrNavItem[]> {
   const { navigation_menu: navigationMenu } = (

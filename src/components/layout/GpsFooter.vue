@@ -8,20 +8,26 @@ const {
   logoText,
 } = useAppConfig()
 
-const directusProps = await useFetchDirectusItems({
-  collectionName: 'gps_site_footer',
-}) as unknown as {
-  licence_text: string
-  licence_to: string
-  licence_name: string
-  a11y_compliance: string
-  desc_text: string
-  operator_img_alt: string
-  operator_link_text: string
-  operator_to: string
-  operator_img_src: string
-  operator_img_src_dark: string
-}
+const {
+  data: { value: directusProps },
+} = (
+  await useAsyncData(async() => {
+    return await useFetchDirectusItems({
+      collectionName: 'gps_site_footer',
+    }) as unknown as {
+    licence_text: string
+    licence_to: string
+    licence_name: string
+    a11y_compliance: string
+    desc_text: string
+    operator_img_alt: string
+    operator_link_text: string
+    operator_to: string
+    operator_img_src: string
+    operator_img_src_dark: string
+  }
+  })
+)
 
 const footerProps = {
   licenceText: directusProps?.licence_text ?? '',
