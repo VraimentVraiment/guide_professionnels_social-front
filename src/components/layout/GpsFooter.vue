@@ -8,46 +8,52 @@ const {
   logoText,
 } = useAppConfig()
 
-const directusProps = await useFetchDirectusItems({
-  collectionName: 'gps_site_footer',
-}) as unknown as {
-  licence_text: string
-  licence_to: string
-  licence_name: string
-  a11y_compliance: string
-  desc_text: string
-  operator_img_alt: string
-  operator_link_text: string
-  operator_to: string
-  operator_img_src: string
-  operator_img_src_dark: string
-}
+const {
+  data: directusProps,
+} = useAsyncData(async() => {
+  return await useFetchDirectusItems({
+    collectionName: 'gps_site_footer',
+  }) as unknown as {
+        licence_text: string
+        licence_to: string
+        licence_name: string
+        a11y_compliance: string
+        desc_text: string
+        operator_img_alt: string
+        operator_link_text: string
+        operator_to: string
+        operator_img_src: string
+        operator_img_src_dark: string
+      }
+})
 
-const footerProps = {
-  licenceText: directusProps?.licence_text ?? '',
-  licenceTo: directusProps?.licence_to ?? '#',
-  licenceName: directusProps?.licence_name ?? '',
-  a11yCompliance: directusProps?.a11y_compliance ?? '',
-  descText: directusProps?.desc_text ?? '',
-  operatorImgAlt: directusProps?.operator_img_alt ?? '',
-  operatorLinkText: directusProps?.operator_link_text ?? '',
-  operatorTo: directusProps?.operator_to ?? '',
+const footerProps = computed(() => {
+  return {
+    licenceText: directusProps.value?.licence_text ?? '',
+    licenceTo: directusProps.value?.licence_to ?? '#',
+    licenceName: directusProps.value?.licence_name ?? '',
+    a11yCompliance: directusProps.value?.a11y_compliance ?? '',
+    descText: directusProps.value?.desc_text ?? '',
+    operatorImgAlt: directusProps.value?.operator_img_alt ?? '',
+    operatorLinkText: directusProps.value?.operator_link_text ?? '',
+    operatorTo: directusProps.value?.operator_to ?? '',
 
-  logoText,
+    logoText,
 
-  homeLink: contentProps?.homeLink ?? '',
-  legalLink: contentProps?.legalLink ?? '',
-  personalDataLink: contentProps?.personalDataLink ?? '',
-  cookiesLink: contentProps?.cookiesLink ?? '',
-  a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
-}
+    homeLink: contentProps?.homeLink ?? '',
+    legalLink: contentProps?.legalLink ?? '',
+    personalDataLink: contentProps?.personalDataLink ?? '',
+    cookiesLink: contentProps?.cookiesLink ?? '',
+    a11yComplianceLink: contentProps?.a11yComplianceLink ?? '',
+  }
+})
 
 const { preferences } = useGpsSchemeStore()
 
 const operatorImgSrc = computed(() => {
   const directusOperatorImgSrc = preferences.theme === 'dark'
-    ? directusProps?.operator_img_src_dark
-    : directusProps?.operator_img_src
+    ? directusProps.value?.operator_img_src_dark
+    : directusProps.value?.operator_img_src
 
   return useGetDirectusFileLink(directusOperatorImgSrc, { isPublic: true }) ?? ''
 })
