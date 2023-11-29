@@ -40,6 +40,7 @@ const openDetails = useCollectionObserver<Number>()
           label="Voir plus"
           primary
           icon-only
+          tertiary
           size="small"
           :icon="openDetails.has(node.data.id) ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"
           @click="() => openDetails.toggle(node.data.id)"
