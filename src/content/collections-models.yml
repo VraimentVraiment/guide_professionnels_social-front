@@ -3,6 +3,8 @@ collections:
   - label: Thématiques
     type: taxonomy
     collectionName: gps_thematiques
+    filterStatus:
+      - published
 
   - label: Types de dispositif
     type: taxonomy

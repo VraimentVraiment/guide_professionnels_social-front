@@ -14,27 +14,29 @@ export function useDirectusFilters(
   relationGroups: ComputedRef<RelationGroups>,
 ): ComputedRef<CollectionDirectusFilter[]> {
   const directusFilters = computed(() => {
-    const { collectionsModels } = useModelsStore()
+    const {
+      getCollectionModelByName,
+    } = useModelsStore()
 
-    return collectionsModels
-      ?.filter((collectionModel) => {
-        return (
-          postsCollectionName.value === collectionModel.collectionName ||
-          filtersCollections.value
-            .some((collection) => {
-              return (
-                collection.collectionName === collectionModel.collectionName
-              )
-            })
-        )
-      })
+    const postCollectionModel = getCollectionModelByName(postsCollectionName.value as string) as CollectionModel
+    const relatedCollectionsModels = (
+      postCollectionModel?.relations
+        ?.map((relationModel) => {
+          return getCollectionModelByName(relationModel.targetCollectionName)
+        })
+        ?.filter((collectionModel) => {
+          return collectionModel?.type === 'taxonomy'
+        }) ?? []
+      ) as CollectionModel[]
+
+    return [
+      postCollectionModel,
+      ...relatedCollectionsModels,
+    ]
       ?.map((collectionModel): CollectionDirectusFilter => {
         const filter: CollectionDirectusFilter = {
           collectionName: collectionModel?.collectionName as string,
           filter: {},
-        }
-        if (!collectionModel?.relations) {
-          return filter
         }
 
         const addFilterCondition = (
@@ -44,74 +46,76 @@ export function useDirectusFilters(
           filter.filter._and.push(condition)
         }
 
-        const ids: number[][] = []
+        if (collectionModel?.relations) {
+          const ids: number[][] = []
 
-        for (const relationModel of collectionModel?.relations) {
-          const collectionCheckedItems = checkedItems.value
-            ?.find((collection) => {
-              return collection.collectionName === relationModel.targetCollectionName
-            })
-            ?.items
-
-          if (
-            !collectionCheckedItems ||
-            collectionCheckedItems.length === 0
-          ) {
-            continue
-          }
-
-          if (relationModel.relationType === 'many-to-one') {
-            addFilterCondition({
-              [relationModel.field as string]: {
-                _in: collectionCheckedItems
-                  .map((item: GpsFilterItemNode) => item.id),
-              },
-            })
-          }
-
-          if (relationModel.relationType === 'many-to-many') {
-            const relationsCollection = relationsCollections.value
-              ?.find(c => (
-                c.relationModel.sourceCollectionName === collectionModel.collectionName &&
-                c.relationModel.targetCollectionName === relationModel.targetCollectionName
-              ))
-
-            if (!relationsCollection) {
-              continue
-            }
-
-            const filtersCollection = filtersCollections.value
+          for (const relationModel of collectionModel?.relations) {
+            const collectionCheckedItems = checkedItems.value
               ?.find((collection) => {
                 return collection.collectionName === relationModel.targetCollectionName
               })
+              ?.items
 
-            if (!filtersCollection) {
+            if (
+              !collectionCheckedItems ||
+            collectionCheckedItems.length === 0
+            ) {
               continue
             }
 
-            const newIds = getIdsMatchingRelatedCollection(
-              filtersCollection,
-              relationsCollection,
-              relationModel,
-              collectionCheckedItems,
-              relationGroups.value,
-            ) ?? []
+            if (relationModel.relationType === 'many-to-one') {
+              addFilterCondition({
+                [relationModel.field as string]: {
+                  _in: collectionCheckedItems
+                    .map((item: GpsFilterItemNode) => item.id),
+                },
+              })
+            }
 
-            ids.push(newIds)
+            if (relationModel.relationType === 'many-to-many') {
+              const relationsCollection = relationsCollections.value
+                ?.find(c => (
+                  c.relationModel.sourceCollectionName === collectionModel.collectionName &&
+                c.relationModel.targetCollectionName === relationModel.targetCollectionName
+                ))
+
+              if (!relationsCollection) {
+                continue
+              }
+
+              const filtersCollection = filtersCollections.value
+                ?.find((collection) => {
+                  return collection.collectionName === relationModel.targetCollectionName
+                })
+
+              if (!filtersCollection) {
+                continue
+              }
+
+              const newIds = getIdsMatchingRelatedCollection(
+                filtersCollection,
+                relationsCollection,
+                relationModel,
+                collectionCheckedItems,
+                relationGroups.value,
+              ) ?? []
+
+              ids.push(newIds)
+            }
           }
-        }
 
-        if (ids.length) {
-          const idsIntersection = ids
-            .some(ids => ids.length === 0)
-            ? []
-            : Array.from(intersection(...ids))
+          if (ids.length) {
+            const idsIntersection = ids
+              .some(ids => ids.length === 0)
+              ? []
+              : Array.from(intersection(...ids))
 
-          addFilterCondition({
-            id: {
-              _in: idsIntersection,
-            },
-          })
+            addFilterCondition({
+              id: {
+                _in: idsIntersection,
+              },
+            })
+          }
         }
 
         if (collectionModel.filterStatus) {
