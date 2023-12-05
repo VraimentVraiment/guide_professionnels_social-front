@@ -14,10 +14,12 @@ const patchNodeDisplay = (node: HierarchyNode<GpsFilterItemNode>) => {
     const el = document.getElementById(id)?.parentElement
     if (el) {
       el.setAttribute('data-node-depth', node.depth.toString())
-      el.style.display = (
-        node.data.checked ||
-        node.depth === 1
+      const isVisible = (
+        node.depth === 1 ||
+        node.parent?.children?.some(child => child.data.checked)
       )
+
+      el.style.display = isVisible
         ? 'block'
         : 'none'
     }
@@ -51,6 +53,7 @@ const getOptionsRecursive = (
 
   return [...selfOptions, ...recursiveOptions]
 }
+
 type DsfrCheckboxChangeEvent = InputEvent & {
   target: {
     id: string,

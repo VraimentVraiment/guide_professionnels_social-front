@@ -7,6 +7,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['update:node'])
+
 </script>
 
 <template>
