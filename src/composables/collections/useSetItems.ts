@@ -172,7 +172,6 @@ export function useSetItem(
 
     if (
       value === true &&
-      parent &&
       parent.checked === false
     ) {
       parent.checked = true
@@ -185,26 +184,23 @@ export function useSetItem(
       })
     }
 
-    if (
-      parent &&
-      siblings?.length
-    ) {
-      const allSiblingsUnchecked = item.checked === false &&
-        siblings
-          .every(sibling => !sibling.checked)
+    const allSiblingsUnchecked = item.checked === false && (
+      !siblings.length ||
+      siblings
+        .every(sibling => !sibling.checked)
+    )
 
-      if (
-        allSiblingsUnchecked &&
-        parent.checked === true
-      ) {
-        setItem({
-          collectionName: collection.collectionName,
-          id: parent.id,
-          value: false,
-          isAltKeyPressed,
-          avoid,
-        })
-      }
+    if (
+      allSiblingsUnchecked &&
+      parent.checked === true
+    ) {
+      setItem({
+        collectionName: collection.collectionName,
+        id: parent.id,
+        value: false,
+        isAltKeyPressed,
+        avoid,
+      })
     }
   }
 
