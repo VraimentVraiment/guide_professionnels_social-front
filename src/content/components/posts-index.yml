@@ -1,4 +1,3 @@
-resetMessageThreshold: 3
 resetLabel: Réinitialiser les filtres
 resetMessage: Cette recherche a produit peu de résultats. Vous pouvez réinitialiser les filtres pour élargir la recherche.
 emptyMessage: Aucun élément ne correspond à votre recherche.

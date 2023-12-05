@@ -35,7 +35,7 @@ const reset = () => {
 
 const showResetMessage = computed(() => {
   return (
-    postsItems.value?.length < content.resetMessageThreshold &&
+    !postsItems.value?.length &&
     (
       checkedItemsObserver.hasCheckedItems.value ||
       (
@@ -136,7 +136,7 @@ const updatePagination = (
                 @click="reset"
               />
             </div>
-            <template v-else-if="postStore.postsCollection.itemsCount">
+            <template v-if="postStore.postsCollection.itemsCount">
               <GpsPostCardGrid
                 ref="gpsPostsContainer"
                 :class="[
