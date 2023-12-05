@@ -22,12 +22,14 @@ export function useSetItem(
     value,
     avoid = [],
     isAltKeyPressed,
+    forceSiblingsUncheck,
   }: {
     collectionName: string,
     id: number,
     value: any,
     avoid?: number[],
     isAltKeyPressed?: boolean
+    forceSiblingsUncheck?: boolean,
   }) {
     const collection = filtersCollections.value
       .find(c => c.collectionName === collectionName)
@@ -51,6 +53,7 @@ export function useSetItem(
       value,
       avoid,
       isAltKeyPressed,
+      forceSiblingsUncheck,
     })
   }
   return setItem
@@ -62,6 +65,7 @@ export function useSetItem(
     item,
     avoid,
     value,
+    forceSiblingsUncheck,
   }: {
     collection: FiltersCollection,
     relationModel: CollectionRelationModel | null,
@@ -69,8 +73,10 @@ export function useSetItem(
     value: boolean,
     avoid: number[],
     isAltKeyPressed?: boolean,
+    forceSiblingsUncheck?: boolean,
   }) {
     if (
+      forceSiblingsUncheck ||
       relationModel?.userSelection === 'single-node'
     ) {
       collection.items

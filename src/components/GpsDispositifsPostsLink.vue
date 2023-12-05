@@ -13,6 +13,7 @@ const setItem = (id: number) => {
     collectionName: 'gps_typesdispositif',
     id,
     value: true,
+    forceSiblingsUncheck: true,
   })
 }
 
