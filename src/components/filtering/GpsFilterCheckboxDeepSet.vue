@@ -11,7 +11,7 @@ const emit = defineEmits(['update:node'])
 const patchNodeDisplay = (node: HierarchyNode<GpsFilterItemNode>) => {
   const id = `${node.data.collectionName}--${node.data.id}`
   nextTick(() => {
-    const el = document.getElementById(id)?.parentElement
+    const el = document.getElementById(id)?.parentElement?.parentElement
     if (el) {
       el.setAttribute('data-node-depth', node.depth.toString())
       const isVisible = (
@@ -91,8 +91,14 @@ type DsfrCheckboxChangeEvent = InputEvent & {
 </template>
 
 <style scoped lang="scss">
-:deep(.fr-checkbox-group) {
-  &>label {
+:deep(.fr-fieldset__legend ) {
+  display: none;
+}
+
+:deep(.fr-fieldset__element) {
+  margin-bottom: 0 !important;
+
+  &>.fr-checkbox-group>label {
     margin-left: 1.8em !important;
 
     &::before {
@@ -101,6 +107,10 @@ type DsfrCheckboxChangeEvent = InputEvent & {
       width: 1.4em !important;
       height: 1.4em !important;
     }
+  }
+
+  &>.fr-checkbox-group {
+    padding: .5rem 0;
   }
 
   &[data-node-depth="1"] {
@@ -114,6 +124,7 @@ type DsfrCheckboxChangeEvent = InputEvent & {
   &[data-node-depth="2"] {
     margin-left: .5rem !important;
     padding-left: .5rem !important;
+    padding-top: 1rem !important;
     border-left: 1px solid var(--border-default-grey);
     font-weight: 400;
     position: relative;
@@ -129,7 +140,7 @@ type DsfrCheckboxChangeEvent = InputEvent & {
     margin-left: .5rem !important;
     padding-left: 1.5rem !important;
     font-weight: 600;
-    transform: translateY(-.75rem);
+    transform: translateY(-.5rem);
 
     &::before {
       content: '';
