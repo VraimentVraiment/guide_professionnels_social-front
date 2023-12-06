@@ -88,15 +88,23 @@ const updatePagination = (
         :max-height="`calc(${maxHeight} + 4rem)`"
       >
         <template #before-content>
-          <DsfrTag
-            aria-pressed
-            :label="`${postStore.postsCollection?.itemsCount ?? 0} résultats`"
+          <div
             :class="[
-              'fr-mb-2w',
-              'fr-mt-2w',
-              'fr-mt-md-0',
+              'gps_filter_nresults',
+              'fr-pt-4v',
+              'fr-mt-n4v',
             ]"
-          />
+          >
+            <DsfrTag
+              aria-pressed
+              :label="`${postStore.postsCollection?.itemsCount ?? 0} résultats`"
+              :class="[
+                'fr-mb-2w',
+                'fr-mt-2w',
+                'fr-mt-md-0',
+              ]"
+            />
+          </div>
         </template>
       </GpsFilterSideBar>
     </template>
@@ -199,6 +207,14 @@ const updatePagination = (
 </template>
 
 <style scoped lang="scss">
+.gps_filter_nresults {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  background: var(--background-default-grey);
+}
+
 .gps-posts__posts-container {
   padding: 4px;
   display: flex;
