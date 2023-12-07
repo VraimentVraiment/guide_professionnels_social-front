@@ -305,17 +305,6 @@ const showPasswords = ref(false)
           }"
           @keydown.enter="submitPasswordResetRequest"
         />
-        <DsfrCheckbox
-          v-if="!isResetPasswordRequest"
-          :class="[
-            'gps-auth__show-password',
-          ]"
-          name="show-password"
-          label="Afficher"
-          small
-          :model-value="showPasswords"
-          @update:model-value="showPasswords = $event"
-        />
         <DsfrInputGroup
           v-if="!isResetPasswordRequest"
           v-bind="passwordField.props"
@@ -333,6 +322,17 @@ const showPasswords = ref(false)
             alertModel.reset()
           }"
           @keydown.enter="submitLogin"
+        />
+        <DsfrCheckbox
+          v-if="!isResetPasswordRequest"
+          :class="[
+            'gps-auth__show-password',
+          ]"
+          name="show-password"
+          label="Afficher"
+          small
+          :model-value="showPasswords"
+          @update:model-value="showPasswords = $event"
         />
         <NuxtLink
           v-if="!isResetPassword && !isResetPasswordRequest"
@@ -395,6 +395,7 @@ const showPasswords = ref(false)
 .gps-auth__show-password {
   position: absolute;
   right: 1rem;
+  transform: translateY(-6rem);
   z-index: 10;
 }
 </style>

@@ -3,6 +3,8 @@ collections:
   - label: Thématiques
     type: taxonomy
     collectionName: gps_thematiques
+    filterStatus:
+      - published
 
   - label: Types de dispositif
     type: taxonomy
@@ -80,10 +82,19 @@ collections:
         targetKey: gps_thematiques_id
       - label: Types de dispositif
         order: 2
-        relationType: many-to-one
-        targetCollectionName: gps_typesdispositif
+        ###############
+        # relationType: many-to-one
+        # targetCollectionName: gps_typesdispositif
         userSelection: all-nodes
-        field: gps_typesdispositif_id
+        # field: gps_typesdispositif_id
+        ###############
+        relationType: many-to-many
+        sourceCollectionName: gps_fichesdispositif
+        targetCollectionName: gps_typesdispositif
+        relationCollectionName: gps_fichesdispositif_gps_typesdispositif
+        sourceKey: gps_fichesdispositif_id
+        targetKey: gps_typesdispositif_id
+        ###############
       - label: Caractéristiques
         order: 3
         userSelection: leaves-only
