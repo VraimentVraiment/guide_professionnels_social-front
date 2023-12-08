@@ -33,7 +33,9 @@ const {
       }"
     >
       <slot name="before-content" />
-      <DsfrAccordionsGroup>
+      <DsfrAccordionsGroup
+        class="fr-my-2w md:fr-my-0"
+      >
         <li v-if="doUseSearchStore">
           <DsfrAccordion
             :expanded-id="expandedId"
