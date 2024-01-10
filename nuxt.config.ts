@@ -28,11 +28,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@nuxt/devtools',
+    '@nuxt/test-utils/module',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt-directus',
     'nuxt-simple-sitemap',
-    'nuxt-vitest',
   ],
 
   runtimeConfig: {
