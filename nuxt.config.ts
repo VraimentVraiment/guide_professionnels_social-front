@@ -26,13 +26,14 @@ export default defineNuxtConfig({
   ],
 
   modules: [
-    '@nuxt/content',
-    '@nuxt/devtools',
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
-    'nuxt-directus',
-    'nuxt-simple-sitemap',
-    'nuxt-vitest',
+   '@nuxt/content',
+   '@nuxt/devtools',
+   '@nuxt/test-utils/module',
+   '@pinia/nuxt',
+   '@pinia-plugin-persistedstate/nuxt',
+   'nuxt-directus',
+   '@nuxtjs/sitemap',
+   '@nuxt/image',
   ],
 
   runtimeConfig: {
@@ -65,6 +66,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
+          api: 'modern-compiler',
           additionalData: [
             '@use "@/layers/dsfr/styles/" as dsfr;',
             '@use "@/styles/abstracts" as gps;',

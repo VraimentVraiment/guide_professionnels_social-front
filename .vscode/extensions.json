@@ -13,7 +13,5 @@
     // Vue.js
     "vue.volar",
     "vue.vscode-typescript-vue-plugin",
-    // Vitejs
-    "antfu.vite",
   ]
 }
